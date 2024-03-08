@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.0.1 (2022-03-08)
+# bigecyhmm v0.0.1 (2024-03-08)
 
 First test release for bigecyhmm.
 
