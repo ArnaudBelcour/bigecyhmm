@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bigecyhmm"
+dynamic = ["version"]
+readme = "README.md"
+description = "Predict biogeochemical cycle from protein fasta files."
+license = {text = "GPL-3.0-or-later"}
+
+dependencies = [
+  'pyhmmer'
+]
+
+[project.scripts]
+bigecyhmm = "bigecyhmm.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/ArnaudBelcour/bigecyhmm"
+Changelog = "https://github.com/ArnaudBelcour/bigecyhmm/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ['bigecyhmm', 'bigecyhmm.hmm_databases', 'bigecyhmm.hmm_databases.hmm_files']
+package-dir = {'bigecyhmm'= 'bigecyhmm'}
+package-data = {'bigecyhmm.data.hmm_databases.hmm_files'= ['*.hmm'], 'bigecyhmm.hmm_databases' = ['*.txt']}
+
+[tool.setuptools.dynamic]
+version = { attr = "bigecyhmm.__version__" }
+dependencies = {file = ["requirements.txt"]}
