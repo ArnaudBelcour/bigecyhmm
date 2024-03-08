@@ -8,7 +8,7 @@ I develop bigecyhmm to be as minimalist as possible so it requires only:
 
 - [PyHMMER](https://github.com/althonos/pyhmmer): to perform the HMM search.
 
-The searched HMMs are contained inside the package as a zip file ([]()).
+The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 13 Mb) but in this way, you do not have to download other files and can directly use it.
 
 ## Installation
 
@@ -34,14 +34,18 @@ You can used the tools with two calls:
 - by giving as input a protein fasta file:
 
 ```sh
-bigecyhmm -i protein_sequence.faa -o output_dir -c 10
+bigecyhmm -i protein_sequence.faa -o output_dir -c 5
 ```
 
 - by giving as input a folder containing multiple fasta files:
 
 ```sh
-bigecyhmm -i protein_sequences_folder -o output_dir -c 10
+bigecyhmm -i protein_sequences_folder -o output_dir -c 5
 ```
+
+There is one option:
+
+* `-c` to indicate the number of CPU used by PyHMMER.
 
 ## Output
 
