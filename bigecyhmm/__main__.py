@@ -21,7 +21,7 @@ import time
 
 from bigecyhmm import __version__ as VERSION
 from bigecyhmm.utils import is_valid_dir
-from bigecyhmm.run_hmm import search_hmm
+from bigecyhmm.hmm_search import search_hmm
 
 MESSAGE = '''
 Predict biogeochemical cycles from protein fasta file.

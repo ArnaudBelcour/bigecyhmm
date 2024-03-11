@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "bigecyhmm"
 dynamic = ["version"]
 readme = "README.md"
-description = "Predict biogeochemical cycle from protein fasta files."
+description = "Predict biogeochemical cycles from protein fasta files."
 license = {text = "GPL-3.0-or-later"}
 
 dependencies = [
