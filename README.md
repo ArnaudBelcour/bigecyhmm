@@ -8,7 +8,7 @@ I develop bigecyhmm to be as minimalist as possible so it requires only:
 
 - [PyHMMER](https://github.com/althonos/pyhmmer): to perform the HMM search.
 
-The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 13 Mb) but in this way, you do not have to download other files and can directly use it.
+The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 15 Mb) but in this way, you do not have to download other files and can directly use it.
 
 ## Installation
 
@@ -34,18 +34,18 @@ You can used the tools with two calls:
 - by giving as input a protein fasta file:
 
 ```sh
-bigecyhmm -i protein_sequence.faa -o output_dir -c 5
+bigecyhmm -i protein_sequence.faa -o output_dir
 ```
 
 - by giving as input a folder containing multiple fasta files:
 
 ```sh
-bigecyhmm -i protein_sequences_folder -o output_dir -c 5
+bigecyhmm -i protein_sequences_folder -o output_dir
 ```
 
 There is one option:
 
-* `-c` to indicate the number of CPU used by PyHMMER.
+* `-c` to indicate the number of CPU used. It is only useful if you have multiple protein fasta files as the added CPU will be used to run another HMM search on a different protein fasta files. 
 
 ## Output
 
@@ -53,7 +53,7 @@ It gives as output:
 
 - in folder `hmm_results`: one tsv files showing the hits for each protein fasta file.
 - `function_presence.tsv` a tsv file showing the presence/absence of generic functions associated with the HMMs that matched.
-- in folder `diagram_input_folder`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R) from METABOLIC articles using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`.
+- in folder `diagram_input_folder`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R) from METABOLIC articles using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
 
 
 ## Citation
