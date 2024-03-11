@@ -21,7 +21,7 @@ HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
 DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'R_diagram_pathways.tsv')
 
-def get_diagram_pathways_hmss():
+def get_diagram_pathways_hmms():
     pathway_hmms = {}
     sorted_pathways = []
     with open(DIAGRAM_TEMPLATE_FILE, 'r') as open_r_pathways:
@@ -45,11 +45,12 @@ def get_organism_matching_hmms(hmm_folder):
         org_hmm_file_basename = os.path.splitext(org_hmm_file)[0]
         org_hmm_file_path = os.path.join(hmm_folder, org_hmm_file)
         with open(org_hmm_file_path, 'r') as open_hmm_file:
-            csvreader = csv.reader(open_hmm_file, delimiter = '\t')
+            csvreader = csv.DictReader(open_hmm_file, delimiter = '\t')
             hmms = []
             next(csvreader)
             for line in csvreader:
-                hmms.append(line[2].replace('_full', ''))
+                if float(line['evalue']) < 1e-5 and float(line['score']) >= 40:
+                    hmms.append(line['HMM'].replace('_full', ''))
             org_hmms[org_hmm_file_basename] = hmms
 
     return org_hmms
@@ -93,7 +94,7 @@ def create_input_diagram(input_folder, output_folder):
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
-    pathway_hmms, sorted_pathways = get_diagram_pathways_hmss()
+    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms()
     org_hmms = get_organism_matching_hmms(input_folder)
     all_pathways, org_pathways = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 
