@@ -1,0 +1,32 @@
+N-S-01:Nitrogen fixation	TIGR01861.hmm,TIGR02931.hmm,TIGR02929.hmm,TIGR01282.hmm,TIGR01286.hmm,TIGR01860.hmm,TIGR02932.hmm,TIGR02930.hmm,TIGR01287.hmm
+N-S-02:Ammonia oxidation	amoA.hmm,amoB.hmm,amoC.hmm
+N-S-03:Nitrite oxidation	nitrite_oxidoreductase_nxrA.hmm,nitrite_oxidoreductase_nxrB.hmm
+N-S-04:Nitrate reduction	TIGR01706.hmm,PF03892.hmm,TIGR01580.hmm,TIGR01660.hmm
+N-S-05:Nitrite reduction	TIGR02376.hmm,nitrite_reductase_nirS.hmm,TIGR04315.hmm
+N-S-06:Nitric oxide reduction	nitric_oxide_reductase_norB.hmm,nitric_oxide_reductase_norC.hmm
+N-S-07:Nitrous oxide reduction	PF05048.hmm,TIGR04246.hmm
+N-S-08:Nitrite ammonification	TIGR03153.hmm,PF02335.hmm,TIGR03148.hmm,TIGR02374.hmm,TIGR02378.hmm
+N-S-09:Anammox	hydrazine_oxidase_hzoA.hmm,hydrazine_synthase_hzsA.hmm
+S-S-01:Sulfide oxidation	PF09242.hmm,sulfide_quinone_oxidoreductase_sqr.hmm
+S-S-02:Sulfur reduction	PF07682.hmm,K17219.hmm,K17220.hmm,K17221.hmm
+S-S-03:Sulfur oxidation	PF07682.hmm,sulfur_dioxygenase_sdo.hmm
+S-S-04:Sulfite oxidation	aprA.hmm,TIGR00339.hmm
+S-S-05:Sulfate reduction	aprA.hmm,TIGR00339.hmm
+S-S-06:Sulfite reduction	asrA.hmm,asrB.hmm,asrC.hmm,dsrA.hmm,dsrB.hmm,dsrD.hmm
+S-S-07:Thiosulfate oxidation	soxX.hmm,soxY.hmm,soxZ.hmm,soxA.hmm;soxC.hmm,soxD.hmm
+S-S-08:Thiosulfate disproportionation 1	thiosulfate_reductase_phsA.hmm
+S-S-09:Thiosulfate disproportionation 2	soxX.hmm,soxY.hmm,soxZ.hmm,soxA.hmm;NO|soxC.hmm,NO|soxD.hmm
+C-S-01:Organic carbon oxidation	K00823.hmm,K07250.hmm,K13524.hmm,K14268.hmm,K03918.hmm,K05825.hmm,K00831.hmm,K00819.hmm,K00821.hmm,K05830.hmm,K00840.hmm,K00826.hmm,K02619.hmm,K03342.hmm,K00812.hmm,K00813.hmm,K11358.hmm,K00832.hmm,K00817.hmm,K00830.hmm,K00129.hmm,K00138.hmm,K13954.hmm,K00001.hmm,K04072.hmm,K00114.hmm,K00002.hmm,K04022.hmm,K22473.hmm,K00249.hmm,K00255.hmm,K06445.hmm,K06446.hmm,K09456.hmm,K09478.hmm,K11410.hmm,K15980.hmm,K18244.hmm,K03381.hmm,K03186.hmm,K01612.hmm,K04112.hmm,K04113.hmm,K04114.hmm,K04115.hmm,K19668.hmm,K01779.hmm,K01188.hmm,K05349.hmm,K05350.hmm,K01209.hmm,K15921.hmm,K01195.hmm,K05989.hmm,K01218.hmm,K19355.hmm,K01811.hmm,K01198.hmm,K01192.hmm,K01190.hmm,K12111.hmm,K12308.hmm,K01176.hmm,K05343.hmm,K07405.hmm,K01178.hmm,K01200.hmm,K01214.hmm,K01183.hmm,K13381.hmm,K01207.hmm,K12373.hmm,K14459.hmm,K00169.hmm,K00001.hmm,K00016.hmm,TIGR02717.hmm,TIGR00016.hmm,TIGR00651.hmm,TIGR02188.hmm,K00656.hmm,methanol_dehydrogenase_pqq_xoxF_mxaF.hmm,TIGR04266.hmm,TIGR02659.hmm,TIGR02658.hmm,TIGR02819.hmm,TIGR02821.hmm,TIGR02818.hmm,TIGR03451.hmm,TIGR03126.hmm,K00123.hmm,K22515.hmm,K00124.hmm,K22516.hmm,K00125.hmm,K03518.hmm,K03519.hmm,K03520.hmm,TIGR03080.hmm,TIGR03079.hmm,TIGR03078.hmm,PF02406.hmm,TIGR04550.hmm,TIGR03256.hmm,TIGR03257.hmm,TIGR03259.hmm
+C-S-02:Carbon fixation	rubisco_form_I.hmm,rubisco_form_II.hmm,K14469.hmm,K14468.hmm,K14466.hmm,K18861.hmm,K14467.hmm,K00194.hmm,K00197.hmm,K00198.hmm,acetate_citrate_lyase_aclA.hmm,acetate_citrate_lyase_aclB.hmm
+C-S-03:Ethanol oxidation	K00001.hmm
+C-S-04:Acetate oxidation	TIGR02188.hmm
+C-S-05:Hydrogen generation	fe.hmm,nife-group-3abd.hmm,fefe-group-b.hmm,fefe-group-a13.hmm,nife-group-4a-g.hmm
+C-S-06:Fermentation	K00169.hmm,K00001.hmm,K00016.hmm,TIGR02717.hmm,TIGR00016.hmm,TIGR00651.hmm,TIGR02188.hmm,K00656.hmm
+C-S-07:Methanogenesis	TIGR03256.hmm,TIGR03257.hmm,TIGR03259.hmm
+C-S-08:Methanotrophy	pmoA.hmm,pmoB.hmm,pmoC.hmm,PF02406.hmm,TIGR04550.hmm
+C-S-09:Hydrogen oxidation	fe.hmm,nife-group-3abd.hmm,fefe-group-a2.hmm,nife-group-1.hmm,nife-group-2ade.hmm,nife-group-2bc.hmm,nife-group-4hi.hmm,fefe-group-a4.hmm
+O-S-01:Iron reduction	MtrA.hmm,MtrB_TIGR03509.hmm,MtrC_TIGR03507.hmm,CymA.hmm,OmcF.hmm,OmcS.hmm,OmcZ.hmm,Ndh2.hmm,DFE_0450.hmm,DFE_0464.hmm
+O-S-02:Iron oxidation	Cyc1.hmm,Cyc2_repCluster1.hmm,Cyc2_repCluster2.hmm,Cyc2_repCluster3.hmm,FoxA.hmm,FoxB.hmm,FoxC.hmm,FoxE.hmm,FoxY.hmm,FoxZ.hmm,MtoA.hmm,sulfocyanin.hmm
+O-S-03:Arsenate reduction	arrA.hmm
+O-S-04:Arsenite oxidation	arxA.hmm,aioA.hmm
+O-S-05:Selenate reduction	TIGR03312.hmm,TIGR03313.hmm,TIGR03315.hmm
