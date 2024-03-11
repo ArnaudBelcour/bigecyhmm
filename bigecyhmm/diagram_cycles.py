@@ -15,13 +15,25 @@
 
 import csv
 import os
+import logging
+
+from bigecyhmm.utils import parse_result_files
 
 ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
 DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'R_diagram_pathways.tsv')
 
+logger = logging.getLogger(__name__)
+
+
 def get_diagram_pathways_hmms():
+    """From DIAGRAM_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
+
+    Returns:
+        pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
+        sorted_pathways (list): ordered list of functions
+    """
     pathway_hmms = {}
     sorted_pathways = []
     with open(DIAGRAM_TEMPLATE_FILE, 'r') as open_r_pathways:
@@ -39,23 +51,18 @@ def get_diagram_pathways_hmms():
     return pathway_hmms, sorted_pathways
 
 
-def get_organism_matching_hmms(hmm_folder):
-    org_hmms = {}
-    for org_hmm_file in os.listdir(hmm_folder):
-        org_hmm_file_basename = os.path.splitext(org_hmm_file)[0]
-        org_hmm_file_path = os.path.join(hmm_folder, org_hmm_file)
-        with open(org_hmm_file_path, 'r') as open_hmm_file:
-            csvreader = csv.DictReader(open_hmm_file, delimiter = '\t')
-            hmms = []
-            next(csvreader)
-            for line in csvreader:
-                if float(line['evalue']) < 1e-5 and float(line['score']) >= 40:
-                    hmms.append(line['HMM'].replace('_full', ''))
-            org_hmms[org_hmm_file_basename] = hmms
-
-    return org_hmms
-
 def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
+    """Compute the presence of functions of biogeochemical cycles in the dataset.
+
+    Args:
+        sorted_pathways (list): ordered list of functions
+        org_hmms (dict): dictionary with organism as key and list of hit HMMs as value
+        pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
+
+    Returns:
+        all_pathways (dict): pathway as key and number of organisms having it as value
+        org_pathways (dict): organism as key and subdict with pathway presence as value
+    """
     all_pathways = {pathway: 0 for pathway in sorted_pathways}
     org_pathways = {}
     for org in org_hmms:
@@ -90,12 +97,20 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
 
     return all_pathways, org_pathways
 
+
 def create_input_diagram(input_folder, output_folder):
+    """Create input files for the creation of the biogeochemical cycle diagram.
+    This function creates input for this R script: https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R
+
+    Args:
+        input_folder (str): path to HMM search results folder (one tsv file per organism)
+        output_folder (str): path to output folder containing input files for diagram creation
+    """
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
     pathway_hmms, sorted_pathways = get_diagram_pathways_hmms()
-    org_hmms = get_organism_matching_hmms(input_folder)
+    org_hmms = parse_result_files(input_folder)
     all_pathways, org_pathways = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 
     for org in org_pathways:

@@ -15,6 +15,7 @@
 
 import logging
 import os
+import csv
 import sys
 
 logger = logging.getLogger(__name__)
@@ -70,3 +71,27 @@ def file_or_folder(variable_folder_file):
         sys.exit(1)
     return file_folder_paths
 
+
+def parse_result_files(hmm_output_folder):
+    """Parse HMM search results and extract filtered hits.
+
+    Args:
+        hmm_output_folder (str): path to HMM search results folder (one tsv file per organism)
+
+    Returns:
+        hmm_hits (dict): dictionary with organism as key and list of hit HMMs as value
+    """
+    hmm_hits = {}
+    for hmm_tsv_file in os.listdir(hmm_output_folder):
+        hmm_output_filepath = os.path.join(hmm_output_folder, hmm_tsv_file)
+        hmm_tsv_filename = hmm_tsv_file.replace('.tsv', '')
+        hmm_hits[hmm_tsv_filename] = []
+
+        with open(hmm_output_filepath, 'r') as open_result_file:
+            csvreader = csv.DictReader(open_result_file, delimiter='\t')
+            for line in csvreader:
+                # Score of 40 from: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3820096/
+                if float(line['evalue']) < 1e-5 and float(line['score']) >= 40:
+                    hmm_hits[hmm_tsv_filename].append(line['HMM'])
+
+    return hmm_hits
