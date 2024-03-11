@@ -59,7 +59,6 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
     org_pathways = {}
     for org in org_hmms:
         for pathway in sorted_pathways:
-            pathway_in = False
             pathway_check = []
             for hmm_combination in pathway_hmms[pathway]:
                 negative_hmms = [hmm for hmm in hmm_combination if 'NO' in hmm]

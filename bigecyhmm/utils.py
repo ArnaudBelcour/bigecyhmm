@@ -60,9 +60,10 @@ def file_or_folder(variable_folder_file):
     # For folder, iterate through all files inside the folder.
     if os.path.isdir(variable_folder_file):
         for file_from_folder in os.listdir(variable_folder_file):
-            filename = os.path.splitext(os.path.basename(file_from_folder))[0]
-            file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
-            check_folder = True
+            filename, file_extension = os.path.splitext(os.path.basename(file_from_folder))
+            if file_extension == '.faa':
+                file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
+                check_folder = True
 
     if check_file is False and check_folder is False:
         logger.critical('ERROR: Wrong input, {0} does not exit'.format(variable_folder_file))

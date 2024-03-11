@@ -35,7 +35,7 @@ def get_hmm_thresholds(hmm_template_file):
 
         hmm_thresholds = {}
         for line in csvreader:
-            for hmm_file in line['Hmm file'].split(','):
+            for hmm_file in line['Hmm file'].split(', '):
                 hmm_thresholds[hmm_file] = line['Hmm detecting threshold'].split('|')[0]
 
     return hmm_thresholds
@@ -92,12 +92,12 @@ def create_major_functions(hmm_output_folder, output_file):
 
         hmm_functions = {}
         for line in csvreader:
-            for hmm_file in line['Hmm file'].split(','):
+            for hmm_file in line['Hmm file'].split(', '):
                 function_name = line['Function'] + ' ' + line['Gene abbreviation']
                 if function_name not in hmm_functions:
-                    hmm_functions[function_name] = [hmm_file.replace('.hmm', '')]
+                    hmm_functions[function_name] = [hmm_file]
                 else:
-                    hmm_functions[function_name].append(hmm_file.replace('.hmm', ''))
+                    hmm_functions[function_name].append(hmm_file)
 
     hmm_list_functions = [function for function in hmm_functions]
     hmm_hits = parse_result_files(hmm_output_folder)
@@ -105,7 +105,7 @@ def create_major_functions(hmm_output_folder, output_file):
         csvwriter = csv.writer(open_output_file, delimiter='\t')
         csvwriter.writerow(['organism', *hmm_list_functions])
         for org in hmm_hits:
-            present_functions = [len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) if len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) > 0 else 'NA' for function in hmm_list_functions]
+            present_functions = [len(set(hmm_functions[function]).intersection(set(hmm_hits[org])))/len(set(hmm_functions[function])) if len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) > 0 else 'NA' for function in hmm_list_functions]
             csvwriter.writerow([org, *present_functions])
 
 
