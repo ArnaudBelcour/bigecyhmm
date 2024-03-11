@@ -52,11 +52,12 @@ def query_fasta_file(input_protein_fasta):
     with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
         for hmm_filename in zip_object.namelist():
             if hmm_filename.endswith('.hmm'):
+                hmm_filebasename = os.path.basename(hmm_filename)
                 with zip_object.open(hmm_filename) as open_hmm_zipfile:
                     with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
                         for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1):
                             for hit in hits:
-                                results.append([input_filename, hit.name.decode(), hits.query_name.decode(), hit.evalue, hit.score, hit.length])
+                                results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
 
     return results
 

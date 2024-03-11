@@ -49,7 +49,7 @@ def get_organism_matching_hmms(hmm_folder):
             hmms = []
             next(csvreader)
             for line in csvreader:
-                hmms.append(line[2].replace('_full', '')+'.hmm')
+                hmms.append(line[2].replace('_full', ''))
             org_hmms[org_hmm_file_basename] = hmms
 
     return org_hmms
