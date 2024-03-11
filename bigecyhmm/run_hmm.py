@@ -18,11 +18,16 @@ import os
 import zipfile
 import pyhmmer
 
+from multiprocessing import Pool
+
 from bigecyhmm.utils import is_valid_dir, file_or_folder
+from bigecyhmm.diagram_cycles import create_input_diagram
 
 ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
-HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.txt')
+HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
+DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'R_diagram_pathways.tsv')
+
 
 def get_hmm_thresholds(hmm_template_file):
     with open(hmm_template_file, 'r') as open_hmm_template:
@@ -35,7 +40,7 @@ def get_hmm_thresholds(hmm_template_file):
 
     return hmm_thresholds
 
-def query_fasta_file(input_protein_fasta, cpu_number=1):
+def query_fasta_file(input_protein_fasta):
     input_filename = os.path.splitext(os.path.basename(input_protein_fasta))[0]
 
     # Extract the sequence from the protein fasta files.
@@ -49,8 +54,7 @@ def query_fasta_file(input_protein_fasta, cpu_number=1):
             if hmm_filename.endswith('.hmm'):
                 with zip_object.open(hmm_filename) as open_hmm_zipfile:
                     with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
-                        for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=cpu_number):
-                            print(f"HMM {hits.query_name.decode()} found {len(hits)} hits in the target sequences")
+                        for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1):
                             for hit in hits:
                                 results.append([input_filename, hit.name.decode(), hits.query_name.decode(), hit.evalue, hit.score, hit.length])
 
@@ -75,7 +79,7 @@ def parse_result_files(hmm_output_folder):
         with open(hmm_output_filepath, 'r') as open_result_file:
             csvreader = csv.DictReader(open_result_file, delimiter='\t')
             for line in csvreader:
-                if float(line['evalue']) < 0.005:
+                if float(line['evalue']) < 0.05:
                     hmm_hits[hmm_tsv_filename].append(line['HMM'])
 
     return hmm_hits
@@ -104,19 +108,34 @@ def create_major_functions(hmm_output_folder, output_file):
             csvwriter.writerow([org, *present_functions])
 
 
+def hmm_search_write_resutls(input_file_path, output_file):
+    print('Search for HMMs on ' + input_file_path)
+    hmm_results = query_fasta_file(input_file_path)
+    write_results(hmm_results, output_file)
+
 def search_hmm(input_variable, output_folder, cpu_number=1):
     input_dicts = file_or_folder(input_variable)
 
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
+    hmm_search_pool = Pool(processes=cpu_number)
+
+    multiprocess_input_hmm_searches = []
     for input_file in input_dicts:
         input_filename = os.path.splitext(os.path.basename(input_file))[0]
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
 
         input_file_path = input_dicts[input_file]
-        hmm_results = query_fasta_file(input_file_path, cpu_number)
-        write_results(hmm_results, output_file)
+        multiprocess_input_hmm_searches.append([input_file_path, output_file])
+
+    hmm_search_pool.starmap(hmm_search_write_resutls, multiprocess_input_hmm_searches)
+
+    hmm_search_pool.close()
+    hmm_search_pool.join()
 
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
     create_major_functions(hmm_output_folder, function_matrix_file)
+
+    hmm_diagram_folder = os.path.join(output_folder, 'diagram_input_folder')
+    create_input_diagram(hmm_output_folder, hmm_diagram_folder)
