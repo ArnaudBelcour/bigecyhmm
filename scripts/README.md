@@ -22,3 +22,12 @@ A multiple alignments of the protein is performed with `pyfamsa`. Then this alig
 To use it ru nthe following command: `python3 create_hmm.py -i proteins_sequences.faa`.
 
 This will create a `proteins_sequences.hmm` file.
+
+Added HMMs are:
+
+- `aspA` (for Adenosine-5′-Phosphosulfate Reductase), sequences extracted from the article of [Friedrich 2002](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC134748/).
+- `nod` (for nitric oxide dismutase), sequences extracted from the article of [Zhu et al. 2019](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6636425/) and from [Schmitz et al. 2023](https://journals.asm.org/doi/10.1128/msphere.00571-22).
+- `fthfs` (for Formate-tetrahydrofolate ligase), sequences extracted from UniPort on the 12 March 2024 using the request `(protein_name%3AFTHFS)&facets=reviewed%3Atrue`.
+- `mcrG` with KO `K00402`.
+- `mtaB` with KO `K04480`.
+- `mtbA` with KO `K14082`.

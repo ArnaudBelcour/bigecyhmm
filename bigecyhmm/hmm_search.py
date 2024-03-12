@@ -18,11 +18,15 @@ import os
 import zipfile
 import logging
 import pyhmmer
+import time
+import sys
+import json
 
 from multiprocessing import Pool
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram
+from bigecyhmm import __version__ as bigecyhmm_version
 
 ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
@@ -118,12 +122,13 @@ def create_major_functions(hmm_output_folder, output_file):
 
     hmm_list_functions = [function for function in hmm_functions]
     hmm_hits = parse_result_files(hmm_output_folder)
+    org_list = [org for org in hmm_hits]
     with open(output_file, 'w') as open_output_file:
         csvwriter = csv.writer(open_output_file, delimiter='\t')
-        csvwriter.writerow(['organism', *hmm_list_functions])
-        for org in hmm_hits:
-            present_functions = [len(set(hmm_functions[function]).intersection(set(hmm_hits[org])))/len(set(hmm_functions[function])) if len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) > 0 else 'NA' for function in hmm_list_functions]
-            csvwriter.writerow([org, *present_functions])
+        csvwriter.writerow(['function', *org_list])
+        for function in hmm_list_functions:
+            present_functions = [len(set(hmm_functions[function]).intersection(set(hmm_hits[org])))/len(set(hmm_functions[function])) if len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) > 0 else 'NA' for org in org_list]
+            csvwriter.writerow([function, *present_functions])
 
 
 def hmm_search_write_resutls(input_file_path, output_file):
@@ -146,6 +151,7 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
         output_folder (str): path to output folder
         cpu_number (str): number of CPU to use for the multiprocessing
     """
+    start_time = time.time()
     input_dicts = file_or_folder(input_variable)
 
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
@@ -171,3 +177,18 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
 
     hmm_diagram_folder = os.path.join(output_folder, 'diagram_input_folder')
     create_input_diagram(hmm_output_folder, hmm_diagram_folder)
+
+    duration = time.time() - start_time
+    metadata_json = {}
+    metadata_json['tool_dependencies'] = {}
+    metadata_json['tool_dependencies']['python_package'] = {}
+    metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
+    metadata_json['tool_dependencies']['python_package']['esmecata'] = bigecyhmm_version
+    metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
+
+    metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'cpu_number': cpu_number}
+    metadata_json['duration'] = duration
+
+    metadata_file = os.path.join(output_folder, 'bigecyhmm_metadata.json')
+    with open(metadata_file, 'w') as ouput_file:
+        json.dump(metadata_json, ouput_file, indent=4)

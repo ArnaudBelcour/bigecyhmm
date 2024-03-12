@@ -95,7 +95,8 @@ def main():
     logger.info("--- Launch HMM search ---")
     search_hmm(args.input, args.output, args.cpu)
 
-    logger.info("--- Total runtime %.2f seconds ---" % (time.time() - start_time))
+    duration = time.time() - start_time
+    logger.info("--- Total runtime %.2f seconds ---" % (duration))
     logger.warning(f'--- Logs written in {log_file_path} ---')
 
 

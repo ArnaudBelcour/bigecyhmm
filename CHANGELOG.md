@@ -1,5 +1,18 @@
 # Changelog
 
+# bigecyhmm v0.0.3 (2024-03-12)
+
+## Add
+
+* `scripts` folder with script `create_hmm.py` trying to create HMMs and `draw_biogeochemical_cycles.R` to draw geochemical cycle diagrams (modified from METABOLIC script).
+* `R_diagram_pathways.tsv` in database folder.
+* creation of metadata file.
+
+## Modify
+
+* update HMMs database with: `aspA`, `nod`, `fthfs`, `mcrG`, `mtaB` and `mtbA`.
+* set HMMs score threshold to 40 and evalue to 1e-5 to extract functions.
+
 # bigecyhmm v0.0.2 (2024-03-11)
 
 ## Add
