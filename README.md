@@ -53,7 +53,7 @@ It gives as output:
 
 - in folder `hmm_results`: one tsv files showing the hits for each protein fasta file.
 - `function_presence.tsv` a tsv file showing the presence/absence of generic functions associated with the HMMs that matched.
-- in folder `diagram_input_folder`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R) from METABOLIC articles using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
+- in folder `diagram_input_folder`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/scripts/draw_biogeochemical_cycles.R) modified from the [METABOLIC repository](https://github.com/AnantharamanLab/METABOLIC) using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
 
 
 ## Citation

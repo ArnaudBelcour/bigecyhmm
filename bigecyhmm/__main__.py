@@ -51,7 +51,7 @@ def main():
         '--input',
         dest='input',
         required=True,
-        help='Input data, either a protein fasta file or a folder containing protein fasta files..',
+        help='Input data, either a protein fasta file or a folder containing protein fasta files.',
         metavar='INPUT_FILE_OR_FOLDER')
 
     parser.add_argument(
