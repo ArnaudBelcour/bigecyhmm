@@ -23,9 +23,10 @@ import sys
 import json
 
 from multiprocessing import Pool
+from PIL import __version__ as pillow_version
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
-from bigecyhmm.diagram_cycles import create_input_diagram
+from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
 
 ROOT = os.path.dirname(__file__)
@@ -149,7 +150,7 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     Args:
         input_variable (str): path to input file or folder
         output_folder (str): path to output folder
-        cpu_number (str): number of CPU to use for the multiprocessing
+        cpu_number (int): number of CPU to use for the multiprocessing
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -175,8 +176,11 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
     create_major_functions(hmm_output_folder, function_matrix_file)
 
-    hmm_diagram_folder = os.path.join(output_folder, 'diagram_input_folder')
-    create_input_diagram(hmm_output_folder, hmm_diagram_folder)
+    input_diagram_folder = os.path.join(output_folder, 'diagram_input')
+    create_input_diagram(hmm_output_folder, input_diagram_folder)
+
+    figure_diagram_folder = os.path.join(output_folder, 'diagram_figures')
+    create_diagram_figures(input_diagram_folder, figure_diagram_folder)
 
     duration = time.time() - start_time
     metadata_json = {}
@@ -185,6 +189,8 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
     metadata_json['tool_dependencies']['python_package']['esmecata'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
+    metadata_json['tool_dependencies']['python_package']['pillow'] = pillow_version
+
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'cpu_number': cpu_number}
     metadata_json['duration'] = duration

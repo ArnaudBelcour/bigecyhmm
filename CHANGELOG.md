@@ -1,5 +1,13 @@
 # Changelog
 
+# bigecyhmm v0.0.4 (2024-03-13)
+
+## Add
+
+* scripts to create diagram figures in Python using pillow.
+* pillow as dependency.
+* templates folder for biogeochemical diagram creation.
+
 # bigecyhmm v0.0.3 (2024-03-12)
 
 ## Add
