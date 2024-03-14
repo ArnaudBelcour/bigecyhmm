@@ -23,10 +23,10 @@ C-S-03:Ethanol oxidation	K00001.hmm
 C-S-04:Acetate oxidation	TIGR02188.hmm
 C-S-05:Hydrogen generation	fe.hmm,nife-group-3abd.hmm,fefe-group-b.hmm,fefe-group-a13.hmm,nife-group-4a-g.hmm
 C-S-06:Fermentation	K00169.hmm,K00001.hmm,K00016.hmm,TIGR02717.hmm,TIGR00016.hmm,TIGR00651.hmm,TIGR02188.hmm,K00656.hmm
-C-S-07:Methanogenesis	TIGR03256.hmm,TIGR03257.hmm,TIGR03259.hmm,K00402.hmm,K04480.hmm,K14082.hmm
+C-S-07:Methanogenesis	TIGR03256.hmm,TIGR03257.hmm,TIGR03259.hmm,K00402.hmm,K04480.hmm
 C-S-08:Methanotrophy	pmoA.hmm,pmoB.hmm,pmoC.hmm,PF02406.hmm,TIGR04550.hmm
 C-S-09:Hydrogen oxidation	fe.hmm,nife-group-3abd.hmm,fefe-group-a2.hmm,nife-group-1.hmm,nife-group-2ade.hmm,nife-group-2bc.hmm,nife-group-4hi.hmm,fefe-group-a4.hmm
-C-S-10:Acetogenesis	fthfs.hmm,TIGR02188.hmm,K01895.hmm
+C-S-10:Acetogenesis	fthfs.hmm,K14138.hmm
 O-S-01:Iron reduction	MtrA.hmm,MtrB_TIGR03509.hmm,MtrC_TIGR03507.hmm,CymA.hmm,OmcF.hmm,OmcS.hmm,OmcZ.hmm,Ndh2.hmm,DFE_0450.hmm,DFE_0464.hmm
 O-S-02:Iron oxidation	Cyc1.hmm,Cyc2_repCluster1.hmm,Cyc2_repCluster2.hmm,Cyc2_repCluster3.hmm,FoxA.hmm,FoxB.hmm,FoxC.hmm,FoxE.hmm,FoxY.hmm,FoxZ.hmm,MtoA.hmm,sulfocyanin.hmm
 O-S-03:Arsenate reduction	arrA.hmm

@@ -41,7 +41,8 @@
 40	Fermentation	Acetogenesis	acdA	acetyl coenzyme A synthetase (ADP forming), alpha domain	TIGR02717.hmm	K01905	ATP + acetate + CoA = ADP + phosphate + acetyl-CoA [RN:R00229]	ATP; acetate; CoA	ADP; phosphate; acetyl-CoA	463.00|full
 41	Fermentation	Acetogenesis	ack	acetate kinase	TIGR00016.hmm	K00925	ATP + acetate = ADP + acetyl phosphate [RN:R00315]	ATP; acetate	ADP; acetyl phosphate	146.10|full
 42	Fermentation	Acetogenesis	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625	acetyl-CoA + phosphate = CoA + acetyl phosphate [RN:R00230]	acetyl-CoA; phosphate	CoA; acetyl phosphate	205.40|full
-43	Fermentation	Acetate to acetyl-CoA	acs	acetyl-CoA synthetase	TIGR02188.hmm,K01895.hmm	K01895	ATP + acetate + CoA = AMP + diphosphate + acetyl-CoA [RN:R00235]	ATP; acetate; CoA	AMP; diphosphate; acetyl-CoA	684.65|full
+	Fermentation	Acetogenesis	acsB	acetyl-CoA synthase 	K14138.hmm	K14138				
+43	Fermentation	Acetate to acetyl-CoA	acs	acetyl-CoA synthetase	TIGR02188.hmm, K01895.hmm	K01895	ATP + acetate + CoA = AMP + diphosphate + acetyl-CoA [RN:R00235]	ATP; acetate; CoA	AMP; diphosphate; acetyl-CoA	684.65|full
 44	Fermentation	Pyruvate <=> acetyl-CoA + formate 	pflD	formate C-acetyltransferase	K00656.hmm	K00656	acetyl-CoA + formate = CoA + pyruvate [RN:R00212]	acetyl-CoA; formate	CoA; pyruvate	336.47|full
 45	C1 metabolism	Methanol oxidation	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028	a primary alcohol + 2 ferricytochrome cL = an aldehyde + 2 ferrocytochrome cL + 2 H+ [RN:R10713]	primary alcohol; ferricytochrome cL	aldehyde; ferrocytochrome cL; H+	400|full
 46	C1 metabolism	Methanol oxidation	mdh	methanol dehydrogenase	TIGR04266.hmm	K00093	methanol + NAD+ = formaldehyde + NADH + H+ [RN:R00605]	methanol; NAD+	formaldehyde; NADH; H+	400.00|full
