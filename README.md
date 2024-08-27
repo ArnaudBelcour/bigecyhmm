@@ -1,10 +1,10 @@
 # bigecyhmm: Biogeochemical cycle HMMs search
 
-This is a package to search for genes associated with biogeaochemical cycles in protein sequence fasta files. The HMMs come from METABOLIC article, KEGG, PFAM, TIGR.
+This is a package to search for genes associated with biogeochemical cycles in protein sequence fasta files. The HMMs come from METABOLIC article, KEGG, PFAM, TIGR.
 
 ## Depedencies
 
-I develop bigecyhmm to be as minimalist as possible so it requires only:
+bigecyhmm is developed to be as minimalist as possible. It requires:
 
 - [PyHMMER](https://github.com/althonos/pyhmmer): to perform HMM search.
 - [Pillow](https://github.com/python-pillow/Pillow): to create biogeochemical cycle diagrams.
@@ -13,18 +13,14 @@ The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https
 
 ## Installation
 
-It can be isntalled by cloning the repository:
+It can be installed with pip by cloning the repository:
 
 ```sh
 git clone https://github.com/ArnaudBelcour/bigecyhmm.git
 
 cd bigecyhmm
-```
 
-And then use a pip install command:
-
-```sh
-pip install -e . --config-settings editable_mode=compat
+pip install -e .
 
 ```
 
@@ -46,16 +42,16 @@ bigecyhmm -i protein_sequences_folder -o output_dir
 
 There is one option:
 
-* `-c` to indicate the number of CPU used. It is only useful if you have multiple protein fasta files as the added CPU will be used to run another HMM search on a different protein fasta files. 
+* `-c` to indicate the number of core used. It is only useful if you have multiple protein fasta files as the added cores will be used to run another HMM search on a different protein fasta files. 
 
 ## Output
 
 It gives as output:
 
-- in folder `hmm_results`: one tsv files showing the hits for each protein fasta file.
+- a folder `hmm_results`: one tsv files showing the hits for each protein fasta file.
 - `function_presence.tsv` a tsv file showing the presence/absence of generic functions associated with the HMMs that matched.
-- in folder `diagram_input`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/scripts/draw_biogeochemical_cycles.R) modified from the [METABOLIC repository](https://github.com/AnantharamanLab/METABOLIC) using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
-- `diagram_figures` contains biogeochemical diagram figures drawn from template situated in `bigecyhmm/templates`.
+- a folder `diagram_input`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/scripts/draw_biogeochemical_cycles.R) modified from the [METABOLIC repository](https://github.com/AnantharamanLab/METABOLIC) using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
+- a folder `diagram_figures` contains biogeochemical diagram figures drawn from template situated in `bigecyhmm/templates`.
 
 
 ## Citation
