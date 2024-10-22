@@ -41,7 +41,7 @@
 40	Fermentation	Acetogenesis	acdA	acetyl coenzyme A synthetase (ADP forming), alpha domain	TIGR02717.hmm	K01905	ATP + acetate + CoA = ADP + phosphate + acetyl-CoA [RN:R00229]	ATP; acetate; CoA	ADP; phosphate; acetyl-CoA	463.00|full
 41	Fermentation	Acetogenesis	ack	acetate kinase	TIGR00016.hmm	K00925	ATP + acetate = ADP + acetyl phosphate [RN:R00315]	ATP; acetate	ADP; acetyl phosphate	146.10|full
 42	Fermentation	Acetogenesis	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625	acetyl-CoA + phosphate = CoA + acetyl phosphate [RN:R00230]	acetyl-CoA; phosphate	CoA; acetyl phosphate	205.40|full
-	Fermentation	Acetogenesis	acsB	acetyl-CoA synthase 	K14138.hmm	K14138				
+	Fermentation	Acetogenesis	acsB	acetyl-CoA synthase 	K14138.hmm	K14138				950.53|full
 43	Fermentation	Acetate to acetyl-CoA	acs	acetyl-CoA synthetase	TIGR02188.hmm, K01895.hmm	K01895	ATP + acetate + CoA = AMP + diphosphate + acetyl-CoA [RN:R00235]	ATP; acetate; CoA	AMP; diphosphate; acetyl-CoA	684.65|full
 44	Fermentation	Pyruvate <=> acetyl-CoA + formate 	pflD	formate C-acetyltransferase	K00656.hmm	K00656	acetyl-CoA + formate = CoA + pyruvate [RN:R00212]	acetyl-CoA; formate	CoA; pyruvate	336.47|full
 45	C1 metabolism	Methanol oxidation	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028	a primary alcohol + 2 ferricytochrome cL = an aldehyde + 2 ferrocytochrome cL + 2 H+ [RN:R10713]	primary alcohol; ferricytochrome cL	aldehyde; ferrocytochrome cL; H+	400|full
@@ -68,12 +68,15 @@
 66	Methane metabolism	Methane oxidation - Soluble methane monoxygenase	mmoD	methane monooxygenase component D	TIGR04550.hmm	K16162	methane + NAD(P)H + H+ + O2 = methanol + NAD(P)+ + H2O [RN:R01142 R01143]	methane; NADH; NADPH; H+; O2	methanol; NAD+; NADP+; H2O	28.00|full
 67	Methane metabolism	Methane production	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	314.45|full
 68	Methane metabolism	Methane production	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	173.35|full
-69	Methane metabolism	Methane production	mcrC	methyl-coenzyme M reductase subunit C	TIGR03259.hmm	K03421	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	171.60|full
-	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	K00402.hmm	K00402				
-	Methane metabolism	Methane production	mtaB	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K04480.hmm	K04480				
-	Methane metabolism	Methane production	mtbA	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K14082.hmm	K14082				
+69	Methane metabolism	Methane production	mcrC	methyl-coenzyme M reductase subunit C	TIGR03264.hmm	K03421	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	213.5|full
+	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full
+	Methane metabolism	Methane production	mtaB	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K04480.hmm	K04480				572.93|full
+	Methane metabolism	Methane production	mtbA	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K14082.hmm	K14082				454.43|full
 70	Carbon fixation	CBB cycle - Rubisco	Form I	Form I RuBisCO large subunit	rubisco_form_I.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full
 71	Carbon fixation	CBB cycle - Rubisco	Form II	Form II RuBisCO large subunit	rubisco_form_II.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full
+	Carbon fixation	CBB cycle - Rubisco	Form II-III	Form II-III RuBisCO large subunit	rubisco_form_II_III.hmm					500|full
+	Carbon fixation	CBB cycle - Rubisco	Form III	Form III RuBisCO large subunit	rubisco_form_III.hmm	K01601				500|full
+	Carbon fixation	CBB cycle - Rubisco	Form IV	Form IV RuBisCO large subunit	rubisco_form_IV.hmm	K01601				500|full
 72	Carbon fixation	3 Hydroxypropionate cycle	K14469	propionyl-CoA synthase	K14469.hmm	K14469	3-Hydroxypropionyl-CoA = Propenoyl-CoA + H2O [RN:R03045]	3-Hydroxypropionyl-CoA	Propenoyl-CoA	2774.67|full
 73	Carbon fixation	3 Hydroxypropionate cycle	mcr	malonyl-CoA reductase / 3-hydroxypropionate dehydrogenase (NADP+) 	K14468.hmm	K14468	3-hydroxypropanoate + NADP+ = malonate semialdehyde + NADPH + H+ [RN:R09289]	3-hydroxypropanoate; NADP+	malonate semialdehyde; NADPH; H+	1652.50|full
 74	Carbon fixation	3HP/4HB	K14466	4-hydroxybutyrate---CoA ligase (ADP-forming)	K14466.hmm	K14466	ATP + 4-hydroxybutanoate + CoA = AMP + diphosphate + 4-hydroxybutanoyl-CoA [RN:R09279]	ATP; 4-hydroxybutanoate; CoA	AMP; diphosphate; 4-hydroxybutanoyl-CoA	914.07|full
@@ -82,7 +85,9 @@
 77	Carbon fixation	Wood Ljungdahl pathway	cdhD	acetyl-CoA decarbonylase/synthase, CODH/ACS complex subunit delta	K00194.hmm	K00194	a [methyl-Co(III) corrinoid Fe-S protein] + tetrahydrosarcinapterin = a [Co(I) corrinoid Fe-S protein] + 5-methyltetrahydrosarcinapterin [RN:R10385]	[methyl-Co(III) corrinoid Fe-S protein]; tetrahydrosarcinapterin	[Co(I) corrinoid Fe-S protein]; 5-methyltetrahydrosarcinapterin	344.50|full
 78	Carbon fixation	Wood Ljungdahl pathway	cdhE	acetyl-CoA decarbonylase/synthase, CODH/ACS complex subunit gamma	K00197.hmm	K00197	a [methyl-Co(III) corrinoid Fe-S protein] + tetrahydrosarcinapterin = a [Co(I) corrinoid Fe-S protein] + 5-methyltetrahydrosarcinapterin [RN:R10385]	[methyl-Co(III) corrinoid Fe-S protein]; tetrahydrosarcinapterin	[Co(I) corrinoid Fe-S protein]; 5-methyltetrahydrosarcinapterin	361.33|full
 79	Carbon fixation	Wood Ljungdahl pathway	cooS	anaerobic carbon-monoxide dehydrogenase catalytic subunit	K00198.hmm	K00198	a [methyl-Co(III) corrinoid Fe-S protein] + tetrahydrosarcinapterin = a [Co(I) corrinoid Fe-S protein] + 5-methyltetrahydrosarcinapterin [RN:R10385]	[methyl-Co(III) corrinoid Fe-S protein]; tetrahydrosarcinapterin	[Co(I) corrinoid Fe-S protein]; 5-methyltetrahydrosarcinapterin	544.77|full
-	Carbon fixation	Wood Ljungdahl pathway (methyl branch)	fthfs	Formate-tetrahydrofolate ligase	fthfs.hmm					277
+	Carbon fixation	Wood Ljungdahl pathway (methyl branch)	fthfs	Formate-tetrahydrofolate ligase	fthfs.hmm					277|domain
+	Carbon fixation	Wood Ljungdahl pathway (methyl branch)	fhs	Formate-tetrahydrofolate ligase	K01938.hmm	K01938				900.93|domain
+	Carbon fixation	Wood Ljungdahl pathway (methyl branch)	fthfs	Formate-tetrahydrofolate ligase	fthfs_NF010030.hmm					652|domain
 80	Carbon fixation	Reverse TCA cycle	aclA	ATP-citrate lyase alpha-subunit	acetate_citrate_lyase_aclA.hmm	K15230	ADP + phosphate + acetyl-CoA + oxaloacetate = ATP + citrate + CoA [RN:R00352]	ADP; phosphate; acetyl-CoA; oxaloacetate	ATP; citrate; CoA	215|full
 81	Carbon fixation	Reverse TCA cycle	aclB	ATP-citrate lyase beta-subunit	acetate_citrate_lyase_aclB.hmm	K15231	ADP + phosphate + acetyl-CoA + oxaloacetate = ATP + citrate + CoA [RN:R00352]	ADP; phosphate; acetyl-CoA; oxaloacetate	ATP; citrate; CoA	177|full
 82	Nitrogen cycling	Ammonia oxidation	amoA	methane/ammonia monooxygenase subunit A	amoA.hmm	K10944	NH3 + a reduced acceptor + O2 = NH2OH + an acceptor + H2O [RN:R09519]	NH3; reduced acceptor; O2	NH2OH; acceptor; H2O	160.90|full
@@ -117,7 +122,7 @@
 111	Nitrogen cycling	Nitrous oxide reduction	nosZ	nitrous-oxide reductase	TIGR04246.hmm	N/A	Nitrous oxide reduction	N/A	N/A	550.00|full
 112	Nitrogen cycling	Anammox	hzoA	hydroxylamine dehydrogenase, alpha subunit	hydrazine_oxidase_hzoA.hmm	K20935	Hydrazine + 4 Ferricytochrome c <=> Nitrogen + 4 Ferrocytochrome c [RN:R07174]	Hydrazine; ferricytochrome c	Nitrogen	325|full
 113	Nitrogen cycling	Anammox	hzsA	hydrazine synthase subunit, alpha subunit	hydrazine_synthase_hzsA.hmm	K20932	nitric oxide + ammonium + 3 ferrocytochrome c = hydrazine + H2O + 3 ferricytochrome c [RN:R09799]	nitric oxide; ammonium; ferrocytochrome c	hydrazine; H2O; ferricytochrome c	466|full
-316	Nitrogen cycling	Nitric oxide dismutase	nod	 	nod.hmm		2 nitric oxide = N2 + O2			120
+316	Nitrogen cycling	Nitric oxide dismutase	nod	 	nod.hmm		2 nitric oxide = N2 + O2			120|domain
 114	Sulfur cycling	Sulfide oxidation	fccB	flavocytochrome c sulphide dehydrogenase, flavin-binding	PF09242.hmm	K17229	hydrogen sulfide + 2 ferricytochrome c = sulfur + 2 ferrocytochrome c + 2 H+ [RN:R09499]	hydrogen sulfide; ferricytochrome c	sulfur; ferrocytochrome c; H+	266|full
 115	Sulfur cycling	Sulfide oxidation	sqr	sulfide:quinone oxidoreductase	sulfide_quinone_oxidoreductase_sqr.hmm	K17218	n HS- + n quinone = polysulfide + n quinol [RN:R10152]	HS-; quinone	polysulfide; quinol	300|full
 116	Sulfur cycling	Sulfite reduction	dsrD	dissimilatory sulfite reductase delta subunit	dsrD.hmm	N/A	Not clear	N/A	N/A	32.80|full
@@ -136,7 +141,9 @@
 129	Sulfur cycling	Sulfite reduction	asrC	anaerobic sulfite reductase subunit C	asrC.hmm	K00385	Sulfite + 3 NADH + 3 H+ <=> Hydrogen sulfide + 3 NAD+ + 3 H2O	Sulfite; NADH; H+	Hydrogen sulfide; NAD+; H2O	324.10|full
 130	Sulfur cycling	Sulfate reduction	aprA	adenylylsulfate reductase, subunit A	aprA.hmm	K00394	AMP + sulfite + acceptor = adenylyl sulfate + reduced acceptor [RN:R00860]	AMP; sulfite; acceptor	adenylyl sulfate; reduced acceptor	641.75|full
 131	Sulfur cycling	Sulfate reduction	sat	sulfate adenylyltransferase	TIGR00339.hmm	K00958	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	181.80|full
-	Sulfur cycling	Sulfate reduction	apsA	Adenosine-5′-Phosphosulfate Reductase	aspA.hmm					185
+	Sulfur cycling	Sulfate reduction	apsA	Adenosine-5′-Phosphosulfate Reductase	aspA.hmm					185|domain
+	Sulfur cycling	Sulfate reduction	apsA	Adenosine-5′-Phosphosulfate Reductase	K00394.hmm	K00394				446.10|domain
+	Sulfur cycling	Sulfate reduction	apsK	Adenylyl-sulfate kinase	TIGR00455.hmm	K00860				138.7|domain
 132	Sulfur cycling	Thiosulfate disproportionation	phsA	thiosulfate reductase / polysulfide reductase chain A	thiosulfate_reductase_phsA.hmm	K08352	thiosulfate + a quinol = sulfite + hydrogen sulfide + a quinone [RN:R11488]	thiosulfate; quinol	sulfite; hydrogen sulfide; quinone	323|full
 133	Hydrogenases	FeFe hydrogenase	fefe-group-a13	FeFe hydrogenase, H2-evolution/Electron-bifurcation	fefe-group-a13.hmm	N/A	H2-evolution/Electron-bifurcation	N/A	N/A	733.8|full
 134	Hydrogenases	FeFe hydrogenase	fefe-group-a2	FeFe hydrogenase, H2-uptake	fefe-group-a2.hmm	N/A	H2-uptake	N/A	N/A	815.2|full
@@ -194,6 +201,8 @@
 186	As cycling	Dissimilatory arsenate reduction	arrA	dissimilatory arsenate reductase	arrA.hmm	N/A	arsenate reduction	arsenate	arsenite	175|full
 187	As cycling	Arsenate reduction for detoxification	arsC (grx)	arsenate reductase (glutaredoxin)	arsC_glut.hmm	K00537	arsenate + glutaredoxin = arsenite + glutaredoxin disulfide + H2O [RN:R05747]	arsenate; glutaredoxin	arsenite; glutaredoxin disulfide; H2O	80|full
 188	As cycling	Arsenate reduction for detoxification	arsC (trx)	arsenate reductase (thioredoxin)	arsC_thio.hmm	K03741	arsenate + thioredoxin = arsenite + thioredoxin disulfide + H2O [RN:R10927]	arsenate; thioredoxin	arsenite; thioredoxin disulfide; H2O	172|full
+	As cycling	Arsenate reduction for detoxification	arsC (trx)		TIGR02693.hmm					359|domain
+	As cycling	Arsenate reduction for detoxification	arsC (trx)		TIGR02694.hmm					95.7|full
 189	As cycling	Arsenite oxidation for energy metabolism	arxA	arsenite oxidase (molybdopterin subunit)	arxA.hmm	N/A	arsenite oxidation coupled with oxygen or nirate reduction	arsenite	arsenate	600|full
 190	As cycling	Arsenite oxidation for detoxification and energy metabolism	aioA	arsenite oxidase large subunit	aioA.hmm	K08356	arsenite + H2O + 2 oxidized cytochrome c = arsenate + 2 reduced cytochrome c + 2 H+ [RN:R09787]	arsenite; H2O; oxidized cytochrome c	arsenate; reduced cytochrome c; H+	800|full
 191	As cycling	Arsenite methylation	arsM	arsenite methyltransferase	arsM.hmm	K07755 	2 S-adenosyl-L-methionine + arsenic triglutathione + 2 thioredoxin + H2O = S-adenosyl-L-homocysteine + dimethylarsinous acid + 3 glutathione + 2 thioredoxin disulfide [RN:R12918]	S-adenosyl-L-methionine; arsenic triglutathione; thioredoxin	S-adenosyl-L-homocysteine; dimethylarsinous acid; glutathione; thioredoxin disulfide	200|full
@@ -280,7 +289,7 @@
 272	Sulfur cycling enzymes (detailed)	Dissimilatory sulfur metabolism | Sulfate reduction	sat	sulfate adenylyltransferase	TIGR00339.hmm	K00958	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	181.80|full
 273	Sulfur cycling enzymes (detailed)	Dissimilatory sulfur metabolism | Thiosulfate disproportionation	phsA	thiosulfate reductase / polysulfide reductase chain A	thiosulfate_reductase_phsA.hmm	K08352	thiosulfate + a quinol = sulfite + hydrogen sulfide + a quinone [RN:R11488]	thiosulfate; quinol	sulfite; hydrogen sulfide; quinone	323|full
 274	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate)	cysD	sulfate adenylyltransferase subunit 2	K00957.hmm	K00957	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	190.13|domain
-275	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate)	cysN	sulfate adenylyltransferase subunit 1	K00956.hmm	K00956	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	537.13|domain
+275	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate)	cysN	sulfate adenylyltransferase subunit 1	K00956.hmm, TIGR02034.hmm	K00956	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	537.13|domain
 276	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate)	cysNC	bifunctional enzyme CysN/CysC	K00955.hmm	K00955	ATP + sulfate = diphosphate + adenylyl sulfate [RN:R00529]	ATP; sulfate	diphosphate; adenylyl sulfate	736.20|full
 277	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| APS (Adenosine 5'-phosphosulfate) <-> PAPS (3'-Phosphoadenosine 5'-phosphosulfate)	cysC	adenylylsulfate kinase	K00860.hmm	K00860	ATP + adenylyl sulfate = ADP + 3'-phosphoadenylyl sulfate [RN:R00509]	ATP; adenylyl sulfate	ADP; 3'-phosphoadenylyl sulfate	330.53|domain
 278	Sulfur cycling enzymes (detailed)	Assimilatory sulfur metabolism| APS (Adenosine 5'-phosphosulfate) <-> PAPS (3'-Phosphoadenosine 5'-phosphosulfate)	cysNC	bifunctional enzyme CysN/CysC	K00955.hmm	K00955	ATP + adenylyl sulfate = ADP + 3'-phosphoadenylyl sulfate [RN:R00509]	ATP; adenylyl sulfate	ADP; 3'-phosphoadenylyl sulfate	736.20|full

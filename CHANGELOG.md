@@ -1,5 +1,15 @@
 # Changelog
 
+# bigecyhmm v0.1.0 (2024-10-22)
+
+## Add
+
+* use of threshold with pyhmmer.
+
+## Modify
+
+* information for several HMMs: `acsB`, `mcrC`, `mcrG`, `mtaB`, `mtbA`, `rubisco_form_II_III`, `rubisco_form_III`, `rubisco_form_IV`, `fthfs`, `fhs`, `nod`, `apsA`, `apsK`, `arsC (trx)`, `cysN`.
+
 # bigecyhmm v0.0.4 (2024-03-13)
 
 ## Add
