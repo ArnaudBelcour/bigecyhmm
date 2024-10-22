@@ -23,7 +23,7 @@ Changelog = "https://github.com/ArnaudBelcour/bigecyhmm/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 packages = ['bigecyhmm', 'bigecyhmm.hmm_databases', 'bigecyhmm.hmm_databases.hmm_files', 'bigecyhmm.templates']
-package-dir = {'bigecyhmm'= 'bigecyhmm'}
+package-dir = {'bigecyhmm'= 'bigecyhmm', 'bigecyhmm.hmm_databases' = 'bigecyhmm/hmm_databases', 'bigecyhmm.hmm_databases.hmm_files' = 'bigecyhmm/hmm_databases/hmm_files', 'bigecyhmm.templates' = 'bigecyhmm/templates'}
 package-data = {'bigecyhmm.data.hmm_databases.hmm_files'= ['*.hmm'], 'bigecyhmm.hmm_databases' = ['*.txt'], 'bigecyhmm.templates' = ['*.png']}
 
 [tool.setuptools.dynamic]
