@@ -69,10 +69,10 @@
 67	Methane metabolism	Methane production	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	314.45|full
 68	Methane metabolism	Methane production	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	173.35|full
 69	Methane metabolism	Methane production	mcrC	methyl-coenzyme M reductase subunit C	TIGR03264.hmm	K03421	methyl-CoM + CoB = CoM-S-S-CoB + methane [RN:R04541]	methyl-CoM; CoB	CoM-S-S-CoB; methane	213.5|full
-	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full
+	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm, K00402.hmm	K00402				172|full
 	Methane metabolism	Methane production	mtaB	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K04480.hmm	K04480				572.93|full
 	Methane metabolism	Methane production	mtbA	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K14082.hmm	K14082				454.43|full
-70	Carbon fixation	CBB cycle - Rubisco	Form I	Form I RuBisCO large subunit	rubisco_form_I.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full
+70	Carbon fixation	CBB cycle - Rubisco	Form I	Form I RuBisCO large subunit	rubisco_form_I.hmm, K01601.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full
 71	Carbon fixation	CBB cycle - Rubisco	Form II	Form II RuBisCO large subunit	rubisco_form_II.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full
 	Carbon fixation	CBB cycle - Rubisco	Form II-III	Form II-III RuBisCO large subunit	rubisco_form_II_III.hmm					500|full
 	Carbon fixation	CBB cycle - Rubisco	Form III	Form III RuBisCO large subunit	rubisco_form_III.hmm	K01601				500|full
