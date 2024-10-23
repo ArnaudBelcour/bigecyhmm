@@ -24,14 +24,13 @@ from bigecyhmm.utils import parse_result_files
 ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'R_diagram_pathways.tsv')
+DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
 TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
 
 logger = logging.getLogger(__name__)
-
 
 def get_diagram_pathways_hmms():
     """From DIAGRAM_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
@@ -43,14 +42,15 @@ def get_diagram_pathways_hmms():
     pathway_hmms = {}
     sorted_pathways = []
     with open(DIAGRAM_TEMPLATE_FILE, 'r') as open_r_pathways:
-        csvreader = csv.reader(open_r_pathways, delimiter = '\t')
+        csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
+
         for line in csvreader:
-            sorted_pathways.append(line[0])
-            if ';' in line[1]:
-                hmm_combinations = [combination.split(',') for combination in line[1].split(';')] 
-                pathway_hmms[line[0]] = hmm_combinations
+            sorted_pathways.append(line['Pathways'])
+            if '; ' in line['HMMs']:
+                hmm_combinations = [combination.split(', ') for combination in line['HMMs'].split('; ')]
+                pathway_hmms[line['Pathways']] = hmm_combinations
             else:
-                pathway_hmms[line[0]] = [line[1].split(',')]
+                pathway_hmms[line['Pathways']] = [line['HMMs'].split(', ')]
 
     sorted_pathways = sorted(sorted_pathways)
 
@@ -73,22 +73,34 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
     org_pathways = {}
     for org in org_hmms:
         for pathway in sorted_pathways:
-            pathway_check = []
+            pathway_checks = []
+            # For AND group of HMMs in pathway, check if their corresponding HMMs are there.
             for hmm_combination in pathway_hmms[pathway]:
-                negative_hmms = [hmm for hmm in hmm_combination if 'NO' in hmm]
+                pathway_check = False
+                negative_hmms = [hmm.replace('NO|', '') for hmm in hmm_combination if 'NO' in hmm]
+                # Check if there are negative HMMs in pathway string.
                 if len(negative_hmms) > 0:
                     hmm_combination = [hmm.replace('NO|', '') for hmm in hmm_combination]
                 intersection_hmms = set(hmm_combination).intersection(org_hmms[org])
-                if len(intersection_hmms) > 0:
-                    if len(negative_hmms) == 0:
-                        pathway_check.append(True)
-                    else:
-                        pathway_check.append(False)
+                intersection_negative_hmms = set(negative_hmms).intersection(org_hmms[org])
+
+                # First check if all combination corresponds to negative HMMs.
+                if len(hmm_combination) == len(negative_hmms):
+                    # If all HMMs of the combination are negative ones and are not present in organism, then this combination is checked.
+                    if len(intersection_hmms) == 0:
+                        pathway_check = True
                 else:
-                    pathway_check.append(False)
+                    # If all HMMs of the combination present in the organism are not negative HMMs, then this combination of HMMs is checked.
+                    if len(intersection_hmms) > 0:
+                        if len(intersection_negative_hmms) == 0:
+                            pathway_check = True
+                        # But if there are at least one negative HMMs, it is not checked.
+                        elif len(intersection_negative_hmms) > 0:
+                            pathway_check = False
+                pathway_checks.append(pathway_check)
 
-
-            if all(pathway_check) is True:
+            # If all combination HMMs have been checked, keep the pathway.
+            if all(pathway_checks) is True:
                 if org not in org_pathways:
                     org_pathways[org] = {}
                 org_pathways[org][pathway] = 1

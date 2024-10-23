@@ -1,0 +1,3 @@
+Phenotypes	HMMs
+aerobic	K03518.hmm, K03520.hmm, K03519.hmm
+anaerobic	asrA.hmm, asrB.hmm, asrC.hmm, K00198.hmm
