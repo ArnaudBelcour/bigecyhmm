@@ -40,13 +40,12 @@ logger = logging.getLogger(__name__)
 
 def get_hmm_thresholds(hmm_template_file):
     """Extract threhsolds from HMM template file.
-    TODO: handle multiple thresholds
 
     Args:
         hmm_template_file (str): path of HMM template file
 
     Returns:
-        hmm_thresholds (dict): threshold for each HMM
+        hmm_thresholds (dict): threshold string for each HMM
     """
     with open(hmm_template_file, 'r') as open_hmm_template:
         csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
