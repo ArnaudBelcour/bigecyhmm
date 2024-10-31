@@ -118,8 +118,8 @@
 107	Nitrogen cycling	Nitrite reduction	octR	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	TIGR04315.hmm	N/A	Nitrite reduction	N/A	N/A	325.00|full
 108	Nitrogen cycling	Nitric oxide reduction	norB	nitric oxide reductase subunit B	nitric_oxide_reductase_norB.hmm	K04561	nitrous oxide + 2 ferricytochrome c + H2O = 2 nitric oxide + 2 ferrocytochrome c + 2 H+ [RN:R00294]	nitrous oxide; ferricytochrome c; H2O	nitric oxide; ferrocytochrome c; H+	79|full
 109	Nitrogen cycling	Nitric oxide reduction	norC	nitric oxide reductase subunit C	nitric_oxide_reductase_norC.hmm	K02305	nitrous oxide + 2 ferricytochrome c + H2O = 2 nitric oxide + 2 ferrocytochrome c + 2 H+ [RN:R00294]	nitrous oxide; ferricytochrome c; H2O	nitric oxide; ferrocytochrome c; H+	50|full
-110	Nitrogen cycling	Nitrous oxide reduction	nosD	nitrous oxidase accessory protein	PF05048.hmm	N/A	Nitrous oxide reduction	N/A	N/A	290|full
-111	Nitrogen cycling	Nitrous oxide reduction	nosZ	nitrous-oxide reductase	TIGR04246.hmm	N/A	Nitrous oxide reduction	N/A	N/A	550.00|full
+110	Nitrogen cycling	Nitrous oxide reduction	nosD	nitrous oxidase accessory protein	PF05048.hmm	K00376	Nitrous oxide reduction	N/A	N/A	290|full
+111	Nitrogen cycling	Nitrous oxide reduction	nosZ	nitrous-oxide reductase	TIGR04246.hmm	K00376	Nitrous oxide reduction	N/A	N/A	550.00|full
 112	Nitrogen cycling	Anammox	hzoA	hydroxylamine dehydrogenase, alpha subunit	hydrazine_oxidase_hzoA.hmm	K20935	Hydrazine + 4 Ferricytochrome c <=> Nitrogen + 4 Ferrocytochrome c [RN:R07174]	Hydrazine; ferricytochrome c	Nitrogen	325|full
 113	Nitrogen cycling	Anammox	hzsA	hydrazine synthase subunit, alpha subunit	hydrazine_synthase_hzsA.hmm	K20932	nitric oxide + ammonium + 3 ferrocytochrome c = hydrazine + H2O + 3 ferricytochrome c [RN:R09799]	nitric oxide; ammonium; ferrocytochrome c	hydrazine; H2O; ferricytochrome c	466|full
 316	Nitrogen cycling	Nitric oxide dismutase	nod	 	nod.hmm		2 nitric oxide = N2 + O2			120|domain
@@ -129,10 +129,12 @@
 117	Sulfur cycling	Sulfur oxidation	dsrA	dissimilatory sulfite reductase alpha subunit	dsrA.hmm	K11180	hydrogen sulfide + a [DsrC protein]-disulfide + 2 acceptor + 3 H2O = sulfite + a [DsrC protein]-dithiol + 2 reduced acceptor + 2 H+ [RN:R00861]	hydrogen sulfide; [DsrC protein]-disulfide; acceptor; H2O	sulfite; [DsrC protein]-dithiol; reduced acceptor; H+	200.00|full
 118	Sulfur cycling	Sulfur oxidation	dsrB	dissimilatory sulfite reductase beta subunit	dsrB.hmm	K11181	hydrogen sulfide + a [DsrC protein]-disulfide + 2 acceptor + 3 H2O = sulfite + a [DsrC protein]-dithiol + 2 reduced acceptor + 2 H+ [RN:R00861]	hydrogen sulfide; [DsrC protein]-disulfide; acceptor; H2O	sulfite; [DsrC protein]-dithiol; reduced acceptor; H+	204.00|full
 119	Sulfur cycling	Sulfur oxidation	sdo	sulfur dioxygenase	sulfur_dioxygenase_sdo.hmm	K17725	S-sulfanylglutathione + O2 + H2O = glutathione + sulfite + 2 H+ [RN:R08678]	S-sulfanylglutathione; O2; H2O	glutathione; sulfite; H+	300|full
-120	Sulfur cycling	Sulfur oxidation/reduction	sor	sulfur oxygenase/reductase	PF07682.hmm	K16952	4 sulfur + 4 H2O + O2 = 2 hydrogen sulfide + 2 sulfite [RN:R07365]	sulfur; H2O; O2	hydrogen sulfide; sulfite	120|full
+120	Sulfur cycling	Sulfur oxidation/reduction	sor	sulfur oxygenase/reductase	K16952.hmm	K16952	4 sulfur + 4 H2O + O2 = 2 hydrogen sulfide + 2 sulfite [RN:R07365]	sulfur; H2O; O2	hydrogen sulfide; sulfite	363.87|full
 121	Sulfur cycling	Sulfur reduction	sreA	sulfur reductase molybdopterin subunit	K17219.hmm	K17219	Sulfur + Reduced acceptor = Hydrogen sulfide + Acceptor	Sulfur, Reduced acceptor	Hydrogen sulfide, Acceptor	1889.97|full
-122	Sulfur cycling	Sulfur reduction	sreB	sulfur reductase FeS subunit	K17220.hmm	K17220	Sulfur + Reduced acceptor = Hydrogen sulfide + Acceptor	Sulfur, Reduced acceptor	Hydrogen sulfide, Acceptor	486.50|full
-123	Sulfur cycling	Sulfur reduction	sreC	sulfur reductase membrane anchor	K17221.hmm	K17221	Sulfur + Reduced acceptor = Hydrogen sulfide + Acceptor	Sulfur, Reduced acceptor	Hydrogen sulfide, Acceptor	721.30|full
+122	Sulfur cycling	Sulfur reduction	sreB	sulfur reductase FeS subunit	K17220.hmm	K17220	Sulfur + Reduced acceptor = Hydrogen sulfide + Acceptor	Sulfur, Reduced acceptor	Hydrogen sulfide, Acceptor	474.53|full
+123	Sulfur cycling	Sulfur reduction	sreC	sulfur reductase membrane anchor	K17221.hmm	K17221	Sulfur + Reduced acceptor = Hydrogen sulfide + Acceptor	Sulfur, Reduced acceptor	Hydrogen sulfide, Acceptor	288.03|full
+	Sulfur cycling	Sulfur reduction	hydG	sulfhydrogenase subunit gamma (sulfur reductase)	K17995.hmm	K17995				451.47|full
+	Sulfur cycling	Sulfur reduction	hydB	sulfhydrogenase subunit beta (sulfur reductase)	K17996.hmm	K17996				398.57|full
 124	Sulfur cycling	Thiosulfate oxidation	soxB	S-sulfosulfanyl-L-cysteine sulfohydrolase	soxB.hmm	K17224	[SoxY protein]-S-sulfosulfanyl-L-cysteine + H2O = [SoxY protein]-S-sulfanyl-L-cysteine + sulfate [RN:R12096]; [SoxY protein]-S-(2-sulfodisulfanyl)-L-cysteine + H2O = [SoxY protein]-S-disulfanyl-L-cysteine + sulfate [RN:R12097]	[SoxY protein]-S-sulfosulfanyl-L-cysteine; H2O; [SoxY protein]-S-(2-sulfodisulfanyl)-L-cysteine	[SoxY protein]-S-sulfanyl-L-cysteine; sulfate; [SoxY protein]-S-disulfanyl-L-cysteine	550.00|full
 125	Sulfur cycling	Thiosulfate oxidation	soxY	sulfur-oxidizing protein SoxY	soxY.hmm	K17226	Thiosulfate + 5 H2O + 8 Ferricytochrome c = 2 Sulfate + 8 Ferrocytochrome c + 10 H+	Thiosulfate; H2O; Ferricytochrome c	Sulfate; Ferrocytochrome c; H+	125.00|full
 126	Sulfur cycling	Thiosulfate oxidation	soxC	sulfane dehydrogenase subunit SoxC	soxC.hmm	K17225	Thiosulfate + 5 H2O + 8 Ferricytochrome c = 2 Sulfate + 8 Ferrocytochrome c + 10 H+	Thiosulfate; H2O; Ferricytochrome c	Sulfate; Ferrocytochrome c; H+	320.00|full
@@ -145,6 +147,8 @@
 	Sulfur cycling	Sulfate reduction	apsA	Adenosine-5′-Phosphosulfate Reductase	K00394.hmm	K00394				446.10|domain
 	Sulfur cycling	Sulfate reduction	apsK	Adenylyl-sulfate kinase	TIGR00455.hmm	K00860				138.7|domain
 132	Sulfur cycling	Thiosulfate disproportionation	phsA	thiosulfate reductase / polysulfide reductase chain A	K08352.hmm	K08352	thiosulfate + a quinol = sulfite + hydrogen sulfide + a quinone [RN:R11488]	thiosulfate; quinol	sulfite; hydrogen sulfide; quinone	602.67|full
+	Sulfur cycling	Polysulfide reduction		polysulfide reductase chain B	K16293.hmm	K16293				266.90|full
+	Sulfur cycling	Polysulfide reduction		polysulfide reductase chain C	K16294.hmm	K16294				305.90|full
 133	Hydrogenases	FeFe hydrogenase	fefe-group-a13	FeFe hydrogenase, H2-evolution/Electron-bifurcation	fefe-group-a13.hmm	N/A	H2-evolution/Electron-bifurcation	N/A	N/A	733.8|full
 134	Hydrogenases	FeFe hydrogenase	fefe-group-a2	FeFe hydrogenase, H2-uptake	fefe-group-a2.hmm	N/A	H2-uptake	N/A	N/A	815.2|full
 135	Hydrogenases	FeFe hydrogenase	fefe-group-a4	FeFe hydrogenase, H2-uptake/Electron-bifurcation	fefe-group-a4.hmm	N/A	H2-uptake/Electron-bifurcation	N/A	N/A	599.05|full
@@ -203,7 +207,7 @@
 188	As cycling	Arsenate reduction for detoxification	arsC (trx)	arsenate reductase (thioredoxin)	arsC_thio.hmm	K03741	arsenate + thioredoxin = arsenite + thioredoxin disulfide + H2O [RN:R10927]	arsenate; thioredoxin	arsenite; thioredoxin disulfide; H2O	172|full
 	As cycling	Arsenate reduction for detoxification	arsC (trx)		TIGR02693.hmm					359|domain
 	As cycling	Arsenate reduction for detoxification	arsC (trx)		TIGR02694.hmm					95.7|full
-189	As cycling	Arsenite oxidation for energy metabolism	arxA	arsenite oxidase (molybdopterin subunit)	arxA.hmm	N/A	arsenite oxidation coupled with oxygen or nirate reduction	arsenite	arsenate	600|full
+189	As cycling	Arsenite oxidation for energy metabolism	arxA	arsenite oxidase (molybdopterin subunit)	arxA.hmm	K08356, K08355	arsenite oxidation coupled with oxygen or nirate reduction	arsenite	arsenate	600|full
 190	As cycling	Arsenite oxidation for detoxification and energy metabolism	aioA	arsenite oxidase large subunit	aioA.hmm	K08356	arsenite + H2O + 2 oxidized cytochrome c = arsenate + 2 reduced cytochrome c + 2 H+ [RN:R09787]	arsenite; H2O; oxidized cytochrome c	arsenate; reduced cytochrome c; H+	800|full
 191	As cycling	Arsenite methylation	arsM	arsenite methyltransferase	arsM.hmm	K07755 	2 S-adenosyl-L-methionine + arsenic triglutathione + 2 thioredoxin + H2O = S-adenosyl-L-homocysteine + dimethylarsinous acid + 3 glutathione + 2 thioredoxin disulfide [RN:R12918]	S-adenosyl-L-methionine; arsenic triglutathione; thioredoxin	S-adenosyl-L-homocysteine; dimethylarsinous acid; glutathione; thioredoxin disulfide	200|full
 192	Selenate reduction	Selenate reduction	ygfM	putative selenate reductase FAD-binding subunit	TIGR03312.hmm	K12529	selenite + H2O + acceptor = selenate + reduced acceptor [RN:R07229]	selenite; H2O; acceptor	selenate; reduced acceptor	87.85|full
