@@ -24,7 +24,7 @@ from bigecyhmm.utils import parse_result_files
 ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-DIAGRAM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
+PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
@@ -33,7 +33,7 @@ TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_tot
 logger = logging.getLogger(__name__)
 
 def get_diagram_pathways_hmms():
-    """From DIAGRAM_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
+    """From PATHWAY_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
 
     Returns:
         pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
@@ -41,7 +41,7 @@ def get_diagram_pathways_hmms():
     """
     pathway_hmms = {}
     sorted_pathways = []
-    with open(DIAGRAM_TEMPLATE_FILE, 'r') as open_r_pathways:
+    with open(PATHWAY_TEMPLATE_FILE, 'r') as open_r_pathways:
         csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
 
         for line in csvreader:
