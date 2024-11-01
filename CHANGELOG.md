@@ -1,5 +1,16 @@
 # Changelog
 
+# bigecyhmm v0.1.1 (2024-11-01)
+
+## Add
+
+* presence of formula for pathways.
+
+## Fix
+
+* issue in heterogeneity between HMMs presence in pathways, template and compressed file.
+* issue in pyproject.toml.
+
 # bigecyhmm v0.1.0 (2024-10-22)
 
 ## Add
