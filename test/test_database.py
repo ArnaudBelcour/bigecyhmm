@@ -50,5 +50,5 @@ def test_pathway_file_db():
                     hmms_in_template_pathway.append(hmm_file.replace('NO|', ''))
 
     assert set(hmms_in_template_pathway).issubset(set(hmms_in_template))
-    print('Missing K01779.hmm add it to compress db')
+
     assert set(hmms_in_template_pathway).issubset(set(hmms_in_compress_db))

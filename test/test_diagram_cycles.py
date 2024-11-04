@@ -14,7 +14,7 @@ def test_check_diagram_pathways():
     expected_org_pathways = {'org_1': {'S-S-09:Thiosulfate disproportionation 2': 1},
                              'org_2': {'S-S-09:Thiosulfate disproportionation 2': 0},
                              'org_3': {'S-S-09:Thiosulfate disproportionation 2': 0}}
-    all_pathways, org_pathways = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
+    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 
     for org in org_pathways:
         for pathway in org_pathways[org]:

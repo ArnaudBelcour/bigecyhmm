@@ -221,10 +221,9 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     create_phenotypes(hmm_output_folder, function_matrix_file)
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
-    create_input_diagram(hmm_output_folder, input_diagram_folder)
+    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder)
 
-    figure_diagram_folder = os.path.join(output_folder, 'diagram_figures')
-    create_diagram_figures(input_diagram_folder, figure_diagram_folder)
+    create_diagram_figures(input_diagram_folder, output_folder)
 
     duration = time.time() - start_time
     metadata_json = {}

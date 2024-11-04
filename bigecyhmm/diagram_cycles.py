@@ -71,9 +71,13 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
     """
     all_pathways = {pathway: 0 for pathway in sorted_pathways}
     org_pathways = {}
+    org_pathways_hmms = {}
     for org in org_hmms:
+        if org not in org_pathways_hmms:
+            org_pathways_hmms[org] = {}
         for pathway in sorted_pathways:
             pathway_checks = []
+            hmms_in_org = []
             # For AND group of HMMs in pathway, check if their corresponding HMMs are there.
             for hmm_combination in pathway_hmms[pathway]:
                 pathway_check = False
@@ -98,6 +102,10 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
                         elif len(intersection_negative_hmms) > 0:
                             pathway_check = False
                 pathway_checks.append(pathway_check)
+                positive_hmms = list(set(intersection_hmms) - set(intersection_negative_hmms))
+                found_hmms = positive_hmms + ['NO|' + hmm for hmm in intersection_negative_hmms]
+                hmms_in_org.append(', '.join(list(found_hmms)))
+            org_pathways_hmms[org][pathway] = ';'.join(hmms_in_org)
 
             # If all combination HMMs have been checked, keep the pathway.
             if all(pathway_checks) is True:
@@ -113,37 +121,45 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
                     org_pathways[org] = {}
                 org_pathways[org][pathway] = 0
 
-    return all_pathways, org_pathways
+    return all_pathways, org_pathways, org_pathways_hmms
 
 
-def create_input_diagram(input_folder, output_folder):
+def create_input_diagram(input_folder, output_diagram_folder, output_folder):
     """Create input files for the creation of the biogeochemical cycle diagram.
     This function creates input for this R script: https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R
 
     Args:
         input_folder (str): path to HMM search results folder (one tsv file per organism)
-        output_folder (str): path to output folder containing input files for diagram creation
+        output_diagram_folder (str): path to output folder containing input files for diagram creation
+        output_folder (str): path to output folder
     """
-    if not os.path.exists(output_folder):
-        os.mkdir(output_folder)
+    if not os.path.exists(output_diagram_folder):
+        os.mkdir(output_diagram_folder)
 
     pathway_hmms, sorted_pathways = get_diagram_pathways_hmms()
     org_hmms = parse_result_files(input_folder)
-    all_pathways, org_pathways = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
+    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 
     for org in org_pathways:
-        org_file = os.path.join(output_folder, org+'.R_input.txt')
+        org_file = os.path.join(output_diagram_folder, org+'.R_input.txt')
         with open(org_file, 'w') as open_output_file:
             csvwriter = csv.writer(open_output_file, delimiter='\t')
             for pathway in org_pathways[org]:
                 csvwriter.writerow([pathway, org_pathways[org][pathway]])
 
-    total_file = os.path.join(output_folder, 'Total.R_input.txt')
+    total_file = os.path.join(output_diagram_folder, 'Total.R_input.txt')
     with open(total_file, 'w') as open_total_file:
         csvwriter = csv.writer(open_total_file, delimiter='\t')
         for pathway in all_pathways:
             csvwriter.writerow([pathway, all_pathways[pathway], all_pathways[pathway] / len(org_hmms)])
 
+    all_orgs = list([org for org in org_pathways_hmms])
+    pathway_hmms_file = os.path.join(output_folder, 'pathway_hmms.tsv')
+    with open(pathway_hmms_file, 'w') as open_pathway_hmms_file:
+        csvwriter = csv.writer(open_pathway_hmms_file, delimiter='\t')
+        csvwriter.writerow(['pathway', *all_orgs])
+        for pathway in all_pathways:
+            csvwriter.writerow([pathway, *[org_pathways_hmms[org][pathway] for org in all_orgs]])
 
 def parse_diagram_folder(input_diagram_folder):
     """Parse functions in Total.R_input.txt.
@@ -307,15 +323,16 @@ def create_other_cycle(output_file, input_diagram_folder):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_diagram_figures(hmm_diagram_folder, biogeochemical_diagram_folder):
+def create_diagram_figures(hmm_diagram_folder, output_folder):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
     Args:
         input_diagram_folder (str): path to input diagram files created by create_input_diagram function
-        biogeochemical_diagram_folder (str): path to output folder containing diagram cycles
+        output_folder (str): path to output folder
     """
     logger.info('Creating biogeochemical cycle figures.')
 
+    biogeochemical_diagram_folder = os.path.join(output_folder, 'diagram_figures')
     if not os.path.exists(biogeochemical_diagram_folder):
         os.mkdir(biogeochemical_diagram_folder)
 
