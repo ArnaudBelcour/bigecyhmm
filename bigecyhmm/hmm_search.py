@@ -230,7 +230,7 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     metadata_json['tool_dependencies'] = {}
     metadata_json['tool_dependencies']['python_package'] = {}
     metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
-    metadata_json['tool_dependencies']['python_package']['esmecata'] = bigecyhmm_version
+    metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
     metadata_json['tool_dependencies']['python_package']['pillow'] = pillow_version
 
