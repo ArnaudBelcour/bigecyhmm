@@ -25,6 +25,7 @@ ROOT = os.path.dirname(__file__)
 HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
 PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
+HYDROGEN_CONSUMPTION_FILE = os.path.join(ROOT, 'hmm_databases', 'hydrogen_consumption.tsv')
 TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
@@ -32,8 +33,12 @@ TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_tot
 
 logger = logging.getLogger(__name__)
 
-def get_diagram_pathways_hmms():
+
+def get_diagram_pathways_hmms(pathway_template_file):
     """From PATHWAY_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
+
+    Args:
+        pathway_template_file (str): path to pathway_template_file.
 
     Returns:
         pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
@@ -41,7 +46,7 @@ def get_diagram_pathways_hmms():
     """
     pathway_hmms = {}
     sorted_pathways = []
-    with open(PATHWAY_TEMPLATE_FILE, 'r') as open_r_pathways:
+    with open(pathway_template_file, 'r') as open_r_pathways:
         csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
 
         for line in csvreader:
@@ -103,9 +108,13 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
                             pathway_check = False
                 pathway_checks.append(pathway_check)
                 positive_hmms = list(set(intersection_hmms) - set(intersection_negative_hmms))
-                found_hmms = positive_hmms + ['NO|' + hmm for hmm in intersection_negative_hmms]
-                hmms_in_org.append(', '.join(list(found_hmms)))
-            org_pathways_hmms[org][pathway] = ';'.join(hmms_in_org)
+                found_hmms = list(positive_hmms + ['NO|' + hmm for hmm in intersection_negative_hmms])
+                if len(found_hmms) > 0:
+                    hmms_in_org.append(', '.join(found_hmms))
+            if len(hmms_in_org) > 0:
+                org_pathways_hmms[org][pathway] = '; '.join(hmms_in_org)
+            else:
+                org_pathways_hmms[org][pathway] = ''
 
             # If all combination HMMs have been checked, keep the pathway.
             if all(pathway_checks) is True:
@@ -136,7 +145,7 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
     if not os.path.exists(output_diagram_folder):
         os.mkdir(output_diagram_folder)
 
-    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms()
+    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
     org_hmms = parse_result_files(input_folder)
     all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 
@@ -160,6 +169,17 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
         csvwriter.writerow(['pathway', *all_orgs])
         for pathway in all_pathways:
             csvwriter.writerow([pathway, *[org_pathways_hmms[org][pathway] for org in all_orgs]])
+
+    hydrogen_pathway_hmms, hydrogen_sorted_pathways = get_diagram_pathways_hmms(HYDROGEN_CONSUMPTION_FILE)
+    all_hydrogen_pathways, org_hydrogen_pathways, org_hydrogen_pathways_hmms = check_diagram_pathways(hydrogen_sorted_pathways, org_hmms, hydrogen_pathway_hmms)
+
+    all_hydrogen_orgs = list([org for org in org_hydrogen_pathways_hmms])
+    hydrogen_pathway_hmms_file = os.path.join(output_folder, 'pathway_hydrogen_hmms.tsv')
+    with open(hydrogen_pathway_hmms_file, 'w') as open_hydrogen_pathway_hmms_file:
+        csvwriter = csv.writer(open_hydrogen_pathway_hmms_file, delimiter='\t')
+        csvwriter.writerow(['pathway', *all_hydrogen_orgs])
+        for hydrogen_pathway in all_hydrogen_pathways:
+            csvwriter.writerow([hydrogen_pathway, *[org_hydrogen_pathways_hmms[org][hydrogen_pathway] for org in all_hydrogen_orgs]])
 
 def parse_diagram_folder(input_diagram_folder):
     """Parse functions in Total.R_input.txt.

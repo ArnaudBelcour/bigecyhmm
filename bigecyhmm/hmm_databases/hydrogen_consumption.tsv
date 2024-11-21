@@ -1,0 +1,7 @@
+Pathways	HMMs	reactants	products	formula
+Acetogenesis	fthfs_NF010030.hmm, K14138.hmm, K01938.hmm	hydrogen + carbon dioxide	acetate	2 HCO3- + 4 H2 + H+ -> CH3COO- + 4 H2O
+Methanogenesis	TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm, K00402.hmm, K04480.hmm	hydrogen + carbon dioxide	methane	H2 + S -> H2S
+Iron reduction	MtrA.hmm, MtrB_TIGR03509.hmm, MtrC_TIGR03507.hmm, CymA.hmm, OmcF.hmm, OmcS.hmm, OmcZ.hmm, Ndh2.hmm, DFE_0450.hmm, DFE_0464.hmm	hydrogen + feIII	feII	HCO3- + 4 H2 + H+ -> CH4 + 3 H2O
+Sulfate+Sulfite reduction	aprA.hmm, TIGR00339.hmm; asrA.hmm, asrB.hmm, asrC.hmm, dsrA.hmm, dsrB.hmm, dsrD.hmm	hydrogen + sulfate	hydrogen sulfide	SO42- + 4 H2 + H+ -> HS- + 4 H2O
+Sulfur reduction	K16952.hmm, K17219.hmm, K17220.hmm, K17221.hmm	hydrogen + sulfur	hydrogen sulfide	2 FeOOH + H2 + 4 H+ -> 2 Fe2+ + 4 H2O
+Denitrification	TIGR01706.hmm, PF03892.hmm, TIGR01580.hmm, TIGR01660.hmm; TIGR02376.hmm, nitrite_reductase_nirS.hmm, TIGR04315.hmm; nitric_oxide_reductase_norB.hmm, nitric_oxide_reductase_norC.hmm; PF05048.hmm, TIGR04246.hmm	hydrogen + sulfate	nitrogen	2 NO3- + 5 H2 + 2 H+ -> N2 + 6 H2O
