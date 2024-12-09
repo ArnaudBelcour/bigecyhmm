@@ -1,5 +1,22 @@
 # Changelog
 
+# bigecyhmm v0.1.2 (2024-12-09)
+
+## Add
+
+* `pathway_presence.tsv` showing the presence of pathways in each taxon of the communities.
+* file associated with hydrogen consumption `hydrogen_consumption.tsv`.
+* test for carbon cycle.
+* missing HMMs (and other HMMs for hydrogenases).
+
+## Modify
+
+* move `Total.R_input.txt` outside of `diagram_input` folder.
+
+## Fix
+
+* typo in metadata.
+
 # bigecyhmm v0.1.1 (2024-11-01)
 
 ## Add

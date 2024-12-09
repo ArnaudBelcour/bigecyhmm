@@ -223,7 +223,8 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder)
 
-    create_diagram_figures(input_diagram_folder, output_folder)
+    input_diagram_file = os.path.join(output_folder, 'Total.R_input.txt')
+    create_diagram_figures(input_diagram_file, output_folder)
 
     duration = time.time() - start_time
     metadata_json = {}

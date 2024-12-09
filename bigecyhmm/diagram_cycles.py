@@ -156,14 +156,21 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
             for pathway in org_pathways[org]:
                 csvwriter.writerow([pathway, org_pathways[org][pathway]])
 
-    total_file = os.path.join(output_diagram_folder, 'Total.R_input.txt')
+    total_file = os.path.join(output_folder, 'Total.R_input.txt')
     with open(total_file, 'w') as open_total_file:
         csvwriter = csv.writer(open_total_file, delimiter='\t')
         for pathway in all_pathways:
             csvwriter.writerow([pathway, all_pathways[pathway], all_pathways[pathway] / len(org_hmms)])
 
+    pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
+    with open(pathway_presence_file, 'w') as open_pathway_presence_file:
+        csvwriter = csv.writer(open_pathway_presence_file, delimiter='\t')
+        csvwriter.writerow(['organism', *all_pathways])
+        for org in org_pathways:
+            csvwriter.writerow([org, *[org_pathways[org][pathway] for pathway in all_pathways]])
+
     all_orgs = list([org for org in org_pathways_hmms])
-    pathway_hmms_file = os.path.join(output_folder, 'pathway_hmms.tsv')
+    pathway_hmms_file = os.path.join(output_folder, 'pathway_presence_hmms.tsv')
     with open(pathway_hmms_file, 'w') as open_pathway_hmms_file:
         csvwriter = csv.writer(open_pathway_hmms_file, delimiter='\t')
         csvwriter.writerow(['pathway', *all_orgs])
@@ -181,19 +188,17 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
         for hydrogen_pathway in all_hydrogen_pathways:
             csvwriter.writerow([hydrogen_pathway, *[org_hydrogen_pathways_hmms[org][hydrogen_pathway] for org in all_hydrogen_orgs]])
 
-def parse_diagram_folder(input_diagram_folder):
+def parse_diagram_folder(input_diagram_file):
     """Parse functions in Total.R_input.txt.
 
     Args:
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
+        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
 
     Returns:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
     """
-    diagram_data_file = os.path.join(input_diagram_folder, 'Total.R_input.txt')
-
     diagram_data = {}
-    with open(diagram_data_file, 'r') as open_diagram_data_file:
+    with open(input_diagram_file, 'r') as open_diagram_data_file:
         csvreader = csv.reader(open_diagram_data_file, delimiter='\t')
         for line in csvreader:
             nb_genomes =  line[1]
@@ -203,17 +208,17 @@ def parse_diagram_folder(input_diagram_folder):
     return diagram_data
 
 
-def create_carbon_cycle(output_file, input_diagram_folder):
+def create_carbon_cycle(input_diagram_file, output_file):
     """From png TEMPLATE_CARBON_CYCLE and input_diagram_folder file, create carbon cycle figure.
 
     Args:
+        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
         output_file (str): path to output file
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
     """
     img = Image.open(TEMPLATE_CARBON_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_folder)
+    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']
     data_step_02 = diagram_data['C-S-02:Carbon fixation']
@@ -241,17 +246,17 @@ def create_carbon_cycle(output_file, input_diagram_folder):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_nitrogen_cycle(output_file, input_diagram_folder):
+def create_nitrogen_cycle(input_diagram_file, output_file):
     """From png TEMPLATE_NITROGEN_CYCLE and input_diagram_folder file, create nitrogen cycle figure.
 
     Args:
+        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
         output_file (str): path to output file
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
     """
     img = Image.open(TEMPLATE_NITROGEN_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_folder)
+    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['N-S-01:Nitrogen fixation']
     data_step_02 = diagram_data['N-S-02:Ammonia oxidation']
@@ -279,17 +284,17 @@ def create_nitrogen_cycle(output_file, input_diagram_folder):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_sulfur_cycle(output_file, input_diagram_folder):
+def create_sulfur_cycle(input_diagram_file, output_file):
     """From png TEMPLATE_SULFUR_CYCLE and input_diagram_folder file, create sulfur cycle figure.
 
     Args:
+        input_diagram_folder (str): path to bigecyhmm output folder containing diagram file
         output_file (str): path to output file
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
     """
     img = Image.open(TEMPLATE_SULFUR_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_folder)
+    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['S-S-01:Sulfide oxidation']
     data_step_02 = diagram_data['S-S-02:Sulfur reduction']
@@ -315,17 +320,17 @@ def create_sulfur_cycle(output_file, input_diagram_folder):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_other_cycle(output_file, input_diagram_folder):
+def create_other_cycle(input_diagram_file, output_file):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
     Args:
+        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
         output_file (str): path to output file
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
     """
     img = Image.open(TEMPLATE_OTHER_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_folder)
+    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['O-S-01:Iron reduction']
     data_step_02 = diagram_data['O-S-02:Iron oxidation']
@@ -343,12 +348,11 @@ def create_other_cycle(output_file, input_diagram_folder):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_diagram_figures(hmm_diagram_folder, output_folder):
+def create_diagram_figures(input_diagram_file, output_folder):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
     Args:
-        input_diagram_folder (str): path to input diagram files created by create_input_diagram function
-        output_folder (str): path to output folder
+        output_folder (str): path to bigecyhmm output folder
     """
     logger.info('Creating biogeochemical cycle figures.')
 
@@ -357,10 +361,10 @@ def create_diagram_figures(hmm_diagram_folder, output_folder):
         os.mkdir(biogeochemical_diagram_folder)
 
     carbon_cycle_file = os.path.join(biogeochemical_diagram_folder, 'carbon_cycle.png')
-    create_carbon_cycle(carbon_cycle_file, hmm_diagram_folder)
+    create_carbon_cycle(input_diagram_file, carbon_cycle_file)
     nitrogen_cycle_file = os.path.join(biogeochemical_diagram_folder, 'nitrogen_cycle.png')
-    create_nitrogen_cycle(nitrogen_cycle_file, hmm_diagram_folder)
+    create_nitrogen_cycle(input_diagram_file, nitrogen_cycle_file)
     sulfur_cycle_file = os.path.join(biogeochemical_diagram_folder, 'sulfur_cycle.png')
-    create_sulfur_cycle(sulfur_cycle_file, hmm_diagram_folder)
+    create_sulfur_cycle(input_diagram_file, sulfur_cycle_file)
     other_cycle_file = os.path.join(biogeochemical_diagram_folder, 'other_cycle.png')
-    create_other_cycle(other_cycle_file, hmm_diagram_folder)
+    create_other_cycle(input_diagram_file, other_cycle_file)
