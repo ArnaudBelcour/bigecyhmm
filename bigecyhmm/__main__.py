@@ -64,8 +64,8 @@ def main():
 
     parser.add_argument(
         "-c",
-        "--cpu",
-        help="CPU number for multiprocessing",
+        "--core",
+        help="Number of cores for multiprocessing",
         required=False,
         type=int,
         default=1)
