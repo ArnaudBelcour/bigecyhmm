@@ -184,13 +184,13 @@ def hmm_search_write_results(input_file_path, output_file, hmm_thresholds):
     write_results(hmm_results, output_file)
 
 
-def search_hmm(input_variable, output_folder, cpu_number=1):
+def search_hmm(input_variable, output_folder, core_number=1):
     """Main function to use HMM search on protein sequences and write results
 
     Args:
         input_variable (str): path to input file or folder
         output_folder (str): path to output folder
-        cpu_number (int): number of CPU to use for the multiprocessing
+        core_number (int): number of core to use for the multiprocessing
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -200,7 +200,7 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
 
     hmm_thresholds = get_hmm_thresholds(HMM_TEMPLATE_FILE)
 
-    hmm_search_pool = Pool(processes=cpu_number)
+    hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
     for input_file in input_dicts:
@@ -235,7 +235,7 @@ def search_hmm(input_variable, output_folder, cpu_number=1):
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
     metadata_json['tool_dependencies']['python_package']['pillow'] = pillow_version
 
-    metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'cpu_number': cpu_number}
+    metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number}
     metadata_json['duration'] = duration
 
     metadata_file = os.path.join(output_folder, 'bigecyhmm_metadata.json')

@@ -93,7 +93,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search ---")
-    search_hmm(args.input, args.output, args.cpu)
+    search_hmm(args.input, args.output, args.core)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))
