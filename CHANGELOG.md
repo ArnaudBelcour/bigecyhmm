@@ -1,5 +1,11 @@
 # Changelog
 
+# bigecyhmm v0.1.3 (2025-01-06)
+
+## Add
+
+* `bigecyhmm_visualisation` to create visualisation from esmecata and bigecyhmm outputs.
+
 # bigecyhmm v0.1.2 (2024-12-09)
 
 ## Add
