@@ -304,7 +304,7 @@ def main():
         '--abundance-file',
         dest='abundance_file',
         required=True,
-        help='Abundance file indicating the abundance for each organisms selected by EsMeCaTa..',
+        help='Abundance file indicating the abundance for each organisms selected by EsMeCaTa.',
         metavar='INPUT_FILE')
 
     parser.add_argument(

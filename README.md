@@ -2,7 +2,7 @@
 
 This is a package to search for genes associated with biogeochemical cycles in protein sequence fasta files. The HMMs come from METABOLIC article, KEGG, PFAM, TIGR.
 
-## Depedencies
+## Dependencies
 
 bigecyhmm is developed to be as minimalist as possible. It requires:
 
@@ -52,6 +52,25 @@ It gives as output:
 - `function_presence.tsv` a tsv file showing the presence/absence of generic functions associated with the HMMs that matched.
 - a folder `diagram_input`, the necessary input to create Carbon, Nitrogen, Sulfur and other cycles with the [R script](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/scripts/draw_biogeochemical_cycles.R) modified from the [METABOLIC repository](https://github.com/AnantharamanLab/METABOLIC) using the following command: `Rscript draw_biogeochemical_cycles.R bigecyhmm_output_folder/diagram_input_folder/ diagram_output TRUE`. This script requires the diagram package that could be installed in R with `install.packages('diagram')`.
 - a folder `diagram_figures` contains biogeochemical diagram figures drawn from template situated in `bigecyhmm/templates`.
+
+
+## bigecyhmm_visualisation
+
+There is a second command associated with bigecyhmm (`bigecyhmm_visualisation`), to create visualisation of the results.
+
+To create the associated figures, there are other dependencies:
+
+- seaborn
+- pandas
+- plotly
+- kaleido
+
+Four inputs are expected:
+
+- `--esmecata`: esmecata output folder associated with the run (as the visualisation works on esmecata results).
+- `--bigecyhmm`: bigecyhmm output folder associated with the run.
+- `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa.
+- `-o`: an output folder.
 
 
 ## Citation
