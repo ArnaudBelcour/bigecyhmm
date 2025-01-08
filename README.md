@@ -13,7 +13,11 @@ The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https
 
 ## Installation
 
-It can be installed with pip by cloning the repository:
+It can be installed from PyPI:
+
+`pip install bigecyhmm`
+
+Or it can be installed with pip by cloning the repository:
 
 ```sh
 git clone https://github.com/ArnaudBelcour/bigecyhmm.git

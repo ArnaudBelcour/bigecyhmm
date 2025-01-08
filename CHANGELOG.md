@@ -1,5 +1,16 @@
 # Changelog
 
+# bigecyhmm v0.1.5 (2025-01-08)
+
+## Add
+
+* HMM associated with foramte fermentation (formate lyase, hycE, `K15830`).
+* In `bigecyhmm_visualisation`, the possibility to create barplot showing abundance of specific function categories.
+
+## Fix
+
+* Fix issue when computing abundance where abundances were not normalised by total abundance.
+
 # bigecyhmm v0.1.4 (2025-01-08)
 
 ## Fix

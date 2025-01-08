@@ -17,6 +17,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+import math
 import sys
 
 from plotly.subplots import make_subplots
@@ -46,17 +47,23 @@ logger.setLevel(logging.DEBUG)
 plt.rcParams['figure.figsize'] = [40, 20]
 plt.rc('font', size=30)
 
+ROOT = os.path.dirname(__file__)
+HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
+
 def read_abundance_file(abundance_file_path):
     if abundance_file_path.endswith('.tsv'):
         input_data_df = pd.read_csv(abundance_file_path, sep='\t')
     elif abundance_file_path.endswith('.csv'):
         input_data_df = pd.read_csv(abundance_file_path)
     input_data_df.set_index('observation_name', inplace=True)
+
     sample_abundance = {}
+    sample_tot_abundance = {}
     for col in input_data_df.columns:
         sample_abundance[col] = input_data_df[col].to_dict()
-
-    return sample_abundance
+        tot_abundance = input_data_df[col].sum()
+        sample_tot_abundance[col] = tot_abundance
+    return sample_abundance, sample_tot_abundance
 
 def read_esmecata_proteome_file(proteome_tax_id_file):
     observation_names_tax_id_names = {}
@@ -71,7 +78,7 @@ def read_esmecata_proteome_file(proteome_tax_id_file):
             observation_names_tax_ids[row['tax_id']].append(row['observation_name'])
     return observation_names_tax_id_names
 
-def compute_abundance_per_tax_id(sample_abundance, observation_names_tax_id_names):
+def compute_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names):
     abundance_data = {}
     for col in sample_abundance:
         for observation_name in sample_abundance[col]:
@@ -80,13 +87,102 @@ def compute_abundance_per_tax_id(sample_abundance, observation_names_tax_id_name
                 if col not in abundance_data:
                     abundance_data[col] = {}
                 if tax_id_name not in abundance_data[col]:
-                    abundance_data[col][tax_id_name] = float(sample_abundance[col][observation_name])/100
+                    abundance_data[col][tax_id_name] = float(sample_abundance[col][observation_name])
                 else:
-                    abundance_data[col][tax_id_name] = float(sample_abundance[col][observation_name])/100 + float(abundance_data[col][tax_id_name])/100
+                    abundance_data[col][tax_id_name] = float(sample_abundance[col][observation_name]) + float(abundance_data[col][tax_id_name])
+
+        for tax_id_name in abundance_data[col]:
+            abundance_data[col][tax_id_name] = abundance_data[col][tax_id_name] / sample_tot_abundance[col]
 
     return abundance_data
 
-def read_bigecyhmm(bigecyhmm_output, output_folder, abundance_data=None):
+def read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data=None):
+    data_seaborn = []
+    data_seaborn_abundance = []
+
+    gene_group_df = pd.read_csv(HMM_TEMPLATE_FILE, sep='\t')
+    gene_group_df['function_name'] = gene_group_df['Function'] + ' ' + gene_group_df['Gene abbreviation']
+    gene_group_df.set_index('function_name', inplace=True)
+    gene_categories = {}
+    for index, row in gene_group_df.iterrows():
+        category = row['Category']
+        if category not in gene_categories:
+            gene_categories[category] = [index]
+        else:
+            gene_categories[category].append(index)
+
+    annot_table_path = os.path.join(bigecyhmm_output, 'function_presence.tsv')
+    function_gene_presence = pd.read_csv(annot_table_path, sep='\t')
+    function_gene_presence.set_index('function', inplace=True)
+
+    function_occurrence = {}
+    tax_id_function = {}
+    all_tax_ids = function_gene_presence.columns
+
+    for index, row in function_gene_presence.iterrows():
+        for tax_id_name in function_gene_presence.columns:
+            if math.isnan(row[tax_id_name] ):
+                row[tax_id_name] = 0
+            else:
+                row[tax_id_name] = int(row[tax_id_name])
+            if index not in function_occurrence:
+                function_occurrence[index] = row[tax_id_name]
+            else:
+                function_occurrence[index] = row[tax_id_name] + function_occurrence[index]
+            if row[tax_id_name] > 0:
+                if index not in tax_id_function:
+                    tax_id_function[index] = [tax_id_name]
+                else:
+                    if tax_id_name not in tax_id_function[index]:
+                        tax_id_function[index].append(tax_id_name)
+    for index in function_occurrence:
+        if index in tax_id_function:
+            data_seaborn.append([index, len(tax_id_function[index])/len(all_tax_ids)])
+        else:
+            data_seaborn.append([index, 0])
+    df_seaborn_community = pd.DataFrame(data_seaborn, columns=['name', 'ratio'])
+    df_seaborn_community.to_csv(os.path.join(output_folder, 'hmm_gene_community.tsv'), sep='\t')
+
+    if abundance_data is None:
+        return df_seaborn_community, None, None
+    else:
+        for sample in abundance_data:
+            function_abundance = {}
+            all_tax_ids = []
+            tax_id_function = {}
+            for index, row in function_gene_presence.iterrows():
+                for tax_id_name in function_gene_presence.columns:
+                    if abundance_data[sample][tax_id_name] > 0:
+                        all_tax_ids.append(tax_id_name)
+                    if math.isnan(row[tax_id_name]) == False:
+                        row[tax_id_name] = int(row[tax_id_name])
+                        if abundance_data[sample][tax_id_name] > 0 and row[tax_id_name] > 0:
+                            if index not in function_abundance:
+                                function_abundance[index] = abundance_data[sample][tax_id_name]
+                            else:
+                                function_abundance[index] = abundance_data[sample][tax_id_name] + function_abundance[index]
+                            if index not in tax_id_function:
+                                tax_id_function[index] = [tax_id_name]
+                            else:
+                                if tax_id_name not in tax_id_function[index]:
+                                    tax_id_function[index].append(tax_id_name)
+
+            for index in function_abundance:
+                data_seaborn_abundance.append([index, function_abundance[index], sample])
+                if index in tax_id_function:
+                    data_seaborn.append([index, len(tax_id_function[index])/len(all_tax_ids), sample])
+                else:
+                    data_seaborn.append([index, 0, sample])
+
+        df_seaborn_sample = pd.DataFrame(data_seaborn, columns=['name', 'ratio', 'sample'])
+        df_seaborn_sample.to_csv(os.path.join(output_folder, 'hmm_gene_sample.tsv'), sep='\t')
+        df_seaborn_sample_abundance = pd.DataFrame(data_seaborn_abundance, columns=['name', 'ratio',  'sample'])
+        df_seaborn_sample_abundance.to_csv(os.path.join(output_folder, 'hmm_gene_sample_abundance.tsv'), sep='\t')
+
+        return gene_categories, df_seaborn_community, df_seaborn_sample, df_seaborn_sample_abundance
+
+
+def read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data=None):
     data_seaborn = []
     data_seaborn_abundance = []
     data_stat = {}
@@ -114,7 +210,7 @@ def read_bigecyhmm(bigecyhmm_output, output_folder, abundance_data=None):
     cycle_df = cycle_df[annot_folder]
 
 
-    function_abundance = {}
+    function_occurrence = {}
     tax_id_function = {}
     
     cycle_path = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
@@ -125,17 +221,17 @@ def read_bigecyhmm(bigecyhmm_output, output_folder, abundance_data=None):
     for index, row in pathway_presence_df.iterrows():
         for tax_id_name in pathway_presence_df.columns:
             row[tax_id_name] = int(row[tax_id_name])
-            if index not in function_abundance:
-                function_abundance[index] = row[tax_id_name]
+            if index not in function_occurrence:
+                function_occurrence[index] = row[tax_id_name]
             else:
-                function_abundance[index] = row[tax_id_name] + function_abundance[index]
+                function_occurrence[index] = row[tax_id_name] + function_occurrence[index]
             if row[tax_id_name] > 0:
                 if index not in tax_id_function:
                     tax_id_function[index] = [tax_id_name]
                 else:
                     if tax_id_name not in tax_id_function[index]:
                         tax_id_function[index].append(tax_id_name)
-    for index in function_abundance:
+    for index in function_occurrence:
         if index in tax_id_function:
             data_seaborn.append([index, len(tax_id_function[index])/len(all_tax_ids)])
         else:
@@ -150,6 +246,7 @@ def read_bigecyhmm(bigecyhmm_output, output_folder, abundance_data=None):
             function_abundance = {}
             all_tax_ids = []
             tax_id_function = {}
+            all_sample_abundance = sum([abundance_data[sample][tax_id_name] for tax_id_name in abundance_data[sample]])
             for tax_id_name in abundance_data[sample]:
                 tax_id_name_cycle_path = os.path.join(bigecyhmm_output, 'diagram_input', tax_id_name+'.R_input.txt')
                 cycle_df = pd.read_csv(tax_id_name_cycle_path, sep='\t', index_col=0, header=None)
@@ -185,6 +282,7 @@ def create_swarmplot_community(df_seaborn, output_file_name):
     ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', s=10)
     [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
     plt.xticks(rotation=90)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(output_file_name, bbox_inches="tight")
     plt.clf()
 
@@ -192,6 +290,7 @@ def create_swarmplot_sample(df_seaborn, output_file_name):
     ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', hue='sample', s=10)
     [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
     plt.xticks(rotation=90)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(output_file_name, bbox_inches="tight")
     plt.clf()
 
@@ -241,36 +340,54 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot_2):
     fig.write_image(output_polar_plot_2, scale=1, width=1400, height=1200)
 
 
+def visualise_barplot_category(category, gene_categories, df_seaborn_abundance, output_file_name):
+    kept_functions = gene_categories[category]
+    df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_functions)]
+    g = sns.barplot(data=df_seaborn_abundance, x='name', y='ratio', hue='sample')
+    plt.xticks(rotation=60)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.savefig(output_file_name, bbox_inches="tight")
+    plt.clf()
+
+
 def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abundance_file_path=None):
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
     if abundance_file_path is not None: 
-        sample_abundance = read_abundance_file(abundance_file_path)
+        sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
     else:
         sample_abundance = None
+        sample_tot_abundance = None
 
     proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
     observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
     if abundance_file_path is not None: 
-        abundance_data = compute_abundance_per_tax_id(sample_abundance, observation_names_tax_id_names)
+        abundance_data = compute_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names)
     else:
         abundance_data = None
 
-    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm(bigecyhmm_output, output_folder, abundance_data)
+    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data)
 
-    output_file_name = os.path.join(output_folder, 'barplot_function_ratio_community.png')
+    output_file_name = os.path.join(output_folder, 'swarmplot_function_ratio_community.png')
     create_swarmplot_community(df_seaborn_community, output_file_name)
 
     if abundance_file_path is not None:
-        output_file_name = os.path.join(output_folder, 'barplot_function_ratio_sample.png')
-        output_file_name_abund = os.path.join(output_folder, 'barplot_function_abundance_ratio_sample.png')
+        output_file_name = os.path.join(output_folder, 'boxplot_function_ratio_sample.png')
+        output_file_name_abund = os.path.join(output_folder, 'boxplot_function_abundance_ratio_sample.png')
         create_swarmplot_sample(df_seaborn, output_file_name)
         create_swarmplot_sample(df_seaborn_abundance, output_file_name_abund)
 
     if abundance_file_path is not None:
         output_polar_plot = os.path.join(output_folder, 'polar_plot_merged.png')
         create_polar_plot(df_seaborn_abundance, output_polar_plot)
+
+    gene_categories, df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data)
+    if abundance_file_path is not None:
+        output_file_name = os.path.join(output_folder, 'barplot_gene_function.png')
+        visualise_barplot_category('Fermentation', gene_categories, df_seaborn_abundance, output_file_name)
+        output_file_name = os.path.join(output_folder, 'barplot_gene_function_2.png')
+        visualise_barplot_category('Carbon fixation', gene_categories, df_seaborn_abundance, output_file_name)
 
 
 def main():

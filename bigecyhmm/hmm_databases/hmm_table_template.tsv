@@ -45,6 +45,7 @@
 	Fermentation	Acetogenesis	acsB	acetyl-CoA synthase 	K14138.hmm	K14138				950.53|full
 43	Fermentation	Acetate to acetyl-CoA	acs	acetyl-CoA synthetase	TIGR02188.hmm, K01895.hmm	K01895	ATP + acetate + CoA = AMP + diphosphate + acetyl-CoA [RN:R00235]	ATP; acetate; CoA	AMP; diphosphate; acetyl-CoA	684.65|full
 44	Fermentation	Pyruvate <=> acetyl-CoA + formate 	pflD	formate C-acetyltransferase	K00656.hmm	K00656	acetyl-CoA + formate = CoA + pyruvate [RN:R00212]	acetyl-CoA; formate	CoA; pyruvate	336.47|full
+	Fermentation	Formate <=> CO2 + H2	hycE	Formate lyase	K15830.hmm	K15830		formate	CO2 ; H	321.10|full
 45	C1 metabolism	Methanol oxidation	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028	a primary alcohol + 2 ferricytochrome cL = an aldehyde + 2 ferrocytochrome cL + 2 H+ [RN:R10713]	primary alcohol; ferricytochrome cL	aldehyde; ferrocytochrome cL; H+	400|full
 46	C1 metabolism	Methanol oxidation	mdh	methanol dehydrogenase	TIGR04266.hmm	K00093	methanol + NAD+ = formaldehyde + NADH + H+ [RN:R00605]	methanol; NAD+	formaldehyde; NADH; H+	400.00|full
 47	C1 metabolism	Methyl amine -> formaldehyde	mauA	methylamine dehydrogenase light chain	TIGR02659.hmm	K15228	methylamine + H2O + 2 amicyanin = formaldehyde + NH3 + 2 reduced amicyanin [RN:R00606]	methylamine; H2O; amicyanin	formaldehyde; NH3; reduced amicyanin	85.80|full
