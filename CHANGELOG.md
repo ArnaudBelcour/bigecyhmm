@@ -1,5 +1,11 @@
 # Changelog
 
+# bigecyhmm v0.1.4 (2025-01-08)
+
+## Fix
+
+* Try to fix issue in pyproject.toml with pypi publishing.
+
 # bigecyhmm v0.1.3 (2025-01-06)
 
 ## Add
