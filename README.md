@@ -1,4 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![GitHub license](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/license_esmecata.svg)](https://github.com/ArnaudBelcour/bigecyhmm/blob/master/LICENSE) 
+[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/)
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
