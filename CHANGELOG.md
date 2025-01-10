@@ -1,11 +1,17 @@
 # Changelog
 
-# bigecyhmm v0.1.5 (2025-01-08)
+# bigecyhmm v0.1.5 (2025-01-10)
 
 ## Add
 
-* HMM associated with foramte fermentation (formate lyase, hycE, `K15830`).
-* In `bigecyhmm_visualisation`, the possibility to create barplot showing abundance of specific function categories.
+* HMM associated with formate fermentation (formate lyase, hycE, `K15830`).
+* In `bigecyhmm_visualisation`, add the possibility to create barplot showing abundance of specific function categories.
+* Comments in the visualisation script.
+* Test for the visualisaiton part.
+
+## Modify
+
+* Rename pathway `C-S-10:Acetogenesis` into `C-S-10:Acetogenesis WL` and make it focus on Wood–Ljungdahl pathway.
 
 ## Fix
 

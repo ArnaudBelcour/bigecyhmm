@@ -229,7 +229,7 @@ def create_carbon_cycle(input_diagram_file, output_file):
     data_step_07 = diagram_data['C-S-07:Methanogenesis']
     data_step_08 = diagram_data['C-S-08:Methanotrophy']
     data_step_09 = diagram_data['C-S-09:Hydrogen oxidation']
-    data_step_10 = diagram_data['C-S-10:Acetogenesis']
+    data_step_10 = diagram_data['C-S-10:Acetogenesis WL']
 
     imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (0,0,0), font=font)
     imgdraw.text((100,70), 'Step2: Carbon fixation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (139,137,137), font=font)
@@ -240,7 +240,7 @@ def create_carbon_cycle(input_diagram_file, output_file):
     imgdraw.text((350,450), 'Step7: Methanogenesis\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (93,71,139), font=font)
     imgdraw.text((300,650), 'Step8: Methanotrophy\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (205,186,150), font=font)
     imgdraw.text((575,400), 'Step9: Hydrogen oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (238,162,173), font=font)
-    imgdraw.text((275,300), 'Step10: Acetogenesis\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (0,134,139), font=font)
+    imgdraw.text((275,300), 'Step10: Acetogenesis WL\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (0,134,139), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)

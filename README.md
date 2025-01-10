@@ -1,3 +1,5 @@
+[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![GitHub license](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/license_esmecata.svg)](https://github.com/ArnaudBelcour/bigecyhmm/blob/master/LICENSE) 
+
 # bigecyhmm: Biogeochemical cycle HMMs search
 
 This is a package to search for genes associated with biogeochemical cycles in protein sequence fasta files. The HMMs come from METABOLIC article, KEGG, PFAM, TIGR.
