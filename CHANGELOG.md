@@ -6,6 +6,7 @@
 
 * HMM associated with formate fermentation (formate lyase, hycE, `K15830`).
 * In `bigecyhmm_visualisation`, add the possibility to create barplot showing abundance of specific function categories.
+* In `bigecyhmm_visualisation`, add the possibility to create heatmap showing function abundances.
 * Comments in the visualisation script.
 * Test for the visualisaiton part.
 

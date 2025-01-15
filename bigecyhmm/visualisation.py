@@ -43,9 +43,6 @@ Requires seaborn, pandas, plotly and kaleido.
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-plt.rcParams['figure.figsize'] = [40, 20]
-plt.rc('font', size=30)
-
 ROOT = os.path.dirname(__file__)
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
 
@@ -125,19 +122,19 @@ def compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance
     return abundance_data
 
 
-def read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data=None):
+def read_bigecyhmm_genes(bigecyhmm_output, abundance_data=None):
     """Read function_presence.tsv created by bigecyhmm to compute the abundance of each function genes.
 
     Args:
         bigecyhmm_output (path): path to the output folder of bigecyhmm.
-        output_folder (path): pat hto the output folder.
         abundance_data (dict): for each sample, contains a subdict with the relative abundance of tax_id_name in these samples.
 
     Returns:
         gene_categories (dict): adicitonary mapping function category to their respective function inferred by bigecyhmm
         df_seaborn_community (pd.DataFrame): dataframe pandas containing a column with the name of function and a second column with the ratio of organisms having it in the community
         df_seaborn_sample (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-        df_seaborn_sample_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function,  a second column with the relative abundance of organisms having it in the community and a third column for the sample
+        df_seaborn_sample_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the relative abundance of organisms having it in the community and a third column for the sample
+        df_heatmap_abundance_samples (pd.DataFrame): dataframe pandas containing a column with the name of function, one column by sample and the abundance of function in sample as value.
     """
     data_seaborn = []
     data_seaborn_abundance = []
@@ -183,10 +180,9 @@ def read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data=None):
         else:
             data_seaborn.append([index, 0])
     df_seaborn_community = pd.DataFrame(data_seaborn, columns=['name', 'ratio'])
-    df_seaborn_community.to_csv(os.path.join(output_folder, 'hmm_gene_community.tsv'), sep='\t')
 
     if abundance_data is None:
-        return df_seaborn_community, None, None
+        return df_seaborn_community, None, None, None
     else:
         for sample in abundance_data:
             function_abundance = {}
@@ -217,19 +213,16 @@ def read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data=None):
                     data_seaborn.append([index, 0, sample])
 
         df_seaborn_sample = pd.DataFrame(data_seaborn, columns=['name', 'ratio', 'sample'])
-        df_seaborn_sample.to_csv(os.path.join(output_folder, 'hmm_gene_sample.tsv'), sep='\t')
         df_seaborn_sample_abundance = pd.DataFrame(data_seaborn_abundance, columns=['name', 'ratio',  'sample'])
-        df_seaborn_sample_abundance.to_csv(os.path.join(output_folder, 'hmm_gene_sample_abundance.tsv'), sep='\t')
 
         return gene_categories, df_seaborn_community, df_seaborn_sample, df_seaborn_sample_abundance
 
 
-def read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data=None):
+def read_bigecyhmm_functions(bigecyhmm_output, abundance_data=None):
     """Read pathway_presence.tsv created by bigecyhmm to compute the abundance of each major pathways.
 
     Args:
         bigecyhmm_output (path): path to the output folder of bigecyhmm.
-        output_folder (path): pat hto the output folder.
         abundance_data (dict): for each sample, contains a subdict with the relative abundance of tax_id_name in these samples.
 
     Returns:
@@ -291,7 +284,6 @@ def read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data=Non
         else:
             data_seaborn.append([index, 0])
     df_seaborn_community = pd.DataFrame(data_seaborn, columns=['name', 'ratio'])
-    df_seaborn_community.to_csv(os.path.join(output_folder, 'hmm_cycleboxplot_community.tsv'), sep='\t')
 
     if abundance_data is None:
         return df_seaborn_community, None, None
@@ -326,8 +318,6 @@ def read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data=Non
 
         df_seaborn_sample = pd.DataFrame(data_seaborn, columns=['name', 'ratio', 'sample'])
         df_seaborn_sample_abundance = pd.DataFrame(data_seaborn_abundance, columns=['name', 'ratio',  'sample'])
-        df_seaborn_sample_abundance.to_csv(os.path.join(output_folder, 'hmm_cycleboxplot_sample_abundance.tsv'), sep='\t')
-        df_seaborn_sample.to_csv(os.path.join(output_folder, 'hmm_cycleboxplot_sample.tsv'), sep='\t')
 
         return df_seaborn_community, df_seaborn_sample, df_seaborn_sample_abundance
 
@@ -337,14 +327,13 @@ def create_swarmplot_community(df_seaborn, output_file_name):
 
     Args:
         df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-
-    Returns:
         output_file_name (path): path to the output file.
     """
+    fig, axes = plt.subplots(figsize=(40,20))
+    plt.rc('font', size=30)
     ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', s=10)
     [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
     plt.xticks(rotation=90)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(output_file_name, bbox_inches="tight")
     plt.clf()
 
@@ -354,11 +343,28 @@ def create_swarmplot_sample(df_seaborn, output_file_name):
 
     Args:
         df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-
-    Returns:
         output_file_name (path): path to the output file.
     """
+    fig, axes = plt.subplots(figsize=(40,20))
+    plt.rc('font', size=30)
     ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', hue='sample', s=10)
+    [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
+    plt.xticks(rotation=90)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.savefig(output_file_name, bbox_inches="tight")
+    plt.clf()
+
+
+def create_boxplot_sample(df_seaborn, output_file_name):
+    """Create boxplot from pandas dataframe with function as 'name' column' and associated ratio as a second column
+
+    Args:
+        df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
+        output_file_name (path): path to the output file.
+    """
+    fig, axes = plt.subplots(figsize=(40,20))
+    plt.rc('font', size=30)
+    ax = sns.boxplot(data=df_seaborn, x='name', y='ratio', hue='sample')
     [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
     plt.xticks(rotation=90)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
@@ -371,10 +377,9 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot):
 
     Args:
         df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function,  a second column with the relative abundance of organisms having it in the community and a third column for the sample
-
-    Returns:
         output_polar_plot (path): path to the output file.
     """
+
     """
     Script to make one polar plot per samples. TODO: make it more general.
     specs = [[{'type': 'polar'}]*2]*2
@@ -427,16 +432,32 @@ def visualise_barplot_category(category, gene_categories, df_seaborn_abundance, 
         cateogry (str): name of the function category to plot
         gene_categories (dict): adicitonary mapping function category to their respective function inferred by bigecyhmm
         df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function,  a second column with the relative abundance of organisms having it in the community and a third column for the sample
-
-    Returns:
         output_file_name (str): path to the output file.
     """
+    fig, axes = plt.subplots(figsize=(40,20))
+    plt.rc('font', size=30)
     kept_functions = gene_categories[category]
     df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_functions)]
     g = sns.barplot(data=df_seaborn_abundance, x='name', y='ratio', hue='sample')
     plt.xticks(rotation=90)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(output_file_name, bbox_inches="tight")
+    plt.clf()
+
+
+def create_heatmap_functions(df, output_heatmap_filepath):
+    """Create heatmap of function abundances in samples
+
+    Args:
+        df (pd.DataFrame): dataframe pandas containing a column with the name of function, one column by sample and the abundance of function in sample as value.
+        output_heatmap_filepath (str): path to the output file.
+    """
+    sns.set_theme(font_scale=1)
+    fig, axes = plt.subplots(figsize=(30,60))
+    plt.rc('font', size=10)
+    g = sns.heatmap(data=df, xticklabels=1, cmap='viridis_r', linewidths=1, linecolor='black')
+    plt.tight_layout()
+    plt.savefig(output_heatmap_filepath)
     plt.clf()
 
 
@@ -452,42 +473,75 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
-    if abundance_file_path is not None: 
+    output_folder_occurrence = os.path.join(output_folder, 'function_occurrence')
+    if not os.path.exists(output_folder_occurrence):
+        os.mkdir(output_folder_occurrence)
+
+    if abundance_file_path is not None:
         sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+        output_folder_abundance = os.path.join(output_folder, 'function_abundance')
+        if not os.path.exists(output_folder_abundance):
+            os.mkdir(output_folder_abundance)
     else:
         sample_abundance = None
         sample_tot_abundance = None
+        output_folder_abundance = None
 
     proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
     observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
-    if abundance_file_path is not None: 
+    if abundance_file_path is not None:
         abundance_data = compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names)
     else:
         abundance_data = None
 
-    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, output_folder, abundance_data)
+    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, abundance_data)
+    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_cycleboxplot_community.tsv'), sep='\t')
 
-    output_file_name = os.path.join(output_folder, 'swarmplot_function_ratio_community.png')
+    if abundance_file_path is not None:
+        df_seaborn_abundance.to_csv(os.path.join(output_folder_abundance, 'hmm_cycleboxplot_sample_abundance.tsv'), sep='\t')
+        df_seaborn.to_csv(os.path.join(output_folder_abundance, 'hmm_cycleboxplot_sample.tsv'), sep='\t')
+        df_cycle_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
+        df_cycle_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_samples.tsv'), sep='\t')
+
+    output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
     create_swarmplot_community(df_seaborn_community, output_file_name)
 
     if abundance_file_path is not None:
-        output_file_name = os.path.join(output_folder, 'boxplot_function_ratio_sample.png')
-        output_file_name_abund = os.path.join(output_folder, 'boxplot_function_abundance_ratio_sample.png')
+        # Get the occurrence of function in each sample.
+        output_file_name = os.path.join(output_folder_occurrence, 'boxplot_function_ratio_sample.png')
         create_swarmplot_sample(df_seaborn, output_file_name)
+
+        output_file_name_abund = os.path.join(output_folder_abundance, 'boxplot_function_abundance_ratio_sample.png')
         create_swarmplot_sample(df_seaborn_abundance, output_file_name_abund)
 
+    output_polar_plot = os.path.join(output_folder_occurrence, 'polar_plot_merged.png')
+    create_polar_plot(df_seaborn, output_polar_plot)
     if abundance_file_path is not None:
-        output_polar_plot = os.path.join(output_folder, 'polar_plot_merged.png')
+        output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_merged.png')
         create_polar_plot(df_seaborn_abundance, output_polar_plot)
 
-    gene_categories, df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_genes(bigecyhmm_output, output_folder, abundance_data)
+    gene_categories, df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_genes(bigecyhmm_output, abundance_data)
+    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_gene_community.tsv'), sep='\t')
+
     if abundance_file_path is not None:
-        output_file_name = os.path.join(output_folder, 'barplot_gene_function.png')
+        df_seaborn.to_csv(os.path.join(output_folder_abundance, 'hmm_gene_sample.tsv'), sep='\t')
+        df_seaborn_abundance.to_csv(os.path.join(output_folder_abundance, 'hmm_gene_sample_abundance.tsv'), sep='\t')
+        df_heatmap_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
+        df_heatmap_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'heatmap_abundance_samples.tsv'), sep='\t')
+
+    output_heatmap_filepath = os.path.join(output_folder_occurrence, 'heatmap_occurrence.png')
+    df_seaborn_community.set_index('name', inplace=True)
+    create_heatmap_functions(df_seaborn_community, output_heatmap_filepath)
+
+    if abundance_file_path is not None:
+        output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function.png')
         visualise_barplot_category('Fermentation', gene_categories, df_seaborn_abundance, output_file_name)
-        output_file_name = os.path.join(output_folder, 'barplot_gene_function_2.png')
+        output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function_2.png')
         kept_names = [name for name in df_seaborn_abundance['name'] if 'Wood' in name]
         df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_names)]
         visualise_barplot_category('Carbon fixation', gene_categories, df_seaborn_abundance, output_file_name)
+        output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
+        create_heatmap_functions(df_heatmap_abundance_samples, output_heatmap_filepath)
 
 
 def main():
