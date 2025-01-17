@@ -152,8 +152,8 @@
 	Sulfur cycling	Sulfate reduction	apsA	Adenosine-5′-Phosphosulfate Reductase	K00394.hmm	K00394				446.10|domain
 	Sulfur cycling	Sulfate reduction	apsK	Adenylyl-sulfate kinase	TIGR00455.hmm	K00860				138.7|domain
 132	Sulfur cycling	Thiosulfate disproportionation	phsA	thiosulfate reductase / polysulfide reductase chain A	K08352.hmm	K08352	thiosulfate + a quinol = sulfite + hydrogen sulfide + a quinone [RN:R11488]	thiosulfate; quinol	sulfite; hydrogen sulfide; quinone	602.67|full
-	Sulfur cycling	Polysulfide reduction		polysulfide reductase chain B	K16293.hmm	K16293				266.90|full
-	Sulfur cycling	Polysulfide reduction		polysulfide reductase chain C	K16294.hmm	K16294				305.90|full
+	Sulfur cycling	Polysulfide reduction	psrB	polysulfide reductase chain B	K16293.hmm	K16293				266.90|full
+	Sulfur cycling	Polysulfide reduction	psrC	polysulfide reductase chain C	K16294.hmm	K16294				305.90|full
 133	Hydrogenases	FeFe hydrogenase	fefe-group-a13	FeFe hydrogenase, H2-evolution/Electron-bifurcation	fefe-group-a13.hmm	K00532, K00533, K00534, K06441, K18016, K18017, K18023	H2-evolution/Electron-bifurcation	N/A	N/A	733.8|full
 134	Hydrogenases	FeFe hydrogenase	fefe-group-a2	FeFe hydrogenase, H2-uptake	fefe-group-a2.hmm	N/A	H2-uptake	N/A	N/A	815.2|full
 135	Hydrogenases	FeFe hydrogenase	fefe-group-a4	FeFe hydrogenase, H2-uptake/Electron-bifurcation	fefe-group-a4.hmm	N/A	H2-uptake/Electron-bifurcation	N/A	N/A	599.05|full
