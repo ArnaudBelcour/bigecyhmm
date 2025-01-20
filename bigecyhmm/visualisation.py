@@ -218,11 +218,12 @@ def read_bigecyhmm_genes(bigecyhmm_output, abundance_data=None):
         return gene_categories, df_seaborn_community, df_seaborn_sample, df_seaborn_sample_abundance
 
 
-def read_bigecyhmm_functions(bigecyhmm_output, abundance_data=None):
+def read_bigecyhmm_functions(bigecyhmm_output, output_folder_abundance, abundance_data=None):
     """Read pathway_presence.tsv created by bigecyhmm to compute the abundance of each major pathways.
 
     Args:
-        bigecyhmm_output (path): path to the output folder of bigecyhmm.
+        bigecyhmm_output (str): path to the output folder of bigecyhmm.
+        output_folder_abundance (str): path to output folder for function abundance.
         abundance_data (dict): for each sample, contains a subdict with the relative abundance of tax_id_name in these samples.
 
     Returns:
@@ -288,8 +289,13 @@ def read_bigecyhmm_functions(bigecyhmm_output, abundance_data=None):
     if abundance_data is None:
         return df_seaborn_community, None, None
     else:
+        output_folder_function_participation = os.path.join(output_folder_abundance, 'function_participation')
+        if not os.path.exists(output_folder_function_participation):
+            os.mkdir(output_folder_function_participation)
+
         for sample in abundance_data:
             function_abundance = {}
+            function_participation = {}
             all_tax_ids = []
             tax_id_function = {}
             for tax_id_name in abundance_data[sample]:
@@ -298,11 +304,17 @@ def read_bigecyhmm_functions(bigecyhmm_output, abundance_data=None):
                 cycle_df.columns = ['genome']
                 if abundance_data[sample][tax_id_name] > 0:
                     all_tax_ids.append(tax_id_name)
+                if tax_id_name not in function_participation:
+                    function_participation[tax_id_name] = {}
                 for index, row in cycle_df.iterrows():
                     if index not in function_abundance:
                         function_abundance[index] = row['genome']*abundance_data[sample][tax_id_name]
                     else:
                         function_abundance[index] = row['genome']*abundance_data[sample][tax_id_name] + function_abundance[index]
+                    if index not in function_participation[tax_id_name]:
+                        function_participation[tax_id_name][index] = row['genome']*abundance_data[sample][tax_id_name]
+                    else:
+                        function_participation[tax_id_name][index] = row['genome']*abundance_data[sample][tax_id_name] + function_participation[tax_id_name][index]
                     if row['genome']*abundance_data[sample][tax_id_name] > 0:
                         if index not in tax_id_function:
                             tax_id_function[index] = [tax_id_name]
@@ -315,6 +327,16 @@ def read_bigecyhmm_functions(bigecyhmm_output, abundance_data=None):
                     data_seaborn.append([index, len(tax_id_function[index])/len(all_tax_ids), sample])
                 else:
                     data_seaborn.append([index, 0, sample])
+            all_functions = cycle_df.index.tolist()
+
+            data_seaborn_participation = []
+            index_taxid_names = []
+            for tax_id_name in function_participation:
+                data_seaborn_participation.append([*[function_participation[tax_id_name][function] for function in all_functions]])
+                index_taxid_names.append(tax_id_name)
+            df_seaborn_participation = pd.DataFrame(data_seaborn_participation, index=index_taxid_names, columns=all_functions)
+            df_seaborn_participation.index.name = 'tax_id_name'
+            df_seaborn_participation.to_csv(os.path.join(output_folder_function_participation, sample+'.tsv'), sep='\t')
 
         df_seaborn_sample = pd.DataFrame(data_seaborn, columns=['name', 'ratio', 'sample'])
         df_seaborn_sample_abundance = pd.DataFrame(data_seaborn_abundance, columns=['name', 'ratio',  'sample'])
@@ -494,7 +516,7 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
     else:
         abundance_data = None
 
-    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, abundance_data)
+    df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, output_folder_abundance, abundance_data)
     df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_cycleboxplot_community.tsv'), sep='\t')
 
     if abundance_file_path is not None:

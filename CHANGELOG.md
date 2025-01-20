@@ -1,12 +1,11 @@
 # Changelog
 
-# bigecyhmm v0.1.5 (2025-01-10)
+# bigecyhmm v0.1.5 (2025-01-20)
 
 ## Add
 
 * HMM associated with formate fermentation (formate lyase, hycE, `K15830`).
-* In `bigecyhmm_visualisation`, add the possibility to create barplot showing abundance of specific function categories.
-* In `bigecyhmm_visualisation`, add the possibility to create heatmap showing function abundances.
+* In `bigecyhmm_visualisation`, add the possibility to create heatmap and barplot showing abundance of specific function categories. Also creates tabulated files indicating the ratio of organisms associated with functions for each sample.
 * Comments in the visualisation script.
 * Test for the visualisaiton part.
 
