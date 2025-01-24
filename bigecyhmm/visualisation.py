@@ -475,7 +475,7 @@ def create_heatmap_functions(df, output_heatmap_filepath):
         output_heatmap_filepath (str): path to the output file.
     """
     sns.set_theme(font_scale=1)
-    fig, axes = plt.subplots(figsize=(30,60))
+    fig, axes = plt.subplots(figsize=(35,60))
     plt.rc('font', size=10)
     g = sns.heatmap(data=df, xticklabels=1, cmap='viridis_r', linewidths=1, linecolor='black')
     plt.tight_layout()
