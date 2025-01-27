@@ -14,23 +14,27 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import pandas as pd
+from pandas import __version__ as pandas_version
 import seaborn as sns
+from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
-import os
-import math
-import sys
+from matplotlib import __version__ as matplotlib_version
+from kaleido import __version__ as kaleido_version
 
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
+from plotly import __version__ as plotly_version
 
 import argparse
 import logging
+import json
+import math
 import os
 import sys
 import time
 
-from bigecyhmm import __version__ as VERSION
+from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm.utils import is_valid_dir
 
 MESSAGE = '''
@@ -492,6 +496,8 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         output_folder (str): path to the output folder where files will be created
         abundance_file_path (str): path to abundance file
     """
+    start_time = time.time()
+
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
@@ -509,13 +515,16 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         sample_tot_abundance = None
         output_folder_abundance = None
 
+    logger.info("Read EsMeCaTa proteome_tax_id file.")
     proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
     observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
     if abundance_file_path is not None:
+        logger.info("Read abundance file.")
         abundance_data = compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names)
     else:
         abundance_data = None
 
+    logger.info("Read bigecyhmm output files.")
     df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, output_folder_abundance, abundance_data)
     df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_cycleboxplot_community.tsv'), sep='\t')
 
@@ -525,6 +534,7 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         df_cycle_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
         df_cycle_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_samples.tsv'), sep='\t')
 
+    logger.info("Create swarmplot.")
     output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
     create_swarmplot_community(df_seaborn_community, output_file_name)
 
@@ -536,6 +546,7 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         output_file_name_abund = os.path.join(output_folder_abundance, 'boxplot_function_abundance_ratio_sample.png')
         create_swarmplot_sample(df_seaborn_abundance, output_file_name_abund)
 
+    logger.info("Create polarplot.")
     output_polar_plot = os.path.join(output_folder_occurrence, 'polar_plot_merged.png')
     create_polar_plot(df_seaborn, output_polar_plot)
     if abundance_file_path is not None:
@@ -543,7 +554,7 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         create_polar_plot(df_seaborn_abundance, output_polar_plot)
 
     gene_categories, df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_genes(bigecyhmm_output, abundance_data)
-    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_gene_community.tsv'), sep='\t')
+    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'heatmap_occurrence.tsv'), sep='\t')
 
     if abundance_file_path is not None:
         df_seaborn.to_csv(os.path.join(output_folder_abundance, 'hmm_gene_sample.tsv'), sep='\t')
@@ -551,6 +562,7 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         df_heatmap_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
         df_heatmap_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'heatmap_abundance_samples.tsv'), sep='\t')
 
+    logger.info("Create heatmap and barplot.")
     output_heatmap_filepath = os.path.join(output_folder_occurrence, 'heatmap_occurrence.png')
     df_seaborn_community.set_index('name', inplace=True)
     create_heatmap_functions(df_seaborn_community, output_heatmap_filepath)
@@ -565,6 +577,25 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
         create_heatmap_functions(df_heatmap_abundance_samples, output_heatmap_filepath)
 
+    duration = time.time() - start_time
+    metadata_json = {}
+    metadata_json['tool_dependencies'] = {}
+    metadata_json['tool_dependencies']['python_package'] = {}
+    metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
+    metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
+    metadata_json['tool_dependencies']['python_package']['pandas'] = pandas_version
+    metadata_json['tool_dependencies']['python_package']['plotly'] = plotly_version
+    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
+    metadata_json['tool_dependencies']['python_package']['seaborn'] = seaborn_version
+    metadata_json['tool_dependencies']['python_package']['kaleido'] = kaleido_version
+
+    metadata_json['input_parameters'] = {'esmecata_output_folder': esmecata_output_folder, 'bigecyhmm_output': bigecyhmm_output, 'output_folder': output_folder,
+                                         'abundance_file_path': abundance_file_path}
+    metadata_json['duration'] = duration
+
+    metadata_file = os.path.join(output_folder, 'bigecyhmm_visualisation_metadata.json')
+    with open(metadata_file, 'w') as ouput_file:
+        json.dump(metadata_json, ouput_file, indent=4)
 
 def main():
     start_time = time.time()
@@ -577,7 +608,7 @@ def main():
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s ' + VERSION + '\n')
+        version='%(prog)s ' + bigecyhmm_version + '\n')
 
     parser.add_argument(
         '--esmecata',
