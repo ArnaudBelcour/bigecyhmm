@@ -36,6 +36,7 @@ import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm.utils import is_valid_dir
+from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle
 
 MESSAGE = '''
 Create figures from bigecyhmm and esmecata outputs.
@@ -487,7 +488,7 @@ def create_heatmap_functions(df, output_heatmap_filepath):
     plt.clf()
 
 
-def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abundance_file_path=None):
+def create_visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abundance_file_path=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
     Args:
@@ -526,13 +527,14 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
 
     logger.info("Read bigecyhmm output files.")
     df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_functions(bigecyhmm_output, output_folder_abundance, abundance_data)
-    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'hmm_cycleboxplot_community.tsv'), sep='\t')
+    df_seaborn_community.set_index('name', inplace=True)
+    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'cycle_occurrence.tsv'), sep='\t')
 
     if abundance_file_path is not None:
         df_seaborn_abundance.to_csv(os.path.join(output_folder_abundance, 'hmm_cycleboxplot_sample_abundance.tsv'), sep='\t')
         df_seaborn.to_csv(os.path.join(output_folder_abundance, 'hmm_cycleboxplot_sample.tsv'), sep='\t')
         df_cycle_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
-        df_cycle_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_samples.tsv'), sep='\t')
+        df_cycle_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample.tsv'), sep='\t')
 
     logger.info("Create swarmplot.")
     output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
@@ -554,17 +556,17 @@ def visualisation(esmecata_output_folder, bigecyhmm_output, output_folder, abund
         create_polar_plot(df_seaborn_abundance, output_polar_plot)
 
     gene_categories, df_seaborn_community, df_seaborn, df_seaborn_abundance = read_bigecyhmm_genes(bigecyhmm_output, abundance_data)
-    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'heatmap_occurrence.tsv'), sep='\t')
+    df_seaborn_community.set_index('name', inplace=True)
+    df_seaborn_community.to_csv(os.path.join(output_folder_occurrence, 'function_occurrence.tsv'), sep='\t')
 
     if abundance_file_path is not None:
         df_seaborn.to_csv(os.path.join(output_folder_abundance, 'hmm_gene_sample.tsv'), sep='\t')
         df_seaborn_abundance.to_csv(os.path.join(output_folder_abundance, 'hmm_gene_sample_abundance.tsv'), sep='\t')
         df_heatmap_abundance_samples = df_seaborn_abundance.pivot(index='name', columns='sample', values='ratio')
-        df_heatmap_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'heatmap_abundance_samples.tsv'), sep='\t')
+        df_heatmap_abundance_samples.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample.tsv'), sep='\t')
 
     logger.info("Create heatmap and barplot.")
     output_heatmap_filepath = os.path.join(output_folder_occurrence, 'heatmap_occurrence.png')
-    df_seaborn_community.set_index('name', inplace=True)
     create_heatmap_functions(df_seaborn_community, output_heatmap_filepath)
 
     if abundance_file_path is not None:
@@ -667,7 +669,7 @@ def main():
     else:
         abundance_file = args.abundance_file
 
-    visualisation(args.esmecata, args.bigecyhmm, args.output, abundance_file)
+    create_visualisation(args.esmecata, args.bigecyhmm, args.output, abundance_file)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))

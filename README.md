@@ -128,13 +128,15 @@ output_folder
 - `function_participation`: a folder containing one tabulated file per sample from the abundance file. For each sample, it gives the function abundance associated with each organism in the community.
 
 - `heatmap_abundance_samples.png`: a heatmap showing the abundance for all the HMMs searched by bigecyhmm in the different samples.
-- `heatmap_abundance_samples.tsv`: the tabulated file associated with the creation of the `heatmap_abundance_samples.png` file.
+- `function_abundance_sample.tsv`: the tabulated file associated with the creation of the `heatmap_abundance_samples.png` file.
+- `cycle_abundance_sample.tsv`: a tabulated file showing the abundance of major functions in biogeochemical cycles.
 - `polar_plot_merged.png`: a polar plot showing the abundance of major functions in the samples.
 
 `function_occurrence` is a folder containing all visualisation associated with occurrence values. It contains:
 
 - `heatmap_occurrence.png`: a heatmap showing the occurrence for all the HMMs searched by bigecyhmm in the community (all the input protein files).
-- `heatmap_occurrence.tsv`: the tabulated file associated with the creation of the `heatmap_occurrence.png` file.
+- `function_occurrence.tsv`: the tabulated file associated with the creation of the `heatmap_occurrence.png` file.
+- `cycle_occurence.tsv`: a tabulated file showing the occurrence of major functions in biogeochemical cycles.
 - `polar_plot_merged.png`: a polar plot showing the occurrence of major functions in the samples.
 
 `bigecyhmm_visualisation.log` is a log file.

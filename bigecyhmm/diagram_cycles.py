@@ -208,17 +208,16 @@ def parse_diagram_folder(input_diagram_file):
     return diagram_data
 
 
-def create_carbon_cycle(input_diagram_file, output_file):
+def create_carbon_cycle(diagram_data, output_file):
     """From png TEMPLATE_CARBON_CYCLE and input_diagram_folder file, create carbon cycle figure.
 
     Args:
-        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
     """
     img = Image.open(TEMPLATE_CARBON_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']
     data_step_02 = diagram_data['C-S-02:Carbon fixation']
@@ -246,17 +245,16 @@ def create_carbon_cycle(input_diagram_file, output_file):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_nitrogen_cycle(input_diagram_file, output_file):
+def create_nitrogen_cycle(diagram_data, output_file):
     """From png TEMPLATE_NITROGEN_CYCLE and input_diagram_folder file, create nitrogen cycle figure.
 
     Args:
-        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
     """
     img = Image.open(TEMPLATE_NITROGEN_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['N-S-01:Nitrogen fixation']
     data_step_02 = diagram_data['N-S-02:Ammonia oxidation']
@@ -284,17 +282,16 @@ def create_nitrogen_cycle(input_diagram_file, output_file):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_sulfur_cycle(input_diagram_file, output_file):
+def create_sulfur_cycle(diagram_data, output_file):
     """From png TEMPLATE_SULFUR_CYCLE and input_diagram_folder file, create sulfur cycle figure.
 
     Args:
-        input_diagram_folder (str): path to bigecyhmm output folder containing diagram file
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
     """
     img = Image.open(TEMPLATE_SULFUR_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['S-S-01:Sulfide oxidation']
     data_step_02 = diagram_data['S-S-02:Sulfur reduction']
@@ -320,17 +317,16 @@ def create_sulfur_cycle(input_diagram_file, output_file):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_other_cycle(input_diagram_file, output_file):
+def create_other_cycle(diagram_data, output_file):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
     Args:
-        input_diagram_file (str): path to Total.R_input.txt file containg number of pathways in community
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
     """
     img = Image.open(TEMPLATE_OTHER_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
-    diagram_data = parse_diagram_folder(input_diagram_file)
 
     data_step_01 = diagram_data['O-S-01:Iron reduction']
     data_step_02 = diagram_data['O-S-02:Iron oxidation']
@@ -360,11 +356,16 @@ def create_diagram_figures(input_diagram_file, output_folder):
     if not os.path.exists(biogeochemical_diagram_folder):
         os.mkdir(biogeochemical_diagram_folder)
 
+    diagram_data = parse_diagram_folder(input_diagram_file)
+
     carbon_cycle_file = os.path.join(biogeochemical_diagram_folder, 'carbon_cycle.png')
-    create_carbon_cycle(input_diagram_file, carbon_cycle_file)
+    create_carbon_cycle(diagram_data, carbon_cycle_file)
+
     nitrogen_cycle_file = os.path.join(biogeochemical_diagram_folder, 'nitrogen_cycle.png')
-    create_nitrogen_cycle(input_diagram_file, nitrogen_cycle_file)
+    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+
     sulfur_cycle_file = os.path.join(biogeochemical_diagram_folder, 'sulfur_cycle.png')
-    create_sulfur_cycle(input_diagram_file, sulfur_cycle_file)
+    create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+
     other_cycle_file = os.path.join(biogeochemical_diagram_folder, 'other_cycle.png')
-    create_other_cycle(input_diagram_file, other_cycle_file)
+    create_other_cycle(diagram_data, other_cycle_file)
