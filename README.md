@@ -113,11 +113,13 @@ output_folder
 │       └── sample_1.tsv
 │       └── ...
 │   └── heatmap_abundance_samples.png
-│   └── heatmap_abundance_samples.tsv
+│   └── function_abundance_sample.tsv
+│   └── cycle_abundance_sample.tsv
 │   └── polar_plot_merged.png
 ├── function_occurrence
 │   └── heatmap_occurrence.png
-│   └── heatmap_occurrence.tsv
+│   └── function_occurrence.tsv
+│   └── cycle_occurence.tsv
 │   └── polar_plot_merged.png
 ├── bigecyhmm_visualisation.log
 ├── bigecyhmm_visualisation_metadata.json
