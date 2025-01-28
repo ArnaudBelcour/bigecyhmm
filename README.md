@@ -127,19 +127,21 @@ output_folder
 
 `function_abundance` is a folder containing all visualisation associated with abundance values. It contains:
 
+- `cycle_diagrams_abundance`: a folder containing 4 cycle diagrams (carbon, sulfur, nitrogen and other) per sample from the abundance file. For each sample, it gives the cycle abundance.
 - `function_participation`: a folder containing one tabulated file per sample from the abundance file. For each sample, it gives the function abundance associated with each organism in the community.
-
+- `cycle_participation`: a folder containing one tabulated file per sample from the abundance file. For each sample, it gives the cycle abundance associated with each organism in the community.
 - `function_abundance_sample.tsv`: a tabulated file containing the ratio of abundance of each function in the different sample. Rows correspond to the functions and columns correspond to the samples. It is used to create the `heatmap_abundance_samples.png` file.
 - `heatmap_abundance_samples.png`: a heatmap showing the abundance for all the HMMs searched by bigecyhmm in the different samples.
 - `cycle_abundance_sample.tsv`: a tabulated file showing the abundance of major functions in biogeochemical cycles. Rows correspond to the major functions and columns correspond to the samples.
-- `polar_plot_merged.png`: a polar plot showing the abundance of major functions in the samples.
+- `polar_plot_abundance_samples.png`: a polar plot showing the abundance of major functions in the samples.
 
 `function_occurrence` is a folder containing all visualisation associated with occurrence values. It contains:
 
 - `function_occurrence.tsv`: a tabulated file containing the ratio for each function. Rows correspond to the function and the column corresponds to the community. It is used to create the `heatmap_occurrence.png` file.
 - `heatmap_occurrence.png`: a heatmap showing the occurrence for all the HMMs searched by bigecyhmm in the community (all the input protein files).
 - `cycle_occurence.tsv`: a tabulated file showing the occurrence of major functions in biogeochemical cycles. Rows correspond to the major function and the column corresponds to the community.
-- `polar_plot_merged.png`: a polar plot showing the occurrence of major functions in the samples.
+- `polar_plot_occurrence.png`: a polar plot showing the occurrence of major functions in the samples.
+- `swarmplot_function_ratio_community.png`: a swarmplot showing the occurrence of major functions in the samples.
 
 `bigecyhmm_visualisation.log` is a log file.
 

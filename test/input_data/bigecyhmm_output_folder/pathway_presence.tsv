@@ -1,0 +1,36 @@
+function	tax_id_name_1	tax_id_name_2
+C-S-01:Organic carbon oxidation	1	1
+C-S-02:Carbon fixation	1	1
+C-S-03:Ethanol oxidation	1	0
+C-S-04:Acetate oxidation	1	1
+C-S-05:Hydrogen generation	0	1
+C-S-06:Fermentation	1	1
+C-S-07:Methanogenesis	1	0
+C-S-08:Methanotrophy	0	0
+C-S-09:Hydrogen oxidation	0	1
+C-S-10:Acetogenesis WL	0	0
+N-S-01:Nitrogen fixation	1	1
+N-S-02:Ammonia oxidation	0	0
+N-S-03:Nitrite oxidation	0	0
+N-S-04:Nitrate reduction	0	0
+N-S-05:Nitrite reduction	0	0
+N-S-06:Nitric oxide reduction	0	0
+N-S-07:Nitrous oxide reduction	1	0
+N-S-08:Nitrite ammonification	1	1
+N-S-09:Anammox	0	0
+N-S-10:Nitric oxide dismutase	0	0
+O-S-01:Iron reduction	1	0
+O-S-02:Iron oxidation	0	0
+O-S-03:Arsenate reduction	0	1
+O-S-04:Arsenite oxidation	0	0
+O-S-05:Selenate reduction	0	0
+S-S-01:Sulfide oxidation	0	0
+S-S-02:Sulfur reduction	0	0
+S-S-03:Sulfur oxidation	1	1
+S-S-04:Sulfite oxidation	0	1
+S-S-05:Sulfate reduction	0	1
+S-S-06:Sulfite reduction	1	1
+S-S-07:Thiosulfate oxidation	0	0
+S-S-08:Thiosulfate disproportionation 1	0	1
+S-S-09:Thiosulfate disproportionation 2	0	0
+S-S-10:Polysulfide reduction	0	0

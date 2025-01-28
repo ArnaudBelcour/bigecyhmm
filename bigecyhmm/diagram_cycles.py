@@ -163,11 +163,12 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
             csvwriter.writerow([pathway, all_pathways[pathway], all_pathways[pathway] / len(org_hmms)])
 
     pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
+    all_orgs = list(set([org for org in org_pathways]))
     with open(pathway_presence_file, 'w') as open_pathway_presence_file:
         csvwriter = csv.writer(open_pathway_presence_file, delimiter='\t')
-        csvwriter.writerow(['organism', *all_pathways])
-        for org in org_pathways:
-            csvwriter.writerow([org, *[org_pathways[org][pathway] for pathway in all_pathways]])
+        csvwriter.writerow(['function', *all_orgs])
+        for pathway in all_pathways:
+            csvwriter.writerow([pathway, *[org_pathways[org][pathway] for org in all_orgs]])
 
     all_orgs = list([org for org in org_pathways_hmms])
     pathway_hmms_file = os.path.join(output_folder, 'pathway_presence_hmms.tsv')

@@ -1,0 +1,337 @@
+function	tax_id_name_1	tax_id_name_2
+Thermophilic specific rgy	NA	NA
+4-aminobutyrate aminotransferase and related aminotransferases 4-aminobutyrate aminotransferase and related aminotransferases	NA	1.0
+Aminotransferase class I and II aminotransferase class I and II	1.0	1.0
+Phosphoserine aminotransferase phosphoserine aminotransferase	NA	NA
+Ornithine/acetylornithine aminotransferase ornithine/acetylornithine aminotransferase	NA	0.25
+Branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	NA	0.6666666666666666
+Aspartate/tyrosine/aromatic aminotransferase aspartate/tyrosine/aromatic aminotransferase	0.25	0.5
+Aspartate racemase aspartate racemase 	1.0	1.0
+Histidinol-phosphate/aromatic aminotransferase histidinol-phosphate/aromatic aminotransferase	NA	1.0
+Serine-pyruvate aminotransferase/archaeal aspartate aminotransferase serine-pyruvate aminotransferase/archaeal aspartate aminotransferase	1.0	1.0
+Acetate => Acetaldehyde acetate => acetaldehyde	NA	NA
+Acetaldehyde => Ethanol acetaldehyde => ethanol	0.42857142857142855	0.7142857142857143
+Fatty acid degradation acyl-CoA dehydrogenase	1.0	NA
+Protocatechuate/Catechol degradation catA	NA	NA
+Phenol => Benzoyl-CoA ubiX	NA	1.0
+Phenol => Benzoyl-CoA bsdC	NA	NA
+Benzoyl-CoA reduction bcrC	NA	NA
+Benzoyl-CoA reduction bcrB	NA	NA
+Benzoyl-CoA reduction bcrA	NA	NA
+Benzoyl-CoA reduction bcrD	NA	NA
+Cellulose degrading cellobiosidase	NA	NA
+Cellulose degrading cellulase	NA	NA
+Cellulose degrading beta-glucosidase	NA	NA
+Hemicullulose debranching arabinosidase	NA	NA
+Hemicullulose debranching beta-glucuronidase	NA	NA
+Hemicullulose debranching alpha-L-rhamnosidase	NA	NA
+Endohemicellulases mannan endo-1,4-beta-mannosidase	NA	NA
+Endohemicellulases alpha-D-xyloside xylohydrolase	NA	NA
+Other oligosaccharide degrading beta-xylosidase	NA	NA
+Other oligosaccharide degrading beta-mannosidase	NA	NA
+Other oligosaccharide degrading beta-galactosidase	NA	NA
+Amylolytic enzymes alpha-amylase	NA	0.3333333333333333
+Amylolytic enzymes glucoamylase	NA	NA
+Amylolytic enzymes pullulanase	NA	NA
+Amylolytic enzymes isoamylase	NA	NA
+Chitin degrading chitiniase	NA	NA
+Chitin degrading hexosaminidase	NA	NA
+Pyruvate oxidation porA	NA	NA
+Alcohol utilization adh	NA	1.0
+Lactate utilization ldh	NA	NA
+Acetogenesis acdA	NA	NA
+Acetogenesis ack	1.0	1.0
+Acetogenesis pta	NA	1.0
+Acetogenesis acsB	NA	NA
+Acetate to acetyl-CoA acs	NA	0.5
+Pyruvate <=> acetyl-CoA + formate  pflD	NA	NA
+Formate <=> CO2 + H2 hycE	NA	1.0
+Methanol oxidation mxaF	NA	NA
+Methanol oxidation mdh	NA	NA
+Methyl amine -> formaldehyde mauA	NA	NA
+Methyl amine -> formaldehyde mauB	NA	NA
+Formaldehyde oxidation fdhA	NA	NA
+Formaldehyde oxidation fghA	NA	NA
+Formaldehyde oxidation frmA	NA	NA
+Formaldehyde oxidation mycoS_dep_FDH	NA	NA
+Formaldehyde oxidation fae	NA	NA
+Formate oxidation fdoG	NA	NA
+Formate oxidation fdwB	1.0	NA
+Formate oxidation fdoH	1.0	1.0
+Formate oxidation fdhA	NA	NA
+Formate oxidation fdhB	NA	1.0
+Aerobic CO oxidation coxS	NA	1.0
+Aerobic CO oxidation coxM	NA	1.0
+Aerobic CO oxidation coxL	NA	NA
+Methane oxidation - Partculate methane monooxygenase pmoA	NA	NA
+Methane oxidation - methane monooxygenase CH4_NH3mon_ox_A	NA	NA
+Methane oxidation - Partculate methane monooxygenase pmoB	NA	NA
+Methane oxidation - methane monooxygenase CH4_NH3mon_ox_B	NA	NA
+Methane oxidation - Partculate methane monooxygenase pmoC	NA	NA
+Methane oxidation - methane monooxygenase CH4_NH3mon_ox_C	NA	NA
+Methane oxidation - Soluble methane monoxygenase mmoB	NA	NA
+Methane oxidation - Soluble methane monoxygenase mmoD	NA	NA
+Methane production mcrA	NA	NA
+Methane production mcrB	NA	NA
+Methane production mcrC	NA	NA
+Methane production mcrG	NA	NA
+Methane production mtaB	NA	NA
+Methane production mtbA	NA	NA
+CBB cycle - Rubisco Form I	NA	NA
+CBB cycle - Rubisco Form II	NA	NA
+CBB cycle - Rubisco Form II-III	NA	NA
+CBB cycle - Rubisco Form III	NA	NA
+CBB cycle - Rubisco Form IV	NA	NA
+3 Hydroxypropionate cycle K14469	NA	NA
+3 Hydroxypropionate cycle mcr	NA	NA
+3HP/4HB K14466	NA	NA
+3HP/4HB or DC/4-HB K18861	NA	NA
+DC/4-HB 4hbl	NA	1.0
+Wood Ljungdahl pathway cdhD	NA	NA
+Wood Ljungdahl pathway cdhE	NA	NA
+Wood Ljungdahl pathway cooS	NA	NA
+Wood Ljungdahl pathway (methyl branch) fthfs	1.0	1.0
+Wood Ljungdahl pathway (methyl branch) fhs	1.0	1.0
+Reverse TCA cycle aclA	NA	NA
+Reverse TCA cycle aclB	NA	NA
+Ammonia oxidation amoA	NA	NA
+Ammonia oxidation amoB	NA	NA
+Ammonia oxidation amoC	NA	NA
+N2 fixation anfD	NA	NA
+N2 fixation anfK	NA	NA
+N2 fixation anfG	NA	NA
+N2 fixation nifD	NA	1.0
+N2 fixation nifK	NA	1.0
+N2 fixation vnfD	NA	NA
+N2 fixation vnfK	NA	NA
+N2 fixation vnfG	NA	NA
+N2 fixation nifH	NA	1.0
+Nitrite oxidation nxrA	NA	NA
+Nitrite oxidation nxrB	NA	NA
+Nitrate reduction napA	NA	NA
+Nitrate reduction napB	NA	NA
+Nitrate reduction narG	NA	NA
+Nitrate reduction narH	NA	NA
+Nitrite reduction to ammonia nrfH	NA	1.0
+Nitrite reduction to ammonia nrfA	NA	1.0
+Nitrite reduction to ammonia nrfD	NA	NA
+Nitrite reduction to ammonia nirB	NA	NA
+Nitrite reduction to ammonia nirD	NA	NA
+Nitrite reduction nirK	NA	NA
+Nitrite reduction nirS	NA	NA
+Nitrite reduction octR	NA	NA
+Nitric oxide reduction norB	NA	NA
+Nitric oxide reduction norC	NA	NA
+Nitrous oxide reduction nosD	NA	NA
+Nitrous oxide reduction nosZ	NA	NA
+Anammox hzoA	NA	NA
+Anammox hzsA	NA	NA
+Nitric oxide dismutase nod	NA	NA
+Sulfide oxidation fccB	NA	NA
+Sulfide oxidation sqr	NA	NA
+Sulfite reduction dsrD	NA	1.0
+Sulfur oxidation dsrA	NA	1.0
+Sulfur oxidation dsrB	NA	1.0
+Sulfur oxidation sdo	1.0	1.0
+Sulfur oxidation/reduction sor	NA	NA
+Sulfur reduction sreA	NA	NA
+Sulfur reduction sreB	NA	NA
+Sulfur reduction sreC	NA	NA
+Sulfur reduction hydG	NA	NA
+Sulfur reduction hydB	NA	NA
+Thiosulfate oxidation soxB	NA	NA
+Thiosulfate oxidation soxY	NA	NA
+Thiosulfate oxidation soxC	NA	NA
+Sulfite reduction asrA	NA	1.0
+Sulfite reduction asrB	1.0	1.0
+Sulfite reduction asrC	NA	1.0
+Sulfate reduction aprA	NA	1.0
+Sulfate reduction sat	NA	1.0
+Sulfate reduction apsA	NA	1.0
+Sulfate reduction apsK	NA	1.0
+Thiosulfate disproportionation phsA	NA	1.0
+Polysulfide reduction psrB	NA	NA
+Polysulfide reduction psrC	NA	NA
+FeFe hydrogenase fefe-group-a13	0.5	NA
+FeFe hydrogenase fefe-group-a2	1.0	NA
+FeFe hydrogenase fefe-group-a4	NA	NA
+FeFe hydrogenase fefe-group-b	1.0	NA
+FeFe hydrogenase fefe-group-c1	NA	NA
+FeFe hydrogenase fefe-group-c2	NA	NA
+FeFe hydrogenase fefe-group-c3	NA	NA
+Fe hydrogenase fe	NA	NA
+Ni-Fe Hydrogenase nife-group-1	NA	1.0
+Ni-Fe Hydrogenase nife-group-2ade	NA	NA
+Ni-Fe Hydrogenase nife-group-2bc	NA	NA
+Ni-Fe Hydrogenase nife-group-3abd	NA	NA
+Ni-Fe Hydrogenase nife-group-3c	NA	NA
+Ni-Fe Hydrogenase nife-group-4a-g	NA	1.0
+Ni-Fe Hydrogenase nife-group-4hi	NA	NA
+Complex I (NADH-quinone oxidoreductase) nuoA	NA	NA
+Complex I (NADH-quinone oxidoreductase) nuoB	NA	1.0
+Complex I (NADH-quinone oxidoreductase) nuoC	NA	1.0
+Complex I (NAD(P)H-quinone oxidoreductase) NdhA	NA	NA
+Complex I (NAD(P)H-quinone oxidoreductase) NdhB	NA	NA
+Complex I (NAD(P)H-quinone oxidoreductase) NdhC	NA	NA
+Complex II (Succinate dehydrogenase/Fumarate reductase) sdhC	NA	NA
+Complex II (Succinate dehydrogenase/Fumarate reductase) sdhD	NA	NA
+Complex III (Cytochrome c reductase) petA	NA	NA
+Complex III (Cytochrome c reductase) petB	NA	NA
+Complex III (Cytochrome c reductase) fbcH	NA	NA
+Complex V (ATP synthase: V/A-type H+/Na+-transporting ATPase) atpA (V/A-type)	1.0	NA
+Complex V (ATP synthase: V/A-type H+/Na+-transporting ATPase) atpB (V/A-type)	1.0	NA
+Complex V (F-type H+-transporting ATPase) atpA (F-type)	1.0	1.0
+Complex V (F-type H+-transporting ATPase) atpD (F-type)	1.0	1.0
+Oxygen metabolism - cytochrome c oxidase, caa3-type coxA	NA	NA
+Oxygen metabolism - cytochrome c oxidase, caa3-type coxB	NA	NA
+Oxygen metabolism - cytochrome c oxidase, cbb3-type ccoN	NA	NA
+Oxygen metabolism - cytochrome c oxidase, cbb3-type ccoO	NA	NA
+Oxygen metabolism - cytochrome c oxidase, cbb3-type ccoP	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, bo type cyoA	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, bo type cyoD	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, bo type cyoB	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, bo type cyoC	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, bd type cydA	NA	1.0
+Oxygen metabolism - cytochrome (quinone) oxidase, bd type cydB	NA	1.0
+Oxygen metabolism - cytochrome (quinone) oxidase, aa3 type, QoxABCD qoxA	NA	NA
+Oxygen metabolism - cytochrome (quinone) oxidase, aa3 type, QoxABCD qoxB	NA	NA
+Urease ureC	NA	NA
+Urease ureB	NA	NA
+Urease ureA	NA	NA
+Halogenated compounds breakdown E3.8.1.2	1.0	1.0
+Halogenated compounds breakdown pcpC	NA	NA
+Halogenated compounds breakdown cprA	NA	NA
+Halogenated compounds breakdown pceA	NA	NA
+Perchlorate reduction pcrA	NA	NA
+Perchlorate reduction pcrB	NA	NA
+Chlorite reduction cld	NA	NA
+Dissimilatory arsenate reduction arrA	NA	NA
+Arsenate reduction for detoxification arsC (grx)	NA	NA
+Arsenate reduction for detoxification arsC (trx)	NA	0.3333333333333333
+Arsenite oxidation for energy metabolism arxA	NA	NA
+Arsenite oxidation for detoxification and energy metabolism aioA	NA	NA
+Arsenite methylation arsM	NA	NA
+Selenate reduction ygfM	NA	NA
+Selenate reduction xdhD	NA	NA
+Selenate reduction YgfK	NA	NA
+Nitrile hydratase nthA	NA	NA
+Nitrile hydratase nthB	NA	NA
+Iron oxidation Cyc1	NA	NA
+Iron oxidation Cyc2_repCluster1	NA	NA
+Iron oxidation Cyc2_repCluster2	NA	NA
+Iron oxidation Cyc2_repCluster3	NA	NA
+Iron oxidation FoxA	NA	NA
+Iron oxidation FoxB	NA	NA
+Iron oxidation FoxC	NA	NA
+Iron oxidation FoxE	NA	NA
+Iron oxidation FoxY	NA	NA
+Iron oxidation FoxZ	NA	NA
+Iron oxidation MtoA	NA	NA
+Iron oxidation sulfocyanin	NA	NA
+Metal (Iron/Manganese) reduction MtrA	NA	NA
+Metal (Iron/Manganese) reduction MtrB_TIGR03509	NA	NA
+Metal (Iron/Manganese) reduction MtrC_TIGR03507	NA	NA
+Iron reduction CymA	NA	NA
+Iron reduction OmcF	NA	NA
+Iron reduction OmcS	NA	NA
+Iron reduction OmcZ	NA	NA
+Iron reduction FmnA	1.0	NA
+Iron reduction DmkA	NA	NA
+Iron reduction FmnB	1.0	1.0
+Iron reduction PplA	NA	NA
+Iron reduction Ndh2	NA	NA
+Iron reduction EetA	1.0	NA
+Iron reduction EetB	1.0	NA
+Iron reduction DmkB	1.0	1.0
+Iron reduction DFE_0448	NA	NA
+Iron reduction DFE_0449	NA	1.0
+Iron reduction DFE_0450	NA	NA
+Iron reduction DFE_0451	NA	NA
+Iron reduction DFE_0461	NA	NA
+Iron reduction DFE_0462	NA	NA
+Iron reduction DFE_0463	NA	NA
+Iron reduction DFE_0464	NA	NA
+Iron reduction DFE_0465	NA	NA
+Manganese oxidation Manganese_oxidase_K06324	NA	NA
+Manganese oxidation Manganese_oxidase_K22348	NA	NA
+Manganese oxidation Manganese_oxidase_K22349	NA	NA
+Manganese oxidation Manganese_oxidase_K22350	NA	NA
+Dissimilatory sulfur metabolism | Sulfide oxidation fccB	NA	NA
+Dissimilatory sulfur metabolism | Sulfide oxidation sqr	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrA	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrB	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrC	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrD	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrE	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrF	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrH	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrJ	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrK	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrM	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrO	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrP	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrR	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrS	NA	NA
+Dissimilatory sulfur metabolism | Sulfur oxidation/Sulfite reduction dsrT	NA	1.0
+Dissimilatory sulfur metabolism | Sulfite reduction asrA	NA	1.0
+Dissimilatory sulfur metabolism | Sulfite reduction asrB	1.0	1.0
+Dissimilatory sulfur metabolism | Sulfite reduction asrC	NA	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation sdo	1.0	1.0
+Dissimilatory sulfur metabolism | Sulfur oxidation/reduction sor	NA	NA
+Dissimilatory sulfur metabolism | Sulfur reduction sreA	NA	NA
+Dissimilatory sulfur metabolism | Sulfur reduction sreB	NA	NA
+Dissimilatory sulfur metabolism | Sulfur reduction sreC	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxA	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxB	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxC	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxD	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxX	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxY	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxYZ	NA	NA
+Dissimilatory sulfur metabolism | Thiosulfate oxidation soxZ	NA	NA
+Dissimilatory sulfur metabolism | Sulfate reduction aprA	NA	1.0
+Dissimilatory sulfur metabolism | Sulfate reduction aprB	NA	1.0
+Dissimilatory sulfur metabolism | Sulfate reduction sat	NA	1.0
+Dissimilatory sulfur metabolism | Thiosulfate disproportionation phsA	NA	1.0
+Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate) cysD	NA	NA
+Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate) cysN	1.0	1.0
+Assimilatory sulfur metabolism| Sulfate <-> APS (Adenosine 5'-phosphosulfate) cysNC	NA	NA
+Assimilatory sulfur metabolism| APS (Adenosine 5'-phosphosulfate) <-> PAPS (3'-Phosphoadenosine 5'-phosphosulfate) cysC	NA	1.0
+Assimilatory sulfur metabolism| APS (Adenosine 5'-phosphosulfate) <-> PAPS (3'-Phosphoadenosine 5'-phosphosulfate) cysNC	NA	NA
+Assimilatory sulfur metabolism| PAPS (3'-Phosphoadenosine 5'-phosphosulfate) <-> Sulfite cysH	NA	NA
+Assimilatory sulfur metabolism| Sulfite -> Sulfide cysJ	NA	NA
+Assimilatory sulfur metabolism| Sulfide -> Cysteine cysK	1.0	1.0
+Assimilatory sulfur metabolism| Sulfide -> Cysteine cysM	1.0	1.0
+DMSO metabolism | DMSO (Dimethyl sulfoxide) -> Methanesulfonate dsoA	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) -> Methanesulfonate dsoB	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) -> Methanesulfonate sfnG	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) -> Methanesulfonate msuD	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) <-> DMS (Dimethyl sulfide) dsoA	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) <-> DMS (Dimethyl sulfide) dsoB	NA	NA
+DMSO metabolism | DMSO (Dimethyl sulfoxide) <-> DMS (Dimethyl sulfide) ddhA	NA	1.0
+DMSO metabolism | DMSO (Dimethyl sulfoxide) <-> DMS (Dimethyl sulfide) dmsA	0.3333333333333333	1.0
+DMSO metabolism | DMS (Dimethyl sulfide) <-> Methanethiol dmoA	NA	NA
+DMSO metabolism | DMS (Dimethyl sulfide) <-> Methanethiol dmoB	NA	1.0
+DMSO metabolism | DMS (Dimethyl sulfide) <-> Methanethiol mddA	NA	NA
+Sulfite production from organic sulfur | Taurine -> Sulfite tauD	NA	NA
+Sulfite production from organic sulfur | Alkylsulfonate/Isethionate -> Sulfite ssuD	NA	NA
+Sulfite production from organic sulfur | Methanesulfonate -> Sulfite msmA	NA	NA
+Metabolism of organic sulfur | Cysteine <-> Cystathionine metB	1.0	1.0
+Metabolism of organic sulfur | Cysteine <-> 3-mercaptopyruvate aspB	1.0	1.0
+Metabolism of organic sulfur | OAHS (O-acetylhomoserine) + Sulfide -> Homocysteine metY	1.0	1.0
+Metabolism of organic sulfur | Cystathionine -> Homocysteine malY	1.0	NA
+Metabolism of organic sulfur | Cystathionine -> Homocysteine metC	1.0	1.0
+Metabolism of organic sulfur | MHO (L-methionine (R)-S-oxide) -> Methionine) msrC	1.0	1.0
+Metabolism of organic sulfur | Homocysteine -> Methionine metH	NA	1.0
+Metabolism of organic sulfur | Homocysteine <-> Methionine metE	NA	1.0
+Metabolism of organic sulfur | SAH (S-adenosyl-L-homocysteine) -> Homocysteine ahcY	NA	1.0
+Metabolism of organic sulfur | SRH (S-ribosylhomocysteine) -> Homocysteine luxS	NA	NA
+Metabolism of organic sulfur | SAH (S-adenosyl-L-homocysteine) -> SRH (S-ribosylhomocysteine) mtnN	1.0	1.0
+Sulfur-related amino acid metabolism | Cysteine -> Sulfide cysK	1.0	1.0
+Sulfur-related amino acid metabolism | Cysteine -> Sulfide cysM	1.0	1.0
+Sulfur-related amino acid metabolism | Cysteine -> Sulfide malY	1.0	NA
+Sulfur-related amino acid metabolism | Cysteine -> Sulfide dcyD	NA	NA
+Sulfur-related amino acid metabolism | Cysteine -> Sulfide metC	1.0	1.0
+Sulfur-related amino acid metabolism | Methionine -> Methanethiol megL	1.0	1.0
+Sulfur-related amino acid metabolism | Methionine -> SAMe (S-adenosyl-L-methionine) metK	1.0	1.0
+Sulfur-related amino acid metabolism | SAMe (S-adenosyl-L-methionine) -> SAH (S-adenosyl-L-homocysteine) dcm	NA	NA
