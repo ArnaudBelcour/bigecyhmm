@@ -445,6 +445,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     cycle_occurrence_community_df = pd.DataFrame(cycle_occurrence_community, columns=['name', 'ratio'])
     cycle_occurrence_community_df.set_index('name', inplace=True)
     cycle_occurrence_community_df.to_csv(os.path.join(output_folder_occurrence, 'cycle_occurrence.tsv'), sep='\t')
+    cycle_occurrences = cycle_occurrence_community_df['ratio'].to_dict()
 
     output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
     create_swarmplot_community(cycle_occurrence_community_df, output_file_name)
@@ -452,6 +453,27 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     logger.info("  -> Create polarplot.")
     output_polar_plot = os.path.join(output_folder_occurrence, 'polar_plot_occurrence.png')
     create_polar_plot_occurrence(cycle_occurrence_community_df, output_polar_plot)
+
+    logger.info("  -> Create diagrams.")
+    all_cycles = pd.read_csv(bigecyhmm_pathway_presence_file, sep='\t')['function'].tolist()
+    diagram_data = {}
+    for cycle_name in all_cycles:
+        if cycle_name in cycle_occurrences:
+            diagram_data[cycle_name] = (round(sum(cycle_occurrence_organisms[cycle_name].values()), 1), round(cycle_occurrences[cycle_name]*100, 1))
+        else:
+            diagram_data[cycle_name] = (0, 0)
+
+    carbon_cycle_file = os.path.join(output_folder_occurrence, 'diagram_carbon_cycle.png')
+    create_carbon_cycle(diagram_data, carbon_cycle_file)
+
+    nitrogen_cycle_file = os.path.join(output_folder_occurrence, 'diagram_nitrogen_cycle.png')
+    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+
+    sulfur_cycle_file = os.path.join(output_folder_occurrence, 'diagram_sulfur_cycle.png')
+    create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+
+    other_cycle_file = os.path.join(output_folder_occurrence, 'diagram_other_cycle.png')
+    create_other_cycle(diagram_data, other_cycle_file)
 
     logger.info("  -> Read bigecyhmm functions output files.")
     bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
@@ -490,8 +512,6 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         if not os.path.exists(output_folder_cycle_participation):
             os.mkdir(output_folder_cycle_participation)
 
-        all_cycles = pd.read_csv(bigecyhmm_pathway_presence_file, sep='\t')['function'].tolist()
-
         for sample in cycle_participation_samples:
             data_cycle_participation = []
             index_organism_names = []
@@ -509,7 +529,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_samples.png')
         create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
-        logger.info("  -> Create diagram.")
+        logger.info("  -> Create diagrams.")
         output_folder_cycle_diagram= os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
         if not os.path.exists(output_folder_cycle_diagram):
             os.mkdir(output_folder_cycle_diagram)
