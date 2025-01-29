@@ -83,17 +83,22 @@ There is a second command associated with bigecyhmm (`bigecyhmm_visualisation`),
 
 To create the associated figures, there are other dependencies:
 
-- seaborn
 - pandas
+- seaborn
 - plotly
 - kaleido
 
-Four inputs are expected:
+Two subcommands are available for `bigecyhmm_visualisation`:
 
-- `--esmecata`: esmecata output folder associated with the run (as the visualisation works on esmecata results).
-- `--bigecyhmm`: bigecyhmm output folder associated with the run.
-- `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa.
-- `-o`: an output folder.
+- `bigecyhmm_visualisation esmecata`: to create visualisation from EsMeCaTa and bigecyhmm outputs folder (with optionally an abundance file).
+- `bigecyhmm_visualisation genomes`: to create visualisation from bigecyhmm output folder (with optionally an abundance file).
+
+There are four parameters:
+
+- `--esmecata`: EsMeCaTa output folder associated with the run (as the visualisation works on esmecata results). Only required for `bigecyhmm_visualisation esmecata`.
+- `--bigecyhmm`: bigecyhmm output folder associated with the run. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
+- `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
+- `-o`: an output folder. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 
 ### Function occurrence and abundance
 
