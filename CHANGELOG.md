@@ -1,15 +1,15 @@
 # Changelog
 
-# bigecyhmm v0.1.5 (2025-01-28)
+# bigecyhmm v0.1.5 (2025-01-29)
 
 ## Add
 
-* HMM associated with formate fermentation (formate lyase, hycE, `K15830`).
 * Complete refactoring of `bigecyhmm_visualisation` with two new subcommands `bigecyhmm_visualisation esmecata` for inptu from EsMeCaTa or `bigecyhmm_visualisation genomes` if the inputs are genomes.
 * Hadnle abundance data with `bigecyhmm_visualisation`.
 * In `bigecyhmm_visualisation`, add the possibility to create heatmap, polar plot and diagrams showing abundance of specific function categories. Also creates tabulated files indicating the ratio of organisms associated with functions for each sample.
 * Add creation of metadata file for `bigecyhmm_visualisation`.
 * Numerous tests for the visualisaiton.
+* HMM associated with formate fermentation (formate lyase, hycE, `K15830`).
 
 ## Modify
 
