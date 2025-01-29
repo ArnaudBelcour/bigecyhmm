@@ -149,8 +149,8 @@ def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_o
     # For each function, count the number of organisms predicted to have it.
     all_functions = []
     function_occurrence_organisms = {}
-    for function, row in bigecyhmm_function_df.iterrows():
-        all_functions.append(function)
+    for function_name, row in bigecyhmm_function_df.iterrows():
+        all_functions.append(function_name)
         for organism in bigecyhmm_function_df.columns:
             if math.isnan(row[organism]):
                 row[organism] = 0
@@ -163,19 +163,11 @@ def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_o
                 observation_names = [organism]
 
             if row[organism] > 0:
-                if function not in function_occurrence_organisms:
-                    function_occurrence_organisms[function] = {}
+                if function_name not in function_occurrence_organisms:
+                    function_occurrence_organisms[function_name] = {}
                 for observation_name in observation_names:
-                    if observation_name not in function_occurrence_organisms[function]:
-                        function_occurrence_organisms[function][observation_name] = row[organism]
-    # Compute the relative abundance of organisms by dividing for a function the number of organisms having it by the total number of organisms in the community.
-    #for index in function_occurrence:
-    #    if index in tax_id_function:
-    #        function_occurrence_community.append([index, len(tax_id_function[index])/len(all_studied_organisms)])
-    #    else:
-    #        function_occurrence_community.append([index, 0])
-
-    #function_occurrence_community_df = pd.DataFrame(function_occurrence_community, columns=['name', 'ratio'])
+                    if observation_name not in function_occurrence_organisms[function_name]:
+                        function_occurrence_organisms[function_name][observation_name] = row[organism]
 
     return function_occurrence_organisms, all_studied_organisms
 
@@ -210,28 +202,28 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
         for organism in sample_abundance[sample]:
             if organism not in function_participation:
                 function_participation[organism] = {}
-            for function in function_organisms:
-                if organism in function_organisms[function]:
+            for function_name in function_organisms:
+                if organism in function_organisms[function_name]:
                     # Compute the abundance of function in the sample.
-                    if function not in function_abundance:
-                        function_abundance[function] = function_organisms[function][organism]*sample_abundance[sample][organism]
+                    if function_name not in function_abundance:
+                        function_abundance[function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism]
                     else:
-                        function_abundance[function] = function_organisms[function][organism]*sample_abundance[sample][organism] + function_abundance[function]
+                        function_abundance[function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism] + function_abundance[function_name]
                     # Compute the participation by each organism for the function.
-                    if function not in function_participation[organism]:
-                        function_participation[organism][function] = function_organisms[function][organism]*sample_abundance[sample][organism]
+                    if function_name not in function_participation[organism]:
+                        function_participation[organism][function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism]
                     else:
-                        function_participation[organism][function] = function_organisms[function][organism]*sample_abundance[sample][organism] + function_participation[organism][function]
+                        function_participation[organism][function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism] + function_participation[organism][function_name]
 
         if sample not in function_abundance_samples:
             function_abundance_samples[sample] = {}
         if sample not in function_relative_abundance_samples:
             function_relative_abundance_samples[sample] = {}
-        for function in function_abundance:
-            if function not in function_abundance_samples[sample]:
-                function_abundance_samples[sample][function] = function_abundance[function]
-            if function not in function_relative_abundance_samples[sample]:
-                function_relative_abundance_samples[sample][function] = function_abundance[function] / sample_tot_abundance[sample]
+        for function_name in function_abundance:
+            if function_name not in function_abundance_samples[sample]:
+                function_abundance_samples[sample][function_name] = function_abundance[function_name]
+            if function_name not in function_relative_abundance_samples[sample]:
+                function_relative_abundance_samples[sample][function_name] = function_abundance[function_name] / sample_tot_abundance[sample]
         function_participation_samples[sample] = function_participation
 
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples
@@ -516,7 +508,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             data_cycle_participation = []
             index_organism_names = []
             for organism in cycle_participation_samples[sample]:
-                data_cycle_participation.append([*[cycle_participation_samples[sample][organism][function] if function in cycle_participation_samples[sample][organism] else 0 for function in all_cycles]])
+                data_cycle_participation.append([*[cycle_participation_samples[sample][organism][function_name] if function_name in cycle_participation_samples[sample][organism] else 0 for function_name in all_cycles]])
                 index_organism_names.append(organism)
             data_cycle_participation_df = pd.DataFrame(data_cycle_participation, index=index_organism_names, columns=all_cycles)
             data_cycle_participation_df.index.name = 'organism'
@@ -573,7 +565,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             data_function_participation = []
             index_organism_names = []
             for organism in function_participation_samples[sample]:
-                data_function_participation.append([*[function_participation_samples[sample][organism][function] if function in function_participation_samples[sample][organism] else 0 for function in all_functions]])
+                data_function_participation.append([*[function_participation_samples[sample][organism][function_name] if function_name in function_participation_samples[sample][organism] else 0 for function_name in all_functions]])
                 index_organism_names.append(organism)
             data_function_participation_df = pd.DataFrame(data_function_participation, index=index_organism_names, columns=all_functions)
             data_function_participation_df.index.name = 'organism'
