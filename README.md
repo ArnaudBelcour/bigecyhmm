@@ -10,10 +10,10 @@ This is a package to search for genes associated with biogeochemical cycles in p
   - [Dependencies](#dependencies)
   - [Installation](#installation)
   - [Run bigecyhmm](#run-bigecyhmm)
-  - [Output](#output)
+  - [Output of bigecyhmm](#output-of-bigecyhmm)
   - [bigecyhmm\_visualisation](#bigecyhmm_visualisation)
     - [Function occurrence and abundance](#function-occurrence-and-abundance)
-    - [Output](#output-1)
+    - [Output of bigecyhmm\_visualisation](#output-of-bigecyhmm_visualisation)
   - [Citation](#citation)
 
 ## Dependencies
@@ -62,7 +62,7 @@ There is one option:
 
 * `-c` to indicate the number of core used. It is only useful if you have multiple protein fasta files as the added cores will be used to run another HMM search on a different protein fasta files. 
 
-## Output
+## Output of bigecyhmm
 
 It gives as output:
 
@@ -107,7 +107,7 @@ First, the **occurrence** corresponding to the number of organisms having this f
 
 For example, if we look at the function `Formate oxidation fdoG` in a community. If 20 organisms in this community have this function on a community having a total of 80 organisms, the **occurrence** of this function is 0.25 (20 / 80). Then, let's say that these 20 organisms ahve a summed abundance of 600 and the total abundance of all organisms in the community is 1200, then the **abundance** of the function is 0.5 (600 / 1200).
 
-### Output
+### Output of bigecyhmm_visualisation
 
 Several output are created by bigecyhmm_visualisation.
 
