@@ -1,4 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/)
+[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/doi_tabigecy.svg)](https://doi.org/10.1101/2025.01.30.635649)
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
@@ -168,7 +168,9 @@ output_folder
 
 If you have used bigecyhmm in an article, please cite:
 
-- this github repository for bigecyhmm.
+- bigecyhmm and tabigecy article:
+
+Arnaud Belcour, Loris Megy, Sylvain Stephant, Caroline Michel, Sétareh Rad, Petra Bombach, Nicole Dopffel, Hidde de Jong and Delphine Ropers. Predicting coarse-grained representations of biogeochemical cycles from metabarcoding data *bioRxiv* 2025.01.30.635649; https://doi.org/10.1101/2025.01.30.635649
 
 - PyHMMER for the search on the HMMs:
 
