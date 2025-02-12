@@ -30,6 +30,7 @@ TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_t
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
 TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
+TEMPLATE_PHOSPHOROUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorous_cycle.png')
 
 logger = logging.getLogger(__name__)
 
@@ -345,6 +346,41 @@ def create_other_cycle(diagram_data, output_file):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
+def create_phosphorous_cycle(diagram_data, output_file):
+    """From png TEMPLATE_PHOSPHOROUS_CYCLE and input_diagram_folder file, create phosphorous cycle figure.
+
+    Args:
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
+        output_file (str): path to output file
+    """
+    img = Image.open(TEMPLATE_PHOSPHOROUS_CYCLE, 'r')
+    imgdraw = ImageDraw.Draw(img)
+    font = ImageFont.load_default(20)
+
+    data_step_01 = diagram_data['P-S-01:PhnD']
+    data_step_02 = diagram_data['P-S-02:C-P lyase']
+    data_step_03 = diagram_data['P-S-03:PitA']
+    data_step_04 = diagram_data['P-S-04:PstS']
+    data_step_05 = diagram_data['P-S-05:PNaS']
+    data_step_06 = diagram_data['P-S-06:HtxB']
+    data_step_07 = diagram_data['P-S-07:HtxA']
+    data_step_08 = diagram_data['P-S-08:PtxD']
+    data_step_09 = diagram_data['P-S-09:PtxB']
+
+    imgdraw.text((100,200), 'PhnD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((375,350), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
+    imgdraw.text((75,425), 'PitA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (219,205,46), font=font)
+    imgdraw.text((245,645), 'PstS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (219,205,46), font=font)
+    imgdraw.text((450,655), 'PNaS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (219,205,46), font=font)
+    imgdraw.text((900,200), 'HtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (125,125,124), font=font)
+    imgdraw.text((600,350), 'HtxA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (125,125,124), font=font)
+    imgdraw.text((500,460), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
+    imgdraw.text((900,550), 'PtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (62,67,177), font=font)
+
+    img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
+    img.save(output_file, dpi=(300, 300), quality=100)
+
+
 def create_diagram_figures(input_diagram_file, output_folder):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
@@ -370,3 +406,6 @@ def create_diagram_figures(input_diagram_file, output_folder):
 
     other_cycle_file = os.path.join(biogeochemical_diagram_folder, 'other_cycle.png')
     create_other_cycle(diagram_data, other_cycle_file)
+
+    phosphorous_cycle_file = os.path.join(biogeochemical_diagram_folder, 'phosphorous_cycle.png')
+    create_phosphorous_cycle(diagram_data, phosphorous_cycle_file)

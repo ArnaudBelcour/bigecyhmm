@@ -34,3 +34,12 @@ O-S-02:Iron oxidation	Cyc1.hmm, Cyc2_repCluster1.hmm, Cyc2_repCluster2.hmm, Cyc2
 O-S-03:Arsenate reduction	arrA.hmm	arsenate	arsenite	arsenate ion + Glutaredoxin <=> arsenite + Glutaredoxin disulfide [RN:]	
 O-S-04:Arsenite oxidation	arxA.hmm, aioA.hmm	arsenite	arsenate	arsenite + H2O + 2 oxidized azurin = arsenate + 2 reduced azurin + 2 H+ [RN:R05751]	
 O-S-05:Selenate reduction	TIGR03312.hmm, TIGR03313.hmm, TIGR03315.hmm	selenate	selenium	selenate + reduced acceptor = selenite + H2O + acceptor [RN:R07229]	
+P-S-01:PhnD	K02044.hmm				
+P-S-02:C-P lyase	K06163.hmm				
+P-S-03:PitA	NF033774.1.hmm				
+P-S-04:PstS	K02040.hmm				
+P-S-05:PNaS	NF037997.1.hmm				
+P-S-06:HtxB	test_HtxB.hmm				
+P-S-07:HtxA	test_HtxA.hmm				
+P-S-08:PtxD	K18916.hmm				
+P-S-09:PtxB	test_ptxB.hmm				

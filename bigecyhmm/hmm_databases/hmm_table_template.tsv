@@ -341,3 +341,19 @@
 313	Sulfur cycling enzymes (detailed)	Sulfur-related amino acid metabolism | Methionine -> Methanethiol	megL	methionine gamma-lyase	PF01053.hmm	N/A	L-methionine + H2O = methanethiol + 2-oxobutanoate + ammonium	L-methionine	methanethiol; 2-oxobutanoate; ammonium	432.5|full
 314	Sulfur cycling enzymes (detailed)	Sulfur-related amino acid metabolism | Methionine -> SAMe (S-adenosyl-L-methionine)	metK	S-adenosylmethionine synthetase	K00789.hmm	K00789	ATP + L-methionine + H2O = phosphate + diphosphate + S-adenosyl-L-methionine [RN:R00177]	ATP; L-methionin	phosphate; diphosphate; S-adenosyl-L-methionine	18.10|full
 315	Sulfur cycling enzymes (detailed)	Sulfur-related amino acid metabolism | SAMe (S-adenosyl-L-methionine) -> SAH (S-adenosyl-L-homocysteine)	dcm	DNA (cytosine-5)-methyltransferase 1	K00558.hmm	K00558	S-adenosyl-L-methionine + DNA containing cytosine = S-adenosyl-L-homocysteine + DNA containing 5-methylcytosine [RN:R00380]	S-adenosyl-L-methionine; DNA containing cytosine	S-adenosyl-L-homocysteine; DNA containing 5-methylcytosine	150.10|full
+	Phosphorous cycling enzymes		PhnD	phosphonate transport system substrate-binding protein	K02044.hmm	K02044				122.57|full
+	Phosphorous cycling enzymes	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	PhnJ	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	K06163.hmm	K06163	alpha-D-Ribose 1-methylphosphonate 5-phosphate + S-Adenosyl-L-methionine + Reduced acceptor <=> alpha-D-Ribose 1,2-cyclic phosphate 5-phosphate + Methane + L-Methionine + 5'-Deoxyadenosine + Acceptor			326.57|full
+	Phosphorous cycling enzymes		PstS	phosphate transport system substrate-binding protein	K02040.hmm	K02040				60.73|domain
+	Phosphorous cycling enzymes		PtxD	phosphonate dehydrogenase 	K18916.hmm	K18916				399.70|full
+	Phosphorous cycling enzymes		PitA	inorganic phosphate transporter PitA	NF033774.1.hmm					800|full
+	Phosphorous cycling enzymes		PNaS	Phosphate:Na+ Symporter (PNaS) superfamily	NF037997.1.hmm					50|full
+	Phosphorous cycling enzymes		PhnZ	phosphonate degradation HD-domain oxygenase	TIGR03276.1.hmm					214.6|full
+	Phosphorous cycling enzymes		PhnX	phosphonoacetaldehyde hydrolase	TIGR01422.2.hmm					220|full
+	Phosphorous cycling enzymes		PhnA	phosphonoacetate hydrolase	TIGR02335.1.hmm					407.5|full
+	Phosphorous cycling enzymes		PhnM	phosphonate metabolism protein PhnM	TIGR02318.1.hmm					390.5|full
+	Phosphorous cycling enzymes		PhnW	2-aminoethylphosphonate--pyruvate transaminase	TIGR02326.1.hmm					400.8|full
+	Phosphorous cycling enzymes		PepM	phosphoenolpyruvate mutase	TIGR02320.1.hmm					319.5|full
+	Phosphorous cycling enzymes		Ppd		TIGR03405.1.hmm					423.7|full
+	Phosphorous cycling enzymes		HtxB		test_HtxB.hmm					694.7|full
+	Phosphorous cycling enzymes		HtxA		test_HtxA.hmm					691.1|full
+	Phosphorous cycling enzymes		ptxB		test_ptxB.hmm					430.5|full

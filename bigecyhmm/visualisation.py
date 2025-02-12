@@ -36,7 +36,7 @@ import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm.utils import is_valid_dir
-from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle
+from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorous_cycle
 
 MESSAGE = '''
 Create figures from bigecyhmm and esmecata outputs.
@@ -545,6 +545,9 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
             other_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_other_cycle.png')
             create_other_cycle(diagram_data, other_cycle_file)
+
+            phosphorous_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorous_cycle.png')
+            create_phosphorous_cycle(diagram_data, phosphorous_cycle_file)
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')

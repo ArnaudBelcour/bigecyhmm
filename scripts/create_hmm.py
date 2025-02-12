@@ -48,6 +48,9 @@ args = parser.parse_args()
 input_fasta_file = args.input
 output_folder = args.output
 
+if not os.path.exists(output_folder):
+    os.mkdir(output_folder)
+
 input_basename = os.path.splitext(os.path.basename(input_fasta_file))[0]
 output_file = os.path.join(output_folder, input_basename + '.hmm')
 metadata_json_file = os.path.join(output_folder, input_basename + '_metadata.json')
