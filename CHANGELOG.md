@@ -1,5 +1,13 @@
 # Changelog
 
+# bigecyhmm v0.1.6 (2025-02-12)
+
+## Add
+
+* Draft of phosphorous cycles (with genes `PhnD`, `PhnJ`, `PstS`, `PtxD`, `PitA`, `PNaS`, `PhnZ`, `PhnX`, `PhnA`, `PhnM`, `PhnW`, `PepM`, `Ppd`, `HtxB`, `HtxA` and `ptxB`).
+* Template figure for phosphorous cycles (from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
+* Three test HMMs (`HtxB`, `HtxA` and `ptxB` created from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
+
 # bigecyhmm v0.1.5 (2025-01-29)
 
 ## Add
