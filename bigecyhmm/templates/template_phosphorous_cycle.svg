@@ -1315,9 +1315,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="1.3892045"
-     inkscape:cx="519.00206"
-     inkscape:cy="304.13089"
+     inkscape:zoom="1.9646318"
+     inkscape:cx="427.05203"
+     inkscape:cy="269.00715"
      inkscape:window-width="2490"
      inkscape:window-height="1376"
      inkscape:window-x="70"
@@ -1398,30 +1398,30 @@
     <text
        xml:space="preserve"
        style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
-       x="470.23608"
-       y="243.81569"
+       x="462.23608"
+       y="233.81569"
        id="text1-6-2"><tspan
          sodipodi:role="line"
          id="tspan1-1-0"
-         x="470.23608"
-         y="243.81569">Phosphonate</tspan><tspan
+         x="462.23608"
+         y="233.81569">Phosphonate</tspan><tspan
          sodipodi:role="line"
-         x="470.23608"
-         y="266.21567"
+         x="462.23608"
+         y="256.21567"
          id="tspan3"> production</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
-       x="462.23608"
-       y="371.81567"
+       x="454.23608"
+       y="391.81567"
        id="text1-6-2-9"><tspan
          sodipodi:role="line"
          id="tspan1-1-0-2"
-         x="462.23608"
-         y="371.81567">Phosphonate</tspan><tspan
+         x="454.23608"
+         y="391.81567">Phosphonate</tspan><tspan
          sodipodi:role="line"
-         x="462.23608"
-         y="394.21564"
+         x="454.23608"
+         y="414.21564"
          id="tspan3-2"> catabolism</tspan></text>
     <path
        id="path34-2"
@@ -1619,7 +1619,7 @@
        id="path2" />
     <path
        style="fill:none;fill-opacity:1;stroke:#7d7d7c;stroke-width:2.8;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Triangle)"
-       d="M 1019.8273,183.22528 871.19899,235.48754"
+       d="M 1024.9978,174.28744 876.36948,226.5497"
        id="path6" />
     <path
        style="fill:none;fill-opacity:1;stroke:#3e43b1;stroke-width:2.8;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Triangle)"
@@ -1649,7 +1649,7 @@
        id="path16"
        inkscape:path-effect="#path-effect16"
        inkscape:original-d="m 357.96322,353.07221 c 0.12455,44.44257 0.24909,88.88514 0.37364,133.32771"
-       transform="translate(-60)"
+       transform="translate(-72)"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-opacity:1;stroke:#3e43b1;stroke-width:2.8;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Triangle)"
@@ -1663,20 +1663,20 @@
        id="path22"
        inkscape:path-effect="#path-effect22"
        inkscape:original-d="m 431.7219,250.86299 c -15.3406,5.09885 -30.6812,10.19769 -46.0218,15.29653"
-       transform="translate(18)" />
+       transform="translate(14,-14)" />
     <path
        style="fill:none;stroke:#c1437c;stroke-width:2.8;stroke-opacity:1;marker-end:url(#Triangle)"
        d="m 385.7001,318.63476 c 16.92281,10.85869 33.84563,21.71739 50.76845,32.57608"
        id="path24"
        inkscape:path-effect="#path-effect24"
        inkscape:original-d="m 385.7001,318.63476 c 16.92281,10.8587 33.84563,21.71739 50.76845,32.57608"
-       transform="translate(6,16)" />
+       transform="translate(2,22)" />
     <path
        style="fill:none;stroke:#7d7d7c;stroke-width:2.8;stroke-opacity:1;marker-end:url(#Triangle)"
        d="m 790.22439,318.84667 c 0,57.78584 0,115.57167 0,173.35751"
        id="path26"
        inkscape:path-effect="#path-effect26"
        inkscape:original-d="m 790.22439,318.84667 c 0,57.78584 0,115.57167 0,173.35751"
-       transform="translate(14,-10)" />
+       transform="translate(26,-10)" />
   </g>
 </svg>
