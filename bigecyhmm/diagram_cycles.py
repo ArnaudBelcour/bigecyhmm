@@ -30,7 +30,7 @@ TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_t
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
 TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
-TEMPLATE_PHOSPHOROUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorous_cycle.png')
+TEMPLATE_PHOSPHORUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_cycle.png')
 
 logger = logging.getLogger(__name__)
 
@@ -346,14 +346,14 @@ def create_other_cycle(diagram_data, output_file):
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_phosphorous_cycle(diagram_data, output_file):
-    """From png TEMPLATE_PHOSPHOROUS_CYCLE and input_diagram_folder file, create phosphorous cycle figure.
+def create_phosphorus_cycle(diagram_data, output_file):
+    """From png TEMPLATE_PHOSPHORUS_CYCLE and input_diagram_folder file, create phosphorus cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
     """
-    img = Image.open(TEMPLATE_PHOSPHOROUS_CYCLE, 'r')
+    img = Image.open(TEMPLATE_PHOSPHORUS_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
 
@@ -411,5 +411,5 @@ def create_diagram_figures(input_diagram_file, output_folder):
     other_cycle_file = os.path.join(biogeochemical_diagram_folder, 'other_cycle.png')
     create_other_cycle(diagram_data, other_cycle_file)
 
-    phosphorous_cycle_file = os.path.join(biogeochemical_diagram_folder, 'phosphorous_cycle.png')
-    create_phosphorous_cycle(diagram_data, phosphorous_cycle_file)
+    phosphorus_cycle_file = os.path.join(biogeochemical_diagram_folder, 'phosphorus_cycle.png')
+    create_phosphorus_cycle(diagram_data, phosphorus_cycle_file)

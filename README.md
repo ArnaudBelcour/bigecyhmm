@@ -198,6 +198,6 @@ Jeremy D. Selengut, Daniel H. Haft, Tanja Davidsen, Anurhada Ganapathy, Michelle
 
 Robert D. Finn, Alex Bateman, Jody Clements, Penelope Coggill, Ruth Y. Eberhardt, Sean R. Eddy, Andreas Heger, Kirstie Hetherington, Liisa Holm, Jaina Mistry, Erik L. L. Sonnhammer, John Tate, Marco Punta, Pfam: the protein families database, Nucleic Acids Research, Volume 42, Issue D1, 1 January 2014, Pages D222–D230, https://doi.org/10.1093/nar/gkt1223
 
-- the following article for phosphorous cycle:
+- the following article for phosphorus cycle:
 
 Boden, J.S., Zhong, J., Anderson, R.E. et al. Timing the evolution of phosphorus-cycling enzymes through geological time using phylogenomics. Nature Communications, 15, 3703 (2024). https://doi.org/10.1038/s41467-024-47914-0
