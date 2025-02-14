@@ -335,3 +335,19 @@ Sulfur-related amino acid metabolism | Cysteine -> Sulfide metC	1.0	1.0
 Sulfur-related amino acid metabolism | Methionine -> Methanethiol megL	1.0	1.0
 Sulfur-related amino acid metabolism | Methionine -> SAMe (S-adenosyl-L-methionine) metK	1.0	1.0
 Sulfur-related amino acid metabolism | SAMe (S-adenosyl-L-methionine) -> SAH (S-adenosyl-L-homocysteine) dcm	NA	NA
+ PhnD	NA	1.0
+alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase  PhnJ	NA	NA
+ PstS	1.0	1.0
+ PtxD	1.0	NA
+ PitA	NA	NA
+ PNaS	NA	NA
+ PhnZ	NA	NA
+ PhnX	NA	NA
+ PhnA	NA	NA
+ PhnM	NA	1.0
+ PhnW	NA	1.0
+ PepM	NA	1.0
+ Ppd	NA	1.0
+ HtxB	NA	NA
+ HtxA	NA	NA
+ ptxB	1.0	NA

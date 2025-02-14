@@ -24,6 +24,17 @@ O-S-02:Iron oxidation	0	0
 O-S-03:Arsenate reduction	0	1
 O-S-04:Arsenite oxidation	0	0
 O-S-05:Selenate reduction	0	0
+P-S-01:PhnD	0	1
+P-S-02:C-P lyase	0	0
+P-S-03:PitA	0	0
+P-S-04:PstS	1	1
+P-S-05:PNaS	0	0
+P-S-06:HtxB	0	0
+P-S-07:HtxA	0	0
+P-S-08:PtxD	1	0
+P-S-09:PtxB	1	0
+P-S-10:Phosphonate production	0	1
+P-S-11:Phosphonate catabolism	0	1
 S-S-01:Sulfide oxidation	0	0
 S-S-02:Sulfur reduction	0	0
 S-S-03:Sulfur oxidation	1	1
