@@ -369,19 +369,31 @@ def create_phosphorus_cycle(diagram_data, output_file):
     data_step_10 = diagram_data['P-S-10:Phosphonate production']
     data_step_11 = diagram_data['P-S-11:Phosphonate catabolism']
     data_step_12 = diagram_data['P-S-12:Phytate degradation']
+    data_step_13 = diagram_data['P-S-13:Phosphatase']
+    data_step_14 = diagram_data['P-S-14:ppa']
+    data_step_15 = diagram_data['P-S-15:ppx']
+    data_step_16 = diagram_data['P-S-16:ppk1']
+    data_step_17 = diagram_data['P-S-17:gcd and pqqC']
+    data_step_18 = diagram_data['P-S-18:Pho regulon']
 
-    imgdraw.text((30,210), 'PhnD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
-    imgdraw.text((300,325), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
-    imgdraw.text((75,425), 'PitA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (219,205,46), font=font)
-    imgdraw.text((245,645), 'PstS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (219,205,46), font=font)
-    imgdraw.text((450,655), 'PNaS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (219,205,46), font=font)
-    imgdraw.text((900,220), 'HtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (125,125,124), font=font)
-    imgdraw.text((640,350), 'HtxA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (125,125,124), font=font)
-    imgdraw.text((500,530), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
-    imgdraw.text((900,550), 'PtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (62,67,177), font=font)
-    imgdraw.text((380,125), 'Production\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (193,67,124), font=font)
-    imgdraw.text((410,280), 'Catabolism\nGenomes: {0}\nCoverage: {1}%'.format(data_step_11[0], data_step_11[1]), (193,67,124), font=font)
-    imgdraw.text((325,420), 'Phytase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_12[0], data_step_12[1]), (56,104,0), font=font)
+    imgdraw.text((30,140), 'PhnD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((250,250), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
+    imgdraw.text((30,520), 'PitA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (219,205,46), font=font)
+    imgdraw.text((100,620), 'PstS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (219,205,46), font=font)
+    imgdraw.text((300,700), 'PNaS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (219,205,46), font=font)
+    imgdraw.text((810,140), 'HtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (125,125,124), font=font)
+    imgdraw.text((850,350), 'HtxA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (125,125,124), font=font)
+    imgdraw.text((600,600), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
+    imgdraw.text((850,610), 'PtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (62,67,177), font=font)
+    imgdraw.text((380,80), 'Production\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (193,67,124), font=font)
+    imgdraw.text((400,200), 'Catabolism\nGenomes: {0}\nCoverage: {1}%'.format(data_step_11[0], data_step_11[1]), (193,67,124), font=font)
+    imgdraw.text((550,500), 'Phytase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_12[0], data_step_12[1]), (56,104,0), font=font)
+    imgdraw.text((660,400), 'Phosphatase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_13[0], data_step_13[1]), (223,87,37), font=font)
+    imgdraw.text((450,400), 'ppa\nGenomes: {0}\nCoverage: {1}%'.format(data_step_14[0], data_step_14[1]), (191,32,124), font=font)
+    imgdraw.text((320,470), 'ppx\nGenomes: {0}\nCoverage: {1}%'.format(data_step_15[0], data_step_15[1]), (33,179,124), font=font)
+    imgdraw.text((220,400), 'ppk1\nGenomes: {0}\nCoverage: {1}%'.format(data_step_16[0], data_step_16[1]), (33,179,124), font=font)
+    imgdraw.text((40,440), 'gcd and pqqC\nGenomes: {0}\nCoverage: {1}%'.format(data_step_17[0], data_step_17[1]), (224,179,124), font=font)
+    imgdraw.text((675,720), 'Pho regulon\nGenomes: {0}\nCoverage: {1}%'.format(data_step_18[0], data_step_18[1]), (150,33,0), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
