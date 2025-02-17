@@ -21,6 +21,18 @@
      id="defs1">
     <inkscape:path-effect
        effect="bspline"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+    <inkscape:path-effect
+       effect="bspline"
        id="path-effect26"
        is_visible="true"
        lpeversion="1.3"
@@ -1305,6 +1317,20 @@
          d="M 59.04,73.44 H 761.76 V 552.96 H 59.04 Z"
          id="path91-2-7-3" />
     </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath89-3-4-5-7">
+      <path
+         d="M 59.04,73.44 H 761.76 V 552.96 H 59.04 Z"
+         id="path89-5-3-6-5" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath91-6-1-3-3">
+      <path
+         d="M 59.04,73.44 H 761.76 V 552.96 H 59.04 Z"
+         id="path91-2-4-9-5" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="namedview1"
@@ -1316,8 +1342,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:zoom="1.9646318"
-     inkscape:cx="427.05203"
-     inkscape:cy="269.00715"
+     inkscape:cx="455.0471"
+     inkscape:cy="262.39014"
      inkscape:window-width="2490"
      inkscape:window-height="1376"
      inkscape:window-x="70"
@@ -1340,12 +1366,6 @@
      inkscape:groupmode="layer"
      inkscape:label="1">
     <path
-       id="path34"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,-215.84448,657.0027)"
-       clip-path="url(#clipPath35)" />
-    <path
        id="path88"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
        style="fill:#bebebe icc-color(sRGB-IEC61966-2, 0.1, 0.74499512, 0.74499512, 0.74499512);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1367,12 +1387,6 @@
          id="tspan1"
          x="31.528839"
          y="115.3037">Phosphonate</tspan></text>
-    <path
-       id="path34-7"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,-14.99677,833.32553)"
-       clip-path="url(#clipPath35-5)" />
     <path
        id="path88-2"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
@@ -1412,23 +1426,17 @@
     <text
        xml:space="preserve"
        style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
-       x="454.23608"
-       y="391.81567"
+       x="454.88229"
+       y="378.13879"
        id="text1-6-2-9"><tspan
          sodipodi:role="line"
          id="tspan1-1-0-2"
-         x="454.23608"
-         y="391.81567">Phosphonate</tspan><tspan
+         x="454.88229"
+         y="378.13879">Phosphonate</tspan><tspan
          sodipodi:role="line"
-         x="454.23608"
-         y="414.21564"
+         x="454.88229"
+         y="400.53876"
          id="tspan3-2"> catabolism</tspan></text>
-    <path
-       id="path34-2"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,-183.81215,1223.6799)"
-       clip-path="url(#clipPath35-7)" />
     <path
        id="path88-7"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
@@ -1452,12 +1460,6 @@
          x="71.561172"
          y="681.9809">Phosphate</tspan></text>
     <path
-       id="path34-2-1"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,29.00323,1099.3256)"
-       clip-path="url(#clipPath35-7-1)" />
-    <path
        id="path88-7-1"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
        style="fill:#bebebe icc-color(sRGB-IEC61966-2, 0.1, 0.74499512, 0.74499512, 0.74499512);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1480,67 +1482,71 @@
          x="284.37656"
          y="557.62659">Phosphate</tspan></text>
     <path
-       id="path34-2-0"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,576.49456,1234.1908)"
-       clip-path="url(#clipPath35-7-68)" />
-    <path
        id="path88-7-6"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
        style="fill:#bebebe icc-color(sRGB-IEC61966-2, 0.1, 0.74499512, 0.74499512, 0.74499512);fill-opacity:1;fill-rule:nonzero;stroke:none"
-       transform="matrix(1.4907605,0,0,-1.4907605,543.46957,1298.0428)"
+       transform="matrix(1.4907605,0,0,-1.4907605,559.46957,1326.0428)"
        clip-path="url(#clipPath89-3-4)" />
     <path
        id="path90-0-8"
        d="m 185.53,385.13 v 47.95 h 98.38 v -47.95 z"
        style="fill:#ffffff icc-color(sRGB-IEC61966-2, 0.1, 1, 1, 1);fill-opacity:1;fill-rule:nonzero;stroke:#000000 icc-color(sRGB-IEC61966-2, 0.1, 0, 0, 0);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.4907605,0,0,-1.4907605,543.46957,1298.0428)"
+       transform="matrix(1.4907605,0,0,-1.4907605,559.46957,1326.0428)"
        clip-path="url(#clipPath91-6-1)" />
     <text
        xml:space="preserve"
        style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
-       x="831.8678"
-       y="692.49176"
+       x="847.8678"
+       y="720.49176"
        id="text1-9-9"><tspan
          sodipodi:role="line"
          id="tspan1-3-2"
-         x="831.8678"
-         y="692.49176">Phosphite</tspan></text>
-    <path
-       id="path34-2-0-1"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,436.00323,1079.3256)"
-       clip-path="url(#clipPath35-7-68-3)" />
+         x="847.8678"
+         y="720.49176">Phosphite</tspan></text>
     <path
        id="path88-7-6-2"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
        style="fill:#bebebe icc-color(sRGB-IEC61966-2, 0.1, 0.74499512, 0.74499512, 0.74499512);fill-opacity:1;fill-rule:nonzero;stroke:none"
-       transform="matrix(1.4907605,0,0,-1.4907605,402.97824,1143.1776)"
+       transform="matrix(1.4907605,0,0,-1.4907605,418.97824,1171.1776)"
        clip-path="url(#clipPath89-3-4-5)" />
     <path
        id="path90-0-8-9"
        d="m 185.53,385.13 v 47.95 h 98.38 v -47.95 z"
        style="fill:#ffffff icc-color(sRGB-IEC61966-2, 0.1, 1, 1, 1);fill-opacity:1;fill-rule:nonzero;stroke:#000000 icc-color(sRGB-IEC61966-2, 0.1, 0, 0, 0);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.4907605,0,0,-1.4907605,402.97824,1143.1776)"
+       transform="matrix(1.4907605,0,0,-1.4907605,418.97824,1171.1776)"
        clip-path="url(#clipPath91-6-1-3)" />
     <text
        xml:space="preserve"
        style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
-       x="691.37646"
-       y="537.62653"
+       x="707.37646"
+       y="565.62653"
        id="text1-9-9-3"><tspan
          sodipodi:role="line"
          id="tspan1-3-2-9"
-         x="691.37646"
-         y="537.62653">Phosphite</tspan></text>
+         x="707.37646"
+         y="565.62653">Phosphite</tspan></text>
     <path
-       id="path34-2-2"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,630.15845,673.05555)"
-       clip-path="url(#clipPath35-7-6)" />
+       id="path88-7-6-2-9"
+       d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
+       style="fill:#bebebe icc-color(sRGB-IEC61966-2, 0.1, 0.74499512, 0.74499512, 0.74499512);fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(1.4907605,0,0,-1.4907605,219.46968,1078.5437)"
+       clip-path="url(#clipPath89-3-4-5-7)" />
+    <path
+       id="path90-0-8-9-1"
+       d="m 185.53,385.13 v 47.95 h 98.38 v -47.95 z"
+       style="fill:#ffffff icc-color(sRGB-IEC61966-2, 0.1, 1, 1, 1);fill-opacity:1;fill-rule:nonzero;stroke:#000000 icc-color(sRGB-IEC61966-2, 0.1, 0, 0, 0);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.4907605,0,0,-1.4907605,219.46968,1078.5437)"
+       clip-path="url(#clipPath91-6-1-3-3)" />
+    <text
+       xml:space="preserve"
+       style="font-size:21.3333px;line-height:1.05;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.32283"
+       x="519.86792"
+       y="472.99258"
+       id="text1-9-9-3-2"><tspan
+         sodipodi:role="line"
+         id="tspan1-3-2-9-7"
+         x="519.86792"
+         y="472.99258">Phytate</tspan></text>
     <path
        id="path88-7-5"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
@@ -1563,12 +1569,6 @@
          id="tspan1-3-4"
          x="875.53174"
          y="131.35652">Hypophosphite</tspan></text>
-    <path
-       id="path34-2-2-6"
-       d="m 234.72,360.19 v 0.96"
-       style="fill:none;stroke:#104e8b icc-color(sRGB-IEC61966-2, 0.1, 0.06298828, 0.30599976, 0.54499817);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,441.14791,804.29982)"
-       clip-path="url(#clipPath35-7-6-8)" />
     <path
        id="path88-7-5-1"
        d="m 192.56,378.1 v 47.95 h 98.38 V 378.1 Z"
@@ -1623,7 +1623,7 @@
        id="path6" />
     <path
        style="fill:none;fill-opacity:1;stroke:#3e43b1;stroke-width:2.8;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Triangle)"
-       d="M 918.76458,643.88654 805.74893,590.95041"
+       d="M 934.76458,671.88654 821.74893,618.95041"
        id="path8" />
     <path
        style="fill:none;fill-opacity:1;stroke:#dbcd2e;stroke-width:2.8;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Triangle)"
@@ -1656,7 +1656,8 @@
        d="M 655.21456,538.01429 C 588.3224,545.03709 521.43024,552.0599 454.53809,559.0827"
        id="path18"
        inkscape:path-effect="#path-effect18"
-       inkscape:original-d="M 655.21456,538.01429 C 588.3224,545.03709 521.43024,552.0599 454.53809,559.0827" />
+       inkscape:original-d="M 655.21456,538.01429 C 588.3224,545.03709 521.43024,552.0599 454.53809,559.0827"
+       transform="rotate(5.4727575,198.32054,652.5688)" />
     <path
        style="fill:none;stroke:#c1437c;stroke-width:2.8;stroke-opacity:1;marker-end:url(#Triangle)"
        d="m 431.7219,250.86299 c -15.3406,5.09884 -30.6812,10.19769 -46.0218,15.29653"
@@ -1678,5 +1679,11 @@
        inkscape:path-effect="#path-effect26"
        inkscape:original-d="m 790.22439,318.84667 c 0,57.78584 0,115.57167 0,173.35751"
        transform="translate(26,-10)" />
+    <path
+       style="fill:#cbe02f;stroke-width:2.8;stroke:#386800;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Triangle)"
+       d="m 488.40903,463.20097 c -23.39469,15.60105 -46.78937,31.2021 -70.18406,46.80315"
+       id="path1"
+       inkscape:path-effect="#path-effect1"
+       inkscape:original-d="m 488.40903,463.20097 c -23.39469,15.60105 -46.78937,31.2021 -70.18406,46.80315" />
   </g>
 </svg>

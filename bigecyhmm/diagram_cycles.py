@@ -368,18 +368,20 @@ def create_phosphorus_cycle(diagram_data, output_file):
     data_step_09 = diagram_data['P-S-09:PtxB']
     data_step_10 = diagram_data['P-S-10:Phosphonate production']
     data_step_11 = diagram_data['P-S-11:Phosphonate catabolism']
+    data_step_12 = diagram_data['P-S-12:Phytate degradation']
 
     imgdraw.text((30,210), 'PhnD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
-    imgdraw.text((300,375), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
+    imgdraw.text((300,325), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
     imgdraw.text((75,425), 'PitA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (219,205,46), font=font)
     imgdraw.text((245,645), 'PstS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (219,205,46), font=font)
     imgdraw.text((450,655), 'PNaS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (219,205,46), font=font)
     imgdraw.text((900,220), 'HtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (125,125,124), font=font)
     imgdraw.text((640,350), 'HtxA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (125,125,124), font=font)
-    imgdraw.text((500,460), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
+    imgdraw.text((500,530), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
     imgdraw.text((900,550), 'PtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (62,67,177), font=font)
     imgdraw.text((380,125), 'Production\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (193,67,124), font=font)
     imgdraw.text((410,280), 'Catabolism\nGenomes: {0}\nCoverage: {1}%'.format(data_step_11[0], data_step_11[1]), (193,67,124), font=font)
+    imgdraw.text((325,420), 'Phytase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_12[0], data_step_12[1]), (56,104,0), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)

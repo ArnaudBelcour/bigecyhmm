@@ -7,6 +7,7 @@
 * Draft of phosphorous cycles (with genes `PhnD`, `PhnJ`, `PstS`, `PtxD`, `PitA`, `PNaS`, `PhnZ`, `PhnX`, `PhnA`, `PhnM`, `PhnW`, `PepM`, `Ppd`, `HtxB`, `HtxA` and `ptxB`).
 * Template figure for phosphorous cycles (from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
 * Three test HMMs (`HtxB`, `HtxA` and `ptxB` created from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
+* HMMs for phosphorus cycle from [https://doi.org/10.1016/j.soilbio.2022.108826](https://doi.org/10.1016/j.soilbio.2022.108826): `phoA`, `phoD`, `phoX`, `phoN`, `aphA`, `olpA`, `appA`, `phnG`, `phnH`, `phnI`, `phnK`, `phnL`, `ppa`, `ppx`, `ppk1`, `gcd`, `pqqC`, `phoB`, `phoR`, `phoU`.
 
 # bigecyhmm v0.1.5 (2025-01-29)
 
