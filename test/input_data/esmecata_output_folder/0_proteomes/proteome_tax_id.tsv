@@ -1,4 +1,4 @@
 observation_name	name	tax_id	tax_id_name	tax_rank	proteome
-org_1	name	tax_id	tax_id_name_1	rank	proteomes
-org_2	name	tax_id	tax_id_name_2	rank	proteomes
-org_3	name	tax_id	tax_id_name_2	rank	proteomes
+org_1	name	tax_id	tax_id_name_1	genus	proteomes
+org_2	name	tax_id	tax_id_name_2	family	proteomes
+org_3	name	tax_id	tax_id_name_2	order	proteomes

@@ -38,6 +38,9 @@ from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm.utils import is_valid_dir
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle
 
+from esmecata.report.esmecata_compression import RANK_SORTED
+RANK_SORTED = [*RANK_SORTED, 'not_found']
+
 MESSAGE = '''
 Create figures from bigecyhmm and esmecata outputs.
 '''
@@ -86,14 +89,17 @@ def read_esmecata_proteome_file(proteome_tax_id_file):
 
     Returns:
         observation_names_tax_id_names (dict): dictionary associating organism name with tax_id_name
+        observation_names_tax_ranks (dict): dictionary associated organism name with tax_rank
     """
     observation_names_tax_id_names = {}
+    observation_names_tax_ranks = {}
 
     df_proteome_tax_id = pd.read_csv(proteome_tax_id_file, sep='\t')
     for index, row in df_proteome_tax_id.iterrows():
         observation_names_tax_id_names[row['observation_name']] = row['tax_id_name']
+        observation_names_tax_ranks[row['observation_name']] = row['tax_rank']
 
-    return observation_names_tax_id_names
+    return observation_names_tax_id_names, observation_names_tax_ranks
 
 
 def compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names):
@@ -125,6 +131,42 @@ def compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance
             abundance_data[sample_name][tax_id_name] = abundance_data[sample_name][tax_id_name] / sample_tot_abundance[sample_name]
 
     return abundance_data
+
+
+def compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance):
+    """For each tax_rank selected by esmecata (from observation_names_tax_id_names) compute the relative abundace of this taxon.
+    It is done by summing the abundance of all organisms in this tax_id_name and then dividing it by the total abundance in the sample.
+
+    Args:
+        sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
+        observation_names_tax_id_names (dict): dictionary associating organism name with tax_id_name
+        sample_tot_abundance (dict): for each sample, the total abundance of all organisms in the sample.
+
+    Returns:
+        data_abundance_taxon_sample (dict): for each sample, contains a subdict with the relative abundance of tax_rank in these samples.
+        sample_abundance_tax_rank (list): list of list containing the abundance of each tax_rank in the different samples.
+    """
+    sample_abundance_tax_rank = {}
+    for sample in sample_abundance:
+        if sample not in sample_abundance_tax_rank:
+            sample_abundance_tax_rank[sample] = {}
+        for organism in sample_abundance[sample]:
+            abundance_organism = sample_abundance[sample][organism]
+            if organism in observation_names_tax_ranks:
+                tax_rank = observation_names_tax_ranks[organism]
+            else:
+                tax_rank = 'not_found'
+            if tax_rank not in sample_abundance_tax_rank[sample]:
+                sample_abundance_tax_rank[sample][tax_rank] = abundance_organism
+            else:
+                sample_abundance_tax_rank[sample][tax_rank] = sample_abundance_tax_rank[sample][tax_rank] + abundance_organism
+
+    data_abundance_taxon_sample = []
+    for sample in sample_abundance_tax_rank:
+        for tax_rank in sample_abundance_tax_rank[sample]:
+            data_abundance_taxon_sample.append([sample, tax_rank, sample_abundance_tax_rank[sample][tax_rank]/sample_tot_abundance[sample]])
+
+    return data_abundance_taxon_sample, sample_abundance_tax_rank
 
 
 def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_observation_names=None):
@@ -414,7 +456,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     if esmecata_output_folder is not None:
         logger.info("Read EsMeCaTa proteome_tax_id file.")
         proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
-        observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
+        observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
         tax_id_names_observation_names = {}
         for observation_name in observation_names_tax_id_names:
             tax_id_name = observation_names_tax_id_names[observation_name]
@@ -424,6 +466,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 tax_id_names_observation_names[tax_id_name].append(observation_name)
     else:
         tax_id_names_observation_names = None
+        observation_names_tax_ranks = None
 
     logger.info("## Compute function occurrences and create visualisation.")
     logger.info("  -> Read bigecyhmm cycle output files.")
@@ -490,6 +533,17 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         output_folder_abundance = os.path.join(output_folder, 'function_abundance')
         if not os.path.exists(output_folder_abundance):
             os.mkdir(output_folder_abundance)
+
+        if observation_names_tax_ranks is not None:
+            # Compute and create a visualisation of the abundance of selected tax_rank by esmecata in the different samples.
+            # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample. 
+            data_abundance_taxon_sample, sample_abundance_tax_rank = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
+            df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
+            # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
+            df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
+            output_taxon_rank_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
+            fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa")
+            fig.write_image(output_taxon_rank_abundance_file, scale=1, width=1600, height=1400)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')

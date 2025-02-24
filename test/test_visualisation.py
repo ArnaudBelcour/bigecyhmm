@@ -4,7 +4,7 @@ import subprocess
 import shutil
 
 from bigecyhmm.visualisation import compute_relative_abundance_per_tax_id, read_abundance_file, read_esmecata_proteome_file, compute_bigecyhmm_functions_abundance, \
-                                    compute_bigecyhmm_functions_occurrence, create_visualisation
+                                    compute_bigecyhmm_functions_occurrence, create_visualisation, compute_abundance_per_tax_rank
 
 def test_compute_relative_abundance_per_tax_id():
     sample_abundance = {'sample_1': {'org_1': 100, 'org_2': 100, 'org_3': 0},
@@ -32,7 +32,22 @@ def test_compute_relative_abundance_per_tax_id_file():
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
 
     sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
-    observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
+    observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
+    data_abundance_taxon_sample, sample_abundance_tax_rank = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
+
+    expected_abundance_data = {'sample_1': {'genus': 100, 'family': 100, 'order': 0}, 'sample_2': {'genus': 0, 'family': 200, 'order': 600}, 'sample_3': {'genus': 0, 'family': 120, 'order': 400}}
+
+    for sample in expected_abundance_data:
+        for tax_rank in expected_abundance_data[sample]:
+            assert expected_abundance_data[sample][tax_rank] == sample_abundance_tax_rank[sample][tax_rank]
+
+
+def test_tax_rank_relative_abundance_file():
+    proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes',  'proteome_tax_id.tsv')
+    abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
+
+    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
     abundance_data = compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names)
 
     expected_abundance_data = {'sample_1': {'tax_id_name_1': 0.5, 'tax_id_name_2': 0.5},
@@ -60,7 +75,7 @@ def test_compute_bigecyhmm_functions_occurrence_functions_from_esmecata():
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'function_presence.tsv')
     proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes', 'proteome_tax_id.tsv')
 
-    observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
+    observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
 
     tax_id_names_observation_names = {}
     for observation_name in observation_names_tax_id_names:
@@ -121,7 +136,7 @@ def test_compute_bigecyhmm_functions_occurrence_cycles_from_esmecata():
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'pathway_presence.tsv')
     proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes', 'proteome_tax_id.tsv')
 
-    observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
+    observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
 
     tax_id_names_observation_names = {}
     for observation_name in observation_names_tax_id_names:
@@ -171,7 +186,7 @@ def test_compute_bigecyhmm_functions_abundance_cycles_from_esmecata():
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'pathway_presence.tsv')
 
     sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
-    observation_names_tax_id_names = read_esmecata_proteome_file(proteome_tax_id_file)
+    observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
 
     tax_id_names_observation_names = {}
     for observation_name in observation_names_tax_id_names:
