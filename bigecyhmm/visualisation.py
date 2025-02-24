@@ -39,7 +39,7 @@ from bigecyhmm.utils import is_valid_dir
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle
 
 from esmecata.report.esmecata_compression import RANK_SORTED
-RANK_SORTED = [*RANK_SORTED, 'not_found']
+RANK_SORTED = [*RANK_SORTED, 'Not found']
 
 MESSAGE = '''
 Create figures from bigecyhmm and esmecata outputs.
@@ -155,7 +155,7 @@ def compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks
             if organism in observation_names_tax_ranks:
                 tax_rank = observation_names_tax_ranks[organism]
             else:
-                tax_rank = 'not_found'
+                tax_rank = 'Not found'
             if tax_rank not in sample_abundance_tax_rank[sample]:
                 sample_abundance_tax_rank[sample][tax_rank] = abundance_organism
             else:
@@ -535,14 +535,14 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             os.mkdir(output_folder_abundance)
 
         if observation_names_tax_ranks is not None:
-            # Compute and create a visualisation of the abundance of selected tax_rank by esmecata in the different samples.
+            # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples.
             # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample. 
             data_abundance_taxon_sample, sample_abundance_tax_rank = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
             df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
             # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
             df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
             output_taxon_rank_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
-            fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa")
+            fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa", color_discrete_map= {'Not found': 'grey'})
             fig.write_image(output_taxon_rank_abundance_file, scale=1, width=1600, height=1400)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
