@@ -42,7 +42,7 @@ from esmecata.report.esmecata_compression import RANK_SORTED
 RANK_SORTED = [*RANK_SORTED, 'Not found']
 
 MESSAGE = '''
-Create figures from bigecyhmm and esmecata outputs.
+Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
 '''
 REQUIRES = '''
 Requires seaborn, pandas, plotly and kaleido.
@@ -211,6 +211,11 @@ def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_o
                     if observation_name not in function_occurrence_organisms[function_name]:
                         function_occurrence_organisms[function_name][observation_name] = row[organism]
 
+    all_functions = set(all_functions)
+    for function in all_functions:
+        if function not in function_occurrence_organisms:
+            function_occurrence_organisms[function] = {}
+
     return function_occurrence_organisms, all_studied_organisms
 
 
@@ -238,6 +243,7 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     function_abundance_samples = {}
     function_relative_abundance_samples = {}
     function_participation_samples = {}
+
     for sample in sample_abundance:
         function_abundance = {}
         function_participation = {}
@@ -267,6 +273,13 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
             if function_name not in function_relative_abundance_samples[sample]:
                 function_relative_abundance_samples[sample][function_name] = function_abundance[function_name] / sample_tot_abundance[sample]
         function_participation_samples[sample] = function_participation
+
+        # Add function with zero abundance.
+        for function in function_organisms:
+            if function not in function_abundance_samples[sample]:
+                function_abundance_samples[sample][function] = 0
+            if function not in function_relative_abundance_samples[sample]:
+                function_relative_abundance_samples[sample][function] = 0
 
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples
 
@@ -384,7 +397,8 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot):
     """
     df_seaborn_abundance = df_seaborn_abundance.sort_values(['sample', 'name'], ascending=True)
     df_seaborn_abundance['name'] = df_seaborn_abundance['name'].apply(lambda x: x.split(':')[1])
-
+    # Remove function without occurrence/abundance.
+    df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['ratio']>0]
     fig = px.line_polar(df_seaborn_abundance, r="ratio", theta="name", color="sample", line_close=True)
     fig.write_image(output_polar_plot, scale=1, width=1400, height=1200)
 
@@ -472,10 +486,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     logger.info("  -> Read bigecyhmm cycle output files.")
     bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
     cycle_occurrence_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_pathway_presence_file, tax_id_names_observation_names)
-    # Compute the relative abundance of organisms by dividing for a function the number of organisms having it by the total number of organisms in the community.
+    # Compute the relative occurrence of functions by dividing the number of organisms having it by the total number of organisms in the community.
     cycle_occurrence_community = []
-    for index in cycle_occurrence_organisms:
-        cycle_occurrence_community.append([index, len(cycle_occurrence_organisms[index])/len(all_studied_organisms)])
+    for function in cycle_occurrence_organisms:
+        cycle_occurrence_community.append([function, len(cycle_occurrence_organisms[function])/len(all_studied_organisms)])
 
     cycle_occurrence_community_df = pd.DataFrame(cycle_occurrence_community, columns=['name', 'ratio'])
     cycle_occurrence_community_df.set_index('name', inplace=True)
@@ -551,6 +565,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
         cycle_relative_abundance_samples_df = pd.DataFrame(cycle_relative_abundance_samples)
         cycle_relative_abundance_samples_df.index.name = 'name'
+        cycle_relative_abundance_samples_df.sort_index(inplace=True)
         cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample.tsv'), sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
@@ -609,6 +624,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
         function_relative_abundance_samples_df = pd.DataFrame(function_relative_abundance_samples)
         function_relative_abundance_samples_df.index.name = 'name'
+        function_relative_abundance_samples_df.sort_index(inplace=True)
         function_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample.tsv'), sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
