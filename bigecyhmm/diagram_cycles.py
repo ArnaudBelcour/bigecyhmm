@@ -335,12 +335,14 @@ def create_other_cycle(diagram_data, output_file):
     data_step_03 = diagram_data['O-S-03:Arsenate reduction']
     data_step_04 = diagram_data['O-S-04:Arsenite oxidation']
     data_step_05 = diagram_data['O-S-05:Selenate reduction']
+    data_step_06 = diagram_data['O-S-06:Aerobic (cox)']
 
     imgdraw.text((100,175), 'Step1: Iron reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (0,100,0), font=font)
     imgdraw.text((375,175), 'Step2: Iron oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (0,100,0), font=font)
     imgdraw.text((10,575), 'Step3: Arsenate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (205,102,0), font=font)
     imgdraw.text((330,575), 'Step4: Arsenite oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (205,102,0), font=font)
     imgdraw.text((800,575), 'Step5: Selenate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (0,0,0), font=font)
+    imgdraw.text((800,175), 'Step5: Cytochrome-c\n    oxidase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (115,68,171), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)

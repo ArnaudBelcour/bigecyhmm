@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.1.6 (2025-02-12)
+# bigecyhmm v0.1.6 (2025-02-26)
 
 ## Add
 
@@ -8,6 +8,13 @@
 * Template figure for phosphorous cycles (from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
 * Three test HMMs (`HtxB`, `HtxA` and `ptxB` created from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
 * HMMs for phosphorus cycle from [https://doi.org/10.1016/j.soilbio.2022.108826](https://doi.org/10.1016/j.soilbio.2022.108826): `phoA`, `phoD`, `phoX`, `phoN`, `aphA`, `olpA`, `appA`, `phnG`, `phnH`, `phnI`, `phnK`, `phnL`, `ppa`, `ppx`, `ppk1`, `gcd`, `pqqC`, `phoB`, `phoR`, `phoU`.
+* Creation of barplot showing the coverage of EsMeCaTa on each sample of a dataset.
+* Test for computing abundance of taxonomic rank (used to create the barplot showing the coverage of EsMeCaTa predicitons on the samples).
+* Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
+
+## Fix
+
+* Fix issue of function with zero abundance/occurrence not present in output files.
 
 # bigecyhmm v0.1.5 (2025-01-29)
 
