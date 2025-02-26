@@ -28,6 +28,7 @@ from plotly import __version__ as plotly_version
 
 import argparse
 import logging
+import csv
 import json
 import math
 import os
@@ -53,6 +54,26 @@ logger.setLevel(logging.DEBUG)
 
 ROOT = os.path.dirname(__file__)
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
+
+
+def get_function_categories():
+    """Extract function categories from HMM template file.
+
+    Returns:
+        function_categories (dict): category associated with function name
+    """
+    function_categories = {}
+    with open(HMM_TEMPLATE_FILE, 'r') as open_hmm_template:
+        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
+        for line in csvreader:
+            function_name = line['Function'] + ' ' + line['Gene abbreviation']
+            category_name = line['Category']
+            if category_name not in function_categories:
+                function_categories[category_name] = [function_name]
+            else:
+                function_categories[category_name].append(function_name)
+
+    return function_categories
 
 
 def read_abundance_file(abundance_file_path):
@@ -403,19 +424,21 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot):
     fig.write_image(output_polar_plot, scale=1, width=1400, height=1200)
 
 
-def visualise_barplot_category(category, gene_categories, df_seaborn_abundance, output_file_name):
+def visualise_barplot_category(category, function_categories, df_seaborn_abundance, output_file_name):
     """Create bar plot for functions of the associated categories from pandas dataframe with function as 'name' column' and associated ratio as a second column
 
     Args:
         cateogry (str): name of the function category to plot
-        gene_categories (dict): adicitonary mapping function category to their respective function inferred by bigecyhmm
-        df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function,  a second column with the relative abundance of organisms having it in the community and a third column for the sample
+        function_categories (dict): a dicitonary mapping function category to their respective function inferred by bigecyhmm
+        df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the relative abundance of organisms having it in the community and a third column for the sample
         output_file_name (str): path to the output file.
     """
     fig, axes = plt.subplots(figsize=(40,20))
     plt.rc('font', size=30)
-    kept_functions = gene_categories[category]
+    kept_functions = function_categories[category]
+
     df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_functions)]
+
     g = sns.barplot(data=df_seaborn_abundance, x='name', y='ratio', hue='sample')
     plt.xticks(rotation=90)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
@@ -647,6 +670,16 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         logger.info("  -> Create heatmap.")
         output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
         create_heatmap_functions(function_relative_abundance_samples_df, output_heatmap_filepath)
+
+        function_relative_abundance_samples_df.reset_index(inplace=True)
+        melted_function_relative_abundance_samples_df = pd.melt(function_relative_abundance_samples_df, id_vars='name', value_vars=function_relative_abundance_samples_df.columns.tolist())
+        melted_function_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
+
+        # Create plot for hydrogenases.
+        logger.info("  -> Create barplot of hydrogenases.")
+        output_barplot_hydrogenase_filepath = os.path.join(output_folder_abundance, 'barplot_abundance_hydrogenase.png')
+        function_categories = get_function_categories()
+        visualise_barplot_category('Hydrogenases', function_categories, melted_function_relative_abundance_samples_df, output_barplot_hydrogenase_filepath)
     """
     if abundance_file_path is not None:
         output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function.png')
