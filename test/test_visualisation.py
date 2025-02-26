@@ -217,10 +217,10 @@ def test_compute_bigecyhmm_functions_abundance_cycles_from_esmecata():
 
 
 def test_create_visualisation():
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    create_visualisation(bigecyhmm_otuput_folder, output_folder)
+    create_visualisation(bigecyhmm_output_folder, output_folder)
 
     polar_plot = os.path.join(output_folder, 'function_occurrence', 'polar_plot_occurrence.png')
     assert os.path.exists(polar_plot)
@@ -231,10 +231,10 @@ def test_create_visualisation():
 
 
 def test_create_visualisation_cli():
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', bigecyhmm_otuput_folder, '-o', output_folder])
+    subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', bigecyhmm_output_folder, '-o', output_folder])
 
     polar_plot = os.path.join(output_folder, 'function_occurrence', 'polar_plot_occurrence.png')
     assert os.path.exists(polar_plot)
@@ -246,10 +246,10 @@ def test_create_visualisation_cli():
 
 def test_create_visualisation_abundance():
     abundance_file_path = os.path.join('input_data', 'abundance_file_from_genomes.tsv')
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    create_visualisation(bigecyhmm_otuput_folder, output_folder, abundance_file_path=abundance_file_path)
+    create_visualisation(bigecyhmm_output_folder, output_folder, abundance_file_path=abundance_file_path)
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
@@ -263,10 +263,10 @@ def test_create_visualisation_abundance():
 
 def test_create_visualisation_abundance_cli():
     abundance_file_path = os.path.join('input_data', 'abundance_file_from_genomes.tsv')
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', bigecyhmm_otuput_folder, '--abundance-file', abundance_file_path, '-o', output_folder])
+    subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', bigecyhmm_output_folder, '--abundance-file', abundance_file_path, '-o', output_folder])
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
@@ -281,10 +281,10 @@ def test_create_visualisation_abundance_cli():
 def test_create_visualisation_abundance_from_esmecata():
     esmecata_output_folder = os.path.join('input_data', 'esmecata_output_folder')
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    create_visualisation(bigecyhmm_otuput_folder, output_folder, esmecata_output_folder, abundance_file_path)
+    create_visualisation(bigecyhmm_output_folder, output_folder, esmecata_output_folder, abundance_file_path)
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
@@ -299,10 +299,10 @@ def test_create_visualisation_abundance_from_esmecata():
 def test_create_visualisation_abundance_from_esmecata_cli():
     esmecata_output_folder = os.path.join('input_data', 'esmecata_output_folder')
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
-    bigecyhmm_otuput_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
+    bigecyhmm_output_folder = os.path.join('input_data', 'bigecyhmm_output_folder')
 
     output_folder = 'output_folder'
-    subprocess.call(['bigecyhmm_visualisation', 'esmecata', '--esmecata', esmecata_output_folder, '--bigecyhmm', bigecyhmm_otuput_folder, '--abundance-file', abundance_file_path, '-o', output_folder])
+    subprocess.call(['bigecyhmm_visualisation', 'esmecata', '--esmecata', esmecata_output_folder, '--bigecyhmm', bigecyhmm_output_folder, '--abundance-file', abundance_file_path, '-o', output_folder])
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
