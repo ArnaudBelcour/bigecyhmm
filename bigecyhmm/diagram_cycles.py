@@ -31,6 +31,7 @@ TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cyc
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
 TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
 TEMPLATE_PHOSPHORUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_cycle.png')
+TEMPLATE_PHOSPHORUS_GENE_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_genes.png')
 
 logger = logging.getLogger(__name__)
 
@@ -356,6 +357,29 @@ def create_phosphorus_cycle(diagram_data, output_file):
         output_file (str): path to output file
     """
     img = Image.open(TEMPLATE_PHOSPHORUS_CYCLE, 'r')
+    imgdraw = ImageDraw.Draw(img)
+    font = ImageFont.load_default(20)
+
+    data_step_01 = diagram_data['P1-S-01:Immobilisation']
+    data_step_02 = diagram_data['P1-S-02:Mineralisation']
+    data_step_03 = diagram_data['P1-S-03:Dissolution']
+
+    imgdraw.text((270,170), 'Immobilisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((260,450), 'Mineralisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (33,179,124), font=font)
+    imgdraw.text((750,440), 'Dissolution\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (62,67,177), font=font)
+
+    img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
+    img.save(output_file, dpi=(300, 300), quality=100)
+
+
+def create_phosphorus_gene_cycle(diagram_data, output_file):
+    """From png TEMPLATE_PHOSPHORUS_GENE_CYCLE and input_diagram_folder file, create phosphorus genes figure.
+
+    Args:
+        diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
+        output_file (str): path to output file
+    """
+    img = Image.open(TEMPLATE_PHOSPHORUS_GENE_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
 

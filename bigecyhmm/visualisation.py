@@ -453,9 +453,8 @@ def create_heatmap_functions(df, output_heatmap_filepath):
         df (pd.DataFrame): dataframe pandas containing a column with the name of function, one column by sample and the abundance of function in sample as value.
         output_heatmap_filepath (str): path to the output file.
     """
-    sns.set_theme(font_scale=1)
-    fig, axes = plt.subplots(figsize=(35,60))
-    plt.rc('font', size=10)
+    sns.set_theme(font_scale=0.5)
+    fig, axes = plt.subplots(figsize=(35,70))
     g = sns.heatmap(data=df, xticklabels=1, cmap='viridis_r', linewidths=1, linecolor='black')
     plt.tight_layout()
     plt.savefig(output_heatmap_filepath)
