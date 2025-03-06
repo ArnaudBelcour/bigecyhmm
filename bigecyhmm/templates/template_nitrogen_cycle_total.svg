@@ -8,7 +8,10 @@
    height="816"
    viewBox="0 0 1056 816"
    sodipodi:docname="template_nitrogen_cycle_total.svg"
-   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
+   inkscape:version="1.4 (1:1.4+202410151213+e7c3feb100)"
+   inkscape:export-filename="template_nitrogen_cycle_total.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -1022,14 +1025,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:zoom="1.3892045"
-     inkscape:cx="528"
-     inkscape:cy="465.73415"
+     inkscape:cx="353.43968"
+     inkscape:cy="360.99797"
      inkscape:window-width="2490"
      inkscape:window-height="1376"
      inkscape:window-x="70"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1">
+     inkscape:current-layer="g1"
+     inkscape:export-bgcolor="#ffffffff">
     <inkscape:page
        x="0"
        y="0"
@@ -1180,19 +1184,19 @@
        id="path44"
        d="M 234.72,217.3 586.08,409.1"
        style="fill:none;stroke:#5f9ea0 icc-color(sRGB-IEC61966-2, 0.1, 0.37298584, 0.61999512, 0.6269989);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,0,816)"
+       transform="matrix(0.66666665,0,0,-1.833368,390.71999,1020.5642)"
        clip-path="url(#clipPath45)" />
     <path
        id="path46"
        d="m 406.89,311.28 3.51,1.92"
        style="fill:none;stroke:#5f9ea0 icc-color(sRGB-IEC61966-2, 0.1, 0.37298584, 0.61999512, 0.6269989);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,0,816)"
+       transform="matrix(1.20004,-0.58110387,-0.58110387,-1.20004,351.36348,1066.7717)"
        clip-path="url(#clipPath47)" />
     <path
        id="path48"
        d="m 402.07,313.22 3.57,0.01 3.73,0.6 3.77,1.17 3.66,1.7 v 0 l -3.4,-2.16 -3.03,-2.54 -2.52,-2.82 -1.93,-3 v 0 l 0.24,0.25 0.14,0.42 0.03,0.55 -0.1,0.68 -0.21,0.75 -0.3,0.8 -0.4,0.8 -0.46,0.76 -0.5,0.69 -0.52,0.58 -0.52,0.45 -0.48,0.28 -0.42,0.11 z"
        style="fill:#5f9ea0 icc-color(sRGB-IEC61966-2, 0.1, 0.37298584, 0.61999512, 0.6269989);fill-opacity:1;fill-rule:nonzero;stroke:#5f9ea0 icc-color(sRGB-IEC61966-2, 0.1, 0.37298584, 0.61999512, 0.6269989);stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.3333333,0,0,-1.3333333,0,816)"
+       transform="matrix(1.175627,-0.62903002,-0.62903002,-1.175627,375.67348,1077.3648)"
        clip-path="url(#clipPath49)" />
     <path
        id="path50"

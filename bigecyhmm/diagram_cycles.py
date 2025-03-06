@@ -277,7 +277,7 @@ def create_nitrogen_cycle(diagram_data, output_file):
     imgdraw.text((50,425), 'Step5: Nitrite reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (16,78,139), font=font)
     imgdraw.text((50,300), 'Step6: Nitric oxide reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (16,78,139), font=font)
     imgdraw.text((225,120), 'Step7: Nitrous oxide reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (16,78,139), font=font)
-    imgdraw.text((500,425), 'Step8: Nitrite ammonification\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (95,158,160), font=font)
+    imgdraw.text((410,415), 'Step8: Nitrite ammonification\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (95,158,160), font=font)
     imgdraw.text((500,275), 'Step9: Anammox\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (102,205,0), font=font)
     imgdraw.text((400,200), 'Step10: Nitric oxide dismutase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (154,50,205), font=font)
 
