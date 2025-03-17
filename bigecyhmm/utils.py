@@ -90,8 +90,6 @@ def parse_result_files(hmm_output_folder):
         with open(hmm_output_filepath, 'r') as open_result_file:
             csvreader = csv.DictReader(open_result_file, delimiter='\t')
             for line in csvreader:
-                # Score of 40 from: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3820096/
-                if float(line['evalue']) < 1e-5 and float(line['score']) >= 40:
-                    hmm_hits[hmm_tsv_filename].append(line['HMM'])
+                hmm_hits[hmm_tsv_filename].append(line['HMM'])
 
     return hmm_hits
