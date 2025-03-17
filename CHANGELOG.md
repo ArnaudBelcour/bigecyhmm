@@ -15,6 +15,7 @@
 ## Fix
 
 * Fix issue of function with zero abundance/occurrence not present in output files.
+* Fix several issues with threshold not being applied correctly.
 
 # bigecyhmm v0.1.5 (2025-01-29)
 
