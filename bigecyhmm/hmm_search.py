@@ -59,7 +59,8 @@ def get_hmm_thresholds(hmm_template_file):
 
 
 def query_fasta_file(input_protein_fasta, hmm_thresholds):
-    """Run HMM search with pyhmmer on protein fasta file
+    """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
+    Use associated threshold either for full sequence or domain.
 
     Args:
         input_protein_fasta (str): path of protein fasta file
