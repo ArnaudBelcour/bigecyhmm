@@ -77,22 +77,26 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds):
     # Iterate on the HMM to query them. 
     results = []
     with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
-        for hmm_filename in zip_object.namelist():
-            if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename:
-                hmm_filebasename = os.path.basename(hmm_filename)
-                with zip_object.open(hmm_filename) as open_hmm_zipfile:
-                    with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
-                        for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
-                            threshold, threshold_type = threshold_data.split('|')
-                            threshold = float(threshold)
-                            if threshold_type == 'full':
-                                for hits in pyhmmer.hmmsearch(hmm_file, sequences, T=threshold, cpus=1):
-                                    for hit in hits:
-                                            results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                            if threshold_type == 'domain':
-                                for hits in pyhmmer.hmmsearch(hmm_file, sequences, domT=threshold, cpus=1):
-                                    for hit in hits:
-                                            results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+        list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
+
+        for hmm_filename in list_of_hmms:
+            hmm_filebasename = os.path.basename(hmm_filename)
+            with zip_object.open(hmm_filename) as open_hmm_zipfile:
+                with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
+                    hmm = hmm_file.read()
+                    for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
+                        threshold, threshold_type = threshold_data.split('|')
+                        threshold = float(threshold)
+                        hmm.cutoffs.trusted = (threshold, threshold)
+                        if threshold_type == 'full':
+                            for hits in pyhmmer.hmmsearch(hmm, sequences, bit_cutoffs="trusted", cpus=1, Z=len(list_of_hmms)):
+                                for hit in hits.included:
+                                    results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                        if threshold_type == 'domain':
+                            for hits in pyhmmer.hmmsearch(hmm, sequences, bit_cutoffs="trusted", cpus=1, Z=len(list_of_hmms)):
+                                for hit in hits.included:
+                                    for domain in hit.domains.included:
+                                        results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
 
     return results
 
