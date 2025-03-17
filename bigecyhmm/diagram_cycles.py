@@ -360,13 +360,15 @@ def create_phosphorus_cycle(diagram_data, output_file):
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
 
-    data_step_01 = diagram_data['P1-S-01:Immobilisation']
-    data_step_02 = diagram_data['P1-S-02:Mineralisation']
-    data_step_03 = diagram_data['P1-S-03:Dissolution']
+    data_step_01 = diagram_data['P1-S-01:Immobilisation (P-rich)']
+    data_step_02 = diagram_data['P1-S-01:Immobilisation (P-poor)']
+    data_step_03 = diagram_data['P1-S-02:Mineralisation']
+    data_step_04 = diagram_data['P1-S-03:Dissolution']
 
-    imgdraw.text((270,170), 'Immobilisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
-    imgdraw.text((260,450), 'Mineralisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (33,179,124), font=font)
-    imgdraw.text((750,440), 'Dissolution\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (62,67,177), font=font)
+    imgdraw.text((250,280), 'Immobilisation (P-rich)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((240,80), 'Immobilisation (P-poor)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (129,159,188), font=font)
+    imgdraw.text((260,570), 'Mineralisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (33,179,124), font=font)
+    imgdraw.text((720,580), 'Dissolution\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (62,67,177), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)

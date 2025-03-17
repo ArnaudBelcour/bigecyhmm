@@ -43,6 +43,10 @@ P-S-15:ppx	1	1
 P-S-16:ppk1	0	0
 P-S-17:gcd and pqqC	1	0
 P-S-18:Pho regulon	1	1
+P1-S-01:Immobilisation (P-rich)	1	1
+P1-S-01:Immobilisation (P-poor)	0	0
+P1-S-02:Mineralisation	1	1
+P1-S-03:Dissolution	1	1
 S-S-01:Sulfide oxidation	0	0
 S-S-02:Sulfur reduction	0	0
 S-S-03:Sulfur oxidation	1	1
