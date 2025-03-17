@@ -305,6 +305,54 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples
 
 
+def get_hmm_per_organism(bigecyhmm_output, tax_id_names_observation_names):
+    hmm_found_folder = os.path.join(bigecyhmm_output, 'hmm_results')
+    hmm_occurrences = {}
+
+    for organism_result_file in os.listdir(hmm_found_folder):
+        organism_name = organism_result_file.replace('.tsv', '')
+        # If results come from esmecata, convert tax_id_names into observation_names.
+        if tax_id_names_observation_names is not None:
+            observation_names = tax_id_names_observation_names[organism_name]
+        else:
+            observation_names = [organism_name]
+
+        organism_result_file_path = os.path.join(hmm_found_folder, organism_result_file)
+        hmm_found_df = pd.read_csv(organism_result_file_path, sep='\t')
+        hmm_found_df['HMM'] = hmm_found_df['HMM'].str.replace('.hmm', '')
+        # Group the dataframe by the hmm and merged all proteins found for an HMM with a ';'.
+        hmm_founds = hmm_found_df.groupby('HMM').apply(lambda x: '; '.join(x.protein), include_groups=False).to_dict()
+        # Count the number of protein found for each HMM.
+        hmm_occurrence_org = {hmm: len(set(hmm_founds[hmm])) for hmm in hmm_founds}
+
+        for observation_name in observation_names:
+            hmm_occurrences[observation_name] = hmm_occurrence_org
+
+    return hmm_occurrences
+
+
+def create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_folder_abundance, tax_id_names_observation_names):
+    hmm_occurrences = get_hmm_per_organism(bigecyhmm_output, tax_id_names_observation_names)
+
+    hmm_abundance = {}
+    for sample in sample_abundance:
+        if sample not in hmm_abundance:
+            hmm_abundance[sample] = {}
+        for organism in sample_abundance[sample]:
+            for hmm_found in hmm_occurrences[organism]:
+                # Compute the abundance of function in the sample.
+                if hmm_found not in hmm_abundance[sample]:
+                    hmm_abundance[sample][hmm_found] = hmm_occurrences[organism][hmm_found]*sample_abundance[sample][organism]
+                else:
+                    hmm_abundance[sample][hmm_found] = hmm_occurrences[organism][hmm_found]*sample_abundance[sample][organism] + hmm_abundance[sample][hmm_found]
+
+
+    hmm_abundance_df = pd.DataFrame(hmm_abundance)
+    hmm_abundance_df.index.name = 'name'
+    hmm_abundance_df.sort_index(inplace=True)
+    hmm_abundance_df.to_csv(os.path.join(output_folder_abundance, 'hmm_functional_profile.tsv'), sep='\t')
+
+
 def create_swarmplot_community(df_seaborn, output_file_name):
     """Create swarmplot from pandas dataframe with function as 'name' column' and associated ratio as a second column
 
@@ -679,6 +727,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         output_barplot_hydrogenase_filepath = os.path.join(output_folder_abundance, 'barplot_abundance_hydrogenase.png')
         function_categories = get_function_categories()
         visualise_barplot_category('Hydrogenases', function_categories, melted_function_relative_abundance_samples_df, output_barplot_hydrogenase_filepath)
+
+        # Create HMM functional profiles.
+        logger.info("  -> Create HMM functional profiles.")
+        create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_folder_abundance, tax_id_names_observation_names)
     """
     if abundance_file_path is not None:
         output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function.png')
