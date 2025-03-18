@@ -3,7 +3,7 @@ import csv
 import subprocess
 import shutil
 
-from bigecyhmm.hmm_search import search_hmm
+from bigecyhmm.hmm_search import search_hmm, check_motif_regex
 from bigecyhmm.diagram_cycles import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
@@ -46,6 +46,12 @@ def extract_hmm_to_pathway():
 
     return hmm_to_pathways
 
+
+def test_check_motif():
+    gene_name = 'dsrA'
+    sequence = 'MSETPLLDELEKGPWPSFVKEIKKTAELMEKAAAEGKDVKMPKGARGLLKQLEISYKDKKTHWKHGGIVSVVGYGGGVIGRYSDLGEQIPEVEHFHTMRINQPSGWFYSTKALRGLCDVWEKWGSGLTNFHGSTGDIIFLGTRSEYLQPCFEDLGNLEIPFDIGGSGSDLRTPSACMGPALCEFACYDTLELCYDLTMTYQDELHRPMWPYKFKIKCAGCPNDCVASKARSDFAIIGTWKDDIKVDQEAVKEYASWMDIENEVVKLCPTGAIKWDGKELTIDNRECVRCMHCINKMPKALKPGDERGATILIGGKAPFVEGAVIGWVAVPFVEVEKPYDEIKEILEAIWDWWDEEGKFRERIGELIWRKGMREFLKVIGREADVRMVKAPRNNPFMFFEKDELKPSAYTEELKKRGMW'
+    check_bool = check_motif_regex(gene_name, sequence)
+    assert check_bool == True
 
 def test_search_hmm():
     input_file = os.path.join('input_data', 'meta_organism_test.fasta')
@@ -122,3 +128,4 @@ def test_search_hmm_cli():
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
 
     shutil.rmtree(output_folder)
+

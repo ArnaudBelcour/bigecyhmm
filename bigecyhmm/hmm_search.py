@@ -19,6 +19,7 @@ import zipfile
 import logging
 import pyhmmer
 import time
+import re
 import sys
 import json
 
@@ -36,6 +37,32 @@ PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv'
 PHENOTYPE_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'phenotypes.tsv')
 
 logger = logging.getLogger(__name__)
+
+# Motif validation using regex search in sequence.
+MOTIF = {'dsrC': r'GPXKXXCXXXGXPXPXXCX',
+        'tusE': r'G[PV]XKXX[ARNDQEGHILKMFPSTWYV]XXXGXPXPXXCX',
+        'rubisco_form_I': r'TXKPKLGLXXXNYXRXXXEXLXGGL',
+        'rubisco_form_III': r'QXGGGXXXHPXGXXAGAXAXRXXXXA',
+        'dsrA': r'XXXDXGXXGXXXRXXXXCXGXXXCX',
+        'dsrB': r'XXXXPXXXXXXXXXCXXXCXXXX',
+        'soxB': r'[YEVRQAHMNTIFG][PRKQNHMFLTGSY][EDGKNS][VACTSLG][EDQNP][VIAFLM][VASGC][FMLT][STY][PA][AG][VFY][R][W][G][TPAGNYLVS][TSCAV][ILVKAMT][LPMIV][PAGEMS][GNED][QDEYASH][AEPTMNDVSGKQW][IVL][TLRM][WRMQLFVKYI][DEGA][HDRNASLWQK][LIVM][YWLMTHAIFS][ANDETGSH][YVQEMANFWH][TCVLM][GSAC][FMICVTL][TSGN][YD][PGST][EAWYQNMDHKS][LATVCSMNI][YTGCFS][LRVKTAISPM][FTRSNQMKGLAD][YENDSPQTRGAWKM][LMVIYRF][RTSEKDNL][GA][AEMNGQTSKRD][QFMTDKRHEYVAG][ILMV][KHARLQN][AVTNDKIEMGLSQ][VILMHT][LMIWFV][E][DGQSKE][IVAL][AGC][SDEQ][NAK][VLI][F][TNQHVSD][SPAKEQTLRVDN][DN][PA][FYL][YLFRIMQK][QIRH][QSG][GE][GQ][D][VM][SVIL][R][VLTIMA][FGEHYTAW][GNA][LIMAVF][RGQEHDTSANIK][YWF][VRTDASKEHMN][LICFVM][DETHAKNRSQM][PVIL][DTNGSAVKMLRYEH][AKNEQLRG][PRGKTESADNI][TQMILNSVAKGRF][GNYSH][ESQKNHRADG][R]',
+        'soxC': r'[DERGSHQ][VAICTS][LIFMV][VLI][AVCG][YLFWI][AYKGFSRTN][QAM][N][G][E][ARMPSH][LI][RYM][PKRAVDM][EQSAG][QNH][G][YF][P][VLIAM][R][LAVIM][VILMFC][VLIANM][P][G][WVYCFLI][EQ][GA][SVNI][ITMSLVA][QNWHCS][VIT][K][WYHF][LIV][RHKQN][RQN][ILVM][LQEYKGNMHD][VLFAI][TAMGSHVYDIKL][DEARTNSQ][LQGMKVEARTH][PAERKS][AVYWFMLESTGI][MEANQYGIHVWF][ASTHCLQV][KRYF][DNESGQWF][E][TAVS][SAVIKTLGR][EKHRGYNL][Y][TIVNSM][DEVSNMAGTIQL][VLTMPSAIHQ][TLMIQVKARY][APEGKQDRS][DSNGTE][GKS][RQTLKCIFMHSDVEN][VASHLYWIFTQ][LRQIKYWMTEHV][AQKIRMGENL][FWYHM][TSFAVDNHQ][WFSLYMNG][VIDYPEALSTFMRH][MQLNIFC][EDNRGH][PACVST][QKNRDE][S]}',
+}
+
+# Motif validation by checking that it is not better associated with another HMM.
+MOTIF_PAIR = {'dsrE': 'tusD',
+    'tusD': 'dsrE',
+    'dsrH': 'tusB',
+    'tusB': 'dsrH',
+    'dsrF': 'tusC',
+    'tusC': 'dsrF',
+    'amoA': 'pmoA',
+    'amoB': 'pmoB',
+    'amoC': 'pmoC',
+    'pmoA': 'amoA',
+    'pmoB': 'amoB',
+    'pmoC': 'amoC'
+}
 
 
 def get_hmm_thresholds(hmm_template_file):
@@ -56,6 +83,36 @@ def get_hmm_thresholds(hmm_template_file):
                 hmm_thresholds[hmm_file] = line['Hmm detecting threshold']
 
     return hmm_thresholds
+
+
+def check_motif_regex(gene_name, sequence):
+    motif_regex = MOTIF[gene_name]
+    # Replace X by any amino-acid.
+    motif_regex_gene = re.sub(r'X', r'[ARNDCQEGHILKMFPSTWYV]', motif_regex)
+    motif_found = re.findall(motif_regex_gene, sequence)
+    if len(motif_found) > 0:
+        return True
+    else:
+        False
+
+
+def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object):
+    with zip_object.open(hmm_filename) as open_hmm_zipfile:
+        with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
+            motif_check_score = max([hit.score
+                             for hits in pyhmmer.hmmsearch(hmm_file, input_sequence, cpus=1)
+                             for hit in hits])
+
+    with zip_object.open(pair_hmm_filename) as open_hmm_zipfile:
+        with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as pair_hmm_file:
+            motif_anti_check_score = max([second_hit.score
+                                    for second_hits in pyhmmer.hmmsearch(pair_hmm_file, input_sequence, cpus=1)
+                                    for second_hit in second_hits ])
+
+    if motif_check_score >= motif_anti_check_score and motif_check_score != 0:
+        return True
+    else:
+        return False
 
 
 def query_fasta_file(input_protein_fasta, hmm_thresholds):
@@ -79,9 +136,11 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds):
     results = []
     with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
         list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
-
+        check_hmms = {os.path.basename(hmm_filename).replace('.check.hmm', ''): hmm_filename
+                      for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
         for hmm_filename in list_of_hmms:
             hmm_filebasename = os.path.basename(hmm_filename)
+            hmm_name = hmm_filebasename.replace('.hmm', '')
             with zip_object.open(hmm_filename) as open_hmm_zipfile:
                 with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
                     for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
@@ -91,13 +150,39 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds):
                             for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1, Z=len(list_of_hmms)):
                                 for hit in hits.included:
                                     if hit.score >= threshold:
-                                        results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                        gene_match = hit.name
+                                        # Check the presence of specific motif in gene sequence.
+                                        if hmm_name in MOTIF:
+                                            gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
+                                            if check_motif_regex(hmm_name, gene_sequence_str):
+                                                results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                        # Motif validation by checking that it is not better associated with another HMM.
+                                        elif hmm_name in MOTIF_PAIR:
+                                            gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+                                            first_check_hmm = check_hmms[hmm_name]
+                                            second_check_hmm = check_hmms[MOTIF_PAIR[hmm_name]]
+                                            if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
+                                                results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                        else:
+                                            results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                         if threshold_type == 'domain':
                             for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1, Z=len(list_of_hmms)):
                                 for hit in hits.included:
                                     for domain in hit.domains.included:
                                         if domain.score >= threshold:
-                                            results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
+                                            gene_match = hit.name
+                                            if hmm_name in MOTIF:
+                                                gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0]
+                                                if check_motif_regex(hmm_name, gene_sequence_str):
+                                                    results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
+                                            elif hmm_name in MOTIF_PAIR:
+                                                gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+                                                first_check_hmm = check_hmms[hmm_name]
+                                                second_check_hmm = check_hmms[MOTIF_PAIR[hmm_name]]
+                                                if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
+                                                    results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
+                                            else:
+                                                results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
 
     return results
 
