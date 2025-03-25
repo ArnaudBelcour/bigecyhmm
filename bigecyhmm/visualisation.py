@@ -37,10 +37,13 @@ import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm.utils import is_valid_dir
-from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle
+from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
 from esmecata.report.esmecata_compression import RANK_SORTED
 RANK_SORTED = [*RANK_SORTED, 'Not found']
+
+ROOT = os.path.dirname(__file__)
+PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 
 MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
@@ -339,16 +342,19 @@ def create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_fold
         if sample not in hmm_abundance:
             hmm_abundance[sample] = {}
         for organism in sample_abundance[sample]:
-            for hmm_found in hmm_occurrences[organism]:
-                # Compute the abundance of function in the sample.
-                if hmm_found not in hmm_abundance[sample]:
-                    hmm_abundance[sample][hmm_found] = hmm_occurrences[organism][hmm_found]*sample_abundance[sample][organism]
-                else:
-                    hmm_abundance[sample][hmm_found] = hmm_occurrences[organism][hmm_found]*sample_abundance[sample][organism] + hmm_abundance[sample][hmm_found]
+            if organism in hmm_occurrences:
+                for hmm_found in hmm_occurrences[organism]:
+                    # Compute the abundance of function in the sample.
+                    if hmm_found not in hmm_abundance[sample]:
+                        if hmm_occurrences[organism][hmm_found] > 0:
+                            hmm_abundance[sample][hmm_found] = 1*sample_abundance[sample][organism]
+                    else:
+                        if hmm_occurrences[organism][hmm_found] > 0:
+                            hmm_abundance[sample][hmm_found] = 1*sample_abundance[sample][organism] + hmm_abundance[sample][hmm_found]
 
 
     hmm_abundance_df = pd.DataFrame(hmm_abundance)
-    hmm_abundance_df.index.name = 'name'
+    hmm_abundance_df.index.name = 'function'
     hmm_abundance_df.sort_index(inplace=True)
     hmm_abundance_df.to_csv(os.path.join(output_folder_abundance, 'hmm_functional_profile.tsv'), sep='\t')
 
@@ -468,6 +474,7 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot):
     df_seaborn_abundance['name'] = df_seaborn_abundance['name'].apply(lambda x: x.split(':')[1])
     # Remove function without occurrence/abundance.
     df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['ratio']>0]
+
     fig = px.line_polar(df_seaborn_abundance, r="ratio", theta="name", color="sample", line_close=True)
     fig.write_image(output_polar_plot, scale=1, width=1400, height=1200)
 
@@ -658,7 +665,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df = pd.melt(cycle_relative_abundance_samples_df, id_vars='name', value_vars=cycle_relative_abundance_samples_df.columns.tolist())
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_samples.png')
-        create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
+        #create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
         logger.info("  -> Create diagrams.")
         output_folder_cycle_diagram= os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
@@ -763,6 +770,86 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         json.dump(metadata_json, ouput_file, indent=4)
 
 
+def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_diagram):
+    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
+    df_ko_abundance = pd.read_csv(ko_abundance_file, sep='\t', index_col=0)
+    kegg_ortholog_abundance_samples = df_ko_abundance.to_dict()
+
+    all_kos = df_ko_abundance.index.tolist()
+
+    sample_data_pathway = {}
+    for sample in kegg_ortholog_abundance_samples:
+        ko_sample_list = [ko+'.hmm' for ko in kegg_ortholog_abundance_samples[sample] if  kegg_ortholog_abundance_samples[sample][ko] > 0]
+        for pathway in sorted_pathways:
+            pathway_checks = []
+            hmms_in_org = []
+            # For AND group of HMMs in pathway, check if their corresponding HMMs are there.
+            pathway_functions = []
+            for hmm_combination in pathway_hmms[pathway]:
+                pathway_check = False
+                negative_hmms = [hmm.replace('NO|', '') for hmm in hmm_combination if 'NO' in hmm]
+                # Check if there are negative HMMs in pathway string.
+                if len(negative_hmms) > 0:
+                    hmm_combination = [hmm.replace('NO|', '') for hmm in hmm_combination]
+                intersection_hmms = set(hmm_combination).intersection(ko_sample_list)
+                intersection_negative_hmms = set(negative_hmms).intersection(ko_sample_list)
+
+                # First check if all combination corresponds to negative HMMs.
+                if len(hmm_combination) == len(negative_hmms):
+                    # If all HMMs of the combination are negative ones and are not present in organism, then this combination is checked.
+                    if len(intersection_hmms) == 0:
+                        pathway_check = True
+                else:
+                    # If all HMMs of the combination present in the organism are not negative HMMs, then this combination of HMMs is checked.
+                    if len(intersection_hmms) > 0:
+                        if len(intersection_negative_hmms) == 0:
+                            pathway_check = True
+                        # But if there are at least one negative HMMs, it is not checked.
+                        elif len(intersection_negative_hmms) > 0:
+                            pathway_check = False
+                pathway_checks.append(pathway_check)
+                positive_hmms = list(set(intersection_hmms) - set(intersection_negative_hmms))
+                found_hmms = list(positive_hmms + ['NO|' + hmm for hmm in intersection_negative_hmms])
+                if len(found_hmms) > 0:
+                    hmms_in_org.append(', '.join(found_hmms))
+                    pathway_functions.extend([kegg_ortholog_abundance_samples[sample][ko.replace('.hmm', '')] for ko in found_hmms if kegg_ortholog_abundance_samples[sample][ko.replace('.hmm', '')] > 0])
+
+            # If all combination HMMs have been checked, keep the pathway.
+            if all(pathway_checks) is True:
+                if sample not in sample_data_pathway:
+                    sample_data_pathway[sample] = {}
+                func_abundance = min(pathway_functions)
+                sample_data_pathway[sample][pathway] = func_abundance
+
+            else:
+                if sample not in sample_data_pathway:
+                    sample_data_pathway[sample] = {}
+                sample_data_pathway[sample][pathway] = 0
+    for sample in sample_data_pathway:
+        diagram_data = {}
+        for cycle_name in sample_data_pathway[sample]:
+            if cycle_name in sample_data_pathway[sample]:
+                diagram_data[cycle_name] = (round(sample_data_pathway[sample][cycle_name], 1), 0)
+            else:
+                diagram_data[cycle_name] = (0, 0)
+
+        carbon_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_carbon_cycle.png')
+        create_carbon_cycle(diagram_data, carbon_cycle_file)
+
+        nitrogen_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_nitrogen_cycle.png')
+        create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+
+        sulfur_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_sulfur_cycle.png')
+        create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+
+        other_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_other_cycle.png')
+        create_other_cycle(diagram_data, other_cycle_file)
+
+        phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
+        create_phosphorus_cycle(diagram_data, phosphorus_cycle_file)
+
+    return sample_data_pathway
+
 def main():
     start_time = time.time()
 
@@ -800,6 +887,14 @@ def main():
         help='Abundance file indicating the abundance for each organisms.',
         metavar='INPUT_FILE')
 
+    parent_parser_ko_file = argparse.ArgumentParser(add_help=False)
+    parent_parser_ko_file.add_argument(
+        '--ko',
+        dest='ko_file',
+        required=True,
+        help='Abundance file indicating the abundance of KO in different sampels (coming form tabigecy, picrust, ...).',
+        metavar='INPUT_FILE')
+
     parent_parser_output_folder = argparse.ArgumentParser(add_help=False)
     parent_parser_output_folder.add_argument(
         '-o',
@@ -829,6 +924,13 @@ def main():
         parents=[
             parent_parser_bigecyhmm, parent_parser_abundance_file,
             parent_parser_output_folder
+            ],
+        allow_abbrev=False)
+    ko_parser = subparsers.add_parser(
+        'ko',
+        help='Creates visualisation from a table containing the abundances of HMM (especially KO) for different samples.',
+        parents=[
+            parent_parser_ko_file, parent_parser_output_folder
             ],
         allow_abbrev=False)
 
@@ -865,6 +967,8 @@ def main():
         create_visualisation(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file)
     elif args.cmd in ['genomes']:
         create_visualisation(args.bigecyhmm, args.output, abundance_file_path=abundance_file)
+    elif args.cmd in ['ko']:
+        create_visualisation_from_ko_file(args.ko_file, args.output)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))

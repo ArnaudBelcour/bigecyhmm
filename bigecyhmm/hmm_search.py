@@ -99,15 +99,23 @@ def check_motif_regex(gene_name, sequence):
 def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object):
     with zip_object.open(hmm_filename) as open_hmm_zipfile:
         with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
-            motif_check_score = max([hit.score
+            check_scores = [hit.score
                              for hits in pyhmmer.hmmsearch(hmm_file, input_sequence, cpus=1)
-                             for hit in hits])
+                             for hit in hits]
+            if len(check_scores) > 0:
+                motif_check_score = max(check_scores)
+            else:
+                motif_check_score = 0
 
     with zip_object.open(pair_hmm_filename) as open_hmm_zipfile:
         with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as pair_hmm_file:
-            motif_anti_check_score = max([second_hit.score
+            anti_check_scores = [second_hit.score
                                     for second_hits in pyhmmer.hmmsearch(pair_hmm_file, input_sequence, cpus=1)
-                                    for second_hit in second_hits ])
+                                    for second_hit in second_hits ]
+            if len(anti_check_scores) > 0:
+                motif_anti_check_score = max(anti_check_scores)
+            else:
+                motif_anti_check_score = 0
 
     if motif_check_score >= motif_anti_check_score and motif_check_score != 0:
         return True
