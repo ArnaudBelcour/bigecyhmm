@@ -14,6 +14,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import pandas as pd
+import numpy as np
 from pandas import __version__ as pandas_version
 import seaborn as sns
 from seaborn import __version__ as seaborn_version
@@ -169,11 +170,15 @@ def compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks
     Returns:
         data_abundance_taxon_sample (dict): for each sample, contains a subdict with the relative abundance of tax_rank in these samples.
         sample_abundance_tax_rank (list): list of list containing the abundance of each tax_rank in the different samples.
+        data_abundance_organism_sample (list): list of list containing the abundance of each organism in the different samples.
     """
     sample_abundance_tax_rank = {}
+    organism_abundance_tax_rank = {}
     for sample in sample_abundance:
         if sample not in sample_abundance_tax_rank:
             sample_abundance_tax_rank[sample] = {}
+        if sample not in organism_abundance_tax_rank:
+            organism_abundance_tax_rank[sample] = {}
         for organism in sample_abundance[sample]:
             abundance_organism = sample_abundance[sample][organism]
             if organism in observation_names_tax_ranks:
@@ -184,13 +189,23 @@ def compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks
                 sample_abundance_tax_rank[sample][tax_rank] = abundance_organism
             else:
                 sample_abundance_tax_rank[sample][tax_rank] = sample_abundance_tax_rank[sample][tax_rank] + abundance_organism
+            if organism not in organism_abundance_tax_rank[sample]:
+                organism_abundance_tax_rank[sample][organism] = (tax_rank, abundance_organism)
+            else:
+                organism_abundance_tax_rank[sample][organism][1] = organism_abundance_tax_rank[sample][organism][1] + abundance_organism
 
     data_abundance_taxon_sample = []
     for sample in sample_abundance_tax_rank:
         for tax_rank in sample_abundance_tax_rank[sample]:
             data_abundance_taxon_sample.append([sample, tax_rank, sample_abundance_tax_rank[sample][tax_rank]/sample_tot_abundance[sample]])
 
-    return data_abundance_taxon_sample, sample_abundance_tax_rank
+    data_abundance_organism_sample = []
+    for sample in organism_abundance_tax_rank:
+        for organism in organism_abundance_tax_rank[sample]:
+            tax_rank = organism_abundance_tax_rank[sample][organism][0]
+            data_abundance_organism_sample.append([sample, organism, tax_rank, organism_abundance_tax_rank[sample][organism][1]/sample_tot_abundance[sample]])
+
+    return data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample
 
 
 def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_observation_names=None):
@@ -510,7 +525,7 @@ def create_heatmap_functions(df, output_heatmap_filepath):
     """
     sns.set_theme(font_scale=0.5)
     fig, axes = plt.subplots(figsize=(35,70))
-    g = sns.heatmap(data=df, xticklabels=1, cmap='viridis_r', linewidths=1, linecolor='black')
+    g = sns.heatmap(data=df, xticklabels=1, cmap='viridis_r', linewidths=1, linecolor='black', square=True)
     plt.tight_layout()
     plt.savefig(output_heatmap_filepath)
     plt.clf()
@@ -628,13 +643,18 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         if observation_names_tax_ranks is not None:
             # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples.
             # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample. 
-            data_abundance_taxon_sample, sample_abundance_tax_rank = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
+            data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
+
+            df_abundance_organism_sample = pd.DataFrame(data_abundance_organism_sample, columns=['Sample', 'Organism_name', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
+            output_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_organism_sample.tsv')
+            df_abundance_organism_sample.to_csv(output_organism_abundance_file, sep='\t')
+
             df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
             # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
             df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
-            output_taxon_rank_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
+            output_taxon_rank_abundance_plot_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
             fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa", color_discrete_map= {'Not found': 'grey'})
-            fig.write_image(output_taxon_rank_abundance_file, scale=1, width=1600, height=1400)
+            fig.write_image(output_taxon_rank_abundance_plot_file, scale=1, width=1600, height=1400)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
@@ -665,7 +685,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df = pd.melt(cycle_relative_abundance_samples_df, id_vars='name', value_vars=cycle_relative_abundance_samples_df.columns.tolist())
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_samples.png')
-        #create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
+        create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
         logger.info("  -> Create diagrams.")
         output_folder_cycle_diagram= os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
@@ -723,6 +743,9 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
         logger.info("  -> Create heatmap.")
         output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
+        function_relative_abundance_samples_df = function_relative_abundance_samples_df.replace(0, np.nan)
+        create_heatmap_functions(function_relative_abundance_samples_df, output_heatmap_filepath)
+        output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.svg')
         create_heatmap_functions(function_relative_abundance_samples_df, output_heatmap_filepath)
 
         function_relative_abundance_samples_df.reset_index(inplace=True)
