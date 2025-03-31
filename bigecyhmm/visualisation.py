@@ -841,13 +841,14 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_dia
             if all(pathway_checks) is True:
                 if sample not in sample_data_pathway:
                     sample_data_pathway[sample] = {}
-                func_abundance = min(pathway_functions)
+                func_abundance = max(pathway_functions)
                 sample_data_pathway[sample][pathway] = func_abundance
 
             else:
                 if sample not in sample_data_pathway:
                     sample_data_pathway[sample] = {}
                 sample_data_pathway[sample][pathway] = 0
+
     for sample in sample_data_pathway:
         diagram_data = {}
         for cycle_name in sample_data_pathway[sample]:
@@ -981,10 +982,11 @@ def main():
 
     logger.info("--- Create visualisation ---")
 
-    if args.abundance_file == 'false':
-        abundance_file = None
-    else:
-        abundance_file = args.abundance_file
+    if args.cmd in ['esmecata', 'genomes']:
+        if args.abundance_file == 'false':
+            abundance_file = None
+        else:
+            abundance_file = args.abundance_file
 
     if args.cmd in ['esmecata']:
         create_visualisation(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file)

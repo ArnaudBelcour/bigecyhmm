@@ -34,26 +34,8 @@ O-S-02:Iron oxidation	Cyc1.hmm, Cyc2_repCluster1.hmm, Cyc2_repCluster2.hmm, Cyc2
 O-S-03:Arsenate reduction	arrA.hmm	arsenate	arsenite	arsenate ion + Glutaredoxin <=> arsenite + Glutaredoxin disulfide [RN:]	
 O-S-04:Arsenite oxidation	arxA.hmm, aioA.hmm	arsenite	arsenate	arsenite + H2O + 2 oxidized azurin = arsenate + 2 reduced azurin + 2 H+ [RN:R05751]	
 O-S-05:Selenate reduction	TIGR03312.hmm, TIGR03313.hmm, TIGR03315.hmm	selenate	selenium	selenate + reduced acceptor = selenite + H2O + acceptor [RN:R07229]	
-O-S-06:Aerobic (cox)	TIGR02882.hmm, TIGR01432.hmm, TIGR00203.hmm, PF01654.hmm, K02299.hmm, K02298.hmm, TIGR02847.hmm, TIGR01433.hmm, TIGR00782.hmm, TIGR00781.hmm, TIGR00780.hmm, TIGR02866.hmm, TIGR02891.hmm				
-P-S-01:PhnD	K02044.hmm				
-P-S-02:C-P lyase	K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm, K06163.hmm				
-P-S-03:PitA	NF033774.1.hmm				
-P-S-04:PstS	K02040.hmm				
-P-S-05:PNaS	NF037997.1.hmm				
-P-S-06:HtxB	test_HtxB.hmm				
-P-S-07:HtxA	test_HtxA.hmm				
-P-S-08:PtxD	K18916.hmm				
-P-S-09:PtxB	test_ptxB.hmm				
-P-S-10:Phosphonate production	TIGR03405.1.hmm, TIGR02320.1.hmm				
-P-S-11:Phosphonate catabolism	TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR03276.1.hmm, K06163.hmm, TIGR02318.1.hmm				
-P-S-12:Phytate degradation	K01093.hmm, K01083.hmm				
-P-S-13:Phosphatase	K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm				
-P-S-14:ppa	K01507.hmm				
-P-S-15:ppx	K01514.hmm				
-P-S-16:ppk1	K00937.hmm				
-P-S-17:gcd and pqqC	K00117.hmm, K06137.hmm				
-P-S-18:Pho regulon	K07657.hmm, K07636.hmm, K02039.hmm				
-P1-S-01:Immobilisation (P-rich)	NF033774.1.hmm				
-P1-S-01:Immobilisation (P-poor)	K02040.hmm				
-P1-S-02:Mineralisation	K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm, K01093.hmm, K01083.hmm, K02044.hmm, K06163.hmm, TIGR03276.1.hmm, TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR02335.1.hmm, TIGR02318.1.hmm, TIGR02326.1.hmm, K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm				
-P1-S-03:Dissolution	K01507.hmm, K01514.hmm, K00937.hmm, K00117.hmm, K06137.hmm				
+O-S-06:Aerobic respiration	TIGR02882.hmm, TIGR01432.hmm, TIGR00203.hmm, PF01654.hmm, K02299.hmm, K02298.hmm, TIGR02847.hmm, TIGR01433.hmm, TIGR00782.hmm, TIGR00781.hmm, TIGR00780.hmm, TIGR02866.hmm, TIGR02891.hmm				
+P-S-01:Immobilisation (P-rich)	NF033774.1.hmm				
+P-S-01:Immobilisation (P-poor)	K02040.hmm				
+P-S-02:Mineralisation	K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm, K01093.hmm, K01083.hmm, K02044.hmm, K06163.hmm, TIGR03276.1.hmm, TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR02335.1.hmm, TIGR02318.1.hmm, TIGR02326.1.hmm, K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm				
+P-S-03:Dissolution	K01507.hmm, K01514.hmm, K00937.hmm, K00117.hmm, K06137.hmm				

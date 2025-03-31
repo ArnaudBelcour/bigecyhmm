@@ -11,7 +11,7 @@
 * HMM for carbonic anhydrase: `CA`.
 * Creation of barplot showing the coverage of EsMeCaTa on each sample of a dataset.
 * Test for computing abundance of taxonomic rank (used to create the barplot showing the coverage of EsMeCaTa predicitons on the samples).
-* Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
+* `Aerobic respiration` with Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
 

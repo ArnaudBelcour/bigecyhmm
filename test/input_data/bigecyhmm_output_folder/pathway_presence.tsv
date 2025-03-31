@@ -24,7 +24,7 @@ O-S-02:Iron oxidation	0	0
 O-S-03:Arsenate reduction	0	1
 O-S-04:Arsenite oxidation	0	0
 O-S-05:Selenate reduction	0	0
-O-S-06:Aerobic (cox)	1	1
+O-S-06:Aerobic respiration	1	1
 P-S-01:PhnD	0	1
 P-S-02:C-P lyase	0	0
 P-S-03:PitA	0	0
@@ -43,10 +43,10 @@ P-S-15:ppx	1	1
 P-S-16:ppk1	0	0
 P-S-17:gcd and pqqC	1	0
 P-S-18:Pho regulon	1	1
-P1-S-01:Immobilisation (P-rich)	1	1
-P1-S-01:Immobilisation (P-poor)	0	0
-P1-S-02:Mineralisation	1	1
-P1-S-03:Dissolution	1	1
+P-S-01:Immobilisation (P-rich)	1	1
+P-S-01:Immobilisation (P-poor)	0	0
+P-S-02:Mineralisation	1	1
+P-S-03:Dissolution	1	1
 S-S-01:Sulfide oxidation	0	0
 S-S-02:Sulfur reduction	0	0
 S-S-03:Sulfur oxidation	1	1

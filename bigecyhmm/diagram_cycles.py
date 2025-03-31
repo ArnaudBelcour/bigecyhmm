@@ -336,7 +336,7 @@ def create_other_cycle(diagram_data, output_file):
     data_step_03 = diagram_data['O-S-03:Arsenate reduction']
     data_step_04 = diagram_data['O-S-04:Arsenite oxidation']
     data_step_05 = diagram_data['O-S-05:Selenate reduction']
-    data_step_06 = diagram_data['O-S-06:Aerobic (cox)']
+    data_step_06 = diagram_data['O-S-06:Aerobic respiration']
 
     imgdraw.text((100,175), 'Step1: Iron reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (0,100,0), font=font)
     imgdraw.text((375,175), 'Step2: Iron oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (0,100,0), font=font)
@@ -360,10 +360,10 @@ def create_phosphorus_cycle(diagram_data, output_file):
     imgdraw = ImageDraw.Draw(img)
     font = ImageFont.load_default(20)
 
-    data_step_01 = diagram_data['P1-S-01:Immobilisation (P-rich)']
-    data_step_02 = diagram_data['P1-S-01:Immobilisation (P-poor)']
-    data_step_03 = diagram_data['P1-S-02:Mineralisation']
-    data_step_04 = diagram_data['P1-S-03:Dissolution']
+    data_step_01 = diagram_data['P-S-01:Immobilisation (P-rich)']
+    data_step_02 = diagram_data['P-S-01:Immobilisation (P-poor)']
+    data_step_03 = diagram_data['P-S-02:Mineralisation']
+    data_step_04 = diagram_data['P-S-03:Dissolution']
 
     imgdraw.text((250,280), 'Immobilisation (P-rich)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
     imgdraw.text((240,80), 'Immobilisation (P-poor)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (129,159,188), font=font)

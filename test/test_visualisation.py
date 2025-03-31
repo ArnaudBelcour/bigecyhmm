@@ -33,7 +33,7 @@ def test_compute_relative_abundance_per_tax_id_file():
 
     sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
     observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
-    data_abundance_taxon_sample, sample_abundance_tax_rank = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
+    data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
 
     expected_abundance_data = {'sample_1': {'genus': 100, 'family': 100, 'order': 0}, 'sample_2': {'genus': 0, 'family': 200, 'order': 600}, 'sample_3': {'genus': 0, 'family': 120, 'order': 400}}
 
