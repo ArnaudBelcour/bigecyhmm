@@ -1,0 +1,29 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Organic Carbon"},
+    {"size": 10, "id": "Acetate"},
+    {"size": 10, "id": "Ethanol"},
+    {"size": 10, "id": "H2"},
+    {"size": 10, "id": "H2O"},
+    {"size": 10, "id": "CH4"},
+    {"size": 10, "id": "CO2"}
+    ],
+    "links": [{"id": "Organic carbon oxidation", "width": 1, "source": "Organic Carbon", "target": "CO2", "hmm": "K00823.hmm"},
+    {"id": "Carbon fixation", "width": 1, "source": "CO2", "target": "Organic Carbon", "hmm": "rubisco_form_I.hmm, rubisco_form_II.hmm"},
+    {"id": "Hydrogen generation", "width": 1, "source": "Organic Carbon", "target": "H2", "hmm": "fe.hmm, nife-group-3abd.hmm"},
+    {"id": "Acetate oxidation", "width": 1, "source": "Acetate", "target": "CO2", "hmm": "TIGR02188.hmm"},
+    {"id": "Fermentation", "width": 1, "source": "Acetate", "target": "Ethanol", "hmm": "K00169.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "Acetate", "target": "CH4", "hmm": "K04480.hmm"},
+    {"id": "Ethanol oxidation", "width": 1, "source": "Ethanol", "target": "CO2", "hmm": "K00001.hmm"},
+    {"id": "Fermentation", "width": 1, "source": "Ethanol", "target": "Acetate", "hmm": "K00656.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "H2", "target": "CH4", "hmm": "K04480.hmm"},
+    {"id": "Hydrogen oxidation", "width": 1, "source": "H2", "target": "H2O", "hmm": "fe.hmm, fefe-group-a4.hmm"},
+    {"id": "Methanotrophy", "width": 1, "source": "CH4", "target": "CO2", "hmm": "pmoA.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "CO2", "target": "CH4", "hmm": "K04480.hmm"},
+    {"id": "Acetogenesis (WL)", "width": 1, "source": "H2", "target": "Acetate", "hmm": "fthfs_NF010030.hmm"}
+    ]
+}

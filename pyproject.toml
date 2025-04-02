@@ -17,6 +17,7 @@ dependencies = [
 [project.scripts]
 bigecyhmm = "bigecyhmm.__main__:main"
 bigecyhmm_visualisation = "bigecyhmm.visualisation:main"
+bigecyhmm_custom = "bigecyhmm.custom_db:main"
 
 [project.urls]
 Homepage = "https://github.com/ArnaudBelcour/bigecyhmm"

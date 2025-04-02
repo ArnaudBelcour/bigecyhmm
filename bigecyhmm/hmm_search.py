@@ -118,13 +118,14 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
-def query_fasta_file(input_protein_fasta, hmm_thresholds):
+def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
 
     Args:
         input_protein_fasta (str): path of protein fasta file
         hmm_thresholds (dict): threshold for each HMM
+        hmm_compress_database (str): path to HMM compress database
 
     Returns:
         results (list): list of result for HMM search, which are sublist containing: evalue, score and length
@@ -137,7 +138,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds):
 
     # Iterate on the HMM to query them. 
     results = []
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(hmm_compress_database, 'r') as zip_object:
         list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
         check_hmms = {os.path.basename(hmm_filename).replace('.check.hmm', ''): hmm_filename
                       for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
@@ -264,16 +265,17 @@ def create_phenotypes(hmm_output_folder, output_file):
             csvwriter.writerow([function, *present_functions])
 
 
-def hmm_search_write_results(input_file_path, output_file, hmm_thresholds):
+def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
     Args:
         input_file_path (str): path of protein fasta file
         output_file (str): output tsv file containing HMM search hits
         hmm_thresholds (dict): threshold for each HMM
+        hmm_compress_database (str): path to HMM compress database
     """
     logger.info('Search for HMMs on ' + input_file_path)
-    hmm_results = query_fasta_file(input_file_path, hmm_thresholds)
+    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compress_database)
     write_results(hmm_results, output_file)
 
 

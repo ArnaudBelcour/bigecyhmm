@@ -126,7 +126,7 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
     return all_pathways, org_pathways, org_pathways_hmms
 
 
-def create_input_diagram(input_folder, output_diagram_folder, output_folder):
+def create_input_diagram(input_folder, output_diagram_folder, output_folder, pathway_template_file=PATHWAY_TEMPLATE_FILE):
     """Create input files for the creation of the biogeochemical cycle diagram.
     This function creates input for this R script: https://github.com/AnantharamanLab/METABOLIC/blob/master/draw_biogeochemical_cycles.R
 
@@ -134,11 +134,12 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder):
         input_folder (str): path to HMM search results folder (one tsv file per organism)
         output_diagram_folder (str): path to output folder containing input files for diagram creation
         output_folder (str): path to output folder
+        pathway_template_file (str): path to pathway template file
     """
     if not os.path.exists(output_diagram_folder):
         os.mkdir(output_diagram_folder)
 
-    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
+    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(pathway_template_file)
     org_hmms = parse_result_files(input_folder)
     all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
 

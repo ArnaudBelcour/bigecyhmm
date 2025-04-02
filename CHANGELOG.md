@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.1.6 (2025-03-17)
+# bigecyhmm v0.1.6 (2025-04-02)
 
 ## Add
 
@@ -14,6 +14,7 @@
 * `Aerobic respiration` with Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
+* Prototype to use custom biogeochemical diagram and HMM databases with `bigecyhmm_custom`.
 
 ## Modify
 
