@@ -30,9 +30,9 @@ from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, c
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE
 
-from PIL import __version__ as pillow_version
 from multiprocessing import Pool
 from networkx.readwrite import json_graph
+from matplotlib import __version__ as matplotlib_version
 
 MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
@@ -165,9 +165,13 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
     metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
-    metadata_json['tool_dependencies']['python_package']['pillow'] = pillow_version
+    metadata_json['tool_dependencies']['python_package']['networkx'] = nx.__version__
+    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number}
+    metadata_json['input_parameters']['custom_db'] = {'hmm_compress_database': hmm_compress_database, 'hmm_template_file': hmm_template_file,
+                                                      'json_database_file_path': json_database_file_path}
+
     metadata_json['duration'] = duration
 
     metadata_file = os.path.join(output_folder, 'bigecyhmm_metadata.json')
