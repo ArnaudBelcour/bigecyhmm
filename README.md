@@ -25,6 +25,13 @@ bigecyhmm is developed to be as minimalist as possible. It requires:
 
 The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 15 Mb) but in this way, you do not have to download other files and can directly use it.
 
+For `bigecyhmm_visualisation`, you also needs the following packages:
+
+- [pandas](https://pypi.org/project/pandas/): To read the input files.
+- [seaborn](https://github.com/mwaskom/seaborn): to create most of the figures.
+- [plotly](https://github.com/plotly/plotly.py): to create most of the figures.
+- [kaleido](https://github.com/plotly/Kaleido): required to create the figure.
+
 ## Installation
 
 It can be installed from PyPI:
@@ -39,8 +46,11 @@ git clone https://github.com/ArnaudBelcour/bigecyhmm.git
 cd bigecyhmm
 
 pip install -e .
-
 ```
+
+For `bigecyhmm_visualisation`, you also needs to run:
+
+`pip install pandas seaborn plotly kaleido`
 
 ## Run bigecyhmm
 
