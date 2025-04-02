@@ -1,0 +1,19 @@
+Pathways	HMMs	reactants	products	formula	kegg_module
+P-S-01:PhnD	K02044.hmm				
+P-S-02:C-P lyase	K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm, K06163.hmm				
+P-S-03:PitA	NF033774.1.hmm				
+P-S-04:PstS	K02040.hmm				
+P-S-05:PNaS	NF037997.1.hmm				
+P-S-06:HtxB	test_HtxB.hmm				
+P-S-07:HtxA	test_HtxA.hmm				
+P-S-08:PtxD	K18916.hmm				
+P-S-09:PtxB	test_ptxB.hmm				
+P-S-10:Phosphonate production	TIGR03405.1.hmm, TIGR02320.1.hmm				
+P-S-11:Phosphonate catabolism	TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR03276.1.hmm, K06163.hmm, TIGR02318.1.hmm				
+P-S-12:Phytate degradation	K01093.hmm, K01083.hmm				
+P-S-13:Phosphatase	K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm				
+P-S-14:ppa	K01507.hmm				
+P-S-15:ppx	K01514.hmm				
+P-S-16:ppk1	K00937.hmm				
+P-S-17:gcd and pqqC	K00117.hmm, K06137.hmm				
+P-S-18:Pho regulon	K07657.hmm, K07636.hmm, K02039.hmm				
