@@ -27,7 +27,7 @@ MESSAGE = '''
 Predict biogeochemical cycles from protein fasta file.
 '''
 REQUIRES = '''
-Requires: pyhmmer.
+Requires: pyhmmer and Pillow.
 '''
 
 logger = logging.getLogger()

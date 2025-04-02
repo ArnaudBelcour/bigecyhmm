@@ -29,12 +29,7 @@ from PIL import __version__ as pillow_version
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
-
-ROOT = os.path.dirname(__file__)
-HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
-HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
-PHENOTYPE_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'phenotypes.tsv')
+from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE
 
 logger = logging.getLogger(__name__)
 

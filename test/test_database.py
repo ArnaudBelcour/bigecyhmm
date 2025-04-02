@@ -2,7 +2,7 @@ import os
 import csv
 import zipfile
 
-from bigecyhmm.hmm_search import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
 
 def test_template_file_db():
     """ Checks that HMM in compressed file scorrespond to HMM in template file.

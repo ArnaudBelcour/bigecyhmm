@@ -21,17 +21,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 from bigecyhmm.utils import parse_result_files
 
-ROOT = os.path.dirname(__file__)
-HMM_COMPRESS_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
-HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
-HYDROGEN_CONSUMPTION_FILE = os.path.join(ROOT, 'hmm_databases', 'hydrogen_consumption.tsv')
-TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
-TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
-TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
-TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
-TEMPLATE_PHOSPHORUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_cycle.png')
-TEMPLATE_PHOSPHORUS_GENE_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_genes.png')
+from bigecyhmm import  PATHWAY_TEMPLATE_FILE, HYDROGEN_CONSUMPTION_FILE, TEMPLATE_CARBON_CYCLE, \
+    TEMPLATE_NITROGEN_CYCLE, TEMPLATE_SULFUR_CYCLE, TEMPLATE_OTHER_CYCLE, TEMPLATE_PHOSPHORUS_CYCLE, TEMPLATE_PHOSPHORUS_GENE_CYCLE
 
 logger = logging.getLogger(__name__)
 

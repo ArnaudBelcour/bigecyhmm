@@ -4,7 +4,7 @@ import subprocess
 import shutil
 
 from bigecyhmm.hmm_search import search_hmm, check_motif_regex
-from bigecyhmm.diagram_cycles import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),

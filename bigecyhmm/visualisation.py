@@ -37,14 +37,12 @@ import sys
 import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
+from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE
 from bigecyhmm.utils import is_valid_dir
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
 from esmecata.report.esmecata_compression import RANK_SORTED
 RANK_SORTED = [*RANK_SORTED, 'Not found']
-
-ROOT = os.path.dirname(__file__)
-PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 
 MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
@@ -55,9 +53,6 @@ Requires seaborn, pandas, plotly and kaleido.
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-
-ROOT = os.path.dirname(__file__)
-HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
 
 
 def get_function_categories():

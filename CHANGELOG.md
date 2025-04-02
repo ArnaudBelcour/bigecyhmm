@@ -15,6 +15,10 @@
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
 
+## Modify
+
+* Move global variabiles in `__init__.py`.
+
 ## Fix
 
 * Fix issue of function with zero abundance/occurrence not present in output files.
