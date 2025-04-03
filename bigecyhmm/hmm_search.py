@@ -29,35 +29,9 @@ from PIL import __version__ as pillow_version
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE
+from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 logger = logging.getLogger(__name__)
-
-# Motif validation using regex search in sequence.
-MOTIF = {'dsrC': r'GPXKXXCXXXGXPXPXXCX',
-        'tusE': r'G[PV]XKXX[ARNDQEGHILKMFPSTWYV]XXXGXPXPXXCX',
-        'rubisco_form_I': r'TXKPKLGLXXXNYXRXXXEXLXGGL',
-        'rubisco_form_III': r'QXGGGXXXHPXGXXAGAXAXRXXXXA',
-        'dsrA': r'XXXDXGXXGXXXRXXXXCXGXXXCX',
-        'dsrB': r'XXXXPXXXXXXXXXCXXXCXXXX',
-        'soxB': r'[YEVRQAHMNTIFG][PRKQNHMFLTGSY][EDGKNS][VACTSLG][EDQNP][VIAFLM][VASGC][FMLT][STY][PA][AG][VFY][R][W][G][TPAGNYLVS][TSCAV][ILVKAMT][LPMIV][PAGEMS][GNED][QDEYASH][AEPTMNDVSGKQW][IVL][TLRM][WRMQLFVKYI][DEGA][HDRNASLWQK][LIVM][YWLMTHAIFS][ANDETGSH][YVQEMANFWH][TCVLM][GSAC][FMICVTL][TSGN][YD][PGST][EAWYQNMDHKS][LATVCSMNI][YTGCFS][LRVKTAISPM][FTRSNQMKGLAD][YENDSPQTRGAWKM][LMVIYRF][RTSEKDNL][GA][AEMNGQTSKRD][QFMTDKRHEYVAG][ILMV][KHARLQN][AVTNDKIEMGLSQ][VILMHT][LMIWFV][E][DGQSKE][IVAL][AGC][SDEQ][NAK][VLI][F][TNQHVSD][SPAKEQTLRVDN][DN][PA][FYL][YLFRIMQK][QIRH][QSG][GE][GQ][D][VM][SVIL][R][VLTIMA][FGEHYTAW][GNA][LIMAVF][RGQEHDTSANIK][YWF][VRTDASKEHMN][LICFVM][DETHAKNRSQM][PVIL][DTNGSAVKMLRYEH][AKNEQLRG][PRGKTESADNI][TQMILNSVAKGRF][GNYSH][ESQKNHRADG][R]',
-        'soxC': r'[DERGSHQ][VAICTS][LIFMV][VLI][AVCG][YLFWI][AYKGFSRTN][QAM][N][G][E][ARMPSH][LI][RYM][PKRAVDM][EQSAG][QNH][G][YF][P][VLIAM][R][LAVIM][VILMFC][VLIANM][P][G][WVYCFLI][EQ][GA][SVNI][ITMSLVA][QNWHCS][VIT][K][WYHF][LIV][RHKQN][RQN][ILVM][LQEYKGNMHD][VLFAI][TAMGSHVYDIKL][DEARTNSQ][LQGMKVEARTH][PAERKS][AVYWFMLESTGI][MEANQYGIHVWF][ASTHCLQV][KRYF][DNESGQWF][E][TAVS][SAVIKTLGR][EKHRGYNL][Y][TIVNSM][DEVSNMAGTIQL][VLTMPSAIHQ][TLMIQVKARY][APEGKQDRS][DSNGTE][GKS][RQTLKCIFMHSDVEN][VASHLYWIFTQ][LRQIKYWMTEHV][AQKIRMGENL][FWYHM][TSFAVDNHQ][WFSLYMNG][VIDYPEALSTFMRH][MQLNIFC][EDNRGH][PACVST][QKNRDE][S]}',
-}
-
-# Motif validation by checking that it is not better associated with another HMM.
-MOTIF_PAIR = {'dsrE': 'tusD',
-    'tusD': 'dsrE',
-    'dsrH': 'tusB',
-    'tusB': 'dsrH',
-    'dsrF': 'tusC',
-    'tusC': 'dsrF',
-    'amoA': 'pmoA',
-    'amoB': 'pmoB',
-    'amoC': 'pmoC',
-    'pmoA': 'amoA',
-    'pmoB': 'amoB',
-    'pmoC': 'amoC'
-}
 
 
 def get_hmm_thresholds(hmm_template_file):
@@ -80,8 +54,18 @@ def get_hmm_thresholds(hmm_template_file):
     return hmm_thresholds
 
 
-def check_motif_regex(gene_name, sequence):
-    motif_regex = MOTIF[gene_name]
+def check_motif_regex(gene_name, sequence, motif_db=MOTIF):
+    """ Check the presence of a motif in a protein sequence using regex.
+
+    Args:
+        gene_name (str): gene name associated with the protein sequence
+        sequence (str): string of the protein sequence
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+
+    Returns:
+        boolean: True if motif found, False if not
+    """
+    motif_regex = motif_db[gene_name]
     # Replace X by any amino-acid.
     motif_regex_gene = re.sub(r'X', r'[ARNDCQEGHILKMFPSTWYV]', motif_regex)
     motif_found = re.findall(motif_regex_gene, sequence)
@@ -92,6 +76,17 @@ def check_motif_regex(gene_name, sequence):
 
 
 def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object):
+    """ Check for a protein sequence and a HMM if it is not better associated with another HMM.
+
+    Args:
+        input_sequence (list): list of input sequences to check
+        hmm_filename (str): path to the first HMM file
+        pair_hmm_filename (str): path to the second HMM file
+        zip_object (zipfile object): zip object associated with the compress HMM database
+
+    Returns:
+        boolean: True if first HMM has a better association with the sequence than the second HMM, False if not
+    """
     with zip_object.open(hmm_filename) as open_hmm_zipfile:
         with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
             check_scores = [hit.score
@@ -118,7 +113,7 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
-def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE):
+def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
 
@@ -126,6 +121,8 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=
         input_protein_fasta (str): path of protein fasta file
         hmm_thresholds (dict): threshold for each HMM
         hmm_compress_database (str): path to HMM compress database
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+        motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
 
     Returns:
         results (list): list of result for HMM search, which are sublist containing: evalue, score and length
@@ -156,15 +153,15 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=
                                     if hit.score >= threshold:
                                         gene_match = hit.name
                                         # Check the presence of specific motif in gene sequence.
-                                        if hmm_name in MOTIF:
+                                        if hmm_name in motif_db:
                                             gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
-                                            if check_motif_regex(hmm_name, gene_sequence_str):
+                                            if check_motif_regex(hmm_name, gene_sequence_str, motif_db):
                                                 results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                         # Motif validation by checking that it is not better associated with another HMM.
-                                        elif hmm_name in MOTIF_PAIR:
+                                        elif hmm_name in motif_pair_db:
                                             gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
                                             first_check_hmm = check_hmms[hmm_name]
-                                            second_check_hmm = check_hmms[MOTIF_PAIR[hmm_name]]
+                                            second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
                                             if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
                                                 results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                         else:
@@ -175,14 +172,14 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=
                                     for domain in hit.domains.included:
                                         if domain.score >= threshold:
                                             gene_match = hit.name
-                                            if hmm_name in MOTIF:
+                                            if hmm_name in motif_db:
                                                 gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0]
                                                 if check_motif_regex(hmm_name, gene_sequence_str):
                                                     results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
-                                            elif hmm_name in MOTIF_PAIR:
+                                            elif hmm_name in motif_pair_db:
                                                 gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
                                                 first_check_hmm = check_hmms[hmm_name]
-                                                second_check_hmm = check_hmms[MOTIF_PAIR[hmm_name]]
+                                                second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
                                                 if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
                                                     results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
                                             else:
@@ -265,7 +262,7 @@ def create_phenotypes(hmm_output_folder, output_file):
             csvwriter.writerow([function, *present_functions])
 
 
-def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE):
+def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
     Args:
@@ -273,9 +270,11 @@ def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_c
         output_file (str): output tsv file containing HMM search hits
         hmm_thresholds (dict): threshold for each HMM
         hmm_compress_database (str): path to HMM compress database
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+        motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
     """
     logger.info('Search for HMMs on ' + input_file_path)
-    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compress_database)
+    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compress_database, motif_db, motif_pair_db)
     write_results(hmm_results, output_file)
 
 
