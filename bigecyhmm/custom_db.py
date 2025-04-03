@@ -38,7 +38,7 @@ MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
 '''
 REQUIRES = '''
-Requires pyhmmer, networkx.
+Requires pyhmmer, networkx, matplotlib.
 '''
 
 logger = logging.getLogger()
@@ -65,22 +65,27 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     if len(hmm_compress_databases) > 0:
         hmm_compress_database = hmm_compress_databases[0]
         hmm_compress_database = os.path.join(custom_database_folder, hmm_compress_database)
+        logger.info("Found custom HMM database {0}".format(hmm_compress_database))
     else:
         hmm_compress_database = HMM_COMPRESS_FILE
+        logger.info("No custom HMM database, will use default: {0}".format(hmm_compress_database))
 
     # Get HMM threhsold either from internal database or custom database.
     hmm_template_files = [database_file for database_file in os.listdir(custom_database_folder) if database_file.endswith('.tsv')]
     if len(hmm_template_files) > 0:
         hmm_template_file = hmm_template_files[0]
         hmm_template_file = os.path.join(custom_database_folder, hmm_template_file)
+        logger.info("Found custom HMM threshold file {0}".format(hmm_template_file))
     else:
         hmm_template_file = HMM_TEMPLATE_FILE
+        logger.info("No custom HMM threshold file, will use default: {0}".format(hmm_template_file))
 
     hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
     # Get pathway cycle data from custom database.
     json_database_file = [database_file for database_file in os.listdir(custom_database_folder) if database_file.endswith('.json')][0]
     json_database_file_path = os.path.join(custom_database_folder, json_database_file)
+    logger.info("Parsing cycle json file {0}".format(json_database_file_path))
     with open(json_database_file_path) as open_json_database_file_path:
         json_cycle_database = json.load(open_json_database_file_path)
 
@@ -89,7 +94,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     with open(pathway_template_file, 'w') as open_pathway_template_file:
         csvwriter = csv.writer(open_pathway_template_file, delimiter='\t')
         csvwriter.writerow(['Pathways', 'HMMs'])
-        for cycle in json_cycle_database['links']:
+        for cycle in json_cycle_database['edges']:
             function_name = cycle['id']
             if function_name not in already_search_function:
                 function_hmms = cycle['hmm']
@@ -111,6 +116,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     hmm_search_pool.close()
     hmm_search_pool.join()
 
+    logger.info("Create output files.")
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
     create_major_functions(hmm_output_folder, function_matrix_file)
     function_matrix_file = os.path.join(output_folder, 'phenotypes_presence.tsv')
@@ -119,7 +125,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
 
-    cycle_network = json_graph.node_link_graph(json_cycle_database)
+    cycle_network = json_graph.node_link_graph(json_cycle_database, edges='edges')
 
     pathway_data = {}
     total_file = os.path.join(output_folder, 'Total.R_input.txt')
@@ -134,7 +140,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     pathway_names = {}
     bipartite_edges = []
     all_pathways = []
-    for pathway in json_cycle_database['links']:
+    for pathway in json_cycle_database['edges']:
         function_name = pathway['id']
         source = pathway['source']
         target = pathway['target']
@@ -145,6 +151,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         all_pathways.append(function_name_weighted)
         cycle_network[source][target]['weight'] = pathway_data[function_name][1]
 
+    logger.info("Generate network files.")
     # (1) Represent network as a graph.
     fig, axes = plt.subplots(figsize=(40,20))
     pos = nx.circular_layout(cycle_network)
@@ -161,7 +168,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
 
     network_json_output_file = os.path.join(output_folder, 'cycle_diagram.json')
     with open(network_json_output_file, 'w') as open_network_json_output_file:
-        json.dump(json_graph.node_link_data(cycle_network), open_network_json_output_file, indent=4)
+        json.dump(json_graph.node_link_data(cycle_network, edges='edges'), open_network_json_output_file, indent=4)
 
     network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram.graphml')
     nx.write_graphml(cycle_network, network_graphml_output_file)
@@ -261,7 +268,7 @@ def main():
 
     # add logger in file
     formatter = logging.Formatter('%(message)s')
-    log_file_path = os.path.join(args.output, f'bigecyhmm.log')
+    log_file_path = os.path.join(args.output, f'bigecyhmm_custom.log')
     file_handler = logging.FileHandler(log_file_path, 'w+')
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)
@@ -272,7 +279,7 @@ def main():
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    logger.info("--- Launch HMM search ---")
+    logger.info("--- Launch HMM search on custom database ---")
     search_hmm_custom_db(args.input, args.custom_database, args.output, args.core)
 
     duration = time.time() - start_time

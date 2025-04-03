@@ -12,7 +12,7 @@
     {"size": 10, "id": "CH4"},
     {"size": 10, "id": "CO2"}
     ],
-    "links": [{"id": "Organic carbon oxidation", "width": 1, "source": "Organic Carbon", "target": "CO2", "hmm": "K00823.hmm"},
+    "edges": [{"id": "Organic carbon oxidation", "width": 1, "source": "Organic Carbon", "target": "CO2", "hmm": "K00823.hmm"},
     {"id": "Carbon fixation", "width": 1, "source": "CO2", "target": "Organic Carbon", "hmm": "rubisco_form_I.hmm, rubisco_form_II.hmm"},
     {"id": "Hydrogen generation", "width": 1, "source": "Organic Carbon", "target": "H2", "hmm": "fe.hmm, nife-group-3abd.hmm"},
     {"id": "Acetate oxidation", "width": 1, "source": "Acetate", "target": "CO2", "hmm": "TIGR02188.hmm"},

@@ -789,6 +789,12 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
 
 def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_diagram):
+    """Create visualisation plots from abundance file with KEGG Orthologs.
+
+    Args:
+        ko_abundance_file (str): path to ko abundance file.
+        output_folder_cycle_diagram (str): path to the output folder where files will be created.
+    """
     pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
     df_ko_abundance = pd.read_csv(ko_abundance_file, sep='\t', index_col=0)
     kegg_ortholog_abundance_samples = df_ko_abundance.to_dict()
