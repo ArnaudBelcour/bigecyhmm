@@ -2,6 +2,7 @@ import os
 import csv
 import subprocess
 import zipfile
+import networkx as nx
 import shutil
 
 from bigecyhmm.custom_db import search_hmm_custom_db
@@ -125,5 +126,27 @@ def test_search_hmm_custom_db_cli():
     # Check that expected proteins are matching HMMs.
     for protein_id in EXPECTED_RESULTS:
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
+
+    shutil.rmtree(output_folder)
+
+def test_search_hmm_custom_db_abundance_cli():
+    input_file = os.path.join('input_data', 'org_prot')
+    output_folder = 'output_folder'
+    custom_db = os.path.join('input_data', 'custom_db')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+    abundance_file = os.path.join('input_data', 'test_abundance.tsv')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair, '--abundance-file', abundance_file])
+    expected_abundance = {'Organic carbon oxidation': {'sample_1': 100, 'sample_2': 10, 'sample_3': 300}, 'Carbon fixation': {'sample_1': 100, 'sample_2': 510, 'sample_3': 350}}
+
+    output_abundance_network_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
+    abundance_network = nx.read_graphml(output_abundance_network_file)
+
+    predicted_abundance = {node: abundance_network.nodes[node] for node in abundance_network.nodes}
+
+    for function in expected_abundance:
+        for sample in expected_abundance[function]:
+            assert expected_abundance[function][sample] == predicted_abundance[function][sample]
 
     shutil.rmtree(output_folder)

@@ -27,6 +27,7 @@ import pyhmmer
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions, create_phenotypes
+from bigecyhmm.visualisation import read_abundance_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
@@ -45,7 +46,8 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None):
+def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
+                         abundance_file=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -55,6 +57,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
+        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -152,6 +155,31 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
             percentage_pathway = line[2]
             pathway_data[pathway] = (nb_pathway, percentage_pathway)
 
+    # Read abundance data.
+    if abundance_file is not None:
+        abundance_cycle_network = nx.DiGraph()
+
+        sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file)
+        bipartite_edge_abundances = []
+        all_pathway_abundances = []
+
+        pathway_abundance = {}
+        cycle_pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
+        with open(cycle_pathway_presence_file, 'r') as open_cycle_pathway_presence_file:
+            csvreader = csv.DictReader(open_cycle_pathway_presence_file, delimiter='\t')
+            headers = csvreader.fieldnames
+            organisms = headers[1:]
+            for line in csvreader:
+                function_name = line['function']
+                if function_name not in pathway_abundance:
+                    pathway_abundance[function_name] = {}
+                if function_name not in abundance_cycle_network.nodes:
+                    abundance_cycle_network.add_node(function_name, type='function')
+                for sample in sample_abundance:
+                    pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
+                    abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
+
+
     pathway_names = {}
     bipartite_edges = []
     all_pathways = []
@@ -164,6 +192,11 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         bipartite_edges.append((source, function_name_weighted))
         bipartite_edges.append((function_name_weighted, target))
         all_pathways.append(function_name_weighted)
+        if abundance_file is not None:
+            for sample in sample_abundance:
+                bipartite_edge_abundances.append((source, function_name))
+                bipartite_edge_abundances.append((function_name, target))
+                all_pathway_abundances.append(function_name)
         cycle_network[source][target]['weight'] = pathway_data[function_name][1]
 
     logger.info("Generate network files.")
@@ -204,6 +237,12 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
     network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.png')
     plt.savefig(network_output_file)
+
+    if abundance_file is not None:
+        bipartite_graph.add_nodes_from(cycle_network.nodes, type='metabolite')
+        abundance_cycle_network.add_edges_from(bipartite_edge_abundances)
+        network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
+        nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
 
     duration = time.time() - start_time
     metadata_json = {}
@@ -288,6 +327,14 @@ def main():
         required=False,
         default=None)
 
+    parser.add_argument(
+        '--abundance-file',
+        dest='abundance_file',
+        required=False,
+        help='Abundance file indicating the abundance for each organisms in different samples.',
+        metavar='INPUT_FILE',
+        default=None)
+
     args = parser.parse_args()
 
     # If no argument print the help.
@@ -311,7 +358,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file)
+    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file, args.abundance_file)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))
