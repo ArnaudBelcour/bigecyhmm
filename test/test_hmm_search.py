@@ -1,10 +1,13 @@
 import os
 import csv
+import json
 import subprocess
 import shutil
+import pyhmmer
+import zipfile
 
-from bigecyhmm.hmm_search import search_hmm, check_motif_regex
-from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm.hmm_search import search_hmm, check_motif_regex, check_motif_pair
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_COMPRESS_FILE
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
@@ -50,8 +53,129 @@ def extract_hmm_to_pathway():
 def test_check_motif():
     gene_name = 'dsrA'
     sequence = 'MSETPLLDELEKGPWPSFVKEIKKTAELMEKAAAEGKDVKMPKGARGLLKQLEISYKDKKTHWKHGGIVSVVGYGGGVIGRYSDLGEQIPEVEHFHTMRINQPSGWFYSTKALRGLCDVWEKWGSGLTNFHGSTGDIIFLGTRSEYLQPCFEDLGNLEIPFDIGGSGSDLRTPSACMGPALCEFACYDTLELCYDLTMTYQDELHRPMWPYKFKIKCAGCPNDCVASKARSDFAIIGTWKDDIKVDQEAVKEYASWMDIENEVVKLCPTGAIKWDGKELTIDNRECVRCMHCINKMPKALKPGDERGATILIGGKAPFVEGAVIGWVAVPFVEVEKPYDEIKEILEAIWDWWDEEGKFRERIGELIWRKGMREFLKVIGREADVRMVKAPRNNPFMFFEKDELKPSAYTEELKKRGMW'
-    check_bool = check_motif_regex(gene_name, sequence)
+    check_bool = check_motif_regex(gene_name, sequence, MOTIF)
     assert check_bool == True
+
+
+def test_check_motif_json_file():
+    gene_name = 'dsrA'
+    sequence = 'MSETPLLDELEKGPWPSFVKEIKKTAELMEKAAAEGKDVKMPKGARGLLKQLEISYKDKKTHWKHGGIVSVVGYGGGVIGRYSDLGEQIPEVEHFHTMRINQPSGWFYSTKALRGLCDVWEKWGSGLTNFHGSTGDIIFLGTRSEYLQPCFEDLGNLEIPFDIGGSGSDLRTPSACMGPALCEFACYDTLELCYDLTMTYQDELHRPMWPYKFKIKCAGCPNDCVASKARSDFAIIGTWKDDIKVDQEAVKEYASWMDIENEVVKLCPTGAIKWDGKELTIDNRECVRCMHCINKMPKALKPGDERGATILIGGKAPFVEGAVIGWVAVPFVEVEKPYDEIKEILEAIWDWWDEEGKFRERIGELIWRKGMREFLKVIGREADVRMVKAPRNNPFMFFEKDELKPSAYTEELKKRGMW'
+    custom_motif_file = os.path.join('input_data', 'motif.json')
+    with open(custom_motif_file, 'r') as open_motif_json:
+        motif_data = json.load(open_motif_json)
+    check_bool = check_motif_regex(gene_name, sequence, motif_data)
+    assert check_bool == True
+
+
+def test_check_motif_pair_pmoA():
+    gene_name = 'pmoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == True
+
+
+def test_check_motif_pair_pmoA_json():
+    gene_name = 'pmoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    motif_pair_json = os.path.join('input_data', 'motif_pair.json')
+    with open(motif_pair_json, 'r') as open_motif_pair_json:
+        motif_pair_data = json.load(open_motif_pair_json)
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[motif_pair_data[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == True
+
+
+def test_check_motif_pair_pmoA_negative_amoA():
+    gene_name = 'amoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    motif_pair_json = os.path.join('input_data', 'motif_pair.json')
+    with open(motif_pair_json, 'r') as open_motif_pair_json:
+        motif_pair_data = json.load(open_motif_pair_json)
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[motif_pair_data[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == False
+
+
+def test_check_motif_pair_pmoA_negative_amoA_json():
+    gene_name = 'amoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == False
+
+
+def test_check_motif_pair_amoA():
+    gene_name = 'amoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == True
+
+
+def test_check_motif_pair_amoA_negative_pmoA():
+    gene_name = 'pmoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    first_check_hmm = check_hmms[gene_name]
+    second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
+
+    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+        check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+    assert check_bool == False
+
 
 def test_search_hmm():
     input_file = os.path.join('input_data', 'meta_organism_test.fasta')
@@ -84,7 +208,7 @@ def test_search_hmm():
                 else:
                     predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
 
-    # Check that expected proteins are matching HMMs. 
+    # Check that expected proteins are matching HMMs.
     for protein_id in EXPECTED_RESULTS:
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
 
@@ -123,7 +247,7 @@ def test_search_hmm_cli():
                 else:
                     predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
 
-    # Check that expected proteins are matching HMMs. 
+    # Check that expected proteins are matching HMMs.
     for protein_id in EXPECTED_RESULTS:
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
 

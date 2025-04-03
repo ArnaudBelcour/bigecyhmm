@@ -6,6 +6,7 @@ import shutil
 from bigecyhmm.visualisation import compute_relative_abundance_per_tax_id, read_abundance_file, read_esmecata_proteome_file, compute_bigecyhmm_functions_abundance, \
                                     compute_bigecyhmm_functions_occurrence, create_visualisation, compute_abundance_per_tax_rank
 
+
 def test_compute_relative_abundance_per_tax_id():
     sample_abundance = {'sample_1': {'org_1': 100, 'org_2': 100, 'org_3': 0},
                         'sample_2': {'org_1': 0, 'org_2': 200, 'org_3': 600},
@@ -239,6 +240,20 @@ def test_create_visualisation_cli():
     polar_plot = os.path.join(output_folder, 'function_occurrence', 'polar_plot_occurrence.png')
     assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
+    assert os.path.exists(heatmap_occurrence)
+
+    shutil.rmtree(output_folder)
+
+
+def test_create_visualisation_ko_cli():
+    ko_abundance_file = os.path.join('input_data', 'ko_file.tsv')
+    output_folder = 'output_folder'
+
+    subprocess.call(['bigecyhmm_visualisation', 'ko', '--ko', ko_abundance_file, '-o', output_folder])
+
+    polar_plot = os.path.join(output_folder, 'diagram_visualisation', 'sample_1_carbon_cycle.png')
+    assert os.path.exists(polar_plot)
+    heatmap_occurrence = os.path.join(output_folder, 'diagram_visualisation', 'sample_2_nitrogen_cycle.png')
     assert os.path.exists(heatmap_occurrence)
 
     shutil.rmtree(output_folder)

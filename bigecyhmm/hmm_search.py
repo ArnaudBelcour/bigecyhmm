@@ -101,7 +101,7 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as pair_hmm_file:
             anti_check_scores = [second_hit.score
                                     for second_hits in pyhmmer.hmmsearch(pair_hmm_file, input_sequence, cpus=1)
-                                    for second_hit in second_hits ]
+                                    for second_hit in second_hits]
             if len(anti_check_scores) > 0:
                 motif_anti_check_score = max(anti_check_scores)
             else:

@@ -1,5 +1,6 @@
 import os
 import csv
+import subprocess
 import zipfile
 import shutil
 
@@ -50,8 +51,10 @@ def test_search_hmm_custom_db():
     input_file = os.path.join('input_data', 'meta_organism_test.fasta')
     output_folder = 'output_folder'
     custom_db = os.path.join('input_data', 'custom_db')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
 
-    search_hmm_custom_db(input_file, custom_db, output_folder)
+    search_hmm_custom_db(input_file, custom_db, output_folder, motif_json=custom_motif, motif_pair_json=custom_motif_pair)
 
     hmm_to_function = extract_hmm_to_function()
     hmm_to_pathways = extract_hmm_to_pathway()
@@ -78,7 +81,48 @@ def test_search_hmm_custom_db():
                 else:
                     predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
 
-    # Check that expected proteins are matching HMMs. 
+    # Check that expected proteins are matching HMMs.
+    for protein_id in EXPECTED_RESULTS:
+        assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
+
+    shutil.rmtree(output_folder)
+
+
+def test_search_hmm_custom_db_cli():
+    input_file = os.path.join('input_data', 'meta_organism_test.fasta')
+    output_folder = 'output_folder'
+    custom_db = os.path.join('input_data', 'custom_db')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair])
+
+    hmm_to_function = extract_hmm_to_function()
+    hmm_to_pathways = extract_hmm_to_pathway()
+    predicted_hmm_file = os.path.join(output_folder, 'hmm_results', 'meta_organism_test.tsv')
+    predicted_hmms = {}
+    with open(predicted_hmm_file, 'r') as open_predicted_hmm_file:
+        csvreader = csv.DictReader(open_predicted_hmm_file, delimiter='\t')
+        for line in csvreader:
+            protein_id = line['protein'].split('|')[1]
+            hmm_id = line['HMM']
+            if hmm_id in hmm_to_pathways:
+                pathways = hmm_to_pathways[hmm_id]
+            else:
+                pathways = None
+            if pathways is not None:
+                for pathway in pathways:
+                    if protein_id not in predicted_hmms:
+                        predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathway, hmm_id)]
+                    else:
+                        predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathway, hmm_id))
+            else:
+                if protein_id not in predicted_hmms:
+                    predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathways, hmm_id)]
+                else:
+                    predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
+
+    # Check that expected proteins are matching HMMs.
     for protein_id in EXPECTED_RESULTS:
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
 

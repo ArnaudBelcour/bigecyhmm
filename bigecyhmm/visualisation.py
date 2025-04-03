@@ -788,13 +788,15 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         json.dump(metadata_json, ouput_file, indent=4)
 
 
-def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_diagram):
+def create_visualisation_from_ko_file(ko_abundance_file, output_folder):
     """Create visualisation plots from abundance file with KEGG Orthologs.
 
     Args:
         ko_abundance_file (str): path to ko abundance file.
-        output_folder_cycle_diagram (str): path to the output folder where files will be created.
+        output_folder (str): path to the output folder where files will be created.
     """
+    start_time = time.time()
+
     pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
     df_ko_abundance = pd.read_csv(ko_abundance_file, sep='\t', index_col=0)
     kegg_ortholog_abundance_samples = df_ko_abundance.to_dict()
@@ -850,6 +852,15 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_dia
                     sample_data_pathway[sample] = {}
                 sample_data_pathway[sample][pathway] = 0
 
+    sample_pathway_df = pd.DataFrame(sample_data_pathway)
+    output_folder_cycle_tsv = os.path.join(output_folder, 'pathway_presence_abundance.tsv')
+    sample_pathway_df.index.name = 'pathway'
+    sample_pathway_df.to_csv(output_folder_cycle_tsv, sep='\t')
+
+    output_folder_cycle_diagram = os.path.join(output_folder, 'diagram_visualisation')
+    if not os.path.exists(output_folder_cycle_diagram):
+        os.mkdir(output_folder_cycle_diagram)
+
     for sample in sample_data_pathway:
         diagram_data = {}
         for cycle_name in sample_data_pathway[sample]:
@@ -873,7 +884,27 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder_cycle_dia
         phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
         create_phosphorus_cycle(diagram_data, phosphorus_cycle_file)
 
+    duration = time.time() - start_time
+    metadata_json = {}
+    metadata_json['tool_dependencies'] = {}
+    metadata_json['tool_dependencies']['python_package'] = {}
+    metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
+    metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
+    metadata_json['tool_dependencies']['python_package']['pandas'] = pandas_version
+    metadata_json['tool_dependencies']['python_package']['plotly'] = plotly_version
+    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
+    metadata_json['tool_dependencies']['python_package']['seaborn'] = seaborn_version
+    metadata_json['tool_dependencies']['python_package']['kaleido'] = kaleido_version
+
+    metadata_json['input_parameters'] = {'ko_abundance_file': ko_abundance_file, 'output_folder': output_folder}
+    metadata_json['duration'] = duration
+
+    metadata_file = os.path.join(output_folder, 'bigecyhmm_visualisation_metadata.json')
+    with open(metadata_file, 'w') as ouput_file:
+        json.dump(metadata_json, ouput_file, indent=4)
+
     return sample_data_pathway
+
 
 def main():
     start_time = time.time()

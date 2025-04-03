@@ -28,7 +28,7 @@ from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions, create_phenotypes
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE
+from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 from multiprocessing import Pool
 from networkx.readwrite import json_graph
@@ -45,7 +45,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1):
+def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -53,6 +53,8 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         custom_database_folder (str): path to folder containing custom database
         output_folder (str): path to output folder
         core_number (int): number of core to use for the multiprocessing
+        motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
+        motif_pair_json (str): JSON file containing association between two genes to check for predictions
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -101,6 +103,19 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
                 csvwriter.writerow([function_name, function_hmms])
                 already_search_function.append(function_name)
 
+    # Get motif and motif_pair dictionaries.
+    if motif_json is not None:
+        with open(motif_json, 'r') as open_motif_json:
+            motif_data = json.load(open_motif_json)
+    else:
+        motif_data = MOTIF
+
+    if motif_pair_json is not None:
+        with open(motif_pair_json, 'r') as open_motif_json:
+            motif_pair_data = json.load(open_motif_json)
+    else:
+        motif_pair_data = MOTIF_PAIR
+
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
@@ -109,7 +124,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
 
         input_file_path = input_dicts[input_file]
-        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compress_database])
+        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compress_database, motif_data, motif_pair_data])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
 
@@ -257,6 +272,22 @@ def main():
         type=int,
         default=1)
 
+    parser.add_argument(
+        "-m",
+        "--motif",
+        dest='motif_file',
+        help="JSON file containing gene associated with protein motifs to check for predictions.",
+        required=False,
+        default=None)
+
+    parser.add_argument(
+        "-p",
+        "--motif-pair",
+        dest='motif_pair_file',
+        help="JSON file containing association between two genes to check for predictions.",
+        required=False,
+        default=None)
+
     args = parser.parse_args()
 
     # If no argument print the help.
@@ -280,7 +311,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core)
+    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))
