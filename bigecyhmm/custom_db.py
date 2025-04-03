@@ -94,6 +94,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
             if function_name not in already_search_function:
                 function_hmms = cycle['hmm']
                 csvwriter.writerow([function_name, function_hmms])
+                already_search_function.append(function_name)
 
     hmm_search_pool = Pool(processes=core_number)
 
@@ -131,13 +132,20 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
             pathway_data[pathway] = (nb_pathway, percentage_pathway)
 
     pathway_names = {}
+    bipartite_edges = []
+    all_pathways = []
     for pathway in json_cycle_database['links']:
         function_name = pathway['id']
         source = pathway['source']
         target = pathway['target']
         pathway_names[(source, target)] = function_name
+        function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
+        bipartite_edges.append((source, function_name_weighted))
+        bipartite_edges.append((function_name_weighted, target))
+        all_pathways.append(function_name_weighted)
         cycle_network[source][target]['weight'] = pathway_data[function_name][1]
 
+    # (1) Represent network as a graph.
     fig, axes = plt.subplots(figsize=(40,20))
     pos = nx.circular_layout(cycle_network)
 
@@ -155,8 +163,25 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     with open(network_json_output_file, 'w') as open_network_json_output_file:
         json.dump(json_graph.node_link_data(cycle_network), open_network_json_output_file, indent=4)
 
-    network_json_output_file = os.path.join(output_folder, 'cycle_diagram.graphml')
-    nx.write_graphml(cycle_network, network_json_output_file)
+    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram.graphml')
+    nx.write_graphml(cycle_network, network_graphml_output_file)
+
+    # (2) Represent network as a bipartie graph.
+    bipartite_graph = nx.DiGraph()
+    bipartite_graph.add_nodes_from(cycle_network.nodes, type='metabolite')
+    bipartite_graph.add_nodes_from(all_pathways, type='function')
+    bipartite_graph.add_edges_from(bipartite_edges)
+    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.graphml')
+    nx.write_graphml(bipartite_graph, network_graphml_output_file)
+
+    fig, axes = plt.subplots(figsize=(40,20))
+    pos = nx.spring_layout(bipartite_graph)
+    # Get node names:
+    labels = {node: node for node in bipartite_graph.nodes}
+    nx.draw_networkx_labels(bipartite_graph, pos, labels, font_size=20)
+    nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
+    network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.png')
+    plt.savefig(network_output_file)
 
     duration = time.time() - start_time
     metadata_json = {}
