@@ -1,0 +1,27 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Nitrogen"},
+    {"size": 10, "id": "Ammonium"},
+    {"size": 10, "id": "Nitrite"},
+    {"size": 10, "id": "Nitrate"},
+    {"size": 10, "id": "Nitric oxide"},
+    {"size": 10, "id": "Nitrous oxide"}
+
+    ],
+    "edges": [{"id": "Nitrogen fixation", "width": 1, "source": "Nitrogen", "target": "Ammonium", "hmm": "TIGR01861.hmm, TIGR02931.hmm, TIGR02929.hmm, TIGR01282.hmm, TIGR01286.hmm, TIGR01860.hmm, TIGR02932.hmm, TIGR02930.hmm, TIGR01287.hmm"},
+    {"id": "Ammonia oxidation", "width": 1, "source": "Nitrogen", "target": "Nitrite", "hmm": "amoA.hmm, amoB.hmm, amoC.hmm"},
+    {"id": "Nitrite oxidation", "width": 1, "source": "Nitrite", "target": "Nitrate", "hmm": "nitrite_oxidoreductase_nxrA.hmm, nitrite_oxidoreductase_nxrB.hmm"},
+    {"id": "Nitrate reduction", "width": 1, "source": "Nitrate", "target": "Nitrite", "hmm": "TIGR01706.hmm, PF03892.hmm, TIGR01580.hmm, TIGR01660.hmm"},
+    {"id": "Nitrite reduction", "width": 1, "source": "Nitrite", "target": "Nitric oxide", "hmm": "TIGR02376.hmm, nitrite_reductase_nirS.hmm, TIGR04315.hmm"},
+    {"id": "Nitric oxide reduction", "width": 1, "source": "Nitric oxide", "target": "Nitrous oxide", "hmm": "nitric_oxide_reductase_norB.hmm, nitric_oxide_reductase_norC.hmm"},
+    {"id": "Nitrous oxide reduction", "width": 1, "source": "Nitrous oxide", "target": "Nitrogen", "hmm": "PF05048.hmm, TIGR04246.hmm"},
+    {"id": "Nitrite ammonification", "width": 1, "source": "Nitrate", "target": "Ammonium", "hmm": "TIGR03153.hmm, PF02335.hmm, TIGR03148.hmm, TIGR02374.hmm, TIGR02378.hmm"},
+    {"id": "Anamox", "width": 1, "source": "Nitrite", "target": "Nitrogen", "hmm": "hydrazine_oxidase_hzoA.hmm, hydrazine_synthase_hzsA.hmm"},
+    {"id": "Anamox", "width": 1, "source": "Ammonium", "target": "Nitrogen", "hmm": "hydrazine_oxidase_hzoA.hmm, hydrazine_synthase_hzsA.hmm"},
+    {"id": "Nitric oxide dismutase", "width": 1, "source": "Nitric oxide", "target": "Nitrogen", "hmm": "nod.hmm"}
+    ]
+}

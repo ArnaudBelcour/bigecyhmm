@@ -1,0 +1,25 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Hydrogen sulfide"},
+    {"size": 10, "id": "Sulfur"},
+    {"size": 10, "id": "Sulfite"},
+    {"size": 10, "id": "Sulfate"},
+    {"size": 10, "id": "Thiosulfate"}
+    ],
+    "edges": [{"id": "Sulfide oxidation", "width": 1, "source": "Hydrogen sulfide", "target": "Sulfur", "hmm": "PF09242.hmm, sulfide_quinone_oxidoreductase_sqr.hmm"},
+    {"id": "Sulfur reduction", "width": 1, "source": "Sulfur", "target": "Hydrogen sulfide", "hmm": "K16952.hmm, K17219.hmm, K17220.hmm, K17221.hmm"},
+    {"id": "Sulfur oxidation", "width": 1, "source": "Sulfur", "target": "Sulfite", "hmm": "PF07682.hmm, sulfur_dioxygenase_sdo.hmm"},
+    {"id": "Sulfite oxidation", "width": 1, "source": "Sulfite", "target": "Sulfate", "hmm": "aprA.hmm, TIGR00339.hmm"},
+    {"id": "Sulfate reduction", "width": 1, "source": "Sulfate", "target": "Sulfite", "hmm": "aprA.hmm, TIGR00339.hmm"},
+    {"id": "Sulfite reduction", "width": 1, "source": "Sulfite", "target": "Hydrogen sulfide", "hmm": "asrA.hmm, asrB.hmm, asrC.hmm, dsrA.hmm, dsrB.hmm, dsrD.hmm"},
+    {"id": "Thiosulfate oxidation", "width": 1, "source": "Thiosulfate", "target": "Sulfate", "hmm": "soxX.hmm, soxY.hmm, soxZ.hmm, soxA.hmm; soxC.hmm, soxD.hmm"},
+    {"id": "Thiosulfate disproportionation 1", "width": 1, "source": "Thiosulfate", "target": "Sulfur", "hmm": "thiosulfate_reductase_phsA.hmm"},
+    {"id": "Thiosulfate disproportionation 1", "width": 1, "source": "Thiosulfate", "target": "Sulfate", "hmm": "thiosulfate_reductase_phsA.hmm"},
+    {"id": "Thiosulfate disproportionation 2", "width": 1, "source": "Thiosulfate", "target": "Sulfite", "hmm": "soxX.hmm, soxY.hmm, soxZ.hmm, soxA.hmm; NO|soxC.hmm, NO|soxD.hmm"},
+    {"id": "Thiosulfate disproportionation 2", "width": 1, "source": "Thiosulfate", "target": "Hydrogen sulfide", "hmm": "soxX.hmm, soxY.hmm, soxZ.hmm, soxA.hmm; NO|soxC.hmm, NO|soxD.hmm"},
+    ]
+}

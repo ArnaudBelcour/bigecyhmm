@@ -1,0 +1,30 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Organic Carbon"},
+    {"size": 10, "id": "Acetate"},
+    {"size": 10, "id": "Ethanol"},
+    {"size": 10, "id": "H2"},
+    {"size": 10, "id": "H2O"},
+    {"size": 10, "id": "CH4"},
+    {"size": 10, "id": "CO2"}
+    ],
+    "edges": [{"id": "Organic carbon oxidation", "width": 1, "source": "Organic Carbon", "target": "CO2", "hmm": "K00823.hmm, K07250.hmm, K13524.hmm, K14268.hmm, K03918.hmm, K05825.hmm, K00831.hmm, K00819.hmm, K00821.hmm, K05830.hmm, K00840.hmm, K00826.hmm, K02619.hmm, K03342.hmm, K00812.hmm, K00813.hmm, K11358.hmm, K00832.hmm, K00817.hmm, K00830.hmm, K00129.hmm, K00138.hmm, K13954.hmm, K00001.hmm, K04072.hmm, K00114.hmm, K00002.hmm, K04022.hmm, K22473.hmm, K00249.hmm, K00255.hmm, K06445.hmm, K06446.hmm, K09456.hmm, K09478.hmm, K11410.hmm, K15980.hmm, K18244.hmm, K03381.hmm, K03186.hmm, K01612.hmm, K04112.hmm, K04113.hmm, K04114.hmm, K04115.hmm, K19668.hmm, K01779.hmm, K01188.hmm, K05349.hmm, K05350.hmm, K01209.hmm, K15921.hmm, K01195.hmm, K05989.hmm, K01218.hmm, K19355.hmm, K01811.hmm, K01198.hmm, K01192.hmm, K01190.hmm, K12111.hmm, K12308.hmm, K01176.hmm, K05343.hmm, K07405.hmm, K01178.hmm, K01200.hmm, K01214.hmm, K01183.hmm, K13381.hmm, K01207.hmm, K12373.hmm, K14459.hmm, K00169.hmm, K00001.hmm, K00016.hmm, TIGR02717.hmm, TIGR00016.hmm, TIGR00651.hmm, TIGR02188.hmm, K00656.hmm, methanol_dehydrogenase_pqq_xoxF_mxaF.hmm, TIGR04266.hmm, TIGR02659.hmm, TIGR02658.hmm, TIGR02819.hmm, TIGR02821.hmm, TIGR02818.hmm, TIGR03451.hmm, TIGR03126.hmm, K00123.hmm, K22515.hmm, K00124.hmm, K22516.hmm, K00125.hmm, K03518.hmm, K03519.hmm, K03520.hmm, TIGR03080.hmm, TIGR03079.hmm, TIGR03078.hmm, PF02406.hmm, TIGR04550.hmm, TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm"},
+    {"id": "Carbon fixation", "width": 1, "source": "CO2", "target": "Organic Carbon", "hmm": "rubisco_form_I.hmm, rubisco_form_II.hmm, K14469.hmm, K14468.hmm, K14466.hmm, K18861.hmm, K14467.hmm, K00194.hmm, K00197.hmm, K00198.hmm, acetate_citrate_lyase_aclA.hmm, acetate_citrate_lyase_aclB.hmm"},
+    {"id": "Hydrogen generation", "width": 1, "source": "Organic Carbon", "target": "H2", "hmm": "fe.hmm, nife-group-3abd.hmm, fefe-group-b.hmm, fefe-group-a13.hmm, nife-group-4a-g.hmm, K00532.hmm"},
+    {"id": "Acetate oxidation", "width": 1, "source": "Acetate", "target": "CO2", "hmm": "TIGR02188.hmm"},
+    {"id": "Fermentation", "width": 1, "source": "Acetate", "target": "Ethanol", "hmm": "K00169.hmm, K00001.hmm, K00016.hmm, TIGR02717.hmm, TIGR00016.hmm, TIGR00651.hmm, TIGR02188.hmm, K00656.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "Acetate", "target": "CH4", "hmm": "TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm, K00402.hmm, K04480.hmm"},
+    {"id": "Ethanol oxidation", "width": 1, "source": "Ethanol", "target": "CO2", "hmm": "K00001.hmm"},
+    {"id": "Fermentation", "width": 1, "source": "Ethanol", "target": "Acetate", "hmm": "K00169.hmm, K00001.hmm, K00016.hmm, TIGR02717.hmm, TIGR00016.hmm, TIGR00651.hmm, TIGR02188.hmm, K00656.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "H2", "target": "CH4", "hmm": "TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm, K00402.hmm, K04480.hmm"},
+    {"id": "Hydrogen oxidation", "width": 1, "source": "H2", "target": "H2O", "hmm": "fe.hmm, nife-group-3abd.hmm, fefe-group-a2.hmm, nife-group-1.hmm, nife-group-2ade.hmm, nife-group-2bc.hmm, nife-group-4hi.hmm, fefe-group-a4.hmm"},
+    {"id": "Methanotrophy", "width": 1, "source": "CH4", "target": "CO2", "hmm": "pmoA.hmm, pmoB.hmm, pmoC.hmm, PF02406.hmm, TIGR04550.hmm"},
+    {"id": "Methanogenesis", "width": 1, "source": "CO2", "target": "CH4", "hmm": "TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm, K00402.hmm, K04480.hmm"},
+    {"id": "Acetogenesis (WL)", "width": 1, "source": "CO2", "target": "Acetate", "hmm": "fthfs_NF010030.hmm, K01938.hmm"},
+    {"id": "Acetogenesis (WL)", "width": 1, "source": "H2", "target": "Acetate", "hmm": "fthfs_NF010030.hmm, K01938.hmm"}
+    ]
+}
