@@ -15,6 +15,7 @@
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
 * Prototype to use custom biogeochemical diagram and HMM databases with `bigecyhmm_custom`.
+* Update readme according to the additions/changes.
 
 ## Modify
 
