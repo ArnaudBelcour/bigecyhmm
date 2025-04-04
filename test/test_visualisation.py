@@ -3,8 +3,9 @@ import csv
 import subprocess
 import shutil
 
-from bigecyhmm.visualisation import compute_relative_abundance_per_tax_id, read_abundance_file, read_esmecata_proteome_file, compute_bigecyhmm_functions_abundance, \
+from bigecyhmm.visualisation import compute_relative_abundance_per_tax_id, read_esmecata_proteome_file, compute_bigecyhmm_functions_abundance, \
                                     compute_bigecyhmm_functions_occurrence, create_visualisation, compute_abundance_per_tax_rank
+from bigecyhmm.utils import read_measures_file
 
 
 def test_compute_relative_abundance_per_tax_id():
@@ -32,7 +33,7 @@ def test_compute_relative_abundance_per_tax_id_file():
     proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes',  'proteome_tax_id.tsv')
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
 
-    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
     observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
     data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
 
@@ -47,7 +48,7 @@ def test_tax_rank_relative_abundance_file():
     proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes',  'proteome_tax_id.tsv')
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
 
-    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
     observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
     abundance_data = compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names)
 
@@ -99,7 +100,7 @@ def test_compute_bigecyhmm_functions_abundance_functions():
     abundance_file_path = os.path.join('input_data', 'abundance_file_from_genomes.tsv')
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'function_presence.tsv')
 
-    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
 
     function_abundance_samples, function_relative_abundance_samples, function_participation_samples = compute_bigecyhmm_functions_abundance(bigecyhmm_cycle_file, sample_abundance, sample_tot_abundance)
 
@@ -159,7 +160,7 @@ def test_compute_bigecyhmm_functions_abundance_cycles():
     abundance_file_path = os.path.join('input_data', 'abundance_file_from_genomes.tsv')
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'pathway_presence.tsv')
 
-    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
 
     function_abundance_samples, function_relative_abundance_samples, function_participation_samples = compute_bigecyhmm_functions_abundance(bigecyhmm_cycle_file, sample_abundance, sample_tot_abundance)
 
@@ -186,7 +187,7 @@ def test_compute_bigecyhmm_functions_abundance_cycles_from_esmecata():
     abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'pathway_presence.tsv')
 
-    sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+    sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
     observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
 
     tax_id_names_observation_names = {}

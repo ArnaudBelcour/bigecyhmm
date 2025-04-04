@@ -27,7 +27,7 @@ import pyhmmer
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions, create_phenotypes
-from bigecyhmm.visualisation import read_abundance_file
+from bigecyhmm.utils import read_measures_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
@@ -47,7 +47,7 @@ logger.setLevel(logging.DEBUG)
 
 
 def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
-                         abundance_file=None):
+                         abundance_file=None, metabolite_measure=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -58,6 +58,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
         abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
+        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -155,11 +156,12 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
             percentage_pathway = line[2]
             pathway_data[pathway] = (nb_pathway, percentage_pathway)
 
-    # Read abundance data.
-    if abundance_file is not None:
+    # Read abundance data and create a network with nodes associated with the abundance.
+    if abundance_file is not None or metabolite_measure is not None:
         abundance_cycle_network = nx.DiGraph()
 
-        sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file)
+    if abundance_file is not None:
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file)
         bipartite_edge_abundances = []
         all_pathway_abundances = []
 
@@ -192,7 +194,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         bipartite_edges.append((source, function_name_weighted))
         bipartite_edges.append((function_name_weighted, target))
         all_pathways.append(function_name_weighted)
-        if abundance_file is not None:
+        if abundance_file is not None or metabolite_measure is not None:
             for sample in sample_abundance:
                 bipartite_edge_abundances.append((source, function_name))
                 bipartite_edge_abundances.append((function_name, target))
@@ -221,12 +223,12 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram.graphml')
     nx.write_graphml(cycle_network, network_graphml_output_file)
 
-    # (2) Represent network as a bipartie graph.
+    # (2) Represent network as a bipartie graph with occurrence if functions.
     bipartite_graph = nx.DiGraph()
     bipartite_graph.add_nodes_from(cycle_network.nodes, type='metabolite')
     bipartite_graph.add_nodes_from(all_pathways, type='function')
     bipartite_graph.add_edges_from(bipartite_edges)
-    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.graphml')
+    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.graphml')
     nx.write_graphml(bipartite_graph, network_graphml_output_file)
 
     fig, axes = plt.subplots(figsize=(40,20))
@@ -238,8 +240,18 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.png')
     plt.savefig(network_output_file)
 
-    if abundance_file is not None:
-        bipartite_graph.add_nodes_from(cycle_network.nodes, type='metabolite')
+    if abundance_file is not None or metabolite_measure is not None:
+        abundance_cycle_network.add_nodes_from(cycle_network.nodes, type='metabolite')
+        # Add sample metabolite measurements to node.
+        if metabolite_measure is not None:
+            sample_metabolite_measure, sample_tot_abundance = read_measures_file(metabolite_measure)
+            for metabolite in abundance_cycle_network.nodes:
+                for sample in sample_metabolite_measure:
+                    if metabolite in sample_metabolite_measure[sample]:
+                        metabolite_measure = sample_metabolite_measure[sample][metabolite]
+                        if isinstance(metabolite_measure, float):
+                            abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
+
         abundance_cycle_network.add_edges_from(bipartite_edge_abundances)
         network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
         nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
@@ -335,6 +347,14 @@ def main():
         metavar='INPUT_FILE',
         default=None)
 
+    parser.add_argument(
+        '--measure-file',
+        dest='measure_file',
+        required=False,
+        help='Measure file indicating the abundance for each metabolties of the graph in different samples.',
+        metavar='INPUT_FILE',
+        default=None)
+
     args = parser.parse_args()
 
     # If no argument print the help.
@@ -358,7 +378,8 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file, args.abundance_file)
+    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
+                         args.abundance_file, args.measure_file)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))

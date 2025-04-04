@@ -93,3 +93,40 @@ def parse_result_files(hmm_output_folder):
                 hmm_hits[hmm_tsv_filename].append(line['HMM'])
 
     return hmm_hits
+
+
+def read_measures_file(measures_file_path):
+    """Read measurement file (such as abundance file for samples). Expect a tsv or csv files with organisms as rows, samples as columns and abundance as values.
+
+    Args:
+        measurement_file_path (str): path to measure file
+
+    Returns:
+        column_measure (dict): for each column, subdict with the measure of the different rows.
+        total_measure_per_column (dict): for each column, the total measure of all rows.
+    """
+    if measures_file_path.endswith('.tsv'):
+        delimtier = '\t'
+    elif measures_file_path.endswith('.csv'):
+        delimtier = ','
+
+    column_measure = {}
+    with open(measures_file_path, 'r') as open_measures_file:
+        csvreader = csv.DictReader(open_measures_file, delimiter=delimtier)
+        headers = csvreader.fieldnames
+        columns = headers[1:]
+        first_row = headers[0]
+        for row in csvreader:
+            for column in columns:
+                if column not in column_measure:
+                    column_measure[column] = {}
+                try:
+                    column_measure[column][row[first_row]] = float(row[column])
+                except:
+                    column_measure[column][row[first_row]] = 0
+
+    total_measure_per_column = {}
+    for col in column_measure:
+        total_measure_per_column[col] = sum([column_measure[col][row] for row in column_measure[col]])
+
+    return column_measure, total_measure_per_column

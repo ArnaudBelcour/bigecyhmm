@@ -38,7 +38,7 @@ import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE
-from bigecyhmm.utils import is_valid_dir
+from bigecyhmm.utils import is_valid_dir, read_measures_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
 from esmecata.report.esmecata_compression import RANK_SORTED
@@ -73,32 +73,6 @@ def get_function_categories():
                 function_categories[category_name].append(function_name)
 
     return function_categories
-
-
-def read_abundance_file(abundance_file_path):
-    """Read abundance file for samples. Expect a tsv or csv files with organisms as rows, samples as columns and abundance as values.
-
-    Args:
-        abundance_file_path (str): path to abundance file
-
-    Returns:
-        sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
-        sample_tot_abundance (dict): for each sample, the total abundance of all organisms in the sample.
-    """
-    if abundance_file_path.endswith('.tsv'):
-        input_data_df = pd.read_csv(abundance_file_path, sep='\t')
-    elif abundance_file_path.endswith('.csv'):
-        input_data_df = pd.read_csv(abundance_file_path)
-    input_data_df.set_index('observation_name', inplace=True)
-
-    sample_abundance = {}
-    sample_tot_abundance = {}
-    for sample_name in input_data_df.columns:
-        sample_abundance[sample_name] = input_data_df[sample_name].to_dict()
-        tot_abundance = input_data_df[sample_name].sum()
-        sample_tot_abundance[sample_name] = tot_abundance
-
-    return sample_abundance, sample_tot_abundance
 
 
 def read_esmecata_proteome_file(proteome_tax_id_file):
@@ -545,7 +519,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         os.mkdir(output_folder_occurrence)
 
     if abundance_file_path is not None:
-        sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
         output_folder_abundance = os.path.join(output_folder, 'function_abundance')
         if not os.path.exists(output_folder_abundance):
             os.mkdir(output_folder_abundance)
@@ -630,7 +604,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     if abundance_file_path is not None:
         logger.info("## Compute function abundances and create visualisation.")
         logger.info("  -> Read abundance file.")
-        sample_abundance, sample_tot_abundance = read_abundance_file(abundance_file_path)
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
         output_folder_abundance = os.path.join(output_folder, 'function_abundance')
         if not os.path.exists(output_folder_abundance):
             os.mkdir(output_folder_abundance)
