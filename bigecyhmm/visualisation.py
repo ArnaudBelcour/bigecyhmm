@@ -38,7 +38,7 @@ import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE
-from bigecyhmm.utils import is_valid_dir, read_measures_file
+from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
 from esmecata.report.esmecata_compression import RANK_SORTED
@@ -73,27 +73,6 @@ def get_function_categories():
                 function_categories[category_name].append(function_name)
 
     return function_categories
-
-
-def read_esmecata_proteome_file(proteome_tax_id_file):
-    """Read esmecata proteome file to extract associated betwenn organism name and tax_id_name.
-
-    Args:
-        proteome_tax_id_file (str): path to proteome tax id file of esmecata
-
-    Returns:
-        observation_names_tax_id_names (dict): dictionary associating organism name with tax_id_name
-        observation_names_tax_ranks (dict): dictionary associated organism name with tax_rank
-    """
-    observation_names_tax_id_names = {}
-    observation_names_tax_ranks = {}
-
-    df_proteome_tax_id = pd.read_csv(proteome_tax_id_file, sep='\t')
-    for index, row in df_proteome_tax_id.iterrows():
-        observation_names_tax_id_names[row['observation_name']] = row['tax_id_name']
-        observation_names_tax_ranks[row['observation_name']] = row['tax_rank']
-
-    return observation_names_tax_id_names, observation_names_tax_ranks
 
 
 def compute_relative_abundance_per_tax_id(sample_abundance, sample_tot_abundance, observation_names_tax_id_names):

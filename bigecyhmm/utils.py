@@ -130,3 +130,25 @@ def read_measures_file(measures_file_path):
         total_measure_per_column[col] = sum([column_measure[col][row] for row in column_measure[col]])
 
     return column_measure, total_measure_per_column
+
+
+def read_esmecata_proteome_file(proteome_tax_id_file):
+    """Read esmecata proteome file to extract associated betwenn organism name and tax_id_name.
+
+    Args:
+        proteome_tax_id_file (str): path to proteome tax id file of esmecata
+
+    Returns:
+        observation_names_tax_id_names (dict): dictionary associating organism name with tax_id_name
+        observation_names_tax_ranks (dict): dictionary associated organism name with tax_rank
+    """
+    observation_names_tax_id_names = {}
+    observation_names_tax_ranks = {}
+
+    with open(proteome_tax_id_file, 'r') as open_proteome_tax_id_file:
+        csvreader = csv.DictReader(open_proteome_tax_id_file, delimiter='\t')
+        for row in csvreader:
+            observation_names_tax_id_names[row['observation_name']] = row['tax_id_name']
+            observation_names_tax_ranks[row['observation_name']] = row['tax_rank']
+
+    return observation_names_tax_id_names, observation_names_tax_ranks

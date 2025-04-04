@@ -27,7 +27,7 @@ import pyhmmer
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions, create_phenotypes
-from bigecyhmm.utils import read_measures_file
+from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
@@ -47,7 +47,7 @@ logger.setLevel(logging.DEBUG)
 
 
 def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
-                         abundance_file=None, metabolite_measure=None):
+                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -59,6 +59,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
         abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
         metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
+        esmecata_output_folder (str): path to esmecata output folder.
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -120,6 +121,19 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     else:
         motif_pair_data = MOTIF_PAIR
 
+    # Get observation name and taxon names from esmecata.
+    if esmecata_output_folder is not None:
+        logger.info("Read EsMeCaTa proteome_tax_id file.")
+        proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
+        observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
+        tax_id_names_observation_names = {}
+        for observation_name in observation_names_tax_id_names:
+            tax_id_name = observation_names_tax_id_names[observation_name]
+            if tax_id_name not in tax_id_names_observation_names:
+                tax_id_names_observation_names[tax_id_name] = [observation_name]
+            else:
+                tax_id_names_observation_names[tax_id_name].append(observation_name)
+
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
@@ -178,9 +192,14 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
                 if function_name not in abundance_cycle_network.nodes:
                     abundance_cycle_network.add_node(function_name, type='function')
                 for sample in sample_abundance:
-                    pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
+                    # If esmecata output are given, translate tax_id into organism names.
+                    if esmecata_output_folder is not None:
+                        pathway_abundance[function_name][sample] = 0
+                        for tax_id in organisms:
+                            pathway_abundance[function_name][sample] += sum([sample_abundance[sample][organism] for organism in tax_id_names_observation_names[tax_id] if float(line[tax_id]) > 0 and organism in sample_abundance[sample]])
+                    else:
+                        pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
                     abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
-
 
     pathway_names = {}
     bipartite_edges = []
@@ -355,6 +374,14 @@ def main():
         metavar='INPUT_FILE',
         default=None)
 
+    parser.add_argument(
+        '--esmecata',
+        dest='esmecata_folder',
+        required=False,
+        help='EsMeCaTa output folder for the input file.',
+        metavar='INPUT_FILE',
+        default=None)
+
     args = parser.parse_args()
 
     # If no argument print the help.
@@ -379,7 +406,7 @@ def main():
 
     logger.info("--- Launch HMM search on custom database ---")
     search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
-                         args.abundance_file, args.measure_file)
+                         args.abundance_file, args.measure_file, args.esmecata_folder)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))
