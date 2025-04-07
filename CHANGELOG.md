@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.1.6 (2025-04-02)
+# bigecyhmm v0.1.6 (2025-04-07)
 
 ## Add
 
@@ -15,6 +15,7 @@
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
 * Prototype to use custom biogeochemical diagram and HMM databases with `bigecyhmm_custom`.
+* Add examples of custom json database files in internal databases: `custom_carbon_cycle.json`, `custom_phosphorus_cycle.json`, `custom_sulfur_cycle.json` and `custom_nitrogen_cycle.json`.
 * Update readme according to the additions/changes.
 
 ## Modify

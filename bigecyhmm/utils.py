@@ -40,11 +40,12 @@ def is_valid_dir(dirpath):
         return True
 
 
-def file_or_folder(variable_folder_file):
+def file_or_folder(variable_folder_file, extension_checks=['.faa']):
     """Check if the variable is file or a folder
 
     Args:
         variable_folder_file (str): path to a file or a folder
+        extension_checks (list): list of extension to keep
 
     Returns:
         dict: {name of input file: path to input file}
@@ -53,23 +54,26 @@ def file_or_folder(variable_folder_file):
 
     check_file = False
     if os.path.isfile(variable_folder_file):
-        filename = os.path.splitext(os.path.basename(variable_folder_file))[0]
-        file_folder_paths[filename] = variable_folder_file
-        check_file = True
+        filename, file_extension = os.path.splitext(os.path.basename(variable_folder_file))
+        if file_extension in extension_checks:
+            file_folder_paths[filename] = variable_folder_file
+            check_file = True
 
     check_folder = False
     # For folder, iterate through all files inside the folder.
     if os.path.isdir(variable_folder_file):
         for file_from_folder in os.listdir(variable_folder_file):
             filename, file_extension = os.path.splitext(os.path.basename(file_from_folder))
-            if file_extension == '.faa':
+            if file_extension in extension_checks:
                 file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
                 check_folder = True
 
     if check_file is False and check_folder is False:
-        logger.critical('ERROR: Wrong input, {0} does not exit'.format(variable_folder_file))
+        logger.critical('ERROR: Wrong input, either {0} does not exist, or no files with {1} extension are found.'.format(variable_folder_file, ','.join(extension_checks)))
         sys.exit(1)
     return file_folder_paths
+
+
 
 
 def parse_result_files(hmm_output_folder):

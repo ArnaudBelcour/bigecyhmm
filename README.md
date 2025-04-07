@@ -4,23 +4,26 @@
 
 Bigecyhmm is a Python package to search for genes associated with biogeochemical cycles in protein sequence fasta files. It has a default behaviour where it searches for carbon, sulfur, nitrogen and phosphorus cycles using HMMs from METABOLIC article, KEGG, PFAM, TIGR. It can be also used with a custom database and then will output network representation of the cycle.
 
-## Table of contents
+## 0) Table of contents
 - [bigecyhmm: Biogeochemical cycle HMMs search](#bigecyhmm-biogeochemical-cycle-hmms-search)
-  - [Table of contents](#table-of-contents)
-  - [Dependencies](#dependencies)
-  - [Installation](#installation)
-  - [bigecyhmm](#bigecyhmm)
-    - [Usage](#usage)
-    - [Output](#output)
-  - [bigecyhmm\_visualisation](#bigecyhmm_visualisation)
-    - [Function occurrence and abundance](#function-occurrence-and-abundance)
-    - [Output of bigecyhmm\_visualisation](#output-of-bigecyhmm_visualisation)
-  - [Custom usage](#custom-usage)
-    - [Contribution to bigecyhmm internal database](#contribution-to-bigecyhmm-internal-database)
-    - [`bigecyhmm_custom`: using custom database](#bigecyhmm_custom-using-custom-database)
-  - [Citation](#citation)
+  - [0) Table of contents](#0-table-of-contents)
+  - [1) Dependencies](#1-dependencies)
+  - [2) Installation](#2-installation)
+  - [3) bigecyhmm](#3-bigecyhmm)
+    - [3.1) Usage](#31-usage)
+    - [3.2) Output](#32-output)
+  - [4) bigecyhmm\_visualisation](#4-bigecyhmm_visualisation)
+    - [4.1) Function occurrence and abundance](#41-function-occurrence-and-abundance)
+    - [4.2) Output of bigecyhmm\_visualisation](#42-output-of-bigecyhmm_visualisation)
+  - [5) Custom usage](#5-custom-usage)
+    - [5.1) Contribution to bigecyhmm internal database](#51-contribution-to-bigecyhmm-internal-database)
+    - [5.2) `bigecyhmm_custom`: using custom database](#52-bigecyhmm_custom-using-custom-database)
+      - [5.2.1) Requirements](#521-requirements)
+      - [5.2.2) Inputs](#522-inputs)
+      - [5.2.3) Outputs](#523-outputs)
+  - [6) Citation](#6-citation)
 
-## Dependencies
+## 1) Dependencies
 
 bigecyhmm is developed to be as minimalist as possible. It requires:
 
@@ -41,7 +44,7 @@ For `bigecyhmm_custom`, you also needs the following package:
 - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
 - [matplotlib](https://github.com/matplotlib/matplotlib): to create automatically (bad) visualisation of the cycle.
 
-## Installation
+## 2) Installation
 
 It can be installed from PyPI:
 
@@ -65,9 +68,9 @@ For `bigecyhmm_custom`, you also needs to run:
 
 `pip install networkx matplotlib`
 
-## bigecyhmm
+## 3) bigecyhmm
 
-### Usage
+### 3.1) Usage
 
 You can used the tools with two calls:
 
@@ -87,7 +90,7 @@ There is one option:
 
 * `-c` to indicate the number of core used. It is only useful if you have multiple protein fasta files as the added cores will be used to run another HMM search on a different protein fasta file.
 
-### Output
+### 3.2) Output
 
 It gives as output:
 
@@ -102,7 +105,7 @@ It gives as output:
 - `pathway_presence_hmms.tsv`: HMMs with matches for the major metabolic pathways in the different inputs files.
 - `Total.R_input.txt`: ratio of the occurrence of major metabolic pathways in the all communities.
 
-## bigecyhmm_visualisation
+## 4) bigecyhmm_visualisation
 
 There is a second command associated with bigecyhmm (`bigecyhmm_visualisation`), to create visualisation of the results.
 
@@ -125,18 +128,18 @@ There are four parameters:
 - `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `-o`: an output folder. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 
-### Function occurrence and abundance
+### 4.1) Function occurrence and abundance
 
 For visualisation, two values are used to represent the functions.
 First, the **occurrence** corresponding to the number of organisms having this function dividing by the total number of organisms in the community. If you give an `abundance file`, a second value is used, the **abundance** (computed for each sample in the abundance file). The abundance of a function is the sum of the abundance of organisms having it divided by the sum of abundance of all organisms in the sample.
 
 For example, if we look at the function `Formate oxidation fdoG` in a community. If 20 organisms in this community have this function on a community having a total of 80 organisms, the **occurrence** of this function is 0.25 (20 / 80). Then, let's say that these 20 organisms have a summed abundance of 600 and the total abundance of all organisms in the community is 1200, then the **abundance** of the function is 0.5 (600 / 1200).
 
-### Output of bigecyhmm_visualisation
+### 4.2) Output of bigecyhmm_visualisation
 
 Several output are created by bigecyhmm_visualisation.
 
-````
+```
 output_folder
 ├── function_abundance
 │   ├── cycle_diagrams_abundance
@@ -165,7 +168,7 @@ output_folder
 │   └── polar_plot_occurrence.png
 ├── bigecyhmm_visualisation.log
 ├── bigecyhmm_visualisation_metadata.json
-````
+```
 
 `function_abundance` is a folder containing all visualisation associated with abundance values. It contains:
 
@@ -191,19 +194,21 @@ output_folder
 
 `bigecyhmm_visualisation_metadata.json` is a metadata file giving information on the version of the package used.
 
-## Custom usage
+## 5) Custom usage
 
-### Contribution to bigecyhmm internal database
+### 5.1) Contribution to bigecyhmm internal database
 
 If you are interested in specific functions associated with cycles present in bigecyhmm (carbon, sulfur, nitrogen, phosphorus) and want to propose an addition, you cna create an issue or a Pull Request.
 I will see if it is possible to add it. Keep in mind that I try to limite the size of the HMM database so I prefer to avoid adding too many HMM profiles.
 If you want to completly add another cycle, please refer to the next subsection.
 
-### `bigecyhmm_custom`: using custom database
+### 5.2) `bigecyhmm_custom`: using custom database
 
 **Warning**: This is a prototype.
 
 It is possible to use a completly custom database associated with a specific biogeochemical cycles using `bigecyhmm_custom`.
+
+#### 5.2.1) Requirements
 
 This command requires three packages:
 
@@ -211,13 +216,44 @@ This command requires three packages:
 - [networkx](https://github.com/networkx/networkx): to handle biogeochemical cycle as a graph.
 - [matplotlib](https://github.com/matplotlib/matplotlib): to create automatically (bad) visualisation of the cycle.
 
+#### 5.2.2) Inputs
+
 This command line expects two arguments:
 
 - `-i`: an input protein sequence fasta file/folder.
-- `-d`: a folder containing the custom databases, divided in three files:
+- `-d`: a file/folder containing the custom databases, `bigecyhmm_custom` will iterate other the file/folder to search for every `.json` files. If it finds one, it will search for associated `.tsv` and `.zip` (files with the same name and at the same location but with either a tsv or zip extension). The three expected files are listed below:
   - a `json` file representing the biogeochemical cycle as a graph. Example can be found in the test folder, such as [carbon cycle json file](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/custom_db/carbon_cycle.json). Please note the presence of the `hmm` field in the json indicating the HMMs associated with the functions of the cycle. The HMMs are shown as a string with `, ` separating HMMs as a `OR` relation (meaning these HMMs are redundant) and `; ` as a `AND` relation (meaning that both HMMs are required).
   - a `zip` file containing the HMM profiles (`.hmm` files) such as the one used by bigecyhmm ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_files.zip)). If no file is present in the folder, bigecyhmm will use its internal HMM database. You can search for HMM in [KEGG Ortholog database](https://www.genome.jp/kegg/ko.html), [Protein Family Models from NIH](https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/), [PFAM](https://www.ebi.ac.uk/interpro/download/Pfam/). It is also possible to build them with [pyhmmer](https://pyhmmer.readthedocs.io/en/stable/examples/msa_to_hmm.html#Build-an-HMM-from-a-multiple-sequence-alignment).
   - a `tsv` file containing the threshold for the different HMMs. If no file is present in the folder, bigecyhmm will use its internal template file for threshold. An example can be found in bigecyhmm internal database ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_table_template.tsv)) or in the test folder ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/mini_custom_db/hmm_table_template.tsv)).
+
+Here are several examples of inputs:
+
+Only a json file, bigecyhmm will use its internal HMM database to search for HMM files from the json file (associated argument `-d custom_db_cycle.json`):
+```
+custom_db_cycle.json
+```
+
+A folder with one json file and a tsv and zip files (associated argument `-d custom_db_cycle`):
+```
+custom_db_cycle
+├── custom_db_cycle.json
+├── custom_db_cycle.tsv
+├── custom_db_cycle.zip
+```
+
+A folder with several json files (associated argument `-d custom_db_cycle`):
+```
+custom_db_cycle
+├── carbon_cycle.json
+├── carbon_cycle.tsv
+├── carbon_cycle.zip
+├── nitrogen_cycle.json
+├── nitrogen_cycle.tsv
+├── nitrogen_cycle.zip
+├── sulfur_cycle.json
+├── sulfur_cycle.tsv
+├── sulfur_cycle.zip
+```
 
 It can take three optional arguments:
 
@@ -230,13 +266,16 @@ Example:
 bigecyhmm_custom -i protein_sequences.faa -d custom_db -o output_folder
 ```
 
+#### 5.2.3) Outputs
+
+`bigecyhmm_custom` creates inside the output folder on folder per input custom json file.
 It outputs similar files than bigecyhmm classical output except for the cycle visualisation.
 As it is more difficult to provide a direct visualisation from a custom database `bigecyhmm_custom` relies on network representation to create these visualisations.
 To do so, it creates network file (`cycle_diagram_bipartite_occurrence.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/)) to generate visualisation. It also tries to create a visualisation but they are not very good.
 
 If you have given abundance and measure files, a second network file (`cycle_diagram_bipartite_abundance.graphml`) is created where function nodes are associated with the summed abundance of organisms in the different samples and metabolite node are associated with their measures in the different samples.
 
-## Citation
+## 6) Citation
 
 If you have used bigecyhmm in an article, please cite:
 

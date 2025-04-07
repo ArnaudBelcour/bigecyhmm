@@ -178,7 +178,7 @@ def test_check_motif_pair_amoA_negative_pmoA():
 
 
 def test_search_hmm():
-    input_file = os.path.join('input_data', 'meta_organism_test.fasta')
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
     output_folder = 'output_folder'
 
     search_hmm(input_file, output_folder)
@@ -216,7 +216,7 @@ def test_search_hmm():
 
 
 def test_search_hmm_cli():
-    input_file = os.path.join('input_data', 'meta_organism_test.fasta')
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
     output_folder = 'output_folder'
 
     cmd = ['bigecyhmm', '-i', input_file, '-o', output_folder]

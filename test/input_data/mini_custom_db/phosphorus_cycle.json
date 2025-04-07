@@ -1,0 +1,20 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Inorganic phosphorus"},
+    {"size": 10, "id": "Organic phosphorus"},
+    {"size": 10, "id": "Insoluble phosphorus"},
+    {"size": 10, "id": "Rock"}
+    ],
+    "edges": [{"id": "Immobilisation (P-rich)", "width": 1, "source": "Inorganic phosphorus", "target": "Organic phosphorus", "hmm": "NF033774.1.hmm"},
+    {"id": "Immobilisation (P-poor)", "width": 1, "source": "Inorganic phosphorus", "target": "Organic phosphorus", "hmm": "K02040.hmm"},
+    {"id": "Mineralisation", "width": 1, "source": "Organic phosphorus", "target": "Inorganic phosphorus", "hmm": "K01077.hmm"},
+    {"id": "Precipitation", "width": 1, "source": "Inorganic phosphorus", "target": "Insoluble phosphorus", "hmm": ""},
+    {"id": "Dissolution", "width": 1, "source": "Insoluble phosphorus", "target": "Inorganic phosphorus", "hmm": "K01507.hmm"},
+    {"id": "Weathering", "width": 1, "source": "Rock", "target": "Inorganic phosphorus", "hmm": ""},
+    {"id": "Geological uplift", "width": 1, "source": "Inorganic phosphorus", "target": "Rock", "hmm": ""}
+    ]
+}

@@ -1,0 +1,5 @@
+#Entry	Category	Function	Gene abbreviation	Gene name	Hmm file	Corresponding KO	Reaction	Substrate	Product	Hmm detecting threshold	source
+	Phosphorous cycling enzymes	Inorganic P immobilisation	PitA	inorganic phosphate transporter PitA	NF033774.1.hmm					800|full	10.1038/s41467-024-47914-0
+	Phosphorous cycling enzymes	Inorganic P immobilisation	PstS	phosphate transport system substrate-binding protein	K02040.hmm	K02040				60.73|domain	10.1038/s41467-024-47914-0
+	Phosphorous cycling enzymes	Organic P mineralization	phoA	Alkaline phosphatase A	K01077.hmm	K01077				71.10|full	10.1016/j.soilbio.2022.108826
+	Phosphorous cycling enzymes	Inorganic P solubilization	ppa	Inorganic pyrophosphatase	K01507.hmm	K01507				19.27|domain	10.1016/j.soilbio.2022.108826

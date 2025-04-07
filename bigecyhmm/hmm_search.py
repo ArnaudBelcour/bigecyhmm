@@ -202,14 +202,15 @@ def write_results(hmm_results, output_file):
             csvwriter.writerow(result)
 
 
-def create_major_functions(hmm_output_folder, output_file):
+def create_major_functions(hmm_output_folder, output_file, hmm_template_file=HMM_TEMPLATE_FILE):
     """Map hit HMMs with list of major functions to create a tsv file showing these results.
 
     Args:
         hmm_output_folder (str): path to HMM search results folder (one tsv file per organism)
         output_file (str): path to the output tsv file
+        hmm_template_file (str): path of HMM template file
     """
-    with open(HMM_TEMPLATE_FILE, 'r') as open_hmm_template:
+    with open(hmm_template_file, 'r') as open_hmm_template:
         csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
 
         hmm_functions = {}
@@ -297,11 +298,9 @@ def search_hmm(input_variable, output_folder, core_number=1):
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
-    for input_file in input_dicts:
-        input_filename = os.path.splitext(os.path.basename(input_file))[0]
+    for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
-
-        input_file_path = input_dicts[input_file]
+        input_file_path = input_dicts[input_filename]
         multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)

@@ -24,12 +24,12 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import pyhmmer
 
-from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
-from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
-from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions, create_phenotypes
+from bigecyhmm.utils import is_valid_dir, file_or_folder
+from bigecyhmm.diagram_cycles import create_input_diagram
+from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 from multiprocessing import Pool
 from networkx.readwrite import json_graph
@@ -46,14 +46,17 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
+def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hmm_compress_database=HMM_COMPRESS_FILE,
+                         hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None,
                          abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
         input_variable (str): path to input file or folder
-        custom_database_folder (str): path to folder containing custom database
+        custom_database_json (str): path to json file containing the custom database
         output_folder (str): path to output folder
+        hmm_compress_database (str): path to HMM compress database
+        hmm_template_file (str): path to HMM template file
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
@@ -67,34 +70,12 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
-    # Get HMM database, either from internal database or custom database.
-    hmm_compress_databases = [database_file for database_file in os.listdir(custom_database_folder) if database_file.endswith('.zip')]
-    if len(hmm_compress_databases) > 0:
-        hmm_compress_database = hmm_compress_databases[0]
-        hmm_compress_database = os.path.join(custom_database_folder, hmm_compress_database)
-        logger.info("Found custom HMM database {0}".format(hmm_compress_database))
-    else:
-        hmm_compress_database = HMM_COMPRESS_FILE
-        logger.info("No custom HMM database, will use default: {0}".format(hmm_compress_database))
-
-    # Get HMM threhsold either from internal database or custom database.
-    hmm_template_files = [database_file for database_file in os.listdir(custom_database_folder) if database_file.endswith('.tsv')]
-    if len(hmm_template_files) > 0:
-        hmm_template_file = hmm_template_files[0]
-        hmm_template_file = os.path.join(custom_database_folder, hmm_template_file)
-        logger.info("Found custom HMM threshold file {0}".format(hmm_template_file))
-    else:
-        hmm_template_file = HMM_TEMPLATE_FILE
-        logger.info("No custom HMM threshold file, will use default: {0}".format(hmm_template_file))
-
     hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
     # Get pathway cycle data from custom database.
-    json_database_file = [database_file for database_file in os.listdir(custom_database_folder) if database_file.endswith('.json')][0]
-    json_database_file_path = os.path.join(custom_database_folder, json_database_file)
-    logger.info("Parsing cycle json file {0}".format(json_database_file_path))
-    with open(json_database_file_path) as open_json_database_file_path:
-        json_cycle_database = json.load(open_json_database_file_path)
+    logger.info("  -> Parsing cycle json file {0}".format(custom_database_json))
+    with open(custom_database_json) as open_custom_database_json:
+        json_cycle_database = json.load(open_custom_database_json)
 
     pathway_template_file = os.path.join(output_folder, 'pathway_template_file.tsv')
     already_search_function = []
@@ -123,7 +104,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
 
     # Get observation name and taxon names from esmecata.
     if esmecata_output_folder is not None:
-        logger.info("Read EsMeCaTa proteome_tax_id file.")
+        logger.info("  -> Read EsMeCaTa proteome_tax_id file.")
         proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
         observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
         tax_id_names_observation_names = {}
@@ -137,11 +118,9 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
-    for input_file in input_dicts:
-        input_filename = os.path.splitext(os.path.basename(input_file))[0]
+    for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
-
-        input_file_path = input_dicts[input_file]
+        input_file_path = input_dicts[input_filename]
         multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compress_database, motif_data, motif_pair_data])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
@@ -149,11 +128,9 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     hmm_search_pool.close()
     hmm_search_pool.join()
 
-    logger.info("Create output files.")
+    logger.info("  -> Create output files.")
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
-    create_major_functions(hmm_output_folder, function_matrix_file)
-    function_matrix_file = os.path.join(output_folder, 'phenotypes_presence.tsv')
-    create_phenotypes(hmm_output_folder, function_matrix_file)
+    create_major_functions(hmm_output_folder, function_matrix_file, hmm_template_file)
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
@@ -201,6 +178,20 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
                         pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
                     abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
 
+        # Create a tsv file containing abundance information for cycle function.
+        pathway_abundance_data = []
+        all_cycles = list(pathway_abundance.keys())
+        all_samples = list(sample_abundance.keys())
+        for cycle in all_cycles:
+            pathway_abundance_data.append([cycle, *[pathway_abundance[cycle][sample] for sample in all_samples]])
+
+        cycle_pathway_abundance_file = os.path.join(output_folder, 'pathway_abundance.tsv')
+        with open(cycle_pathway_abundance_file, 'w') as open_cycle_pathway_abundance_file:
+            csvwriter = csv.writer(open_cycle_pathway_abundance_file, delimiter='\t')
+            csvwriter.writerow(['function', *all_samples])
+            for data in pathway_abundance_data:
+                csvwriter.writerow(data)
+
     pathway_names = {}
     bipartite_edges = []
     all_pathways = []
@@ -220,7 +211,7 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
                 all_pathway_abundances.append(function_name)
         cycle_network[source][target]['weight'] = pathway_data[function_name][1]
 
-    logger.info("Generate network files.")
+    logger.info("  -> Generate network files.")
     # (1) Represent network as a graph.
     fig, axes = plt.subplots(figsize=(40,20))
     pos = nx.circular_layout(cycle_network)
@@ -285,13 +276,81 @@ def search_hmm_custom_db(input_variable, custom_database_folder, output_folder, 
     metadata_json['tool_dependencies']['python_package']['networkx'] = nx.__version__
     metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
-    metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number}
+    metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number,
+                                         'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
+                                         'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
     metadata_json['input_parameters']['custom_db'] = {'hmm_compress_database': hmm_compress_database, 'hmm_template_file': hmm_template_file,
-                                                      'json_database_file_path': json_database_file_path}
+                                                      'json_database_file_path': custom_database_json}
 
     metadata_json['duration'] = duration
 
-    metadata_file = os.path.join(output_folder, 'bigecyhmm_metadata.json')
+    metadata_file = os.path.join(output_folder, 'bigecyhmm_custom_metadata.json')
+    with open(metadata_file, 'w') as ouput_file:
+        json.dump(metadata_json, ouput_file, indent=4)
+
+
+def identify_run_custom_db_search(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
+                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
+    """Main function to use HMM search on protein sequences and write results with a custom database.
+
+    Args:
+        input_variable (str): path to input file or folder
+        custom_database_folder (str): path to file/folder containing custom database
+        output_folder (str): path to output folder
+        core_number (int): number of core to use for the multiprocessing
+        motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
+        motif_pair_json (str): JSON file containing association between two genes to check for predictions
+        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
+        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
+        esmecata_output_folder (str): path to esmecata output folder.
+    """
+    start_time = time.time()
+
+    # Search for json files in input custom database.
+    json_extensions = ['.json']
+    input_dicts = file_or_folder(custom_database_folder, json_extensions)
+    for input_filename in input_dicts:
+        logger.info("Launch HMM search on custom database {0}.".format(input_filename))
+        custom_database_json = input_dicts[input_filename]
+        # Check the presence of custom HMM compress database.
+        custom_hmm_compress_database = custom_database_json.replace('.json', '.zip')
+        if os.path.exists(custom_hmm_compress_database):
+            logger.info("  -> Custom HMM compress database {0} exists, it will be used.".format(custom_hmm_compress_database))
+        else:
+            logger.info("  -> Custom HMM compress database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compress_database))
+            custom_hmm_compress_database = HMM_COMPRESS_FILE
+        # Check the presence of custom HMM template file.
+        custom_hmm_template_file = custom_database_json.replace('.json', '.tsv')
+        if os.path.exists(custom_hmm_template_file):
+            logger.info("  -> Custom HMM template file {0} exists, it will be used.".format(custom_hmm_template_file))
+        else:
+            logger.info("  -> Custom HMM template file {0} not found, bigecyhmm will use the default one.".format(custom_hmm_template_file))
+            custom_hmm_template_file = HMM_TEMPLATE_FILE
+
+        # Create specific output folder for custom database.
+        output_folder_custom_db = os.path.join(output_folder, input_filename)
+        is_valid_dir(output_folder_custom_db)
+        search_hmm_custom_db(input_variable, custom_database_json, output_folder_custom_db, custom_hmm_compress_database,
+                            custom_hmm_template_file, core_number=core_number, motif_json=motif_json, motif_pair_json=motif_pair_json,
+                            abundance_file=abundance_file, metabolite_measure=metabolite_measure, esmecata_output_folder=esmecata_output_folder)
+
+    duration = time.time() - start_time
+    metadata_json = {}
+    metadata_json['tool_dependencies'] = {}
+    metadata_json['tool_dependencies']['python_package'] = {}
+    metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
+    metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
+    metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
+    metadata_json['tool_dependencies']['python_package']['networkx'] = nx.__version__
+    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
+
+    metadata_json['input_parameters'] = {'input_variable': input_variable, 'custom_database_folder': custom_database_folder, 'output_folder': output_folder,
+                                         'core_number': core_number, 'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
+                                         'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
+
+    metadata_json['duration'] = duration
+
+    metadata_file = os.path.join(output_folder, 'bigecyhmm_custom_metadata.json')
     with open(metadata_file, 'w') as ouput_file:
         json.dump(metadata_json, ouput_file, indent=4)
 
@@ -322,9 +381,8 @@ def main():
         '--database',
         dest='custom_database',
         required=True,
-        help='Custom database: a folder containing a json file for the cycle representation, a tabulated file for HMM threshold and a zip file containing HMM profiles',
-        metavar='CUSTOM_DATABASE_FOLDER')
-
+        help='Path to a json file or folder containing a representation of the custom cycle. It will also search for associated tsv and zip file. If it is a folder, it will do the same but for each json in the folder.',
+        metavar='CUSTOM_DATABASE_FILE_OR_FOLDER')
 
     parser.add_argument(
         '-o',
@@ -405,7 +463,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    search_hmm_custom_db(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
+    identify_run_custom_db_search(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
                          args.abundance_file, args.measure_file, args.esmecata_folder)
 
     duration = time.time() - start_time
