@@ -226,14 +226,16 @@ This command line expects two arguments:
   - a `zip` file containing the HMM profiles (`.hmm` files) such as the one used by bigecyhmm ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_files.zip)). If no file is present in the folder, bigecyhmm will use its internal HMM database. You can search for HMM in [KEGG Ortholog database](https://www.genome.jp/kegg/ko.html), [Protein Family Models from NIH](https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/), [PFAM](https://www.ebi.ac.uk/interpro/download/Pfam/). It is also possible to build them with [pyhmmer](https://pyhmmer.readthedocs.io/en/stable/examples/msa_to_hmm.html#Build-an-HMM-from-a-multiple-sequence-alignment).
   - a `tsv` file containing the threshold for the different HMMs. If no file is present in the folder, bigecyhmm will use its internal template file for threshold. An example can be found in bigecyhmm internal database ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_table_template.tsv)) or in the test folder ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/mini_custom_db/hmm_table_template.tsv)).
 
+An example with mini database is present in the [test folder](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/test/input_data/mini_custom_db).
+
 Here are several examples of inputs:
 
-Only a json file, bigecyhmm will use its internal HMM database to search for HMM files from the json file (associated argument `-d custom_db_cycle.json`):
+- Only a json file, bigecyhmm will use its internal HMM database to search for HMM files from the json file (associated argument `-d custom_db_cycle.json`):
 ```
 custom_db_cycle.json
 ```
 
-A folder with one json file and a tsv and zip files (associated argument `-d custom_db_cycle`):
+- A folder with one json file and tsv/zip files (associated argument `-d custom_db_cycle`):
 ```
 custom_db_cycle
 ├── custom_db_cycle.json
@@ -241,7 +243,7 @@ custom_db_cycle
 ├── custom_db_cycle.zip
 ```
 
-A folder with several json files (associated argument `-d custom_db_cycle`):
+- A folder with several json files (associated argument `-d custom_db_cycle`):
 ```
 custom_db_cycle
 ├── carbon_cycle.json
@@ -255,16 +257,18 @@ custom_db_cycle
 ├── sulfur_cycle.zip
 ```
 
+Usage example:
+```
+bigecyhmm_custom -i protein_sequences.faa -d custom_db -o output_folder
+```
+
 It can take three optional arguments:
 
 - `--abundance-file`: an abundance file containing the abundance of the organisms associated with the protein sequences given as input in different samples.
 - `--measure-file`: a measurement file containing the measures of metabolites of the biogeochemical cycle in different samples.
 - `--esmecata`: by giving an esmecata output folder, `bigecyhmm_custom` maps taxon_id to organism names to associate organism abundance with esmecata predicitons.
-
-Example:
-```
-bigecyhmm_custom -i protein_sequences.faa -d custom_db -o output_folder
-```
+- `-m`: JSON file containing gene associated with protein motifs to check for predictions. The protein motif corresponds to a regex associated with amnio-acids or `X` (the latter being any amino-acid). The idea of this verification is to check if an expected amino-acid motif is present in the sequence matching the associated HMM. You can see an example file in the test folder ([motif.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif.json)). The name of the gene corresponds to the name of its HMM.
+- `-p`: JSON file containing association between two genes to check for predictions. This verification is about ensuring that a sequence is properly associated with a specific HMM and not to anotehr yet similar HMM. An example file can be found in the test folfer ([motif_pair.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif_pair.json)). It contains association between two gene names. The HMM search results of the sequence against these two gnee profiles are compared to find the one with a better score. The name of the gene corresponds to the name of its HMM.
 
 #### 5.2.3) Outputs
 
