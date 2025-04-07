@@ -262,7 +262,7 @@ Usage example:
 bigecyhmm_custom -i protein_sequences.faa -d custom_db -o output_folder
 ```
 
-It can take three optional arguments:
+It can take five optional arguments:
 
 - `--abundance-file`: an abundance file containing the abundance of the organisms associated with the protein sequences given as input in different samples.
 - `--measure-file`: a measurement file containing the measures of metabolites of the biogeochemical cycle in different samples.
