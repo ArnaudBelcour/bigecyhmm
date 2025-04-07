@@ -33,6 +33,7 @@ TEMPLATE_PHOSPHORUS_GENE_CYCLE = os.path.join(ROOT, 'templates', 'template_phosp
 CUSTOM_CARBON_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_carbon_cycle.json')
 CUSTOM_SULFUR_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_sulfur_cycle.json')
 CUSTOM_NITROGEN_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_nitrogen_cycle.json')
+CUSTOM_PHOSPHORUS_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_phosphorus_cycle.json')
 
 # Motif validation using regex search in sequence.
 MOTIF = {'dsrC': r'GPXKXXCXXXGXPXPXXCX',
