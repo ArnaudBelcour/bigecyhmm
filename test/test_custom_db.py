@@ -156,6 +156,30 @@ def test_search_hmm_custom_db_abundance_cli():
     shutil.rmtree(output_folder)
 
 
+def test_search_hmm_custom_db_measure_cli():
+    input_file = os.path.join('input_data', 'org_prot')
+    output_folder = 'output_folder'
+    custom_db = os.path.join('input_data', 'mini_custom_db')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+    measure_file = os.path.join('input_data', 'test_measure.tsv')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair, '--measure-file', measure_file])
+
+    expected_measure = {'Acetate': {'sample_1': 100.0, 'sample_3': 300.0}, 'H2': {'sample_1': 0.0, 'sample_2': 500.0, 'sample_3': 50.0}}
+
+    output_abundance_network_file = os.path.join(output_folder, 'carbon_cycle', 'cycle_diagram_bipartite_abundance.graphml')
+    abundance_network = nx.read_graphml(output_abundance_network_file)
+
+    predicted_abundance = {node: abundance_network.nodes[node] for node in abundance_network.nodes}
+
+    for metabolite in expected_measure:
+        for sample in expected_measure[metabolite]:
+            assert expected_measure[metabolite][sample] == predicted_abundance[metabolite][sample]
+
+    shutil.rmtree(output_folder)
+
+
 def test_search_hmm_custom_db_abundance_measure_cli():
     input_file = os.path.join('input_data', 'org_prot')
     output_folder = 'output_folder'

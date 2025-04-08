@@ -172,14 +172,15 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
             percentage_pathway = line[2]
             pathway_data[pathway] = (nb_pathway, percentage_pathway)
 
-    # Read abundance data and create a network with nodes associated with the abundance.
+    # Initiate a bipartite network when giving abundance or measure files.
     if abundance_file is not None or metabolite_measure is not None:
         abundance_cycle_network = nx.DiGraph()
-
-    if abundance_file is not None:
-        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file)
         bipartite_edge_abundances = []
         all_pathway_abundances = []
+
+    # Read abundance data and create a network with nodes associated with the abundance.
+    if abundance_file is not None:
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file)
 
         pathway_abundance = {}
         cycle_pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
@@ -230,10 +231,9 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
         bipartite_edges.append((function_name_weighted, target))
         all_pathways.append(function_name_weighted)
         if abundance_file is not None or metabolite_measure is not None:
-            for sample in sample_abundance:
-                bipartite_edge_abundances.append((source, function_name))
-                bipartite_edge_abundances.append((function_name, target))
-                all_pathway_abundances.append(function_name)
+            bipartite_edge_abundances.append((source, function_name))
+            bipartite_edge_abundances.append((function_name, target))
+            all_pathway_abundances.append(function_name)
         cycle_network[source][target]['weight'] = pathway_data[function_name][1]
 
     logger.info("  -> Generate network files.")
@@ -277,6 +277,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
 
     if abundance_file is not None or metabolite_measure is not None:
         abundance_cycle_network.add_nodes_from(cycle_network.nodes, type='metabolite')
+    if metabolite_measure is not None:
         # Add sample metabolite measurements to node.
         if metabolite_measure is not None:
             sample_metabolite_measure, sample_tot_abundance = read_measures_file(metabolite_measure)
@@ -287,6 +288,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                         if isinstance(metabolite_measure, float):
                             abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
 
+    if abundance_file is not None or metabolite_measure is not None:
         abundance_cycle_network.add_edges_from(bipartite_edge_abundances)
         network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
         nx.write_graphml(abundance_cycle_network, network_graphml_output_file)

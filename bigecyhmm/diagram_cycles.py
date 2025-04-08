@@ -21,8 +21,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 from bigecyhmm.utils import parse_result_files
 
-from bigecyhmm import  PATHWAY_TEMPLATE_FILE, HYDROGEN_CONSUMPTION_FILE, TEMPLATE_CARBON_CYCLE, \
-    TEMPLATE_NITROGEN_CYCLE, TEMPLATE_SULFUR_CYCLE, TEMPLATE_OTHER_CYCLE, TEMPLATE_PHOSPHORUS_CYCLE, TEMPLATE_PHOSPHORUS_GENE_CYCLE
+from bigecyhmm import  PATHWAY_TEMPLATE_FILE, TEMPLATE_CARBON_CYCLE, TEMPLATE_NITROGEN_CYCLE, \
+    TEMPLATE_SULFUR_CYCLE, TEMPLATE_OTHER_CYCLE, TEMPLATE_PHOSPHORUS_CYCLE, TEMPLATE_PHOSPHORUS_GENE_CYCLE
 
 logger = logging.getLogger(__name__)
 
@@ -172,16 +172,6 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
         for pathway in all_pathways:
             csvwriter.writerow([pathway, *[org_pathways_hmms[org][pathway] for org in all_orgs]])
 
-    hydrogen_pathway_hmms, hydrogen_sorted_pathways = get_diagram_pathways_hmms(HYDROGEN_CONSUMPTION_FILE)
-    all_hydrogen_pathways, org_hydrogen_pathways, org_hydrogen_pathways_hmms = check_diagram_pathways(hydrogen_sorted_pathways, org_hmms, hydrogen_pathway_hmms)
-
-    all_hydrogen_orgs = list([org for org in org_hydrogen_pathways_hmms])
-    hydrogen_pathway_hmms_file = os.path.join(output_folder, 'pathway_hydrogen_hmms.tsv')
-    with open(hydrogen_pathway_hmms_file, 'w') as open_hydrogen_pathway_hmms_file:
-        csvwriter = csv.writer(open_hydrogen_pathway_hmms_file, delimiter='\t')
-        csvwriter.writerow(['pathway', *all_hydrogen_orgs])
-        for hydrogen_pathway in all_hydrogen_pathways:
-            csvwriter.writerow([hydrogen_pathway, *[org_hydrogen_pathways_hmms[org][hydrogen_pathway] for org in all_hydrogen_orgs]])
 
 def parse_diagram_folder(input_diagram_file):
     """Parse functions in Total.R_input.txt.
