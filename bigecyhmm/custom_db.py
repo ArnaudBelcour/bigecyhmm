@@ -23,13 +23,14 @@ import time
 import networkx as nx
 import matplotlib.pyplot as plt
 import pyhmmer
+import zipfile
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder
 from bigecyhmm.diagram_cycles import create_input_diagram
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 from multiprocessing import Pool
 from networkx.readwrite import json_graph
@@ -46,7 +47,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hmm_compress_database=HMM_COMPRESS_FILE,
+def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE,
                          hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None,
                          abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
@@ -55,7 +56,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
         input_variable (str): path to input file or folder
         custom_database_json (str): path to json file containing the custom database
         output_folder (str): path to output folder
-        hmm_compress_database (str): path to HMM compress database
+        hmm_compressed_database (str): path to HMM compress database
         hmm_template_file (str): path to HMM template file
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
@@ -79,15 +80,39 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
 
     pathway_template_file = os.path.join(output_folder, 'pathway_template_file.tsv')
     already_search_function = []
+    hmms_in_pathway_template = []
     with open(pathway_template_file, 'w') as open_pathway_template_file:
         csvwriter = csv.writer(open_pathway_template_file, delimiter='\t')
         csvwriter.writerow(['Pathways', 'HMMs'])
         for cycle in json_cycle_database['edges']:
             function_name = cycle['id']
             if function_name not in already_search_function:
-                function_hmms = cycle['hmm']
+                function_hmms = ', '.join([hmm for hmm in cycle['hmm'].split(', ') if hmm != ''])
                 csvwriter.writerow([function_name, function_hmms])
                 already_search_function.append(function_name)
+                if function_hmms != '':
+                    hmms_in_pathway_template.extend([hmm for hmm in function_hmms.split(', ')])
+
+    # Check that the same HMM profiles are present in compressed zip
+    with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
+        list_of_hmms = set([os.path.basename(hmm_filename) for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename])
+    # Check that the HMMs in the pathway template file are present in the compressed database.
+    hmms_in_pathway_template = set(hmms_in_pathway_template)
+    if not hmms_in_pathway_template.issubset(list_of_hmms):
+        not_found_hmms = hmms_in_pathway_template - list_of_hmms
+        logger.critical("  Some HMMs present in {0} are not present in the HMM compressed database {1}: {2}".format(custom_database_json, hmm_compressed_database, not_found_hmms))
+        sys.exit(1)
+    # Check that the HMMs in the threshold file are present in the compressed database.
+    hmm_in_threshold_file = set(hmm_thresholds.keys())
+    if not hmm_in_threshold_file.issubset(list_of_hmms):
+        not_found_hmms = hmm_in_threshold_file - list_of_hmms
+        logger.critical("  Some HMMs present in {0} are not present in the HMM compressed database {1}: {2}".format(hmm_template_file, hmm_compressed_database, not_found_hmms))
+        sys.exit(1)
+    # Check that the HMMs in the pathway template file are present in the threshold file.
+    if not hmms_in_pathway_template.issubset(hmm_in_threshold_file):
+        not_found_hmms = hmms_in_pathway_template - hmm_in_threshold_file
+        logger.critical("  Some HMMs present in {0} are not present in the HMM template file {1}: {2}".format(custom_database_json, hmm_template_file, not_found_hmms))
+        sys.exit(1)
 
     # Get motif and motif_pair dictionaries.
     if motif_json is not None:
@@ -121,7 +146,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
         input_file_path = input_dicts[input_filename]
-        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compress_database, motif_data, motif_pair_data])
+        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compressed_database, motif_data, motif_pair_data])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
 
@@ -279,7 +304,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number,
                                          'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
                                          'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
-    metadata_json['input_parameters']['custom_db'] = {'hmm_compress_database': hmm_compress_database, 'hmm_template_file': hmm_template_file,
+    metadata_json['input_parameters']['custom_db'] = {'hmm_compressed_database': hmm_compressed_database, 'hmm_template_file': hmm_template_file,
                                                       'json_database_file_path': custom_database_json}
 
     metadata_json['duration'] = duration
@@ -312,13 +337,13 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     for input_filename in input_dicts:
         logger.info("Launch HMM search on custom database {0}.".format(input_filename))
         custom_database_json = input_dicts[input_filename]
-        # Check the presence of custom HMM compress database.
-        custom_hmm_compress_database = custom_database_json.replace('.json', '.zip')
-        if os.path.exists(custom_hmm_compress_database):
-            logger.info("  -> Custom HMM compress database {0} exists, it will be used.".format(custom_hmm_compress_database))
+        # Check the presence of custom HMM compressed database.
+        custom_hmm_compressed_database = custom_database_json.replace('.json', '.zip')
+        if os.path.exists(custom_hmm_compressed_database):
+            logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
         else:
-            logger.info("  -> Custom HMM compress database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compress_database))
-            custom_hmm_compress_database = HMM_COMPRESS_FILE
+            logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
+            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
         # Check the presence of custom HMM template file.
         custom_hmm_template_file = custom_database_json.replace('.json', '.tsv')
         if os.path.exists(custom_hmm_template_file):
@@ -330,7 +355,7 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
         # Create specific output folder for custom database.
         output_folder_custom_db = os.path.join(output_folder, input_filename)
         is_valid_dir(output_folder_custom_db)
-        search_hmm_custom_db(input_variable, custom_database_json, output_folder_custom_db, custom_hmm_compress_database,
+        search_hmm_custom_db(input_variable, custom_database_json, output_folder_custom_db, custom_hmm_compressed_database,
                             custom_hmm_template_file, core_number=core_number, motif_json=motif_json, motif_pair_json=motif_pair_json,
                             abundance_file=abundance_file, metabolite_measure=metabolite_measure, esmecata_output_folder=esmecata_output_folder)
 

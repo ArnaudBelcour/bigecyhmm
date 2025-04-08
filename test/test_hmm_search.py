@@ -7,7 +7,7 @@ import pyhmmer
 import zipfile
 
 from bigecyhmm.hmm_search import search_hmm, check_motif_regex, check_motif_pair
-from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_COMPRESS_FILE
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_COMPRESSED_FILE
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
@@ -79,7 +79,7 @@ def test_check_motif_pair_pmoA():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == True
 
@@ -100,7 +100,7 @@ def test_check_motif_pair_pmoA_json():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[motif_pair_data[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == True
 
@@ -121,7 +121,7 @@ def test_check_motif_pair_pmoA_negative_amoA():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[motif_pair_data[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == False
 
@@ -138,7 +138,7 @@ def test_check_motif_pair_pmoA_negative_amoA_json():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == False
 
@@ -155,7 +155,7 @@ def test_check_motif_pair_amoA():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == True
 
@@ -172,7 +172,7 @@ def test_check_motif_pair_amoA_negative_pmoA():
     first_check_hmm = check_hmms[gene_name]
     second_check_hmm = check_hmms[MOTIF_PAIR[gene_name]]
 
-    with zipfile.ZipFile(HMM_COMPRESS_FILE, 'r') as zip_object:
+    with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
         check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
     assert check_bool == False
 

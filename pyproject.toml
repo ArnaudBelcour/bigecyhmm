@@ -23,6 +23,17 @@ bigecyhmm_custom = "bigecyhmm.custom_db:main"
 Homepage = "https://github.com/ArnaudBelcour/bigecyhmm"
 Changelog = "https://github.com/ArnaudBelcour/bigecyhmm/blob/main/CHANGELOG.md"
 
+[project.optional-dependencies]
+visualisation = ['pandas',
+  'plotly',
+  'kaleido',
+  'seaborn'
+]
+custom = ['networkx',
+  'matplotlib'
+]
+test = ['pytest']
+
 [tool.setuptools]
 packages = ['bigecyhmm', 'bigecyhmm.hmm_databases', 'bigecyhmm.templates']
 package-dir = {'bigecyhmm'= 'bigecyhmm', 'bigecyhmm.hmm_databases' = 'bigecyhmm/hmm_databases', 'bigecyhmm.templates' = 'bigecyhmm/templates'}

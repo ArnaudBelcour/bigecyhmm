@@ -29,7 +29,7 @@ from PIL import __version__ as pillow_version
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESS_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 logger = logging.getLogger(__name__)
 
@@ -113,14 +113,14 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
-def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
+def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
 
     Args:
         input_protein_fasta (str): path of protein fasta file
         hmm_thresholds (dict): threshold for each HMM
-        hmm_compress_database (str): path to HMM compress database
+        hmm_compressed_database (str): path to HMM compress database
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
 
@@ -135,7 +135,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compress_database=
 
     # Iterate on the HMM to query them. 
     results = []
-    with zipfile.ZipFile(hmm_compress_database, 'r') as zip_object:
+    with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
         list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
         check_hmms = {os.path.basename(hmm_filename).replace('.check.hmm', ''): hmm_filename
                       for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
@@ -263,19 +263,19 @@ def create_phenotypes(hmm_output_folder, output_file):
             csvwriter.writerow([function, *present_functions])
 
 
-def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compress_database=HMM_COMPRESS_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
+def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
     Args:
         input_file_path (str): path of protein fasta file
         output_file (str): output tsv file containing HMM search hits
         hmm_thresholds (dict): threshold for each HMM
-        hmm_compress_database (str): path to HMM compress database
+        hmm_compressed_database (str): path to HMM compress database
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
     """
     logger.info('Search for HMMs on ' + input_file_path)
-    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compress_database, motif_db, motif_pair_db)
+    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db)
     write_results(hmm_results, output_file)
 
 
