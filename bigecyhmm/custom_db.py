@@ -28,7 +28,8 @@ from bigecyhmm.diagram_cycles import create_input_diagram
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
+                    CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK
 
 from multiprocessing import Pool
 
@@ -99,11 +100,11 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
             if node['type'] == 'Function':
                 function_name = node['id']
                 if function_name not in already_search_function:
-                    function_hmms = ', '.join([hmm for hmm in node['hmm'].split(', ') if hmm != ''])
+                    function_hmms = node['hmm']
                     csvwriter.writerow([function_name, function_hmms])
                     already_search_function.append(function_name)
                     if function_hmms != '':
-                        hmms_in_pathway_template.extend([hmm for hmm in function_hmms.split(', ')])
+                        hmms_in_pathway_template.extend([hmm.replace('NO|', '') for hmms in function_hmms.split(', ') for hmm in hmms.split('; ')])
 
     # Check that the same HMM profiles are present in compressed zip
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
@@ -330,6 +331,27 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     start_time = time.time()
 
     # Search for json files in input custom database.
+    if custom_database_folder == 'internal_carbon':
+        custom_database_folder = CUSTOM_CARBON_CYCLE_NETWORK
+    if custom_database_folder == 'internal_sulfur':
+        custom_database_folder = CUSTOM_SULFUR_CYCLE_NETWORK
+    if custom_database_folder == 'internal_nitrogen':
+        custom_database_folder = CUSTOM_NITROGEN_CYCLE_NETWORK
+    if custom_database_folder == 'internal_phosphorus':
+        custom_database_folder = CUSTOM_PHOSPHORUS_CYCLE_NETWORK
+    if custom_database_folder == 'internal_all':
+        all_json_network = [CUSTOM_CARBON_CYCLE_NETWORK, CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK]
+        all_json_dict = {'directed': True, 'multigraph': False, 'graph': {'node_default': {}, 'edge_default': {}}, 'nodes': [], 'edges': []}
+        internal_all_json_file = os.path.join(output_folder, 'internal_all.json')
+        for json_network_file in all_json_network:
+            with open(json_network_file) as open_json_network_file:
+                json_cycle_database = json.load(open_json_network_file)
+                all_json_dict['nodes'].extend(json_cycle_database['nodes'])
+                all_json_dict['edges'].extend(json_cycle_database['edges'])
+        with open(internal_all_json_file, 'w') as ouput_file:
+            json.dump(all_json_dict, ouput_file, indent=4)
+        custom_database_folder = internal_all_json_file
+
     json_extensions = ['.json']
     input_dicts = file_or_folder(custom_database_folder, json_extensions)
     for input_filename in input_dicts:
