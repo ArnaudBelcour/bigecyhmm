@@ -20,8 +20,6 @@ import os
 import csv
 import sys
 import time
-import networkx as nx
-import matplotlib.pyplot as plt
 import pyhmmer
 import zipfile
 
@@ -33,8 +31,6 @@ from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 from multiprocessing import Pool
-from networkx.readwrite import json_graph
-from matplotlib import __version__ as matplotlib_version
 
 MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
@@ -45,6 +41,20 @@ Requires pyhmmer, networkx, matplotlib.
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
+
+try:
+    import networkx as nx
+    from networkx.readwrite import json_graph
+except:
+    logger.critical('networkx not installed, bigecyhmm_custom requires networkx installed: pip install networkx matplotlib')
+    sys.exit(1)
+
+try:
+    import matplotlib.pyplot as plt
+    from matplotlib import __version__ as matplotlib_version
+except:
+    logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib')
+    sys.exit(1)
 
 
 def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE,
@@ -71,6 +81,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
+    # Extract thresholds from HMM template file.
     hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
     # Get pathway cycle data from custom database.
@@ -84,14 +95,15 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     with open(pathway_template_file, 'w') as open_pathway_template_file:
         csvwriter = csv.writer(open_pathway_template_file, delimiter='\t')
         csvwriter.writerow(['Pathways', 'HMMs'])
-        for cycle in json_cycle_database['edges']:
-            function_name = cycle['id']
-            if function_name not in already_search_function:
-                function_hmms = ', '.join([hmm for hmm in cycle['hmm'].split(', ') if hmm != ''])
-                csvwriter.writerow([function_name, function_hmms])
-                already_search_function.append(function_name)
-                if function_hmms != '':
-                    hmms_in_pathway_template.extend([hmm for hmm in function_hmms.split(', ')])
+        for node in json_cycle_database['nodes']:
+            if node['type'] == 'Function':
+                function_name = node['id']
+                if function_name not in already_search_function:
+                    function_hmms = ', '.join([hmm for hmm in node['hmm'].split(', ') if hmm != ''])
+                    csvwriter.writerow([function_name, function_hmms])
+                    already_search_function.append(function_name)
+                    if function_hmms != '':
+                        hmms_in_pathway_template.extend([hmm for hmm in function_hmms.split(', ')])
 
     # Check that the same HMM profiles are present in compressed zip
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
@@ -160,7 +172,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
 
-    cycle_network = json_graph.node_link_graph(json_cycle_database, edges='edges')
+    bipartite_cycle_network = json_graph.node_link_graph(json_cycle_database, edges='edges')
 
     pathway_data = {}
     total_file = os.path.join(output_folder, 'Total.R_input.txt')
@@ -175,8 +187,10 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     # Initiate a bipartite network when giving abundance or measure files.
     if abundance_file is not None or metabolite_measure is not None:
         abundance_cycle_network = nx.DiGraph()
-        bipartite_edge_abundances = []
-        all_pathway_abundances = []
+        nodes_data = [(node, bipartite_cycle_network.nodes[node]) for node in bipartite_cycle_network.nodes]
+        abundance_cycle_network.add_nodes_from(nodes_data)
+        for edge in bipartite_cycle_network.edges:
+            abundance_cycle_network.add_edges_from([edge], **bipartite_cycle_network.edges[edge])
 
     # Read abundance data and create a network with nodes associated with the abundance.
     if abundance_file is not None:
@@ -193,7 +207,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                 if function_name not in pathway_abundance:
                     pathway_abundance[function_name] = {}
                 if function_name not in abundance_cycle_network.nodes:
-                    abundance_cycle_network.add_node(function_name, type='function')
+                    abundance_cycle_network.add_node(function_name, type='Function')
                 for sample in sample_abundance:
                     # If esmecata output are given, translate tax_id into organism names.
                     if esmecata_output_folder is not None:
@@ -218,51 +232,35 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
             for data in pathway_abundance_data:
                 csvwriter.writerow(data)
 
-    pathway_names = {}
-    bipartite_edges = []
+    # Represent network as a bipartie graph with occurrence if functions.
+    bipartite_graph = nx.DiGraph()
+
+    mapped_new_node_ids = {}
     all_pathways = []
-    for pathway in json_cycle_database['edges']:
-        function_name = pathway['id']
-        source = pathway['source']
-        target = pathway['target']
-        pathway_names[(source, target)] = function_name
-        function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
-        bipartite_edges.append((source, function_name_weighted))
-        bipartite_edges.append((function_name_weighted, target))
-        all_pathways.append(function_name_weighted)
-        if abundance_file is not None or metabolite_measure is not None:
-            bipartite_edge_abundances.append((source, function_name))
-            bipartite_edge_abundances.append((function_name, target))
-            all_pathway_abundances.append(function_name)
-        cycle_network[source][target]['weight'] = pathway_data[function_name][1]
+    for node in json_cycle_database['nodes']:
+        if node['type'] == 'Function':
+            function_name = node['id']
+            function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
+            node_data = {node_d: node[node_d] for node_d in node if node_d != 'id'}
+            bipartite_graph.add_node(function_name_weighted, **node_data)
+            mapped_new_node_ids[function_name] = function_name_weighted
+            all_pathways.append(function_name_weighted)
+        else:
+            bipartite_graph.add_node(node['id'], **node)
+
+    for edge in json_cycle_database['edges']:
+        source = edge['source']
+        target = edge['target']
+        if source in mapped_new_node_ids:
+            function_name = source
+            source = mapped_new_node_ids[source]
+        if target in mapped_new_node_ids:
+            function_name = target
+            target = mapped_new_node_ids[target]
+        bipartite_graph.add_edge(source, target, weight=pathway_data[function_name][1])
 
     logger.info("  -> Generate network files.")
-    # (1) Represent network as a graph.
-    fig, axes = plt.subplots(figsize=(40,20))
-    pos = nx.circular_layout(cycle_network)
 
-    # Get edge weight and name:
-    edge_labels=dict([((u,v,),pathway_names[u,v] + '\nCoverage:' + d['weight']) for u,v,d in cycle_network.edges(data=True)])
-    nx.draw_networkx_edge_labels(cycle_network, pos, edge_labels=edge_labels, font_size=20)
-    # Get node names:
-    labels = {node: node for node in cycle_network.nodes}
-    nx.draw_networkx_labels(cycle_network, pos, labels, font_size=20)
-    nx.draw(cycle_network, pos, node_size=1000, arrowsize=20)
-    network_output_file = os.path.join(output_folder, 'cycle_diagram.png')
-    plt.savefig(network_output_file)
-
-    network_json_output_file = os.path.join(output_folder, 'cycle_diagram.json')
-    with open(network_json_output_file, 'w') as open_network_json_output_file:
-        json.dump(json_graph.node_link_data(cycle_network, edges='edges'), open_network_json_output_file, indent=4)
-
-    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram.graphml')
-    nx.write_graphml(cycle_network, network_graphml_output_file)
-
-    # (2) Represent network as a bipartie graph with occurrence if functions.
-    bipartite_graph = nx.DiGraph()
-    bipartite_graph.add_nodes_from(cycle_network.nodes, type='metabolite')
-    bipartite_graph.add_nodes_from(all_pathways, type='function')
-    bipartite_graph.add_edges_from(bipartite_edges)
     network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.graphml')
     nx.write_graphml(bipartite_graph, network_graphml_output_file)
 
@@ -272,11 +270,9 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     labels = {node: node for node in bipartite_graph.nodes}
     nx.draw_networkx_labels(bipartite_graph, pos, labels, font_size=20)
     nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
-    network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite.png')
+    network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.png')
     plt.savefig(network_output_file)
 
-    if abundance_file is not None or metabolite_measure is not None:
-        abundance_cycle_network.add_nodes_from(cycle_network.nodes, type='metabolite')
     if metabolite_measure is not None:
         # Add sample metabolite measurements to node.
         if metabolite_measure is not None:
@@ -289,7 +285,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                             abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
 
     if abundance_file is not None or metabolite_measure is not None:
-        abundance_cycle_network.add_edges_from(bipartite_edge_abundances)
+        abundance_cycle_network.add_edges_from(bipartite_cycle_network.edges)
         network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
         nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
 

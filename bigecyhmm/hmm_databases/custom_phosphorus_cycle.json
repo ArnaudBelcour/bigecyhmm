@@ -4,17 +4,31 @@
         "node_default": {},
         "edge_default": {}
     },
-    "nodes": [{"size": 10, "id": "Inorganic phosphorus"},
-    {"size": 10, "id": "Organic phosphorus"},
-    {"size": 10, "id": "Insoluble phosphorus"},
-    {"size": 10, "id": "Rock"}
+    "nodes": [{"size": 10, "id": "Inorganic phosphorus", "type": "Metabolite"},
+    {"size": 10, "id": "Organic phosphorus", "type": "Metabolite"},
+    {"size": 10, "id": "Insoluble phosphorus", "type": "Metabolite"},
+    {"size": 10, "id": "Rock", "type": "Metabolite"},
+    {"size": 10, "id": "Immobilisation (P-rich)", "type": "Function", "hmm": "NF033774.1.hmm"},
+    {"size": 10, "id": "Immobilisation (P-poor)", "type": "Function", "hmm": "K02040.hmm"},
+    {"size": 10, "id": "Mineralisation", "type": "Function", "hmm": "K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm, K01093.hmm, K01083.hmm, K02044.hmm, K06163.hmm, TIGR03276.1.hmm, TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR02335.1.hmm, TIGR02318.1.hmm, TIGR02326.1.hmm, K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm"},
+    {"size": 10, "id": "Precipitation", "type": "Function", "hmm": ""},
+    {"size": 10, "id": "Dissolution", "type": "Function", "hmm": "K01507.hmm, K01514.hmm, K00937.hmm, K00117.hmm, K06137.hmm"},
+    {"size": 10, "id": "Weathering", "type": "Function", "hmm": ""},
+    {"size": 10, "id": "Geological uplift", "type": "Function", "hmm": ""}
     ],
-    "edges": [{"id": "Immobilisation (P-rich)", "width": 1, "source": "Inorganic phosphorus", "target": "Organic phosphorus", "hmm": "NF033774.1.hmm"},
-    {"id": "Immobilisation (P-poor)", "width": 1, "source": "Inorganic phosphorus", "target": "Organic phosphorus", "hmm": "K02040.hmm"},
-    {"id": "Mineralisation", "width": 1, "source": "Organic phosphorus", "target": "Inorganic phosphorus", "hmm": "K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm, K01093.hmm, K01083.hmm, K02044.hmm, K06163.hmm, TIGR03276.1.hmm, TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR02335.1.hmm, TIGR02318.1.hmm, TIGR02326.1.hmm, K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm"},
-    {"id": "Precipitation", "width": 1, "source": "Inorganic phosphorus", "target": "Insoluble phosphorus", "hmm": ""},
-    {"id": "Dissolution", "width": 1, "source": "Insoluble phosphorus", "target": "Inorganic phosphorus", "hmm": "K01507.hmm, K01514.hmm, K00937.hmm, K00117.hmm, K06137.hmm"},
-    {"id": "Weathering", "width": 1, "source": "Rock", "target": "Inorganic phosphorus", "hmm": ""},
-    {"id": "Geological uplift", "width": 1, "source": "Inorganic phosphorus", "target": "Rock", "hmm": ""}
+    "edges": [{"id": "Immobilisation (P-rich)", "width": 1, "source": "Inorganic phosphorus", "target": "Immobilisation (P-rich)"},
+    {"id": "Immobilisation (P-rich)", "width": 1, "source": "Immobilisation (P-rich)", "target": "Organic phosphorus"},
+    {"id": "Immobilisation (P-poor)", "width": 1, "source": "Inorganic phosphorus", "target": "Immobilisation (P-poor)"},
+    {"id": "Immobilisation (P-poor)", "width": 1, "source": "Immobilisation (P-poor)", "target": "Organic phosphorus"},
+    {"id": "Mineralisation", "width": 1, "source": "Organic phosphorus", "target": "Mineralisation"},
+    {"id": "Mineralisation", "width": 1, "source": "Mineralisation", "target": "Inorganic phosphorus"},
+    {"id": "Precipitation", "width": 1, "source": "Inorganic phosphorus", "target": "Precipitation"},
+    {"id": "Precipitation", "width": 1, "source": "Precipitation", "target": "Insoluble phosphorus"},
+    {"id": "Dissolution", "width": 1, "source": "Insoluble phosphorus", "target": "Dissolution"},
+    {"id": "Dissolution", "width": 1, "source": "Dissolution", "target": "Inorganic phosphorus"},
+    {"id": "Weathering", "width": 1, "source": "Rock", "target": "Weathering"},
+    {"id": "Weathering", "width": 1, "source": "Weathering", "target": "Inorganic phosphorus"},
+    {"id": "Geological uplift", "width": 1, "source": "Inorganic phosphorus", "target": "Geological uplift"},
+    {"id": "Geological uplift", "width": 1, "source": "Geological uplift", "target": "Rock"}
     ]
 }
