@@ -29,7 +29,8 @@ from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, c
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
-                    CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK
+                    CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, \
+                    CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK
 
 from multiprocessing import Pool
 
@@ -339,6 +340,8 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
         custom_database_folder = CUSTOM_NITROGEN_CYCLE_NETWORK
     if custom_database_folder == 'internal_phosphorus':
         custom_database_folder = CUSTOM_PHOSPHORUS_CYCLE_NETWORK
+    if custom_database_folder == 'internal_hydrogenotrophic':
+        custom_database_folder = CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK
     if custom_database_folder == 'internal_all':
         all_json_network = [CUSTOM_CARBON_CYCLE_NETWORK, CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK]
         all_json_dict = {'directed': True, 'multigraph': False, 'graph': {'node_default': {}, 'edge_default': {}}, 'nodes': [], 'edges': []}
