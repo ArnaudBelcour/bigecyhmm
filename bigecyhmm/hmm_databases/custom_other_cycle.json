@@ -1,0 +1,35 @@
+{"directed": true,
+    "multigraph": false,
+    "graph": {
+        "node_default": {},
+        "edge_default": {}
+    },
+    "nodes": [{"size": 10, "id": "Ferric iron (Fe3+)", "type": "Metabolite"},
+    {"size": 10, "id": "Ferrous iron (Fe2+)", "type": "Metabolite"},
+    {"size": 10, "id": "As5+", "type": "Metabolite"},
+    {"size": 10, "id": "As3+", "type": "Metabolite"},
+    {"size": 10, "id": "SeO4(2-)", "type": "Metabolite"},
+    {"size": 10, "id": "Se(0)", "type": "Metabolite"},
+    {"size": 10, "id": "O2", "type": "Metabolite"},
+    {"size": 10, "id": "H2O", "type": "Metabolite"},
+    {"size": 10, "id": "Iron reduction", "type": "Function", "hmm": "MtrA.hmm, MtrB_TIGR03509.hmm, MtrC_TIGR03507.hmm, CymA.hmm, OmcF.hmm, OmcS.hmm, OmcZ.hmm, Ndh2.hmm, DFE_0450.hmm, DFE_0464.hmm"},
+    {"size": 10, "id": "Iron oxidation", "type": "Function", "hmm": "Cyc1.hmm, Cyc2_repCluster1.hmm, Cyc2_repCluster2.hmm, Cyc2_repCluster3.hmm, FoxA.hmm, FoxB.hmm, FoxC.hmm, FoxE.hmm, FoxY.hmm, FoxZ.hmm, MtoA.hmm, sulfocyanin.hmm"},
+    {"size": 10, "id": "Arsenate reduction", "type": "Function", "hmm": "arrA.hmm"},
+    {"size": 10, "id": "Arsenite oxidation", "type": "Function", "hmm": "arxA.hmm, aioA.hmm"},
+    {"size": 10, "id": "Selenate reduction", "type": "Function", "hmm": "TIGR03312.hmm, TIGR03313.hmm, TIGR03315.hmm"},
+    {"size": 10, "id": "Aerobic respiration", "type": "Function", "hmm": "TIGR02882.hmm, TIGR01432.hmm, TIGR00203.hmm, PF01654.hmm, K02299.hmm, K02298.hmm, TIGR02847.hmm, TIGR01433.hmm, TIGR00782.hmm, TIGR00781.hmm, TIGR00780.hmm, TIGR02866.hmm, TIGR02891.hmm"}
+    ],
+    "edges": [{"id": "Iron reduction", "width": 1, "source": "Ferric iron (Fe3+)", "target": "Iron reduction"},
+    {"id": "Iron reduction", "width": 1, "source": "Iron reduction", "target": "Ferrous iron (Fe2+)"},
+    {"id": "Iron oxidation", "width": 1, "source": "Ferrous iron (Fe2+)", "target": "Iron oxidation"},
+    {"id": "Iron oxidation", "width": 1, "source": "Iron oxidation", "target": "Ferric iron (Fe3+)"},
+    {"id": "Arsenate reduction", "width": 1, "source": "As5+", "target": "Arsenate reduction"},
+    {"id": "Arsenate reduction", "width": 1, "source": "Arsenate reduction", "target": "As3+"},
+    {"id": "Arsenite oxidation", "width": 1, "source": "As3+", "target": "Arsenite oxidation"},
+    {"id": "Arsenite oxidation", "width": 1, "source": "Arsenite oxidation", "target": "As5+"},
+    {"id": "Selenate reduction", "width": 1, "source": "SeO4(2-)", "target": "Selenate reduction"},
+    {"id": "Selenate reduction", "width": 1, "source": "Selenate reduction", "target": "Se(0)"},
+    {"id": "Aerobic respiration", "width": 1, "source": "O2", "target": "Aerobic respiration"},
+    {"id": "Aerobic respiration", "width": 1, "source": "Aerobic respiration", "target": "H2O"}
+    ]
+}

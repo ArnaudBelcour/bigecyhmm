@@ -32,6 +32,7 @@ CUSTOM_CARBON_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_carbon
 CUSTOM_SULFUR_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_sulfur_cycle.json')
 CUSTOM_NITROGEN_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_nitrogen_cycle.json')
 CUSTOM_PHOSPHORUS_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_phosphorus_cycle.json')
+CUSTOM_OTHER_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_other_cycle.json')
 CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'hydrogenotrophic_salt_caverns.json')
 
 # Motif validation using regex search in sequence.
