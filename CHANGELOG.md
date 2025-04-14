@@ -10,18 +10,19 @@
 * HMMs for phosphorus cycle from [https://doi.org/10.1016/j.soilbio.2022.108826](https://doi.org/10.1016/j.soilbio.2022.108826): `phoA`, `phoD`, `phoX`, `phoN`, `aphA`, `olpA`, `appA`, `phnG`, `phnH`, `phnI`, `phnK`, `phnL`, `ppa`, `ppx`, `ppk1`, `gcd`, `pqqC`, `phoB`, `phoR`, `phoU`.
 * HMMs for carbonic anhydrase: `K01672`, `K01673`, `K01674`, `K01743`, `K01726`, `K18245` and `K18246`.
 * HMM for Thiosuflate oxidation second path (S4intermediate): `tsdA`.
-* Creation of barplot showing the coverage of EsMeCaTa on each sample of a dataset.
+* Creation of barplot showing the coverage of EsMeCaTa on each sample of a dataset when using `bigecyhmm_visualisation` with abundance file.
 * Test for computing abundance of taxonomic rank (used to create the barplot showing the coverage of EsMeCaTa predicitons on the samples).
 * `Aerobic respiration` with Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
 * Creation of HMM functional profile showing the abundance of each HMM in the sample of the dataset.
 * Motif validation step from METABOLIC.
-* Prototype to use custom biogeochemical diagram and HMM databases with `bigecyhmm_custom`.
-* Add examples of custom json database files in internal databases: `custom_carbon_cycle.json`, `custom_phosphorus_cycle.json`, `custom_sulfur_cycle.json` and `custom_nitrogen_cycle.json`.
-* Update readme according to the additions/changes.
+* Prototype to use custom biogeochemical diagram (or metabolic network) and HMM databases with `bigecyhmm_custom`.
+* Add examples of custom json database files in internal databases: `custom_carbon_cycle.json`, `custom_phosphorus_cycle.json`, `custom_sulfur_cycle.json`, `custom_other_cycle.json` and `custom_nitrogen_cycle.json`.
+* Add `create_html_visualisation_pyvis.py` in scripts folder to test visualisation with `bigecyhmm_custom`.
 
 ## Modify
 
 * Move global variables in `__init__.py`.
+* Update readme according to the additions/changes.
 
 ## Fix
 
