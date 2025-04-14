@@ -326,8 +326,8 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
         abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
-        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
-        esmecata_output_folder (str): path to esmecata output folder.
+        metabolite_measure (str): path to metabolite measure file indicating the abundance of metabolites in samples
+        esmecata_output_folder (str): path to esmecata output folder
     """
     start_time = time.time()
 

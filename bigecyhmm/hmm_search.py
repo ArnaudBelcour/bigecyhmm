@@ -29,7 +29,7 @@ from PIL import __version__ as pillow_version
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PHENOTYPE_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 logger = logging.getLogger(__name__)
 
@@ -233,36 +233,6 @@ def create_major_functions(hmm_output_folder, output_file, hmm_template_file=HMM
             csvwriter.writerow([function, *present_functions])
 
 
-def create_phenotypes(hmm_output_folder, output_file):
-    """Map hit HMMs with list of phenotypes to create a tsv file showing these results.
-
-    Args:
-        hmm_output_folder (str): path to HMM search results folder (one tsv file per organism)
-        output_file (str): path to the output tsv file
-    """
-    with open(PHENOTYPE_TEMPLATE_FILE, 'r') as open_hmm_template:
-        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
-
-        hmm_functions = {}
-        for line in csvreader:
-            for hmm_file in line['HMMs'].split(', '):
-                function_name = line['Phenotypes']
-                if function_name not in hmm_functions:
-                    hmm_functions[function_name] = [hmm_file]
-                else:
-                    hmm_functions[function_name].append(hmm_file)
-
-    hmm_list_functions = [function for function in hmm_functions]
-    hmm_hits = parse_result_files(hmm_output_folder)
-    org_list = [org for org in hmm_hits]
-    with open(output_file, 'w') as open_output_file:
-        csvwriter = csv.writer(open_output_file, delimiter='\t')
-        csvwriter.writerow(['function', *org_list])
-        for function in hmm_list_functions:
-            present_functions = [len(set(hmm_functions[function]).intersection(set(hmm_hits[org])))/len(set(hmm_functions[function])) if len(set(hmm_functions[function]).intersection(set(hmm_hits[org]))) > 0 else 'NA' for org in org_list]
-            csvwriter.writerow([function, *present_functions])
-
-
 def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
@@ -290,6 +260,9 @@ def search_hmm(input_variable, output_folder, core_number=1):
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
 
+    logger.info('HMM compressed file: ' + HMM_COMPRESSED_FILE)
+    logger.info('HMM tempalte file : ' + HMM_TEMPLATE_FILE)
+
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
@@ -310,8 +283,6 @@ def search_hmm(input_variable, output_folder, core_number=1):
 
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
     create_major_functions(hmm_output_folder, function_matrix_file)
-    function_matrix_file = os.path.join(output_folder, 'phenotypes_presence.tsv')
-    create_phenotypes(hmm_output_folder, function_matrix_file)
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder)

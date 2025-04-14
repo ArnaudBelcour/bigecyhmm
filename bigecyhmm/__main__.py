@@ -22,9 +22,15 @@ import time
 from bigecyhmm import __version__ as VERSION
 from bigecyhmm.utils import is_valid_dir
 from bigecyhmm.hmm_search import search_hmm
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
 
-MESSAGE = '''
+MESSAGE = f'''
 Predict biogeochemical cycles from protein fasta file.
+
+Internal database path:
+HMM compressed database: {HMM_COMPRESSED_FILE}, 
+HHM template file: {HMM_TEMPLATE_FILE}, 
+Pathway/cycle file: {PATHWAY_TEMPLATE_FILE}.
 '''
 REQUIRES = '''
 Requires: pyhmmer and Pillow.
@@ -44,7 +50,7 @@ def main():
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s ' + VERSION + '\n')
+        version='%(prog)s ' + VERSION)
 
     parser.add_argument(
         '-i',

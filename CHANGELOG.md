@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.1.6 (2025-04-07)
+# bigecyhmm v0.1.6 (2025-04-14)
 
 ## Add
 
@@ -8,7 +8,8 @@
 * Template figure for phosphorous cycles (from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
 * Three test HMMs (`HtxB`, `HtxA` and `ptxB` created from [https://doi.org/10.1038/s41467-024-47914-0](https://doi.org/10.1038/s41467-024-47914-0)).
 * HMMs for phosphorus cycle from [https://doi.org/10.1016/j.soilbio.2022.108826](https://doi.org/10.1016/j.soilbio.2022.108826): `phoA`, `phoD`, `phoX`, `phoN`, `aphA`, `olpA`, `appA`, `phnG`, `phnH`, `phnI`, `phnK`, `phnL`, `ppa`, `ppx`, `ppk1`, `gcd`, `pqqC`, `phoB`, `phoR`, `phoU`.
-* HMM for carbonic anhydrase: `CA`.
+* HMMs for carbonic anhydrase: `K01672`, `K01673`, `K01674`, `K01743`, `K01726`, `K18245` and `K18246`.
+* HMM for Thiosuflate oxidation second path (S4intermediate): `tsdA`.
 * Creation of barplot showing the coverage of EsMeCaTa on each sample of a dataset.
 * Test for computing abundance of taxonomic rank (used to create the barplot showing the coverage of EsMeCaTa predicitons on the samples).
 * `Aerobic respiration` with Cytochrome c oxidase in other cycle to highlight aerobic taxa. Update associated template.
@@ -20,12 +21,16 @@
 
 ## Modify
 
-* Move global variabiles in `__init__.py`.
+* Move global variables in `__init__.py`.
 
 ## Fix
 
 * Fix issue of function with zero abundance/occurrence not present in output files.
 * Fix several issues with threshold not being applied correctly.
+
+## Modify
+
+* Remove several internal files as they were deprecated or not used anymore.
 
 # bigecyhmm v0.1.5 (2025-01-29)
 

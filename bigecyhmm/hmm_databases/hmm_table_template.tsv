@@ -63,7 +63,13 @@
 59	C1 metabolism	Aerobic CO oxidation	coxS	aerobic carbon-monoxide dehydrogenase small subunit	K03518.hmm	K03518	CO + a quinone + H2O = CO2 + a quinol [RN:R11168]	CO; quinone; H2O	CO2; quinol	242.00|domain	
 60	C1 metabolism	Aerobic CO oxidation	coxM	aerobic carbon-monoxide dehydrogenase medium subunit	K03519.hmm	K03519	CO + a quinone + H2O = CO2 + a quinol [RN:R11168]	CO; quinone; H2O	CO2; quinol	272.50|domain	
 61	C1 metabolism	Aerobic CO oxidation	coxL	aerobic carbon-monoxide dehydrogenase large subunit	K03520.hmm	K03520	CO + a quinone + H2O = CO2 + a quinol [RN:R11168]	CO; quinone; H2O	CO2; quinol	846.90|full	
-	C1 metabolism	Anaplerotic pathway in TCA cycle	CA	carbonic anhydrase	K01672.hmm	K01672				319.77|domain	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	CA	alpha carbonic anhydrase	K01672.hmm	K01672				319.77|domain	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cynT	beta carbonic anhydrase	K01673.hmm	K01673				19.53|domain	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cah	alpha carbonic anhydrase	K01674.hmm	K01674				234.13|domain	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cah	gamma carbonic anhydrase	K01743.hmm	K01743				255.20|full	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cah	gamma-carbonic anhydrase	K01726.hmm	K01726				178.97|full	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cah	alpha carbonic anhydrase 2	K18245.hmm	K18245				420.57|domain	
+	C1 metabolism	Anaplerotic pathway in TCA cycle	cah	alpha carbonic anhydrase 4	K18246.hmm	K18246				378.73|full	
 62	Methane metabolism	Methane oxidation - Partculate methane monooxygenase	pmoA	methane/ammonia monooxygenase subunit A	pmoA.hmm	K10944	methane + quinol + O2 = methanol + quinone + H2O [RN:R09518]	methane; quinol; O2	methanol; quinone; H2O	160.90|full	
 	Methane metabolism	Methane oxidation - methane monooxygenase	CH4_NH3mon_ox_A	methane/ammonia monooxygenase subunit A	TIGR03080.hmm	TIGR03080	methane + quinol + O2 = methanol + quinone + H2O [RN:R09518]	methane; quinol; O2	methanol; quinone; H2O	318.1|full	
 63	Methane metabolism	Methane oxidation - Partculate methane monooxygenase	pmoB	methane/ammonia monooxygenase subunit B	pmoB.hmm	K10945	methane + quinol + O2 = methanol + quinone + H2O [RN:R09518]	methane; quinol; O2	methanol; quinone; H2O	156.70|full	
