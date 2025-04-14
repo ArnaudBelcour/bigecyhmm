@@ -2,7 +2,7 @@
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
-Bigecyhmm is a Python package to search for genes associated with biogeochemical cycles in protein sequence fasta files. It begins as a lightweighted reimplementation of a subtask performed in [METABOLIC](https://github.com/AnantharamanLab/METABOLIC) but has grown since. Bigecyhmm default behaviour searches for enzymes associated with carbon, sulfur, nitrogen and phosphorus cycles using HMMs from METABOLIC article, KEGG, PFAM, TIGR. It can be also used with a custom database and then will output network representation of the cycle.
+Bigecyhmm is a Python package to search for genes associated with biogeochemical cycles in protein sequence fasta files. It begins as a self-contained, lightweight reimplementation of a subtask performed in [METABOLIC](https://github.com/AnantharamanLab/METABOLIC) but has since grown. Bigecyhmm default behaviour searches for enzymes associated with carbon, sulfur, nitrogen and phosphorus cycles using HMMs from METABOLIC article, KEGG, PFAM, TIGR. It can be also used with a custom database and then will output network representation of the cycle.
 
 ## 0 Table of contents
 - [bigecyhmm: Biogeochemical cycle HMMs search](#bigecyhmm-biogeochemical-cycle-hmms-search)
@@ -198,15 +198,15 @@ output_folder
 
 ### 5.1 Contribution to bigecyhmm internal database
 
-If you are interested in specific functions associated with cycles present in bigecyhmm (carbon, sulfur, nitrogen, phosphorus) and want to propose an addition, you cna create an issue or a Pull Request.
-I will see if it is possible to add it. Keep in mind that I try to limite the size of the HMM database so I prefer to avoid adding too many HMM profiles.
-If you want to completly add another cycle, please refer to the next subsection.
+If you are interested in specific functions associated with cycles present in bigecyhmm (carbon, sulfur, nitrogen, phosphorus) and want to propose an addition, you can create an issue or a Pull Request.
+Depending on the additions or modifications, it will be taken into account. Keep in mind that bigecyhmm's goal is to limit itself to a small internal database.
+If you want to completely add another cycle, please refer to the next subsection.
 
 ### 5.2 `bigecyhmm_custom`: using custom database
 
 **Warning**: This is a prototype.
 
-It is possible to use a completly custom database associated with a specific biogeochemical cycles using `bigecyhmm_custom`.
+It is possible to create a completely custom database that is linked to a specific biogeochemical cycles (or metabolic networks) using `bigecyhmm_custom`.
 
 #### 5.2.1 Requirements
 
@@ -221,9 +221,9 @@ This command requires three packages:
 This command line expects two arguments:
 
 - `-i`: an input protein sequence fasta file/folder.
-- `-d`: a file/folder containing the custom databases, `bigecyhmm_custom` will iterate other the file/folder to search for every `.json` files. If it finds one, it will search for associated `.tsv` and `.zip` (files with the same name and at the same location but with either a tsv or zip extension). The three expected files are listed below:
+- `-d`: a file/folder containing the custom databases. `bigecyhmm_custom` will iterate other the file/folder to search for every `.json` files. If it finds one, it will search for associated `.tsv` and `.zip` (files with the same name and at the same location but with either a tsv or zip extension). The three expected files are listed below:
   - a `json` file representing the biogeochemical cycle as a bipartite graph with nodes representing `metabolite` and `function`. Example can be found in the test folder, such as [carbon cycle json file](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/custom_db/carbon_cycle.json). Please note the presence of the `hmm` field of the `function node` in the json indicating the HMMs associated with the functions of the cycle. The HMMs are shown as a string with `, ` separating HMMs as a `OR` relation (meaning these HMMs are redundant) and `; ` as a `AND` relation (meaning that both HMMs are required).
-  - a `zip` file containing the HMM profiles (`.hmm` files) such as the one used by bigecyhmm ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_files.zip)). If no file is present in the folder, bigecyhmm will use its internal HMM database. You can search for HMM in [KEGG Ortholog database](https://www.genome.jp/kegg/ko.html), [Protein Family Models from NIH](https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/), [PFAM](https://www.ebi.ac.uk/interpro/download/Pfam/). It is also possible to build them with [pyhmmer](https://pyhmmer.readthedocs.io/en/stable/examples/msa_to_hmm.html#Build-an-HMM-from-a-multiple-sequence-alignment).
+  - a `zip` file containing the HMM profiles (`.hmm` files) such as the one used by bigecyhmm ([hmm_files.zip](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_files.zip)). If no file is present in the folder, bigecyhmm will use its internal HMM database. You can search for HMM in [KEGG Ortholog database](https://www.genome.jp/kegg/ko.html), [Protein Family Models from NIH](https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/), [PFAM](https://www.ebi.ac.uk/interpro/download/Pfam/) or [EggNOG](http://eggnog5.embl.de/#/app/home). It is also possible to build them, an example can be found with [pyhmmer](https://pyhmmer.readthedocs.io/en/stable/examples/msa_to_hmm.html#Build-an-HMM-from-a-multiple-sequence-alignment).
   - a `tsv` file containing the threshold for the different HMMs. If no file is present in the folder, bigecyhmm will use its internal template file for threshold. An example can be found in bigecyhmm internal database ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_table_template.tsv)) or in the test folder ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/mini_custom_db/hmm_table_template.tsv)).
 
 An example with mini database is present in the [test folder](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/test/input_data/mini_custom_db).
@@ -275,7 +275,7 @@ It can take five optional arguments:
 `bigecyhmm_custom` creates inside the output folder on folder per input custom json file.
 It outputs similar files than bigecyhmm classical output except for the cycle visualisation.
 As it is more difficult to provide a direct visualisation from a custom database `bigecyhmm_custom` relies on network representation to create these visualisations.
-To do so, it creates network file (`cycle_diagram_bipartite_occurrence.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/)) to generate visualisation. It also tries to create a visualisation but they are not very good.
+To do so, it creates network file (`cycle_diagram_bipartite_occurrence.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation. It also tries to create a visualisation with networkx and matpltolib but they are not very good.
 
 If you have given abundance and measure files, a second network file (`cycle_diagram_bipartite_abundance.graphml`) is created where function nodes are associated with the summed abundance of organisms in the different samples and metabolite node are associated with their measures in the different samples.
 
