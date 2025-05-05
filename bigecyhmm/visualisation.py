@@ -223,55 +223,44 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     bigecyhmm_function_df = pd.read_csv(bigecyhmm_output_file, sep='\t')
     bigecyhmm_function_df.set_index('function', inplace=True)
 
+    sample_abundance_data = pd.DataFrame(sample_abundance)
+
     # Compute the occurrence of functions in organism from bigecyhmm file.
     function_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_observation_names)
+    # Transpose the dataframe to get function as rows and organisms as columns.
+    function_dataframe = pd.DataFrame(function_organisms).T
+    # Replace nan by 0.
+    function_dataframe = function_dataframe.fillna(0)
+
+    # Matrix multiplication between function matrix and abundance matrix.
+    abundance_function_df = function_dataframe.dot(sample_abundance_data)
+
+    # Matrix division by the total abundance in each sample to get relative abundace
+    relative_abundance_df = abundance_function_df.div(sample_tot_abundance)
+
+    function_abundance_samples = abundance_function_df.to_dict()
+    function_relative_abundance_samples = relative_abundance_df.to_dict()
 
     # For each sample compute the abundance of function according to the organisms.
-    function_abundance_samples = {}
-    function_relative_abundance_samples = {}
     function_participation_samples = {}
-
     for sample in sample_abundance:
-        function_abundance = {}
-        function_participation = {}
-        for organism in sample_abundance[sample]:
-            if organism not in function_participation:
-                function_participation[organism] = {}
-            for function_name in function_organisms:
-                if organism in function_organisms[function_name]:
-                    # Compute the abundance of function in the sample.
-                    if function_name not in function_abundance:
-                        function_abundance[function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism]
-                    else:
-                        function_abundance[function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism] + function_abundance[function_name]
-                    # Compute the participation by each organism for the function.
-                    if function_name not in function_participation[organism]:
-                        function_participation[organism][function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism]
-                    else:
-                        function_participation[organism][function_name] = function_organisms[function_name][organism]*sample_abundance[sample][organism] + function_participation[organism][function_name]
-
-        if sample not in function_abundance_samples:
-            function_abundance_samples[sample] = {}
-        if sample not in function_relative_abundance_samples:
-            function_relative_abundance_samples[sample] = {}
-        for function_name in function_abundance:
-            if function_name not in function_abundance_samples[sample]:
-                function_abundance_samples[sample][function_name] = function_abundance[function_name]
-            if function_name not in function_relative_abundance_samples[sample]:
-                function_relative_abundance_samples[sample][function_name] = function_abundance[function_name] / sample_tot_abundance[sample]
-        function_participation_samples[sample] = function_participation
-
-        # Add function with zero abundance.
-        for function in function_organisms:
-            if function not in function_abundance_samples[sample]:
-                function_abundance_samples[sample][function] = 0
-            if function not in function_relative_abundance_samples[sample]:
-                function_relative_abundance_samples[sample][function] = 0
+        # Multiply each function by the abundance of the organism.
+        function_participation_df = function_dataframe.mul(sample_abundance[sample])
+        function_participation_samples[sample] = function_participation_df.to_dict()
 
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples
 
 
 def get_hmm_per_organism(bigecyhmm_output, tax_id_names_observation_names):
+    """ Get for each organism, the number of matching HMMs to their proteomes.
+
+    Args:
+        bigecyhmm_output_file (str): path to the output file of bigecyhmm (either pathway_presence.tsv or function_presence.tsv).
+        tax_id_names_observation_names (dict): dictionary associating tax_id_name with organism name.
+
+    Returns:
+        hmm_occurrences (dict): dictionary containing organism as value and a subdict containing HMM occurrence
+    """
     hmm_found_folder = os.path.join(bigecyhmm_output, 'hmm_results')
     hmm_occurrences = {}
 
@@ -298,6 +287,14 @@ def get_hmm_per_organism(bigecyhmm_output, tax_id_names_observation_names):
 
 
 def create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_folder_abundance, tax_id_names_observation_names):
+    """ Compute HMM abundance in each sample and write it in a tsv file..
+
+    Args:
+        bigecyhmm_output_file (str): path to the output file of bigecyhmm (either pathway_presence.tsv or function_presence.tsv).
+        sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
+        output_folder_abundance (str): path to write the output file.
+        tax_id_names_observation_names (dict): dictionary associating tax_id_name with organism name.
+    """
     hmm_occurrences = get_hmm_per_organism(bigecyhmm_output, tax_id_names_observation_names)
 
     hmm_abundance = {}
@@ -437,23 +434,39 @@ def create_polar_plot(df_seaborn_abundance, output_polar_plot):
     df_seaborn_abundance['name'] = df_seaborn_abundance['name'].apply(lambda x: x.split(':')[1])
     # Remove function without occurrence/abundance.
     df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['ratio']>0]
+    fig = go.Figure()
+    for sample in sorted(df_seaborn_abundance['sample'].unique()):
+        tmp_df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['sample']==sample]
+        tmp_df_seaborn_abundance = tmp_df_seaborn_abundance.sort_values(['name'], ascending=False)
 
-    fig = px.line_polar(df_seaborn_abundance, r="ratio", theta="name", color="sample", line_close=True)
-    fig.write_image(output_polar_plot, scale=1, width=1400, height=1200)
+        fig.add_trace(go.Scatterpolar(
+            name = sample,
+            r = tmp_df_seaborn_abundance["ratio"],
+            theta = tmp_df_seaborn_abundance["name"],
+            ))
+
+    fig.update_traces(fill='toself')
+    fig.update_polars(radialaxis=dict(range=[0,1]))
+    fig.write_image(output_polar_plot, scale=1, width=1600, height=1200)
 
 
 def visualise_barplot_category(category, function_categories, df_seaborn_abundance, output_file_name):
     """Create bar plot for functions of the associated categories from pandas dataframe with function as 'name' column' and associated ratio as a second column
 
     Args:
-        cateogry (str): name of the function category to plot
+        cateogry (str or list): name of the function category to plot or list of categories
         function_categories (dict): a dicitonary mapping function category to their respective function inferred by bigecyhmm
         df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the relative abundance of organisms having it in the community and a third column for the sample
         output_file_name (str): path to the output file.
     """
     fig, axes = plt.subplots(figsize=(40,20))
     plt.rc('font', size=30)
-    kept_functions = function_categories[category]
+    if isinstance(category, str):
+        kept_functions = function_categories[category]
+    elif isinstance(category, list):
+        kept_functions = []
+        for cat in category:
+            kept_functions.extend(function_categories[cat])
 
     df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_functions)]
 
@@ -608,6 +621,11 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
         cycle_abundance_samples, cycle_relative_abundance_samples, cycle_participation_samples = compute_bigecyhmm_functions_abundance(bigecyhmm_pathway_presence_file, sample_abundance, sample_tot_abundance, tax_id_names_observation_names)
 
+        cycle_raw_abundance_samples_df = pd.DataFrame(cycle_abundance_samples)
+        cycle_raw_abundance_samples_df.index.name = 'name'
+        cycle_raw_abundance_samples_df.sort_index(inplace=True)
+        cycle_raw_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_raw.tsv'), sep='\t')
+
         cycle_relative_abundance_samples_df = pd.DataFrame(cycle_relative_abundance_samples)
         cycle_relative_abundance_samples_df.index.name = 'name'
         cycle_relative_abundance_samples_df.sort_index(inplace=True)
@@ -632,6 +650,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         cycle_relative_abundance_samples_df.reset_index(inplace=True)
         melted_cycle_relative_abundance_samples_df = pd.melt(cycle_relative_abundance_samples_df, id_vars='name', value_vars=cycle_relative_abundance_samples_df.columns.tolist())
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
+        melted_cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_melted.tsv'), sep='\t')
         output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_samples.png')
         create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
