@@ -261,7 +261,7 @@ def search_hmm(input_variable, output_folder, core_number=1):
     input_dicts = file_or_folder(input_variable)
 
     logger.info('HMM compressed file: ' + HMM_COMPRESSED_FILE)
-    logger.info('HMM tempalte file : ' + HMM_TEMPLATE_FILE)
+    logger.info('HMM template file : ' + HMM_TEMPLATE_FILE)
 
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
