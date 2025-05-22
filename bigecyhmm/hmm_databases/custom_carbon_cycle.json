@@ -16,7 +16,7 @@
     {"size": 10, "id": "Hydrogen generation", "type": "Function", "hmm": "fe.hmm, nife-group-3abd.hmm, fefe-group-b.hmm, fefe-group-a13.hmm, nife-group-4a-g.hmm, K00532.hmm"},
     {"size": 10, "id": "Acetate oxidation", "type": "Function", "hmm": "TIGR02188.hmm"},
     {"size": 10, "id": "Fermentation", "type": "Function", "hmm": "K00169.hmm, K00001.hmm, K00016.hmm, TIGR02717.hmm, TIGR00016.hmm, TIGR00651.hmm, TIGR02188.hmm, K00656.hmm"},
-    {"size": 10, "id": "Methanogenesis", "type": "Function", "hmm": "TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm, K00402.hmm, K04480.hmm"},
+    {"size": 10, "id": "Methanogenesis", "type": "Function", "hmm": "TIGR03256.hmm, TIGR03257.hmm, TIGR03259.hmm"},
     {"size": 10, "id": "Ethanol oxidation", "type": "Function", "hmm": "K00001.hmm"},
     {"size": 10, "id": "Hydrogen oxidation", "type": "Function", "hmm": "fe.hmm, nife-group-3abd.hmm, fefe-group-a2.hmm, nife-group-1.hmm, nife-group-2ade.hmm, nife-group-2bc.hmm, nife-group-4hi.hmm, fefe-group-a4.hmm"},
     {"size": 10, "id": "Methanotrophy", "type": "Function", "hmm": "pmoA.hmm, pmoB.hmm, pmoC.hmm, PF02406.hmm, TIGR04550.hmm"},
