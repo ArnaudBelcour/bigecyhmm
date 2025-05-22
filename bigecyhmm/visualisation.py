@@ -223,7 +223,7 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     bigecyhmm_function_df = pd.read_csv(bigecyhmm_output_file, sep='\t')
     bigecyhmm_function_df.set_index('function', inplace=True)
 
-    sample_abundance_data = pd.DataFrame(sample_abundance)
+    sample_abundance_dataframe = pd.DataFrame(sample_abundance)
 
     # Compute the occurrence of functions in organism from bigecyhmm file.
     function_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_observation_names)
@@ -232,8 +232,12 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     # Replace nan by 0.
     function_dataframe = function_dataframe.fillna(0)
 
+    # Ensure that indexes in sample_abundance_dataframe are the same than the columns in function_dataframe.
+    # There can be more indexes in sample_abundance_dataframe if some organisms do not have functional predictions.
+    sample_abundance_dataframe = sample_abundance_dataframe.reindex(function_dataframe.columns)
+
     # Matrix multiplication between function matrix and abundance matrix.
-    abundance_function_df = function_dataframe.dot(sample_abundance_data)
+    abundance_function_df = function_dataframe.dot(sample_abundance_dataframe)
 
     # Matrix division by the total abundance in each sample to get relative abundace
     relative_abundance_df = abundance_function_df.div(sample_tot_abundance)
@@ -245,7 +249,7 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     function_participation_samples = {}
     for sample in sample_abundance:
         # Multiply each function by the abundance of the organism.
-        function_participation_df = function_dataframe.mul(sample_abundance[sample])
+        function_participation_df = function_dataframe.mul(sample_abundance_dataframe[sample])
         function_participation_samples[sample] = function_participation_df.to_dict()
 
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples

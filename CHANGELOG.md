@@ -1,5 +1,21 @@
 # Changelog
 
+# bigecyhmm v0.1.7 (2025-05-22)
+
+## Add
+
+* Create two files showing occurrence of functions in organism in `bigecyhmm_visualisation` (helpful to link function to organism when using results from EsMeCaTa).
+
+## Modify
+
+* Optimise function abundance computation by using matrix multiplication.
+* Update readme according to the additions/changes.
+
+## Fix
+
+* Fix several typos.
+* Fix issue with Methanogenesis (two wrongs KOs associated with it).
+
 # bigecyhmm v0.1.6 (2025-04-14)
 
 ## Add
@@ -23,15 +39,12 @@
 
 * Move global variables in `__init__.py`.
 * Update readme according to the additions/changes.
+* Remove several internal files as they were deprecated or not used anymore.
 
 ## Fix
 
 * Fix issue of function with zero abundance/occurrence not present in output files.
 * Fix several issues with threshold not being applied correctly.
-
-## Modify
-
-* Remove several internal files as they were deprecated or not used anymore.
 
 # bigecyhmm v0.1.5 (2025-01-29)
 
