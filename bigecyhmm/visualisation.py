@@ -164,7 +164,7 @@ def compute_bigecyhmm_functions_occurrence(bigecyhmm_output_file, tax_id_names_o
         tax_id_names_observation_names (dict): dictionary associating tax_id_name with organism name.
 
     Returns:
-        function_occurrence_organisms (dict): dictionary containing functio nas key and subdict with organism as key and value of function in organism.
+        function_occurrence_organisms (dict): dictionary containing function as key and subdict with organism as key and value of function in organism.
         all_studied_organisms (list): list of all organisms in community.
     """
     bigecyhmm_function_df = pd.read_csv(bigecyhmm_output_file, sep='\t')
@@ -539,6 +539,13 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     logger.info("  -> Read bigecyhmm cycle output files.")
     bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
     cycle_occurrence_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_pathway_presence_file, tax_id_names_observation_names)
+
+    df_cycle_occurrence_organisms = pd.DataFrame(cycle_occurrence_organisms)
+    df_cycle_occurrence_organisms.index.name = 'function'
+    df_cycle_occurrence_organisms.fillna(0, inplace=True)
+    organism_pathway_presence_file = os.path.join(output_folder_occurrence, 'pathway_presence_in_organism.tsv')
+    df_cycle_occurrence_organisms.to_csv(organism_pathway_presence_file, sep='\t')
+
     # Compute the relative occurrence of functions by dividing the number of organisms having it by the total number of organisms in the community.
     cycle_occurrence_community = []
     for function in cycle_occurrence_organisms:
@@ -580,6 +587,13 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     logger.info("  -> Read bigecyhmm functions output files.")
     bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
     function_occurrence_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_function_presence_file, tax_id_names_observation_names)
+
+    df_function_occurrence_organisms = pd.DataFrame(function_occurrence_organisms)
+    df_function_occurrence_organisms.index.name = 'function'
+    df_function_occurrence_organisms.fillna(0, inplace=True)
+    organism_function_presence_file = os.path.join(output_folder_occurrence, 'function_occurrence_in_organism.tsv')
+    df_function_occurrence_organisms.to_csv(organism_function_presence_file, sep='\t')
+
     # Compute the relative abundance of organisms by dividing for a function the number of organisms having it by the total number of organisms in the community.
     function_occurrence_community = []
     for index in function_occurrence_organisms:
