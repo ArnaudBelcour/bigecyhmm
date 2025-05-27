@@ -626,7 +626,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
             df_abundance_organism_sample = pd.DataFrame(data_abundance_organism_sample, columns=['Sample', 'Organism_name', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
             output_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_organism_sample.tsv')
-            df_abundance_organism_sample.to_csv(output_organism_abundance_file, sep='\t')
+            df_abundance_organism_sample.to_csv(output_organism_abundance_file, sep='\t', index=0)
+            output_missing_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_missing_organism_sample.tsv')
+            df_abundance_organism_sample = df_abundance_organism_sample[df_abundance_organism_sample['Relative abundance']>0]
+            df_abundance_organism_sample[df_abundance_organism_sample['Taxonomic rank selected by EsMeCaTa'] == 'Not found'].to_csv(output_missing_organism_abundance_file, sep='\t', index=0)
 
             df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
             # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
