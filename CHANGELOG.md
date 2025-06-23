@@ -5,6 +5,7 @@
 ## Add
 
 * Create two files showing occurrence of functions in organism in `bigecyhmm_visualisation` (helpful to link function to organism when using results from EsMeCaTa).
+* HMM file `K07699.hmm` to database associated with sporulation regulation gene `spo0A`.
 
 ## Modify
 

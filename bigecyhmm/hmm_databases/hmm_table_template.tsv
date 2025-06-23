@@ -386,3 +386,5 @@
 	Phosphorous cycling enzymes	P-starvation response regulation	phoB	Phosphate regulon response regulator	K07657.hmm	K07657				289.93|domain	10.1016/j.soilbio.2022.108826
 	Phosphorous cycling enzymes	P-starvation response regulation	phoR	Phosphate regulon sensor histidine kinase	K07636.hmm	K07636				315.60|domain	10.1016/j.soilbio.2022.108826
 	Phosphorous cycling enzymes	P-starvation response regulation	phoU	PhoR/phoB inhibitor protein	K02039.hmm	K02039				128.00|domain	10.1016/j.soilbio.2022.108826
+	Magnesium transport	Magnesium transport	mgtA	P-type Mg2+ transporter	K01531.hmm	K01531				727.20|full	
+	Sporulation	Sporulation regulation	spo0A	two-component system, response regulator, stage 0 sporulation protein A	K07699.hmm	K07699				109.47|domain	
