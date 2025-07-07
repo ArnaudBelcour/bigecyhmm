@@ -1,5 +1,5 @@
 import os
-import csv
+import pandas as pd
 import subprocess
 import shutil
 
@@ -309,6 +309,18 @@ def test_create_visualisation_abundance_from_esmecata():
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
 
+    expected_function_occurrence_organisms = {'C-S-01:Organic carbon oxidation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'C-S-02:Carbon fixation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'C-S-03:Ethanol oxidation': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'C-S-04:Acetate oxidation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'C-S-05:Hydrogen generation': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'C-S-06:Fermentation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'C-S-07:Methanogenesis': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'C-S-09:Hydrogen oxidation': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'N-S-01:Nitrogen fixation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'N-S-07:Nitrous oxide reduction': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-08:Nitrite ammonification': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'O-S-01:Iron reduction': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'O-S-03:Arsenate reduction': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'O-S-06:Aerobic respiration': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-01:PhnD': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'P-S-04:PstS': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-08:PtxD': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-09:PtxB': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-10:Phosphonate production': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'P-S-11:Phosphonate catabolism': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'P-S-12:Phytate degradation': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'P-S-13:Phosphatase': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-14:ppa': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-15:ppx': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-17:gcd and pqqC': {'org_1': 1.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-18:Pho regulon': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-01:Immobilisation (P-rich)': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-02:Mineralisation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'P-S-03:Dissolution': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'S-S-03:Sulfur oxidation': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'S-S-04:Sulfite oxidation': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'S-S-05:Sulfate reduction': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'S-S-06:Sulfite reduction': {'org_1': 1, 'org_2': 1, 'org_3': 1}, 'S-S-08:Thiosulfate disproportionation 1': {'org_1': 0.0, 'org_2': 1.0, 'org_3': 1.0}, 'S-S-07:Thiosulfate oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-02:Ammonia oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-04:Nitrate reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'S-S-01:Sulfide oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'S-S-10:Polysulfide reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-05:PNaS': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-05:Nitrite reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-02:C-P lyase': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'S-S-02:Sulfur reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-01:Immobilisation (P-poor)': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'O-S-05:Selenate reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'S-S-09:Thiosulfate disproportionation 2': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'C-S-10:Acetogenesis WL': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'O-S-04:Arsenite oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'C-S-08:Methanotrophy': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-06:HtxB': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'O-S-02:Iron oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-16:ppk1': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-07:HtxA': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'P-S-03:PitA': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-03:Nitrite oxidation': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-10:Nitric oxide dismutase': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-06:Nitric oxide reduction': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}, 'N-S-09:Anammox': {'org_1': 0.0, 'org_2': 0.0, 'org_3': 0.0}}
+
+    expected_df = pd.DataFrame(expected_function_occurrence_organisms)
+    expected_df.index.name = 'function'
+    expected_df.fillna(0, inplace=True)
+    predicted_function_filepath = os.path.join(output_folder, 'function_occurrence', 'pathway_presence_in_organism.tsv')
+    predicted_function_df = pd.read_csv(predicted_function_filepath, sep='\t')
+    predicted_function_df.set_index('function', inplace=True)
+    predicted_function_df = predicted_function_df.reindex(expected_df.index)
+    predicted_function_df = predicted_function_df[expected_df.columns]
+    pd.testing.assert_frame_equal(expected_df, predicted_function_df)
+
     shutil.rmtree(output_folder)
 
 
@@ -329,3 +341,6 @@ def test_create_visualisation_abundance_from_esmecata_cli():
 
     shutil.rmtree(output_folder)
 
+
+if __name__ == "__main__":
+    test_create_visualisation_abundance_from_esmecata()

@@ -636,6 +636,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
             output_taxon_rank_abundance_plot_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
             fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa", color_discrete_map= {'Not found': 'grey'})
+            # Show all label on x-axis. But this could requires work to make them readable.
+            fig.update_xaxes(tickmode='linear')
             fig.write_image(output_taxon_rank_abundance_plot_file, scale=1, width=1600, height=1400)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
