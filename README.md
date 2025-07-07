@@ -155,8 +155,11 @@ output_folder
 │   └── barplot_esmecata_found_taxon_sample.png
 │   └── barplot_esmecata_found_organism_sample.tsv
 │   └── cycle_abundance_sample.tsv
+│   └── cycle_abundance_sample_melted.tsv
+│   └── cycle_abundance_sample_raw.tsv
 │   └── function_abundance_sample.tsv
 │   └── heatmap_abundance_samples.png
+│   └── hmm_functional_profile.tsv
 │   └── polar_plot_abundance_samples.png
 ├── function_occurrence
 │   └── cycle_occurence.tsv
