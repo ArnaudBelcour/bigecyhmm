@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.1.7 (2025-05-22)
+# bigecyhmm v0.1.7 (2025-07-07)
 
 ## Add
 
@@ -16,6 +16,7 @@
 
 * Fix several typos.
 * Fix issue with Methanogenesis (two wrongs KOs associated with it).
+* Fix several issues with test according to file changes.
 
 # bigecyhmm v0.1.6 (2025-04-14)
 
