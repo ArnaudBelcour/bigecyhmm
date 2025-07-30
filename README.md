@@ -1,4 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/doi_tabigecy.svg)](https://doi.org/10.1101/2025.01.30.635649)
+[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/doi_tabigecy.svg)](https://doi.org/10.1093/bioinformatics/btaf230)
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
@@ -291,7 +291,7 @@ If you have given abundance and measure files, a second network file (`cycle_dia
 
 If you have used bigecyhmm in an article, please cite:
 
-Arnaud Belcour, Loris Megy, Sylvain Stephant, Caroline Michel, Sétareh Rad, Petra Bombach, Nicole Dopffel, Hidde de Jong and Delphine Ropers. Predicting coarse-grained representations of biogeochemical cycles from metabarcoding data *bioRxiv* 2025.01.30.635649, 2025, https://doi.org/10.1101/2025.01.30.635649
+Arnaud Belcour, Loris Megy, Sylvain Stephant, Caroline Michel, Sétareh Rad, Petra Bombach, Nicole Dopffel, Hidde de Jong and Delphine Ropers. Predicting coarse-grained representations of biogeochemical cycles from metabarcoding data *Bioinformatics*, Volume 41, Issue Supplement_1, July 2025, Pages i49–i57, https://doi.org/10.1093/bioinformatics/btaf230
 
 - PyHMMER for the search on the HMMs:
 
