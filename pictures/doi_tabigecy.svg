@@ -6,7 +6,7 @@
    aria-label="doi: 10.1101/2022.03.16.484574"
    version="1.1"
    id="svg8"
-   sodipodi:docname="doi_esmecata.svg"
+   sodipodi:docname="doi_tabigecy.svg"
    inkscape:version="1.4 (1:1.4+202410151213+e7c3feb100)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,9 +23,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="5.9015152"
-     inkscape:cx="110.14121"
-     inkscape:cy="29.39923"
+     inkscape:zoom="4.1730014"
+     inkscape:cx="91.90028"
+     inkscape:cy="20.48885"
      inkscape:window-width="2490"
      inkscape:window-height="1376"
      inkscape:window-x="70"
@@ -106,17 +106,17 @@
        y="150"
        fill="#010101"
        fill-opacity="0.3"
-       transform="scale(0.1)"
+       transform="matrix(0.1,0,0,0.1,0.67779203,-1.6249511)"
        textLength="1610"
        id="text7"
-       lengthAdjust="spacing">10.1101/2025.01.30.635649 </text>
+       lengthAdjust="spacing">10.1093/bioinformatics/btaf230</text>
     <text
        x="1115"
        y="140"
-       transform="scale(0.1)"
+       transform="matrix(0.1,0,0,0.1,0.67779203,-0.62495113)"
        fill="#ffffff"
        textLength="1610"
        id="text8"
-       lengthAdjust="spacing">10.1101/2025.01.30.635649</text>
+       lengthAdjust="spacing">10.1093/bioinformatics/btaf230</text>
   </g>
 </svg>

@@ -1,4 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![](https://raw.githubusercontent.com/ArnaudBelcour/bigecyhmm/master/pictures/doi_tabigecy.svg)](https://doi.org/10.1093/bioinformatics/btaf230)
+[![PyPI version](https://img.shields.io/pypi/v/bigecyhmm.svg)](https://pypi.org/project/bigecyhmm/) [![](pictures/doi_tabigecy.svg)](https://doi.org/10.1093/bioinformatics/btaf230)
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
