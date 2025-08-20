@@ -691,19 +691,19 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                     diagram_data[cycle_name] = (0, 0)
 
             carbon_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_carbon_cycle.png')
-            create_carbon_cycle(diagram_data, carbon_cycle_file)
+            create_carbon_cycle(diagram_data, carbon_cycle_file, 'Abundance', 'Percentage')
 
             nitrogen_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_nitrogen_cycle.png')
-            create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+            create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Abundance', 'Percentage')
 
             sulfur_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_sulfur_cycle.png')
-            create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+            create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Abundance', 'Percentage')
 
             other_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_other_cycle.png')
-            create_other_cycle(diagram_data, other_cycle_file)
+            create_other_cycle(diagram_data, other_cycle_file, 'Abundance', 'Percentage')
 
             phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
-            create_phosphorus_cycle(diagram_data, phosphorus_cycle_file)
+            create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
