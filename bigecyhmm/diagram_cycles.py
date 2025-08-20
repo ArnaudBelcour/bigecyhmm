@@ -193,12 +193,14 @@ def parse_diagram_folder(input_diagram_file):
     return diagram_data
 
 
-def create_carbon_cycle(diagram_data, output_file):
+def create_carbon_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_CARBON_CYCLE and input_diagram_folder file, create carbon cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_CARBON_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -215,27 +217,29 @@ def create_carbon_cycle(diagram_data, output_file):
     data_step_09 = diagram_data['C-S-09:Hydrogen oxidation']
     data_step_10 = diagram_data['C-S-10:Acetogenesis WL']
 
-    imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (0,0,0), font=font)
-    imgdraw.text((100,70), 'Step2: Carbon fixation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (139,137,137), font=font)
-    imgdraw.text((750,320), 'Step3: Ethanol oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (0,0,0), font=font)
-    imgdraw.text((150,400), 'Step4: Acetate oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (0,0,0), font=font)
-    imgdraw.text((530,225), 'Step5: Hydrogen generation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (139,117,0), font=font)
-    imgdraw.text((375,150), 'Step6: Fermentation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (139,117,0), font=font)
-    imgdraw.text((350,450), 'Step7: Methanogenesis\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (93,71,139), font=font)
-    imgdraw.text((300,650), 'Step8: Methanotrophy\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (205,186,150), font=font)
-    imgdraw.text((575,400), 'Step9: Hydrogen oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (238,162,173), font=font)
-    imgdraw.text((275,300), 'Step10: Acetogenesis WL\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (0,134,139), font=font)
+    imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,0,0), font=font)
+    imgdraw.text((100,70), 'Step2: Carbon fixation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (139,137,137), font=font)
+    imgdraw.text((750,320), 'Step3: Ethanol oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (0,0,0), font=font)
+    imgdraw.text((150,400), 'Step4: Acetate oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (0,0,0), font=font)
+    imgdraw.text((530,225), 'Step5: Hydrogen generation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_05[0], second_term, data_step_05[1]), (139,117,0), font=font)
+    imgdraw.text((375,150), 'Step6: Fermentation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_06[0], second_term, data_step_06[1]), (139,117,0), font=font)
+    imgdraw.text((350,450), 'Step7: Methanogenesis\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_07[0], second_term, data_step_07[1]), (93,71,139), font=font)
+    imgdraw.text((300,650), 'Step8: Methanotrophy\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_08[0], second_term, data_step_08[1]), (205,186,150), font=font)
+    imgdraw.text((575,400), 'Step9: Hydrogen oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_09[0], second_term, data_step_09[1]), (238,162,173), font=font)
+    imgdraw.text((275,300), 'Step10: Acetogenesis WL\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_10[0], second_term, data_step_10[1]), (0,134,139), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_nitrogen_cycle(diagram_data, output_file):
+def create_nitrogen_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_NITROGEN_CYCLE and input_diagram_folder file, create nitrogen cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_NITROGEN_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -252,27 +256,29 @@ def create_nitrogen_cycle(diagram_data, output_file):
     data_step_09 = diagram_data['N-S-09:Anammox']
     data_step_10 = diagram_data['N-S-10:Nitric oxide dismutase']
 
-    imgdraw.text((700,120), 'Step1: Nitrogen fixation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (205,16,118), font=font)
-    imgdraw.text((800,360), 'Step2: Ammonia oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (0,205,205), font=font)
-    imgdraw.text((650,650), 'Step3: Nitrite oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (139,69,0), font=font)
-    imgdraw.text((250,600), 'Step4: Nitrate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (16,78,139), font=font)
-    imgdraw.text((50,425), 'Step5: Nitrite reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (16,78,139), font=font)
-    imgdraw.text((50,300), 'Step6: Nitric oxide reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (16,78,139), font=font)
-    imgdraw.text((225,120), 'Step7: Nitrous oxide reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (16,78,139), font=font)
-    imgdraw.text((410,415), 'Step8: Nitrite ammonification\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (95,158,160), font=font)
-    imgdraw.text((500,275), 'Step9: Anammox\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (102,205,0), font=font)
-    imgdraw.text((400,200), 'Step10: Nitric oxide dismutase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (154,50,205), font=font)
+    imgdraw.text((700,120), 'Step1: Nitrogen fixation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (205,16,118), font=font)
+    imgdraw.text((800,360), 'Step2: Ammonia oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (0,205,205), font=font)
+    imgdraw.text((650,650), 'Step3: Nitrite oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (139,69,0), font=font)
+    imgdraw.text((250,600), 'Step4: Nitrate reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (16,78,139), font=font)
+    imgdraw.text((50,425), 'Step5: Nitrite reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_05[0], second_term, data_step_05[1]), (16,78,139), font=font)
+    imgdraw.text((50,300), 'Step6: Nitric oxide reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_06[0], second_term, data_step_06[1]), (16,78,139), font=font)
+    imgdraw.text((225,120), 'Step7: Nitrous oxide reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_07[0], second_term, data_step_07[1]), (16,78,139), font=font)
+    imgdraw.text((410,415), 'Step8: Nitrite ammonification\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_08[0], second_term, data_step_08[1]), (95,158,160), font=font)
+    imgdraw.text((500,275), 'Step9: Anammox\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_09[0], second_term, data_step_09[1]), (102,205,0), font=font)
+    imgdraw.text((400,200), 'Step10: Nitric oxide dismutase\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_10[0], second_term, data_step_10[1]), (154,50,205), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_sulfur_cycle(diagram_data, output_file):
+def create_sulfur_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_SULFUR_CYCLE and input_diagram_folder file, create sulfur cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_SULFUR_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -288,26 +294,28 @@ def create_sulfur_cycle(diagram_data, output_file):
     data_step_08 = diagram_data['S-S-08:Thiosulfate disproportionation 1']
     data_step_09 = diagram_data['S-S-09:Thiosulfate disproportionation 2']
 
-    imgdraw.text((700,80), 'Step1: Sulfide oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (238,118,0), font=font)
-    imgdraw.text((600,200), 'Step2: Sulfur reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (122,197,205), font=font)
-    imgdraw.text((850,360), 'Step3: Sulfur oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (154,50,205), font=font)
-    imgdraw.text((650,650), 'Step4: Sulfite oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (162,205,90), font=font)
-    imgdraw.text((100,550), 'Step5: Sulfate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (139,69,19), font=font)
-    imgdraw.text((150,150), 'Step6: Sulfite reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (139,69,19), font=font)
-    imgdraw.text((375,500), 'Step7: Thiosulfate oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (0,104,139), font=font)
-    imgdraw.text((400,250), 'Step8: Thiosulfate \ndisproportionation 1\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (0,104,139), font=font)
-    imgdraw.text((625,400), 'Step9: Thiosulfate \ndisproportionation 2\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (0,104,139), font=font)
+    imgdraw.text((700,80), 'Step1: Sulfide oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (238,118,0), font=font)
+    imgdraw.text((600,200), 'Step2: Sulfur reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (122,197,205), font=font)
+    imgdraw.text((850,360), 'Step3: Sulfur oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (154,50,205), font=font)
+    imgdraw.text((650,650), 'Step4: Sulfite oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (162,205,90), font=font)
+    imgdraw.text((100,550), 'Step5: Sulfate reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_05[0], second_term, data_step_05[1]), (139,69,19), font=font)
+    imgdraw.text((150,150), 'Step6: Sulfite reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_06[0], second_term, data_step_06[1]), (139,69,19), font=font)
+    imgdraw.text((375,500), 'Step7: Thiosulfate oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_07[0], second_term, data_step_07[1]), (0,104,139), font=font)
+    imgdraw.text((400,250), 'Step8: Thiosulfate \ndisproportionation 1\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_08[0], second_term, data_step_08[1]), (0,104,139), font=font)
+    imgdraw.text((625,400), 'Step9: Thiosulfate \ndisproportionation 2\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_09[0], second_term, data_step_09[1]), (0,104,139), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_other_cycle(diagram_data, output_file):
+def create_other_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_OTHER_CYCLE and input_diagram_folder file, create other cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_OTHER_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -320,23 +328,25 @@ def create_other_cycle(diagram_data, output_file):
     data_step_05 = diagram_data['O-S-05:Selenate reduction']
     data_step_06 = diagram_data['O-S-06:Aerobic respiration']
 
-    imgdraw.text((100,175), 'Step1: Iron reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (0,100,0), font=font)
-    imgdraw.text((375,175), 'Step2: Iron oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (0,100,0), font=font)
-    imgdraw.text((10,575), 'Step3: Arsenate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (205,102,0), font=font)
-    imgdraw.text((330,575), 'Step4: Arsenite oxidation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (205,102,0), font=font)
-    imgdraw.text((800,575), 'Step5: Selenate reduction\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (0,0,0), font=font)
-    imgdraw.text((800,175), 'Step5: Cytochrome-c\n    oxidase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (115,68,171), font=font)
+    imgdraw.text((100,175), 'Step1: Iron reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,100,0), font=font)
+    imgdraw.text((375,175), 'Step2: Iron oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (0,100,0), font=font)
+    imgdraw.text((10,575), 'Step3: Arsenate reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (205,102,0), font=font)
+    imgdraw.text((330,575), 'Step4: Arsenite oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (205,102,0), font=font)
+    imgdraw.text((800,575), 'Step5: Selenate reduction\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_05[0], second_term, data_step_05[1]), (0,0,0), font=font)
+    imgdraw.text((800,175), 'Step5: Cytochrome-c\n    oxidase\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_06[0], second_term, data_step_06[1]), (115,68,171), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_phosphorus_cycle(diagram_data, output_file):
+def create_phosphorus_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_PHOSPHORUS_CYCLE and input_diagram_folder file, create phosphorus cycle figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_PHOSPHORUS_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -347,21 +357,23 @@ def create_phosphorus_cycle(diagram_data, output_file):
     data_step_03 = diagram_data['P-S-02:Mineralisation']
     data_step_04 = diagram_data['P-S-03:Dissolution']
 
-    imgdraw.text((250,280), 'Immobilisation (P-rich)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
-    imgdraw.text((240,80), 'Immobilisation (P-poor)\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (129,159,188), font=font)
-    imgdraw.text((260,570), 'Mineralisation\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (33,179,124), font=font)
-    imgdraw.text((720,580), 'Dissolution\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (62,67,177), font=font)
+    imgdraw.text((250,280), 'Immobilisation (P-rich)\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((240,80), 'Immobilisation (P-poor)\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (129,159,188), font=font)
+    imgdraw.text((260,570), 'Mineralisation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (33,179,124), font=font)
+    imgdraw.text((720,580), 'Dissolution\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (62,67,177), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
 
 
-def create_phosphorus_gene_cycle(diagram_data, output_file):
+def create_phosphorus_gene_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
     """From png TEMPLATE_PHOSPHORUS_GENE_CYCLE and input_diagram_folder file, create phosphorus genes figure.
 
     Args:
         diagram_data (dict): functions as key and (nb genomes containing in it, percentage coverage) as value
         output_file (str): path to output file
+        first_term (str): first term name used in figure describing the first value
+        second_term (str): second term name used in figure describing the second value
     """
     img = Image.open(TEMPLATE_PHOSPHORUS_GENE_CYCLE, 'r')
     imgdraw = ImageDraw.Draw(img)
@@ -386,24 +398,24 @@ def create_phosphorus_gene_cycle(diagram_data, output_file):
     data_step_17 = diagram_data['P-S-17:gcd and pqqC']
     data_step_18 = diagram_data['P-S-18:Pho regulon']
 
-    imgdraw.text((30,140), 'PhnD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_01[0], data_step_01[1]), (193,67,124), font=font)
-    imgdraw.text((250,250), 'C-P lyase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_02[0], data_step_02[1]), (193,67,124), font=font)
-    imgdraw.text((30,520), 'PitA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_03[0], data_step_03[1]), (219,205,46), font=font)
-    imgdraw.text((100,620), 'PstS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_04[0], data_step_04[1]), (219,205,46), font=font)
-    imgdraw.text((300,700), 'PNaS\nGenomes: {0}\nCoverage: {1}%'.format(data_step_05[0], data_step_05[1]), (219,205,46), font=font)
-    imgdraw.text((810,140), 'HtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_06[0], data_step_06[1]), (125,125,124), font=font)
-    imgdraw.text((850,350), 'HtxA\nGenomes: {0}\nCoverage: {1}%'.format(data_step_07[0], data_step_07[1]), (125,125,124), font=font)
-    imgdraw.text((600,600), 'PtxD\nGenomes: {0}\nCoverage: {1}%'.format(data_step_08[0], data_step_08[1]), (62,67,177), font=font)
-    imgdraw.text((850,610), 'PtxB\nGenomes: {0}\nCoverage: {1}%'.format(data_step_09[0], data_step_09[1]), (62,67,177), font=font)
-    imgdraw.text((380,80), 'Production\nGenomes: {0}\nCoverage: {1}%'.format(data_step_10[0], data_step_10[1]), (193,67,124), font=font)
-    imgdraw.text((400,200), 'Catabolism\nGenomes: {0}\nCoverage: {1}%'.format(data_step_11[0], data_step_11[1]), (193,67,124), font=font)
-    imgdraw.text((550,500), 'Phytase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_12[0], data_step_12[1]), (56,104,0), font=font)
-    imgdraw.text((660,400), 'Phosphatase\nGenomes: {0}\nCoverage: {1}%'.format(data_step_13[0], data_step_13[1]), (223,87,37), font=font)
-    imgdraw.text((450,400), 'ppa\nGenomes: {0}\nCoverage: {1}%'.format(data_step_14[0], data_step_14[1]), (191,32,124), font=font)
-    imgdraw.text((320,470), 'ppx\nGenomes: {0}\nCoverage: {1}%'.format(data_step_15[0], data_step_15[1]), (33,179,124), font=font)
-    imgdraw.text((220,400), 'ppk1\nGenomes: {0}\nCoverage: {1}%'.format(data_step_16[0], data_step_16[1]), (33,179,124), font=font)
-    imgdraw.text((40,440), 'gcd and pqqC\nGenomes: {0}\nCoverage: {1}%'.format(data_step_17[0], data_step_17[1]), (224,179,124), font=font)
-    imgdraw.text((675,720), 'Pho regulon\nGenomes: {0}\nCoverage: {1}%'.format(data_step_18[0], data_step_18[1]), (150,33,0), font=font)
+    imgdraw.text((30,140), 'PhnD\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (193,67,124), font=font)
+    imgdraw.text((250,250), 'C-P lyase\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_02[0], second_term, data_step_02[1]), (193,67,124), font=font)
+    imgdraw.text((30,520), 'PitA\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_03[0], second_term, data_step_03[1]), (219,205,46), font=font)
+    imgdraw.text((100,620), 'PstS\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_04[0], second_term, data_step_04[1]), (219,205,46), font=font)
+    imgdraw.text((300,700), 'PNaS\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_05[0], second_term, data_step_05[1]), (219,205,46), font=font)
+    imgdraw.text((810,140), 'HtxB\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_06[0], second_term, data_step_06[1]), (125,125,124), font=font)
+    imgdraw.text((850,350), 'HtxA\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_07[0], second_term, data_step_07[1]), (125,125,124), font=font)
+    imgdraw.text((600,600), 'PtxD\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_08[0], second_term, data_step_08[1]), (62,67,177), font=font)
+    imgdraw.text((850,610), 'PtxB\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_09[0], second_term, data_step_09[1]), (62,67,177), font=font)
+    imgdraw.text((380,80), 'Production\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_10[0], second_term, data_step_10[1]), (193,67,124), font=font)
+    imgdraw.text((400,200), 'Catabolism\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_11[0], second_term, data_step_11[1]), (193,67,124), font=font)
+    imgdraw.text((550,500), 'Phytase\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_12[0], second_term, data_step_12[1]), (56,104,0), font=font)
+    imgdraw.text((660,400), 'Phosphatase\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_13[0], second_term, data_step_13[1]), (223,87,37), font=font)
+    imgdraw.text((450,400), 'ppa\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_14[0], second_term, data_step_14[1]), (191,32,124), font=font)
+    imgdraw.text((320,470), 'ppx\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_15[0], second_term, data_step_15[1]), (33,179,124), font=font)
+    imgdraw.text((220,400), 'ppk1\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_16[0], second_term, data_step_16[1]), (33,179,124), font=font)
+    imgdraw.text((40,440), 'gcd and pqqC\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_17[0], second_term, data_step_17[1]), (224,179,124), font=font)
+    imgdraw.text((675,720), 'Pho regulon\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_18[0], second_term, data_step_18[1]), (150,33,0), font=font)
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
