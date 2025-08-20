@@ -293,6 +293,8 @@ If you have used bigecyhmm in an article, please cite:
 
 Arnaud Belcour, Loris Megy, Sylvain Stephant, Caroline Michel, Sétareh Rad, Petra Bombach, Nicole Dopffel, Hidde de Jong and Delphine Ropers. Predicting coarse-grained representations of biogeochemical cycles from metabarcoding data *Bioinformatics*, Volume 41, Issue Supplement_1, July 2025, Pages i49–i57, https://doi.org/10.1093/bioinformatics/btaf230
 
+Bigecyhmm relies on:
+
 - PyHMMER for the search on the HMMs:
 
 Martin Larralde and Georg Zeller. PyHMMER: a python library binding to HMMER for efficient sequence analysis. Bioinformatics, 39(5):btad214, 2023.  https://doi.org/10.1093/bioinformatics/btad214

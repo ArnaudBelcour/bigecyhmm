@@ -249,24 +249,28 @@ def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_c
     write_results(hmm_results, output_file)
 
 
-def search_hmm(input_variable, output_folder, core_number=1):
+def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE, hmm_template_file=HMM_TEMPLATE_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, core_number=1):
     """Main function to use HMM search on protein sequences and write results
 
     Args:
         input_variable (str): path to input file or folder
         output_folder (str): path to output folder
+        hmm_compressed_database (str): path to HMM compress database
+        hmm_template_file (str): path of HMM template file
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+        motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
         core_number (int): number of core to use for the multiprocessing
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
 
-    logger.info('HMM compressed file: ' + HMM_COMPRESSED_FILE)
-    logger.info('HMM template file : ' + HMM_TEMPLATE_FILE)
+    logger.info('HMM compressed file: ' + hmm_compressed_database)
+    logger.info('HMM template file : ' + hmm_template_file)
 
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
-    hmm_thresholds = get_hmm_thresholds(HMM_TEMPLATE_FILE)
+    hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
     hmm_search_pool = Pool(processes=core_number)
 
@@ -274,7 +278,7 @@ def search_hmm(input_variable, output_folder, core_number=1):
     for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
         input_file_path = input_dicts[input_filename]
-        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds])
+        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
 
