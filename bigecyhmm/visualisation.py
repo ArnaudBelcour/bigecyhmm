@@ -20,7 +20,8 @@ import seaborn as sns
 from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
 from matplotlib import __version__ as matplotlib_version
-from kaleido import __version__ as kaleido_version
+from importlib.metadata import version
+kaleido_version = version('kaleido')
 
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go

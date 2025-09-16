@@ -64,6 +64,10 @@ For `bigecyhmm_visualisation`, you also needs to run:
 
 `pip install pandas seaborn plotly kaleido`
 
+Kaleido requires to install a compatible Chrome version with:
+
+`kaleido_get_chrome`
+
 For `bigecyhmm_custom`, you also needs to run:
 
 `pip install networkx matplotlib`

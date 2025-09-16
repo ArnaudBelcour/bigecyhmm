@@ -1,5 +1,21 @@
 # Changelog
 
+# bigecyhmm v0.1.8 (2025-09-16)
+
+## Add
+
+* Add the possibility to change term names in diagrams.
+
+## Modify
+
+* Replace global variable by function parameters.
+* Update doi in readme.
+* Rename terms in cycle diagrams.
+
+## Fix
+
+* Fix issue with newer version of kaleido.
+
 # bigecyhmm v0.1.7 (2025-07-07)
 
 ## Add
