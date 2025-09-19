@@ -34,10 +34,8 @@ The HMMs used are stored inside the package as a zip file ([hmm_files.zip](https
 
 For `bigecyhmm_visualisation`, you also needs the following packages:
 
-- [pandas](https://pypi.org/project/pandas/): To read the input files.
-- [seaborn](https://github.com/mwaskom/seaborn): to create most of the figures.
-- [plotly](https://github.com/plotly/plotly.py): to create most of the figures.
-- [kaleido](https://github.com/plotly/Kaleido): required to create the figure.
+- [pandas](https://pypi.org/project/pandas/): to read the input files.
+- [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
 
 For `bigecyhmm_custom`, you also needs the following package:
 
@@ -62,11 +60,7 @@ pip install -e .
 
 For `bigecyhmm_visualisation`, you also needs to run:
 
-`pip install pandas seaborn plotly kaleido`
-
-Kaleido requires to install a compatible Chrome version with:
-
-`kaleido_get_chrome`
+`pip install pandas seaborn`
 
 For `bigecyhmm_custom`, you also needs to run:
 
@@ -115,10 +109,8 @@ There is a second command associated with bigecyhmm (`bigecyhmm_visualisation`),
 
 To create the associated figures, there are other dependencies:
 
-- pandas
-- seaborn
-- plotly
-- kaleido
+- [pandas](https://pypi.org/project/pandas/): to read the input files.
+- [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
 
 Two subcommands are available for `bigecyhmm_visualisation`:
 
@@ -189,7 +181,7 @@ output_folder
 - `function_abundance_sample.tsv`: a tabulated file containing the relative abundance of each function according to the abundance of the associated organisms in the different sample. Rows correspond to the functions and columns correspond to the samples. It is used to create the `heatmap_abundance_samples.png` file. The file `hmm_functional_profile.tsv` contains the absolute abundance of the functions.
 - `heatmap_abundance_samples.png`: a heatmap showing the abundance for all the HMMs searched by bigecyhmm in the different samples.
 - `cycle_abundance_sample.tsv`: a tabulated file showing the relative abundance of major functions in biogeochemical cycles according to the organisms. Rows correspond to the major functions and columns correspond to the samples. The file `cycle_abundance_sample_melted.tsv` is a melted version of this file. The file `cycle_abundance_sample_raw.tsv` contains the absolute abundance of the functions.
-- `polar_plot_abundance_samples.png`: a polar plot showing the abundance of major functions in the samples.
+- `polar_plot_abundance_samples_XXXX.png`: a polar plot showing the abundance of major functions in the sample `XXXX`.
 
 `function_occurrence` is a folder containing all visualisation associated with occurrence values. It contains:
 

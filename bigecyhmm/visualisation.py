@@ -20,13 +20,6 @@ import seaborn as sns
 from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
 from matplotlib import __version__ as matplotlib_version
-from importlib.metadata import version
-kaleido_version = version('kaleido')
-
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-import plotly.express as px
-from plotly import __version__ as plotly_version
 
 import argparse
 import logging
@@ -49,12 +42,11 @@ MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
 '''
 REQUIRES = '''
-Requires seaborn, pandas, plotly and kaleido.
+Requires seaborn, pandas and matplotlib.
 '''
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
+logger.setLevel(logging.INFO)
 
 def get_function_categories():
     """Extract function categories from HMM template file.
@@ -374,85 +366,52 @@ def create_boxplot_sample(df_seaborn, output_file_name):
     plt.clf()
 
 
-def create_polar_plot_occurrence(function_occurrence_community_df, output_polar_plot):
-    """Create polar plot from pandas dataframe with function as 'name' column' and associated ratio as a second column
+def create_polar_plot(df_seaborn_abundance, output_file):
+    fig, ax = plt.subplots(1, 1, figsize=(10, 18), subplot_kw={'projection': 'polar'})
 
-    Args:
-        function_occurrence_community_df (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the relative abundance of organisms having it in the community
-        output_polar_plot (path): path to the output file.
-    """
-    function_occurrence_community_df.reset_index(inplace=True)
-    function_occurrence_community_df = function_occurrence_community_df.sort_values(['name'], ascending=True)
-    function_occurrence_community_df['name'] = function_occurrence_community_df['name'].apply(lambda x: x.split(':')[1])
-
-    fig = px.line_polar(function_occurrence_community_df, r="ratio", theta="name", line_close=True)
-    fig.write_image(output_polar_plot, scale=1, width=1400, height=1200)
-
-
-def create_polar_plot(df_seaborn_abundance, output_polar_plot):
-    """Create polar plot from pandas dataframe with function as 'name' column' and associated ratio as a second column
-
-    Args:
-        df_seaborn_abundance (pd.DataFrame): dataframe pandas containing a column with the name of function,  a second column with the relative abundance of organisms having it in the community and a third column for the sample
-        output_polar_plot (path): path to the output file.
-    """
-
-    """
-    Script to make one polar plot per samples. TODO: make it more general.
-    specs = [[{'type': 'polar'}]*2]*2
-    fig = make_subplots(rows=2, cols=2, specs=specs)
-
-    removed_functions = ['N-S-10:Nitric oxide dismutase', 'O-S-04:Arsenite oxidation', 'S-S-10:Polysulfide reduction']
+    removed_functions = ['N-S-10:Nitric oxide dismutase', 'S-S-10:Polysulfide reduction']
 
     kept_functions = [name for name in df_seaborn_abundance['name']
-                        if df_seaborn_abundance[df_seaborn_abundance['name']==name]['ratio'].max()>0]
-    row = 1
-    col = 1
-    color = ['red', 'blue', 'green', 'purple', 'black']
-    for sample in sorted(df_seaborn_abundance['sample'].unique()):
-        tmp_df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['sample']==sample]
-        tmp_df_seaborn_abundance = tmp_df_seaborn_abundance.sort_values(['name'], ascending=False)
-        # Remove function
-        tmp_df_seaborn_abundance = tmp_df_seaborn_abundance[~tmp_df_seaborn_abundance['name'].isin(removed_functions)]
-        tmp_df_seaborn_abundance = tmp_df_seaborn_abundance[tmp_df_seaborn_abundance['name'].isin(kept_functions)]
+                        if df_seaborn_abundance[df_seaborn_abundance['name']==name]['ratio'].max()>0.1]
+    kept_functions = [kept_func for kept_func in kept_functions if not kept_func.startswith('P-S')]
+    kept_functions = [kept_func for kept_func in kept_functions if not kept_func.startswith('P1-S')]
+    kept_functions = [kept_func for kept_func in kept_functions if not 'Aerobic' in kept_func]
+    kept_functions = [kept_func for kept_func in kept_functions if not 'P-S' in kept_func]
 
-        # Keep only name of function
-        tmp_df_seaborn_abundance['name'] = tmp_df_seaborn_abundance['name'].apply(lambda x: x.split(':')[1])
-        #tmp_df_seaborn_abundance = tmp_df_seaborn_abundance[tmp_df_seaborn_abundance['ratio']>0.05]
+    df_seaborn_abundance = df_seaborn_abundance.sort_values(['name'], ascending=False)
+    # Remove function
+    df_seaborn_abundance = df_seaborn_abundance[~df_seaborn_abundance['name'].isin(removed_functions)]
+    df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_functions)]
 
-        fig.add_trace(go.Scatterpolar(
-            name = sample,
-            r = tmp_df_seaborn_abundance["ratio"],
-            theta = tmp_df_seaborn_abundance["name"],
-            ), row, col)
-        if col < 2:
-            col = col + 1
-        else:
-            col = 1
-            row = row + 1
-
-    fig.update_traces(fill='toself')
-    fig.update_polars(radialaxis=dict(range=[0,1]))
-    fig.write_image(output_polar_plot_1, scale=1, width=1600, height=1200)
-    """
-    df_seaborn_abundance = df_seaborn_abundance.sort_values(['sample', 'name'], ascending=True)
-    df_seaborn_abundance['name'] = df_seaborn_abundance['name'].apply(lambda x: x.split(':')[1])
-    # Remove function without occurrence/abundance.
-    df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['ratio']>0]
-    fig = go.Figure()
-    for sample in sorted(df_seaborn_abundance['sample'].unique()):
-        tmp_df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['sample']==sample]
-        tmp_df_seaborn_abundance = tmp_df_seaborn_abundance.sort_values(['name'], ascending=False)
-
-        fig.add_trace(go.Scatterpolar(
-            name = sample,
-            r = tmp_df_seaborn_abundance["ratio"],
-            theta = tmp_df_seaborn_abundance["name"],
-            ))
-
-    fig.update_traces(fill='toself')
-    fig.update_polars(radialaxis=dict(range=[0,1]))
-    fig.write_image(output_polar_plot, scale=1, width=1600, height=1200)
+    #tmp_df_seaborn_abundance = tmp_df_seaborn_abundance.groupby(['sample_nb', 'name'], as_index=False)['ratio'].mean()
+    mean_data = df_seaborn_abundance.groupby('name')['ratio'].mean()
+    max_data = df_seaborn_abundance.groupby('name')['ratio'].max()
+    min_data = df_seaborn_abundance.groupby('name')['ratio'].min()
+    color = 'blue'
+    if not df_seaborn_abundance.empty and 'name' in df_seaborn_abundance.columns:
+        theta = [function_name.split(':')[1] for function_name in mean_data.index]
+        # Add several angles to the polar plot according to the number of functions.
+        funciton_angles = np.linspace(0.05, 2 * np.pi-0.05, len(theta), endpoint=False)
+        ax.set_xticks(funciton_angles)
+        # Add the function labels.
+        ax.set_xticklabels(theta, size=6)
+        # Plot mean value.
+        r = mean_data.tolist()
+        ax.plot(funciton_angles, r, color='grey')
+        # Plot max value.
+        r_max = max_data.tolist()
+        ax.plot(funciton_angles, r_max, color=color, linewidth=0.5)
+        # Plot min value.
+        r_min = min_data.tolist()
+        ax.plot(funciton_angles, r_min, color=color, linewidth=0.5)
+        # Add color fill in between r_max-r and r-r_min.
+        ax.fill_between(funciton_angles, r, r_min, alpha=0.2, facecolor=color)
+        ax.fill_between(funciton_angles, r_max, r, alpha=0.2, facecolor=color)
+        # Set min and max for r values.
+        ax.set_rmax(1)
+        ax.set_rmin(0)
+    plt.tight_layout()
+    plt.savefig(output_file, bbox_inches="tight")
 
 
 def visualise_barplot_category(category, function_categories, df_seaborn_abundance, output_file_name):
@@ -564,10 +523,6 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
     create_swarmplot_community(cycle_occurrence_community_df, output_file_name)
 
-    logger.info("  -> Create polarplot.")
-    output_polar_plot = os.path.join(output_folder_occurrence, 'polar_plot_occurrence.png')
-    create_polar_plot_occurrence(cycle_occurrence_community_df, output_polar_plot)
-
     logger.info("  -> Create diagrams.")
     all_cycles = pd.read_csv(bigecyhmm_pathway_presence_file, sep='\t')['function'].tolist()
     diagram_data = {}
@@ -636,10 +591,26 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
             df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
             output_taxon_rank_abundance_plot_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
-            fig = px.bar(df_abundance_taxon_sample, x="Sample", y="Relative abundance", color="Taxonomic rank selected by EsMeCaTa", color_discrete_map= {'Not found': 'grey'})
-            # Show all label on x-axis. But this could requires work to make them readable.
-            fig.update_xaxes(tickmode='linear')
-            fig.write_image(output_taxon_rank_abundance_plot_file, scale=1, width=1600, height=1400)
+
+            df_abundance_taxon_sample = df_abundance_taxon_sample.set_index(['Sample', 'Taxonomic rank selected by EsMeCaTa'])['Relative abundance'].unstack().reset_index()
+            df_abundance_taxon_sample.set_index('Sample', inplace=True)
+
+            color_ranks = {'species': '#EF553B', 'genus': '#00CC96', 'family': '#AB63FA', 'order': '#FFA15A', 'class': '#19D3F3',
+                        'phylum': '#FF6692', 'Not found': 'grey'}
+            unused_colors = ['#B6E880', '#FF97FF', '#FECB52' '#636EFA']
+            added_color = 0
+            for rank in df_abundance_taxon_sample.columns:
+                if rank not in color_ranks:
+                    color_ranks[rank] = unused_colors[added_color]
+                    added_color += 1
+            # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
+            sorted_columns = [rank for rank in RANK_SORTED if rank in df_abundance_taxon_sample.columns]
+            df_abundance_taxon_sample = df_abundance_taxon_sample[sorted_columns]
+            df_abundance_taxon_sample.plot(kind='bar', stacked=True, color=color_ranks, figsize=(16,14))
+            plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+            plt.style.use('default')
+            plt.savefig(output_taxon_rank_abundance_plot_file, bbox_inches="tight", transparent=False)
+            plt.clf()
 
         logger.info("  -> Read bigecyhmm cycle output files.")
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
@@ -675,8 +646,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df = pd.melt(cycle_relative_abundance_samples_df, id_vars='name', value_vars=cycle_relative_abundance_samples_df.columns.tolist())
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         melted_cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_melted.tsv'), sep='\t')
-        output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_samples.png')
-        create_polar_plot(melted_cycle_relative_abundance_samples_df, output_polar_plot)
+        for sample in melted_cycle_relative_abundance_samples_df['sample'].unique():
+            output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_sample_'+sample+'.png')
+            sample_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['sample']==sample]
+            create_polar_plot(sample_melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
         logger.info("  -> Create diagrams.")
         output_folder_cycle_diagram= os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
@@ -770,10 +743,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
     metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pandas'] = pandas_version
-    metadata_json['tool_dependencies']['python_package']['plotly'] = plotly_version
     metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
     metadata_json['tool_dependencies']['python_package']['seaborn'] = seaborn_version
-    metadata_json['tool_dependencies']['python_package']['kaleido'] = kaleido_version
 
     metadata_json['input_parameters'] = {'esmecata_output_folder': esmecata_output_folder, 'bigecyhmm_output': bigecyhmm_output, 'output_folder': output_folder,
                                          'abundance_file_path': abundance_file_path}
@@ -887,10 +858,8 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder):
     metadata_json['tool_dependencies']['python_package']['Python_version'] = sys.version
     metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pandas'] = pandas_version
-    metadata_json['tool_dependencies']['python_package']['plotly'] = plotly_version
     metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
     metadata_json['tool_dependencies']['python_package']['seaborn'] = seaborn_version
-    metadata_json['tool_dependencies']['python_package']['kaleido'] = kaleido_version
 
     metadata_json['input_parameters'] = {'ko_abundance_file': ko_abundance_file, 'output_folder': output_folder}
     metadata_json['duration'] = duration

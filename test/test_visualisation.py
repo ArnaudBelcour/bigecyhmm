@@ -224,8 +224,6 @@ def test_create_visualisation():
     output_folder = 'output_folder'
     create_visualisation(bigecyhmm_output_folder, output_folder)
 
-    polar_plot = os.path.join(output_folder, 'function_occurrence', 'polar_plot_occurrence.png')
-    assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
 
@@ -238,8 +236,6 @@ def test_create_visualisation_cli():
     output_folder = 'output_folder'
     subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', bigecyhmm_output_folder, '-o', output_folder])
 
-    polar_plot = os.path.join(output_folder, 'function_occurrence', 'polar_plot_occurrence.png')
-    assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
 
@@ -269,7 +265,11 @@ def test_create_visualisation_abundance():
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
-    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_samples.png')
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_1.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_2.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_3.png')
     assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
@@ -286,7 +286,11 @@ def test_create_visualisation_abundance_cli():
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
-    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_samples.png')
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_1.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_2.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_3.png')
     assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
@@ -304,7 +308,11 @@ def test_create_visualisation_abundance_from_esmecata():
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
-    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_samples.png')
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_1.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_2.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_3.png')
     assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)
@@ -334,7 +342,11 @@ def test_create_visualisation_abundance_from_esmecata_cli():
 
     carbon_cycle_diagram = os.path.join(output_folder, 'function_abundance', 'cycle_diagrams_abundance', 'sample_1_carbon_cycle.png')
     assert os.path.exists(carbon_cycle_diagram)
-    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_samples.png')
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_1.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_2.png')
+    assert os.path.exists(polar_plot)
+    polar_plot = os.path.join(output_folder, 'function_abundance', 'polar_plot_abundance_sample_sample_3.png')
     assert os.path.exists(polar_plot)
     heatmap_occurrence = os.path.join(output_folder, 'function_occurrence', 'heatmap_occurrence.png')
     assert os.path.exists(heatmap_occurrence)

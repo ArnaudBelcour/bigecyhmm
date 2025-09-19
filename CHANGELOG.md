@@ -9,12 +9,9 @@
 ## Modify
 
 * Replace global variable by function parameters.
+* Repalce plotly figures by matplotlib/seaborn figures.
 * Update doi in readme.
 * Rename terms in cycle diagrams.
-
-## Fix
-
-* Fix issue with newer version of kaleido.
 
 # bigecyhmm v0.1.7 (2025-07-07)
 
