@@ -35,8 +35,21 @@ from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE
 from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
-from esmecata.report.esmecata_compression import RANK_SORTED
-RANK_SORTED = [*RANK_SORTED, 'Not found']
+from esmecata.utils import get_domain_or_superkingdom_from_ncbi_tax_database
+
+RANK_SORTED = ['isolate', 'strain', 'serotype', 'serogroup', 'forma', 'subvariety', 'varietas',
+               'subspecies', 'forma specialis', 'species', 'species subgroup', 'species group',
+               'subseries', 'series',
+               'subsection', 'section',
+               'subgenus', 'genus',
+               'subtribe', 'tribe',
+               'subfamily', 'family', 'superfamily',
+               'parvorder', 'infraorder', 'suborder', 'order', 'superorder',
+               'subcohort', 'cohort',
+               'infraclass', 'subclass', 'class', 'superclass',
+               'infraphylum', 'subphylum', 'phylum', 'superphylum',
+               'subkingdom', 'kingdom', get_domain_or_superkingdom_from_ncbi_tax_database(),
+               'clade', 'environmental samples', 'incertae sedis', 'unclassified', 'no rank', 'Not found']
 
 MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
