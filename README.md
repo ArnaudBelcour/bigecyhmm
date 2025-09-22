@@ -16,7 +16,9 @@ Bigecyhmm is a Python package to search for genes associated with biogeochemical
     - [4.1 Function occurrence and abundance](#41-function-occurrence-and-abundance)
     - [4.2 Output of bigecyhmm\_visualisation](#42-output-of-bigecyhmm_visualisation)
   - [5 Custom usage](#5-custom-usage)
-    - [5.1 Contribution to bigecyhmm internal database](#51-contribution-to-bigecyhmm-internal-database)
+    - [5.1 Bigecyhmm internal database](#51-bigecyhmm-internal-database)
+      - [5.1.1 Contribution to bigecyhmm internal database](#511-contribution-to-bigecyhmm-internal-database)
+      - [5.1.2 Modifying bigecyhmm internal database](#512-modifying-bigecyhmm-internal-database)
     - [5.2 `bigecyhmm_custom`: using custom database](#52-bigecyhmm_custom-using-custom-database)
       - [5.2.1 Requirements](#521-requirements)
       - [5.2.2 Inputs](#522-inputs)
@@ -200,11 +202,21 @@ output_folder
 
 ## 5 Custom usage
 
-### 5.1 Contribution to bigecyhmm internal database
+### 5.1 Bigecyhmm internal database
+
+#### 5.1.1 Contribution to bigecyhmm internal database
 
 If you are interested in specific functions associated with cycles present in bigecyhmm (carbon, sulfur, nitrogen, phosphorus) and want to propose an addition, you can create an issue or a Pull Request.
 Depending on the additions or modifications, it will be taken into account. Keep in mind that bigecyhmm's goal is to limit itself to a small internal database.
 If you want to completely add another cycle, please refer to the next subsection.
+
+#### 5.1.2 Modifying bigecyhmm internal database
+
+You can also edit the database to add your own functions. To do so, you can either clone this repository or make a fork. Then install bigecyhmm using `pip install -e .` inside bigecyhmm folder (where the file `pyproject.toml` is located). You can modify the internal database which is composed of three files:
+
+- `hmm_databases/hmm_files.zip`: a zip file containing the HMM files used to screen the associated genes. Uncompress it, add the HMM files you want in it and then compress it.
+- `hmm_databases/hmm_table_template.tsv`: a tabulated file containing the association between functions and HMMs. For each HMM you add, you have to add a line in this file. There are two mandatory columns (1) `Hmm file` (name of the HMM file in `hmm_files.zip`) and (2) `Hmm detecting threshold` (threshold used to filter matches).
+- `hmm_databases/cycle_pathways.tsv`: a tabulated file linking major functions to HMMs. This file is linked to the creation of the diagrams. If you want to modify this file and find a change on the diagram, you must (1) edit diagram templates located at `templates/*.png` and (2) edit `diagram_cycles.py`, especially function called `create_carbon_cycle` (and the one for the other cycles). In this function several lines are associated with the major function: `data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']` extracts data from predictions, `imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,0,0), font=font)` puts the prediction on the template. Modifying the template requires to also modifies these scripts.
 
 ### 5.2 `bigecyhmm_custom`: using custom database
 
