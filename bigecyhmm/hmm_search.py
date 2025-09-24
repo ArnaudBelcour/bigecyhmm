@@ -113,7 +113,7 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
-def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
+def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
 
@@ -123,6 +123,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
         hmm_compressed_database (str): path to HMM compress database
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
+        pyhmmer_core (int): number of core used by pyhmmer
 
     Returns:
         results (list): list of result for HMM search, which are sublist containing: evalue, score and length
@@ -131,7 +132,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
 
     # Extract the sequence from the protein fasta files.
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
-        sequences = list(seq_file)
+        sequences = pyhmmer.easel.DigitalSequenceBlock(pyhmmer.easel.Alphabet.amino(), seq_file)
 
     # Iterate on the HMM to query them. 
     results = []
@@ -148,7 +149,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                         threshold, threshold_type = threshold_data.split('|')
                         threshold = float(threshold)
                         if threshold_type == 'full':
-                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1, Z=len(list_of_hmms)):
+                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
                                 for hit in hits.included:
                                     if hit.score >= threshold:
                                         gene_match = hit.name
@@ -167,7 +168,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                         else:
                                             results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                         if threshold_type == 'domain':
-                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=1, Z=len(list_of_hmms)):
+                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
                                 for hit in hits.included:
                                     for domain in hit.domains.included:
                                         if domain.score >= threshold:
@@ -233,7 +234,7 @@ def create_major_functions(hmm_output_folder, output_file, hmm_template_file=HMM
             csvwriter.writerow([function, *present_functions])
 
 
-def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR):
+def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
     Args:
@@ -243,9 +244,10 @@ def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_c
         hmm_compressed_database (str): path to HMM compress database
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
+        pyhmmer_core (int): number of core used by pyhmmer
     """
     logger.info('Search for HMMs on ' + input_file_path)
-    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db)
+    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db, pyhmmer_core)
     write_results(hmm_results, output_file)
 
 
@@ -267,6 +269,14 @@ def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRE
     logger.info('HMM compressed file: ' + hmm_compressed_database)
     logger.info('HMM template file : ' + hmm_template_file)
 
+    # If there is only one input fasta file, use pyhmmer multiprocessing.
+    if len(input_dicts) == 1:
+        core_number = 1
+        pyhmmer_core = 0
+    # Otherwise allocate one CPU per fasta file running HMM search.
+    else:
+        pyhmmer_core = 1
+
     hmm_output_folder = os.path.join(output_folder, 'hmm_results')
     is_valid_dir(hmm_output_folder)
 
@@ -278,7 +288,7 @@ def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRE
     for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
         input_file_path = input_dicts[input_filename]
-        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db])
+        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db, pyhmmer_core])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
 
