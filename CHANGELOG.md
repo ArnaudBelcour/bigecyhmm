@@ -9,7 +9,8 @@
 ## Modify
 
 * Replace global variable by function parameters.
-* Repalce plotly figures by matplotlib/seaborn figures.
+* Replace plotly figures by matplotlib/seaborn figures.
+* Change several output files to generate more readable ones.
 * Update doi in readme.
 * Rename terms in cycle diagrams.
 

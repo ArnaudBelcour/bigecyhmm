@@ -158,7 +158,8 @@ output_folder
 │   └── function_abundance_sample.tsv
 │   └── heatmap_abundance_samples.png
 │   └── hmm_functional_profile.tsv
-│   └── polar_plot_abundance_samples.png
+│   └── polar_plot_abundance_sample_1.png
+│   └── polar_plot_abundance_sample_XXX.png
 ├── function_occurrence
 │   └── cycle_occurence.tsv
 │   └── diagram_carbon_cycle.png
@@ -169,7 +170,6 @@ output_folder
 │   └── function_occurrence_in_organism.tsv
 │   └── heatmap_occurrence.png
 │   └── pathway_presence_in_organism.tsv
-│   └── polar_plot_occurrence.png
 ├── bigecyhmm_visualisation.log
 ├── bigecyhmm_visualisation_metadata.json
 ```
@@ -193,7 +193,6 @@ output_folder
 - `function_occurrence_in_organism.tsv`: a tabulated file containing the occurrence of function in each organism of the samples.
 - `heatmap_occurrence.png`: a heatmap showing the occurrence for all the HMMs searched by bigecyhmm in the community (all the input protein files).
 - `pathway_presence_in_organism.tsv`: a tabulated file containing the occurrence of cycle funcitons in each organism of the samples.
-- `polar_plot_occurrence.png`: a polar plot showing the occurrence of major functions in the samples.
 - `swarmplot_function_ratio_community.png`: a swarmplot showing the occurrence of major functions in the samples.
 
 `bigecyhmm_visualisation.log` is a log file.
@@ -212,11 +211,35 @@ If you want to completely add another cycle, please refer to the next subsection
 
 #### 5.1.2 Modifying bigecyhmm internal database
 
-You can also edit the database to add your own functions. To do so, you can either clone this repository or make a fork. Then install bigecyhmm using `pip install -e .` inside bigecyhmm folder (where the file `pyproject.toml` is located). You can modify the internal database which is composed of three files:
+You can also edit the database to add your own functions. To do so, you can either clone this repository or make a fork. Then install bigecyhmm using `pip install -e .` inside bigecyhmm folder (where the file `pyproject.toml` is located). You can modify the internal database in different ways. There are files to potentially modify:
 
 - `hmm_databases/hmm_files.zip`: a zip file containing the HMM files used to screen the associated genes. Uncompress it, add the HMM files you want in it and then compress it.
 - `hmm_databases/hmm_table_template.tsv`: a tabulated file containing the association between functions and HMMs. For each HMM you add, you have to add a line in this file. There are two mandatory columns (1) `Hmm file` (name of the HMM file in `hmm_files.zip`) and (2) `Hmm detecting threshold` (threshold used to filter matches).
-- `hmm_databases/cycle_pathways.tsv`: a tabulated file linking major functions to HMMs. This file is linked to the creation of the diagrams. If you want to modify this file and find a change on the diagram, you must (1) edit diagram templates located at `templates/*.png` and (2) edit `diagram_cycles.py`, especially function called `create_carbon_cycle` (and the one for the other cycles). In this function several lines are associated with the major function: `data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']` extracts data from predictions, `imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,0,0), font=font)` puts the prediction on the template. Modifying the template requires to also modifies these scripts.
+- `hmm_databases/cycle_pathways.tsv`: a tabulated file linking major functions to HMMs. This file is linked to the creation of the diagrams. If you want to modify this file and propagate the change to the diagram, you must (1) edit diagram templates located at `templates/*` and (2) edit `diagram_cycles.py`, especially function called `create_carbon_cycle` (and the one for the other cycles). In this function several lines are associated with the major function: `data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']` extracts function abundance from predictions, `imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,0,0), font=font)` puts the prediction on the template. Modifying the template requires to also modifies these scripts.
+
+**Adding new HMM**
+
+If you want to add a new HMM for the search, just modify `hmm_databases/hmm_files.zip` and `hmm_databases/hmm_table_template.tsv`.
+
+**Adding new pathway/diagram**
+
+If you want to modify or create a diagram: you have to put the new associated HMMs in `hmm_databases/hmm_files.zip` and `hmm_databases/hmm_table_template.tsv`. Then modify `hmm_databases/cycle_pathways.tsv` by adding the new pathways associated with HMMs.
+
+If you have multiple HMMs for the same pathway, you can separate them with a `, `. If you have two HMMs that are required at the same time, you have to separated them with a `; `. For example, `soxZ.hmm, soxA.hmm; soxC.hmm, soxD.hmm` means that to have the associated function you must have either *soxZ* or *soxZ* **AND** either *soxC* or *soxD*.
+
+It is also possible to say that a function should not be associated with a HMM by prefixing `NO|` to the HMM filename. For example, `soxZ.hmm, soxA.hmm; NO|soxC.hmm, NO|soxD.hmm` means that to have the associated function you must have either *soxZ* or *soxZ* **AND** **NOT** *soxC* or *soxD*.
+
+Then you also have to modify the diagram template in `templates/*` (you can modify the svg and then extract the new template in png). Finally, you will have to modify `diagram_cycles.py` to correctly place the new predictions on the template.
+
+To do so, you have to change the coordinates of the text in `diagram_cycles.py`. For example, in the line
+
+```python
+  data_step_01 = diagram_data['C-S-01:Organic carbon oxidation']
+  imgdraw.text((800,80), 'Step1: Organic carbon\n oxidation\n{0}: {1}\n{2}: {3}%'.format(first_term, data_step_01[0], second_term, data_step_01[1]), (0,0,0), font=font)
+```
+
+`(800,80)` corresponds to the coordinates of the text on the figure, by adjusting it you can move the text. First number is associated with x-axis and second number is associated with y-axis. For x-axis, 0 begins at the left of the figure with higher numbers going towards the right. For y-axis, 0 begins at the top of the figure with higher numbers going towards the bottom. `(0,0,0)` corresponds to the color of the text.
+
 
 ### 5.2 `bigecyhmm_custom`: using custom database
 
