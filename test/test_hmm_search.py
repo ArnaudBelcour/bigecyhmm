@@ -16,6 +16,10 @@ EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 
                    'Q607G3': ('Methane oxidation - Partculate methane monooxygenase', 'C-S-08:Methanotrophy', 'pmoA.hmm'), 'P0ACD8': ('Ni-Fe Hydrogenase', 'C-S-09:Hydrogen oxidation', 'nife-group-1.hmm'),
                    'P13419': ('Wood Ljungdahl pathway (methyl branch)', 'C-S-10:Acetogenesis WL', 'K01938.hmm')}
 
+EXPECTED_FUNCTIONS = {'org_1': ['C-S-01:Organic carbon oxidation', 'C-S-02:Carbon fixation', 'C-S-03:Ethanol oxidation', 'C-S-04:Acetate oxidation', 'C-S-05:Hydrogen generation', 'C-S-06:Fermentation', 'C-S-07:Methanogenesis',
+                                'C-S-08:Methanotrophy', 'C-S-09:Hydrogen oxidation', 'C-S-10:Acetogenesis WL', 'P-S-02:Mineralisation'],
+                        'org_2': ['C-S-02:Carbon fixation', 'P-S-01:Immobilisation (P-poor)', 'P-S-01:Immobilisation (P-rich)'],
+                        'org_3': ['C-S-02:Carbon fixation', 'P-S-01:Immobilisation (P-poor)', 'P-S-01:Immobilisation (P-rich)']}
 
 def extract_hmm_to_function():
     with open(HMM_TEMPLATE_FILE, 'r') as open_hmm_template:
@@ -253,3 +257,28 @@ def test_search_hmm_cli():
 
     shutil.rmtree(output_folder)
 
+
+def test_search_hmm_folder_cli():
+    input_file = os.path.join('input_data', 'org_prot')
+    output_folder = 'output_folder'
+
+    subprocess.call(['bigecyhmm', '-i', input_file, '-o', output_folder])
+
+    pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
+    pathway_presence_predicted = {}
+    pathway_presence_predicted['org_1'] = []
+    pathway_presence_predicted['org_2'] = []
+    pathway_presence_predicted['org_3'] = []
+
+    with open(pathway_presence_file, 'r') as open_predicted_hmm_file:
+        csvreader = csv.DictReader(open_predicted_hmm_file, delimiter='\t')
+        for line in csvreader:
+            for col_header in line:
+                if 'org' in col_header:
+                    if line[col_header] == '1':
+                        pathway_presence_predicted[col_header].append(line['function'])
+
+    for organism in EXPECTED_FUNCTIONS:
+        assert set(EXPECTED_FUNCTIONS[organism]) == set(pathway_presence_predicted[organism])
+
+    shutil.rmtree(output_folder)
