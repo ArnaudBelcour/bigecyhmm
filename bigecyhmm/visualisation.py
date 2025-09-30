@@ -517,6 +517,14 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
     cycle_occurrence_organisms, all_studied_organisms = compute_bigecyhmm_functions_occurrence(bigecyhmm_pathway_presence_file, tax_id_names_observation_names)
 
+    if abundance_file_path is not None:
+        if abundance_file_path.endswith('.tsv'):
+            delimiter = '\t'
+        elif abundance_file_path.endswith('.csv'):
+            delimiter = ','
+        abundance_data_df = pd.read_csv(abundance_file_path, sep=delimiter)
+        all_studied_organisms = abundance_data_df.index.tolist()
+
     df_cycle_occurrence_organisms = pd.DataFrame(cycle_occurrence_organisms)
     df_cycle_occurrence_organisms.index.name = 'function'
     df_cycle_occurrence_organisms.fillna(0, inplace=True)
@@ -546,16 +554,16 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             diagram_data[cycle_name] = (0, 0)
 
     carbon_cycle_file = os.path.join(output_folder_occurrence, 'diagram_carbon_cycle.png')
-    create_carbon_cycle(diagram_data, carbon_cycle_file)
+    create_carbon_cycle(diagram_data, carbon_cycle_file, 'Occurrence', 'Percentage')
 
     nitrogen_cycle_file = os.path.join(output_folder_occurrence, 'diagram_nitrogen_cycle.png')
-    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Occurrence', 'Percentage')
 
     sulfur_cycle_file = os.path.join(output_folder_occurrence, 'diagram_sulfur_cycle.png')
-    create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+    create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Occurrence', 'Percentage')
 
     other_cycle_file = os.path.join(output_folder_occurrence, 'diagram_other_cycle.png')
-    create_other_cycle(diagram_data, other_cycle_file)
+    create_other_cycle(diagram_data, other_cycle_file, 'Occurrence', 'Percentage')
 
     logger.info("  -> Read bigecyhmm functions output files.")
     bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')

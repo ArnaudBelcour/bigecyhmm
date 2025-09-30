@@ -110,13 +110,13 @@ def read_measures_file(measures_file_path):
         total_measure_per_column (dict): for each column, the total measure of all rows.
     """
     if measures_file_path.endswith('.tsv'):
-        delimtier = '\t'
+        delimiter = '\t'
     elif measures_file_path.endswith('.csv'):
-        delimtier = ','
+        delimiter = ','
 
     column_measure = {}
     with open(measures_file_path, 'r') as open_measures_file:
-        csvreader = csv.DictReader(open_measures_file, delimiter=delimtier)
+        csvreader = csv.DictReader(open_measures_file, delimiter=delimiter)
         headers = csvreader.fieldnames
         columns = headers[1:]
         first_row = headers[0]
