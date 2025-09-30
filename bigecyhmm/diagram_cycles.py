@@ -435,17 +435,20 @@ def create_diagram_figures(input_diagram_file, output_folder):
 
     diagram_data = parse_diagram_folder(input_diagram_file)
 
+    first_term = 'Occurrence'
+    second_term = 'Percentage'
+
     carbon_cycle_file = os.path.join(biogeochemical_diagram_folder, 'carbon_cycle.png')
-    create_carbon_cycle(diagram_data, carbon_cycle_file)
+    create_carbon_cycle(diagram_data, carbon_cycle_file, first_term, second_term)
 
     nitrogen_cycle_file = os.path.join(biogeochemical_diagram_folder, 'nitrogen_cycle.png')
-    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file)
+    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, first_term, second_term)
 
     sulfur_cycle_file = os.path.join(biogeochemical_diagram_folder, 'sulfur_cycle.png')
-    create_sulfur_cycle(diagram_data, sulfur_cycle_file)
+    create_sulfur_cycle(diagram_data, sulfur_cycle_file, first_term, second_term)
 
     other_cycle_file = os.path.join(biogeochemical_diagram_folder, 'other_cycle.png')
-    create_other_cycle(diagram_data, other_cycle_file)
+    create_other_cycle(diagram_data, other_cycle_file, first_term, second_term)
 
     phosphorus_cycle_file = os.path.join(biogeochemical_diagram_folder, 'phosphorus_cycle.png')
-    create_phosphorus_cycle(diagram_data, phosphorus_cycle_file)
+    create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, first_term, second_term)
