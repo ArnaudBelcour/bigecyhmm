@@ -5,6 +5,7 @@
 ## Add
 
 * Add the possibility to change term names in diagrams.
+* Add multiprocessing using pyhmmer when only one fasta file is given as input.
 
 ## Modify
 
