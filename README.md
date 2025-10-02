@@ -24,6 +24,7 @@ Bigecyhmm is a Python package to search for genes associated with biogeochemical
       - [5.2.2 Inputs](#522-inputs)
       - [5.2.3 Outputs](#523-outputs)
   - [6 Citation](#6-citation)
+  - [License](#license)
 
 ## 1 Dependencies
 
@@ -358,3 +359,6 @@ Boden, J.S., Zhong, J., Anderson, R.E. et al. Timing the evolution of phosphorus
 
 Siles, J. A., Starke, R., Martinovic, T., Fernandes, M. L. P., Orgiazzi, A., & Bastida, F. Distribution of phosphorus cycling genes across land uses and microbial taxonomic groups based on metagenome and genome mining. Soil Biology and Biochemistry, 174, 108826, 2022. https://doi.org/10.1016/j.soilbio.2022.108826
 
+## License
+
+This software is licensed under the GNU GPL-3.0-or-later, see the [LICENSE](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/LICENSE) file for details.
