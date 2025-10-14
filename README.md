@@ -2,7 +2,7 @@
 
 # bigecyhmm: Biogeochemical cycle HMMs search
 
-Bigecyhmm is a Python package to search for genes associated with biogeochemical cycles in protein sequence fasta files. It begins as a self-contained, lightweight reimplementation of a subtask performed in [METABOLIC](https://github.com/AnantharamanLab/METABOLIC) but has since grown. Bigecyhmm default behaviour searches for enzymes associated with carbon, sulfur, nitrogen and phosphorus cycles using HMMs from METABOLIC article, KEGG, PFAM, TIGR. It can be also used with a custom database and then will output network representation of the cycle.
+Bigecyhmm is a Python package to search for genes associated with biogeochemical cycles in protein sequence fasta files. It begins as a self-contained, lightweight reimplementation of a subtask performed in [METABOLIC](https://github.com/AnantharamanLab/METABOLIC) but has since grown. Bigecyhmm, by default, searches for enzymes associated with carbon, sulfur, nitrogen and phosphorus cycles using HMMs from METABOLIC article, KEGG, PFAM, TIGR. It can be also used with a custom database and then will output network representation of the cycle.
 
 ## 0 Table of contents
 - [bigecyhmm: Biogeochemical cycle HMMs search](#bigecyhmm-biogeochemical-cycle-hmms-search)
@@ -122,7 +122,7 @@ Two subcommands are available for `bigecyhmm_visualisation`:
 
 There are four parameters:
 
-- `--esmecata`: EsMeCaTa output folder associated with the run (as the visualisation works on esmecata results). Only required for `bigecyhmm_visualisation esmecata`.
+- `--esmecata`: EsMeCaTa output folder associated with the run (as the visualisation works on EsMeCaTa results). Only required for `bigecyhmm_visualisation esmecata`.
 - `--bigecyhmm`: bigecyhmm output folder associated with the run. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `-o`: an output folder. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
@@ -180,7 +180,7 @@ output_folder
 - `cycle_diagrams_abundance`: a folder containing 4 cycle diagrams (carbon, sulfur, nitrogen and other) from METABOLIC per sample from the abundance file. For each sample, it gives the abundance and the relative abundance of the major function.
 - `function_participation`: a folder containing one tabulated file per sample from the abundance file. For each sample, it gives the function abundance associated with each organism in the community.
 - `cycle_participation`: a folder containing one tabulated file per sample from the abundance file. For each sample, it gives the cycle abundance associated with each organism in the community.
-- `barplot_esmecata_found_taxon_sample.png`: a barplot displaying the coverage of EsMeCaTa according to the abundances from samples. Each bar corresponds to a sample, the y-axis shows the relative abundances of the organisms in the sample. The color indicates which taxonomic rank has been used by EsMeCaTa to predict the consensus proteomes. If EsMeCaTa was not able to predict a consensus proteomes, it is displayed in category `Not found`. With this figure, you can have an idea if there is enough predictions for the different samples in the dataset and at which taxonomic ranks these predictiosn have been made. Thus allowing the estimation of the quality of the predictions: predictions are better if they are closer to lower taxonomic ranks (genus family). `barplot_esmecata_found_organism_sample.tsv` is the input file used to create the figure.
+- `barplot_esmecata_found_taxon_sample.png`: a barplot displaying the coverage of EsMeCaTa according to the abundances from samples. Each bar corresponds to a sample, the y-axis shows the relative abundances of the organisms in the sample. The color indicates which taxonomic rank has been used by EsMeCaTa to predict the consensus proteomes. If EsMeCaTa was not able to predict a consensus proteomes, it is displayed in category `Not found`. With this figure, you can have an idea if there is enough predictions for the different samples in the dataset and at which taxonomic ranks these predictions have been made. Thus allowing the estimation of the quality of the predictions: predictions are better if they are closer to lower taxonomic ranks (genus family). `barplot_esmecata_found_organism_sample.tsv` is the input file used to create the figure.
 - `function_abundance_sample.tsv`: a tabulated file containing the relative abundance of each function according to the abundance of the associated organisms in the different sample. Rows correspond to the functions and columns correspond to the samples. It is used to create the `heatmap_abundance_samples.png` file. The file `hmm_functional_profile.tsv` contains the absolute abundance of the functions.
 - `heatmap_abundance_samples.png`: a heatmap showing the abundance for all the HMMs searched by bigecyhmm in the different samples.
 - `cycle_abundance_sample.tsv`: a tabulated file showing the relative abundance of major functions in biogeochemical cycles according to the organisms. Rows correspond to the major functions and columns correspond to the samples. The file `cycle_abundance_sample_melted.tsv` is a melted version of this file. The file `cycle_abundance_sample_raw.tsv` contains the absolute abundance of the functions.
@@ -193,7 +193,7 @@ output_folder
 - `function_occurrence.tsv`: a tabulated file containing the ratio for each function. Rows correspond to the function and the column corresponds to the community. It is used to create the `heatmap_occurrence.png` file.
 - `function_occurrence_in_organism.tsv`: a tabulated file containing the occurrence of function in each organism of the samples.
 - `heatmap_occurrence.png`: a heatmap showing the occurrence for all the HMMs searched by bigecyhmm in the community (all the input protein files).
-- `pathway_presence_in_organism.tsv`: a tabulated file containing the occurrence of cycle funcitons in each organism of the samples.
+- `pathway_presence_in_organism.tsv`: a tabulated file containing the occurrence of cycle functions in each organism of the samples.
 - `swarmplot_function_ratio_community.png`: a swarmplot showing the occurrence of major functions in the samples.
 
 `bigecyhmm_visualisation.log` is a log file.
@@ -306,7 +306,7 @@ It can take five optional arguments:
 
 - `--abundance-file`: an abundance file containing the abundance of the organisms associated with the protein sequences given as input in different samples.
 - `--measure-file`: a measurement file containing the measures of metabolites of the biogeochemical cycle in different samples.
-- `--esmecata`: by giving an esmecata output folder, `bigecyhmm_custom` maps taxon_id to organism names to associate organism abundance with esmecata predicitons.
+- `--esmecata`: by giving an EsMeCaTa output folder, `bigecyhmm_custom` maps taxon_id to organism names to associate organism abundance with EsMeCaTa predictions.
 - `-m`: JSON file containing gene associated with protein motifs to check for predictions. This verification comes from the [METABOLIC article](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01213-8#Sec2) (you can find information about it, in the section `Motif validation`). The protein motif corresponds to a regex associated with amnio-acids or `X` (the latter being any amino-acid). The idea of this verification is to check if an expected amino-acid motif is present in the sequence matching the associated HMM. You can see an example file in the test folder ([motif.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif.json)). The name of the gene corresponds to the name of its HMM. If no file is given, it will be using the default ones from METABOLIC (you can find it [here](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/__init__.py#L39) as a dicitonary).
 - `-p`: JSON file containing association between two genes to check for predictions. This verification comes from the [METABOLIC article](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01213-8#Sec2) (you can find information about it, in the section `Motif validation`). It ensures that a sequence is properly associated with a specific HMM and not to anotehr yet similar HMM. An example file can be found in the test folfer ([motif_pair.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif_pair.json)). It contains association between two gene names. The HMM search results of the sequence against these two gnee profiles are compared to find the one with a better score. The name of the gene corresponds to the name of its HMM. If no file is given, it will be using the default ones from METABOLIC (you can find it [here](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/__init__.py#L50) as a dicitonary).
 
@@ -315,7 +315,7 @@ It can take five optional arguments:
 `bigecyhmm_custom` creates inside the output folder on folder per input custom json file.
 It outputs similar files than bigecyhmm classical output except for the cycle visualisation.
 As it is more difficult to provide a direct visualisation from a custom database `bigecyhmm_custom` relies on network representation to create these visualisations.
-To do so, it creates network file (`cycle_diagram_bipartite_occurrence.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation. It also tries to create a visualisation with networkx and matpltolib but they are not very good.
+To do so, it creates network file (`cycle_diagram_bipartite_occurrence.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation. It also tries to create a visualisation with networkx and matplotlib but they are not very good.
 
 If you have given abundance and measure files, a second network file (`cycle_diagram_bipartite_abundance.graphml`) is created where function nodes are associated with the summed abundance of organisms in the different samples and metabolite node are associated with their measures in the different samples.
 
