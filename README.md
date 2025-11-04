@@ -73,15 +73,22 @@ For `bigecyhmm_custom`, you also needs to run:
 
 ### 3.1 Usage
 
-You can used the tools with two calls:
+Bigecyhmm can be used on two types of input:
 
-- by giving as input a protein fasta file:
+- by giving a protein fasta file:
 
 ```sh
 bigecyhmm -i protein_sequence.faa -o output_dir
 ```
 
-- by giving as input a folder containing multiple fasta files:
+- by giving a folder containing multiple fasta files:
+
+```
+protein_sequences_folder
+├── protein_sequences_1.faa
+├── protein_sequences_2.faa
+├── ...
+```
 
 ```sh
 bigecyhmm -i protein_sequences_folder -o output_dir
