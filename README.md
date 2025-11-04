@@ -246,7 +246,7 @@ To do so, you have to change the coordinates of the text in `diagram_cycles.py`.
 
 **Warning**: This is a prototype.
 
-It is possible to create a completely custom database that is linked to a specific biogeochemical cycles (or metabolic networks) using `bigecyhmm_custom`.
+It is possible to create a custom database that is linked to a specific biogeochemical cycles (or metabolic networks) using `bigecyhmm_custom`.
 
 #### 5.2.1 Requirements
 
