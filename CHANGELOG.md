@@ -1,5 +1,11 @@
 # Changelog
 
+# bigecyhmm v0.1.9 (2025-11-26)
+
+## Add
+
+* Add the possibility to give list to motif pair (to check more than one sequence).
+
 # bigecyhmm v0.1.8 (2025-09-30)
 
 ## Add

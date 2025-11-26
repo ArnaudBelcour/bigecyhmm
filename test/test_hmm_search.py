@@ -164,6 +164,26 @@ def test_check_motif_pair_amoA():
     assert check_bool == True
 
 
+def test_check_motif_pair_amoA_list():
+    motif_pair = {'amoA': ['pmoA', 'pmoB']}
+    gene_name = 'amoA'
+    check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm',
+                  'pmoB': 'hmm_files/pmoB.check.hmm'}
+
+    input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
+    with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
+        sequences = list(seq_file)
+        gene_sequence = [sequence for sequence in sequences]
+
+    for second_hmm_name in motif_pair[gene_name]:
+        first_check_hmm = check_hmms[gene_name]
+        second_check_hmm = check_hmms[second_hmm_name]
+
+        with zipfile.ZipFile(HMM_COMPRESSED_FILE, 'r') as zip_object:
+            check_bool = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+        assert check_bool == True
+
+
 def test_check_motif_pair_amoA_negative_pmoA():
     gene_name = 'pmoA'
     check_hmms = {'pmoA': 'hmm_files/pmoA.check.hmm', 'amoA': 'hmm_files/amoA.check.hmm'}

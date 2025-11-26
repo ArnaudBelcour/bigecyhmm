@@ -274,3 +274,52 @@ def test_search_hmm_custom_db_abundance_measure_esmecata_cli():
             assert expected_abundance[function][sample] == predicted_abundance[function][sample]
 
     shutil.rmtree(output_folder)
+
+
+def test_search_hmm_custom_db_abundance_measure_esmecata_cli_modified_motif():
+    input_file = os.path.join('input_data', 'esmecata_output_folder', '1_clustering', 'reference_proteins_consensus_fasta')
+    output_folder = 'output_folder'
+    custom_db = os.path.join('input_data', 'mini_custom_db')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair_mod.json')
+    abundance_file = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
+    measure_file = os.path.join('input_data', 'test_measure.tsv')
+    esmecata_folder = os.path.join('input_data', 'esmecata_output_folder')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair, '--abundance-file', abundance_file,
+                     '--measure-file', measure_file, '--esmecata', esmecata_folder])
+
+    expected_abundance = {'Acetate oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Acetogenesis (WL)': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Carbon fixation': {'sample_1': 200.0, 'sample_2': 800.0, 'sample_3': 520.0}, 'Ethanol oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Fermentation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Hydrogen generation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Hydrogen oxidation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Methanogenesis': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Methanotrophy': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Organic carbon oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}}
+
+    expected_measure = {'Acetate': {'sample_1': 100.0, 'sample_3': 300.0}, 'H2': {'sample_1': 0.0, 'sample_2': 500.0, 'sample_3': 50.0}}
+
+    output_abundance_network_file = os.path.join(output_folder, 'carbon_cycle', 'cycle_diagram_bipartite_abundance.graphml')
+    abundance_network = nx.read_graphml(output_abundance_network_file)
+
+    predicted_abundance = {node: abundance_network.nodes[node] for node in abundance_network.nodes}
+
+    for function in expected_abundance:
+        for sample in expected_abundance[function]:
+            assert expected_abundance[function][sample] == predicted_abundance[function][sample]
+
+    for metabolite in expected_measure:
+        for sample in expected_measure[metabolite]:
+            assert expected_measure[metabolite][sample] == predicted_abundance[metabolite][sample]
+
+    output_abundance_network_file = os.path.join(output_folder, 'phosphorus_cycle', 'cycle_diagram_bipartite_abundance.graphml')
+    abundance_network = nx.read_graphml(output_abundance_network_file)
+
+    expected_abundance = {'Immobilisation (P-rich)': {'sample_1': 100.0, 'sample_2': 800.0, 'sample_3': 520.0}, 'Immobilisation (P-poor)': {'sample_1': 100.0, 'sample_2': 800.0, 'sample_3': 520.0},
+     'Mineralisation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}}
+
+    predicted_abundance = {node: abundance_network.nodes[node] for node in abundance_network.nodes}
+
+    for function in expected_abundance:
+        for sample in expected_abundance[function]:
+            assert expected_abundance[function][sample] == predicted_abundance[function][sample]
+
+    shutil.rmtree(output_folder)
