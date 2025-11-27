@@ -175,7 +175,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                                     second_check_hmm = check_hmms[second_check_hmm_name]
                                                     tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
                                                     tmp_second_hmm_results.append(tmp_second_hmm_result)
-                                                if all(tmp_second_hmm_result) is True:
+                                                if all(tmp_second_hmm_results) is True:
                                                     results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                         else:
                                             results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
@@ -204,7 +204,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                                         second_check_hmm = check_hmms[second_check_hmm_name]
                                                         tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
                                                         tmp_second_hmm_results.append(tmp_second_hmm_result)
-                                                    if all(tmp_second_hmm_result) is True:
+                                                    if all(tmp_second_hmm_results) is True:
                                                         results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                             else:
                                                 results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
