@@ -158,7 +158,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                             gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
                                             if check_motif_regex(hmm_name, gene_sequence_str, motif_db):
                                                 results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                        # Motif validation by checking that it is not better associated with another HMM.
+                                        # Motif validation by checking that the sequence is not better associated with another HMM.
                                         elif hmm_name in motif_pair_db:
                                             if isinstance(motif_pair_db[hmm_name], str):
                                                 gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
@@ -167,12 +167,16 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                                 if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
                                                     results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                             elif isinstance(motif_pair_db[hmm_name], list):
+                                                # If motif pair is associated with a list of HMMs, all second HMMs must have a lower score to keep the prediction of the HMM. 
+                                                tmp_second_hmm_results = []
                                                 for second_check_hmm_name in motif_pair_db[hmm_name]:
                                                     gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
                                                     first_check_hmm = check_hmms[hmm_name]
                                                     second_check_hmm = check_hmms[second_check_hmm_name]
-                                                    if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                        results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                                    tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+                                                    tmp_second_hmm_results.append(tmp_second_hmm_result)
+                                                if all(tmp_second_hmm_result) is True:
+                                                    results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                         else:
                                             results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                         if threshold_type == 'domain':
@@ -193,12 +197,15 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                                         if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
                                                             results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                                 elif isinstance(motif_pair_db[hmm_name], list):
+                                                    tmp_second_hmm_results = []
                                                     for second_check_hmm_name in motif_pair_db[hmm_name]:
                                                         gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
                                                         first_check_hmm = check_hmms[hmm_name]
                                                         second_check_hmm = check_hmms[second_check_hmm_name]
-                                                        if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                            results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                                        tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+                                                        tmp_second_hmm_results.append(tmp_second_hmm_result)
+                                                    if all(tmp_second_hmm_result) is True:
+                                                        results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
                                             else:
                                                 results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
 
