@@ -54,18 +54,18 @@ def get_hmm_thresholds(hmm_template_file):
     return hmm_thresholds
 
 
-def check_motif_regex(gene_name, sequence, motif_db=MOTIF):
+def check_motif_regex(hmm_name, sequence, motif_db=MOTIF):
     """ Check the presence of a motif in a protein sequence using regex.
 
     Args:
-        gene_name (str): gene name associated with the protein sequence
+        hmm_name (str): name of the gene name linked to HMM search
         sequence (str): string of the protein sequence
         motif_db (dict): dictionary containing gene name as key and motif to search as values
 
     Returns:
         boolean: True if motif found, False if not
     """
-    motif_regex = motif_db[gene_name]
+    motif_regex = motif_db[hmm_name]
     # Replace X by any amino-acid.
     motif_regex_gene = re.sub(r'X', r'[ARNDCQEGHILKMFPSTWYV]', motif_regex)
     motif_found = re.findall(motif_regex_gene, sequence)
@@ -186,7 +186,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                                         if domain.score >= threshold:
                                             gene_match = hit.name
                                             if hmm_name in motif_db:
-                                                gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0]
+                                                gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
                                                 if check_motif_regex(hmm_name, gene_sequence_str):
                                                     results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
                                             elif hmm_name in motif_pair_db:
