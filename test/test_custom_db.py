@@ -5,7 +5,8 @@ import networkx as nx
 import shutil
 
 from bigecyhmm.custom_db import identify_run_custom_db_search, search_hmm_custom_db
-from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, HMM_COMPRESSED_FILE
+from bigecyhmm.hmm_search import query_fasta_file, get_hmm_thresholds
 
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
@@ -86,6 +87,57 @@ def test_search_hmm_custom_db():
         assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
 
     shutil.rmtree(output_folder)
+
+
+def test_query_fasta_file_custom_db_gene_in_both_motif_and_motif_pair():
+    # Test when using both motif and motif pair.
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
+    output_folder = 'output_folder'
+    custom_hmm_compressed = os.path.join('input_data', 'amoA_custom_db', 'amoA_custom_db.zip')
+    custom_hmm_template = os.path.join('input_data', 'amoA_custom_db', 'amoA_db.tsv')
+    custom_motif_pair = {"pmoA": "amoA", "amoA": "pmoA"}
+
+    # Not working pmoA motif.
+    custom_motif = {"pmoA": "AAAAAAAAAAAAAAAAAAAA"}
+    hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" not in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # No search of motif.
+    custom_motif = {}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # No search of custom pair (so both amoA and pmoA).
+    custom_motif_pair = {}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "amoA.hmm" in pmoa_matching_hmms and "pmoA.hmm" in pmoa_matching_hmms
+
+    # Issue in 0.1.8 fixed in 0.1.9: as motif is found, motif pair check is not done.
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": "pmoA"}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # Check that it is working with motif list.
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": ["pmoA"]}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # Check that when using domain, issue is also fixed.
+    custom_hmm_template = os.path.join('input_data', 'amoA_custom_db', 'amoA_db_domain.tsv')
+    hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": "pmoA"}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_compressed, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
 
 def test_search_hmm_custom_db_cli():

@@ -113,6 +113,63 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
+def filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, zip_object, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, domain=None):
+    """ For each hit, filter according to the motif and motif pair check.
+
+    Args:
+        input_filename (str): name of protein fasta file
+        hmm_filebasename (str): basename of HMM file
+        hit (pyhmmer Hit object): pyhmmer Hit object from pyhmmer.hmmsearch
+        sequences (pyhmmer DigitalSequenceBlock): input protein sequences stored in pyhmmer object DigitalSequenceBlock
+        check_hmms (dict): dictionary containing check HMM name associated with their paths
+        zip_object (zip object): Zip oject containing HMMs database
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+        motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
+        domain (pyhmmer Domain object): pyhmmer Domain object from pyhmmer.hmmsearch
+
+    Returns:
+        result (list or None): list of result for HMM search containing: input file name, hit name, hmm name, evalue, score and length
+    """
+    gene_match = hit.name
+    hmm_name = hmm_filebasename.replace('.hmm', '')
+    keep_hit = [True]
+    # Check the presence of specific motif in gene sequence.
+    if hmm_name in motif_db:
+        gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
+        keep_hit_motif = check_motif_regex(hmm_name, gene_sequence_str, motif_db)
+        keep_hit.append(keep_hit_motif)
+    # Motif validation by checking that the sequence is not better associated with another HMM.
+    if hmm_name in motif_pair_db:
+        if isinstance(motif_pair_db[hmm_name], str):
+            gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+            first_check_hmm = check_hmms[hmm_name]
+            second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
+            keep_hit_motif_pair = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+            keep_hit.append(keep_hit_motif_pair)
+        # If motif pair is associated with a list of HMMs, all second HMMs must have a lower score to keep the prediction of the HMM. 
+        elif isinstance(motif_pair_db[hmm_name], list):
+            tmp_second_hmm_results = []
+            for second_check_hmm_name in motif_pair_db[hmm_name]:
+                gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+                first_check_hmm = check_hmms[hmm_name]
+                second_check_hmm = check_hmms[second_check_hmm_name]
+                tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
+                tmp_second_hmm_results.append(tmp_second_hmm_result)
+            if all(tmp_second_hmm_results) is True:
+                keep_hit.append(True)
+            else:
+                keep_hit.append(False)
+    # If all steps have been checked, return the result, otherwise drop it.
+    if all(keep_hit) is True:
+        if domain is None:
+            result_score = hit.score
+        else:
+            result_score = domain.score
+        return [input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, result_score, hit.length]
+    else:
+        return None
+
+
 def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
@@ -134,7 +191,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
         sequences = pyhmmer.easel.DigitalSequenceBlock(pyhmmer.easel.Alphabet.amino(), seq_file)
 
-    # Iterate on the HMM to query them. 
+    # Iterate on the HMM of the internal database to query them.
     results = []
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
         list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
@@ -142,72 +199,28 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
                       for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
         for hmm_filename in list_of_hmms:
             hmm_filebasename = os.path.basename(hmm_filename)
-            hmm_name = hmm_filebasename.replace('.hmm', '')
             with zip_object.open(hmm_filename) as open_hmm_zipfile:
                 with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
                     for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
                         threshold, threshold_type = threshold_data.split('|')
                         threshold = float(threshold)
+                        # Perform search of the HMM on all input protein sequences and filter them according to score (either hit or domain).
                         if threshold_type == 'full':
                             for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
                                 for hit in hits.included:
                                     if hit.score >= threshold:
-                                        gene_match = hit.name
-                                        # Check the presence of specific motif in gene sequence.
-                                        if hmm_name in motif_db:
-                                            gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
-                                            if check_motif_regex(hmm_name, gene_sequence_str, motif_db):
-                                                results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                        # Motif validation by checking that the sequence is not better associated with another HMM.
-                                        elif hmm_name in motif_pair_db:
-                                            if isinstance(motif_pair_db[hmm_name], str):
-                                                gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                                first_check_hmm = check_hmms[hmm_name]
-                                                second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
-                                                if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                    results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                            elif isinstance(motif_pair_db[hmm_name], list):
-                                                # If motif pair is associated with a list of HMMs, all second HMMs must have a lower score to keep the prediction of the HMM. 
-                                                tmp_second_hmm_results = []
-                                                for second_check_hmm_name in motif_pair_db[hmm_name]:
-                                                    gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                                    first_check_hmm = check_hmms[hmm_name]
-                                                    second_check_hmm = check_hmms[second_check_hmm_name]
-                                                    tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
-                                                    tmp_second_hmm_results.append(tmp_second_hmm_result)
-                                                if all(tmp_second_hmm_results) is True:
-                                                    results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                        else:
-                                            results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
+                                        result_hmm = filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, zip_object, motif_db, motif_pair_db)
+                                        if result_hmm is not None:
+                                            results.append(result_hmm)
+
                         if threshold_type == 'domain':
                             for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
                                 for hit in hits.included:
                                     for domain in hit.domains.included:
                                         if domain.score >= threshold:
-                                            gene_match = hit.name
-                                            if hmm_name in motif_db:
-                                                gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
-                                                if check_motif_regex(hmm_name, gene_sequence_str):
-                                                    results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
-                                            elif hmm_name in motif_pair_db:
-                                                if isinstance(motif_pair_db[hmm_name], str):
-                                                        gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                                        first_check_hmm = check_hmms[hmm_name]
-                                                        second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
-                                                        if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                            results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                                elif isinstance(motif_pair_db[hmm_name], list):
-                                                    tmp_second_hmm_results = []
-                                                    for second_check_hmm_name in motif_pair_db[hmm_name]:
-                                                        gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                                        first_check_hmm = check_hmms[hmm_name]
-                                                        second_check_hmm = check_hmms[second_check_hmm_name]
-                                                        tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object)
-                                                        tmp_second_hmm_results.append(tmp_second_hmm_result)
-                                                    if all(tmp_second_hmm_results) is True:
-                                                        results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                            else:
-                                                results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
+                                            result_hmm = filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, zip_object, motif_db, motif_pair_db, domain)
+                                            if result_hmm is not None:
+                                                results.append(result_hmm)
 
     return results
 

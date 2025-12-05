@@ -1,10 +1,20 @@
 # Changelog
 
-# bigecyhmm v0.1.9 (2025-11-26)
+# bigecyhmm v0.1.9 (2025-12-04)
 
 ## Add
 
 * Add the possibility to give list to motif pair (to check more than one sequence).
+* Add the possibility to check with both motif and motif pair.
+* Add several tests for motif, motif pair, domain searches.
+
+## Modify
+
+* Refactor `query_fasta_file` in `hmm_search.py` to reduce redundant code (by creating a new function `filtering_hit`).
+
+## Fix
+
+* Fix several issues in motif search in domain condition.
 
 # bigecyhmm v0.1.8 (2025-09-30)
 
