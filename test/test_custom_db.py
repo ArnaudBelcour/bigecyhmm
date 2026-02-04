@@ -6,8 +6,8 @@ import shutil
 
 from bigecyhmm.custom_db import identify_run_custom_db_search, search_hmm_custom_db
 from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, HMM_COMPRESSED_FILE
-from bigecyhmm.hmm_search import query_fasta_file, get_hmm_thresholds
-
+from bigecyhmm.hmm_search import query_fasta_file, get_hmm_thresholds, extract_hmm_to_function
+from bigecyhmm.diagram_cycles import extract_hmm_to_pathway
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
@@ -16,37 +16,6 @@ EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 
                    'Q607G3': ('Methane oxidation - Partculate methane monooxygenase', 'C-S-08:Methanotrophy', 'pmoA.hmm'), 'P0ACD8': ('Ni-Fe Hydrogenase', 'C-S-09:Hydrogen oxidation', 'nife-group-1.hmm'),
                    'P13419': ('Wood Ljungdahl pathway (methyl branch)', 'C-S-10:Acetogenesis WL', 'K01938.hmm')}
 
-def extract_hmm_to_function():
-    with open(HMM_TEMPLATE_FILE, 'r') as open_hmm_template:
-        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
-        hmm_to_function = {}
-        for line in csvreader:
-            for hmm_file in line['Hmm file'].split(', '):
-                function_name = line['Function']
-                hmm_to_function[hmm_file] = function_name
-    return hmm_to_function
-
-
-def extract_hmm_to_pathway():
-    hmm_to_pathways = {}
-    with open(PATHWAY_TEMPLATE_FILE, 'r') as open_r_pathways:
-        csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
-        for line in csvreader:
-            if '; ' in line['HMMs']:
-                for combination in line['HMMs'].split('; '):
-                    for hmm_id in combination.split(', '):
-                        if hmm_id not in hmm_to_pathways:
-                            hmm_to_pathways[hmm_id] = [line['Pathways']]
-                        else:
-                            hmm_to_pathways[hmm_id].append(line['Pathways'])
-            else:
-                for hmm_id in line['HMMs'].split(', '):
-                    if hmm_id not in hmm_to_pathways:
-                        hmm_to_pathways[hmm_id] = [line['Pathways']]
-                    else:
-                        hmm_to_pathways[hmm_id].append(line['Pathways'])
-
-    return hmm_to_pathways
 
 def test_search_hmm_custom_db():
     input_file = os.path.join('input_data', 'meta_organism_test.faa')

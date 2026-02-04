@@ -45,9 +45,8 @@ def test_pathway_file_db():
     with open(PATHWAY_TEMPLATE_FILE, 'r') as open_hmm_template:
         csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
         for line in csvreader:
-            for and_hmms in line['HMMs'].split('; '):
-                for hmm_file in and_hmms.split(', '):
-                    hmms_in_template_pathway.append(hmm_file.replace('NO|', ''))
+            tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in line['HMMs'].split(' ')]
+            hmms_in_template_pathway.extend([hmm for hmm in tmp_pathway_hmms if hmm not in ["and", "or", "not"]])
 
     assert set(hmms_in_template_pathway).issubset(set(hmms_in_template))
 

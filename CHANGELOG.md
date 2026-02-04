@@ -1,6 +1,8 @@
 # Changelog
 
-# bigecyhmm v0.1.9 (2025-12-04)
+# bigecyhmm v0.2.0 (2029-02-04)
+
+Due to the changes in the boolean expression to ifner pathways, old pathway tempalte files from previous version are incompatible with the new version.
 
 ## Add
 
@@ -10,7 +12,9 @@
 
 ## Modify
 
+* Refactor boolean expression to infer pathways. Now it uses boolean operators (with `True`, `False`, `and`, `or`, `not`).
 * Refactor `query_fasta_file` in `hmm_search.py` to reduce redundant code (by creating a new function `filtering_hit`).
+* Update license year.
 
 ## Fix
 

@@ -6,7 +6,8 @@ import shutil
 import pyhmmer
 import zipfile
 
-from bigecyhmm.hmm_search import search_hmm, check_motif_regex, check_motif_pair
+from bigecyhmm.hmm_search import search_hmm, check_motif_regex, check_motif_pair, extract_hmm_to_function
+from bigecyhmm.diagram_cycles import extract_hmm_to_pathway
 from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_COMPRESSED_FILE
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
@@ -20,38 +21,6 @@ EXPECTED_FUNCTIONS = {'org_1': ['C-S-01:Organic carbon oxidation', 'C-S-02:Carbo
                                 'C-S-08:Methanotrophy', 'C-S-09:Hydrogen oxidation', 'C-S-10:Acetogenesis WL', 'P-S-02:Mineralisation'],
                         'org_2': ['C-S-02:Carbon fixation', 'P-S-01:Immobilisation (P-poor)', 'P-S-01:Immobilisation (P-rich)'],
                         'org_3': ['C-S-02:Carbon fixation', 'P-S-01:Immobilisation (P-poor)', 'P-S-01:Immobilisation (P-rich)']}
-
-def extract_hmm_to_function():
-    with open(HMM_TEMPLATE_FILE, 'r') as open_hmm_template:
-        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
-        hmm_to_function = {}
-        for line in csvreader:
-            for hmm_file in line['Hmm file'].split(', '):
-                function_name = line['Function']
-                hmm_to_function[hmm_file] = function_name
-    return hmm_to_function
-
-
-def extract_hmm_to_pathway():
-    hmm_to_pathways = {}
-    with open(PATHWAY_TEMPLATE_FILE, 'r') as open_r_pathways:
-        csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
-        for line in csvreader:
-            if '; ' in line['HMMs']:
-                for combination in line['HMMs'].split('; '):
-                    for hmm_id in combination.split(', '):
-                        if hmm_id not in hmm_to_pathways:
-                            hmm_to_pathways[hmm_id] = [line['Pathways']]
-                        else:
-                            hmm_to_pathways[hmm_id].append(line['Pathways'])
-            else:
-                for hmm_id in line['HMMs'].split(', '):
-                    if hmm_id not in hmm_to_pathways:
-                        hmm_to_pathways[hmm_id] = [line['Pathways']]
-                    else:
-                        hmm_to_pathways[hmm_id].append(line['Pathways'])
-
-    return hmm_to_pathways
 
 
 def test_check_motif():

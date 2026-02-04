@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -105,7 +105,8 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                     csvwriter.writerow([function_name, function_hmms])
                     already_search_function.append(function_name)
                     if function_hmms != '':
-                        hmms_in_pathway_template.extend([hmm.replace('NO|', '') for hmms in function_hmms.split(', ') for hmm in hmms.split('; ')])
+                        tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in function_hmms.split(' ')]
+                        hmms_in_pathway_template.extend([hmm for hmm in tmp_pathway_hmms if hmm not in ["and", "or", "not"]])
 
     # Check that the same HMM profiles are present in compressed zip
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:

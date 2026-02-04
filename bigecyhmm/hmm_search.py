@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,6 +52,25 @@ def get_hmm_thresholds(hmm_template_file):
                 hmm_thresholds[hmm_file] = line['Hmm detecting threshold']
 
     return hmm_thresholds
+
+
+def extract_hmm_to_function(hmm_template_file=HMM_TEMPLATE_FILE):
+    """Extract link between HMM and function from template file.
+
+    Args:
+        hmm_template_file (str): path of HMM template file
+
+    Returns:
+        hmm_to_function (dict): hmm file as key and function as value
+    """
+    with open(hmm_template_file, 'r') as open_hmm_template:
+        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
+        hmm_to_function = {}
+        for line in csvreader:
+            for hmm_file in line['Hmm file'].split(', '):
+                function_name = line['Function']
+                hmm_to_function[hmm_file] = function_name
+    return hmm_to_function
 
 
 def check_motif_regex(hmm_name, sequence, motif_db=MOTIF):

@@ -10,9 +10,9 @@
     {"size": 10, "id": "Rock", "type": "Metabolite"},
     {"size": 10, "id": "Immobilisation (P-rich)", "type": "Function", "hmm": "NF033774.1.hmm"},
     {"size": 10, "id": "Immobilisation (P-poor)", "type": "Function", "hmm": "K02040.hmm"},
-    {"size": 10, "id": "Mineralisation", "type": "Function", "hmm": "K01077.hmm, K01113.hmm, K07093.hmm, K09474.hmm, K03788.hmm, K01078.hmm, K01093.hmm, K01083.hmm, K02044.hmm, K06163.hmm, TIGR03276.1.hmm, TIGR01422.2.hmm, TIGR02335.1.hmm, TIGR02335.1.hmm, TIGR02318.1.hmm, TIGR02326.1.hmm, K06166.hmm, K06165.hmm, K06164.hmm, K05781.hmm, K05780.hmm"},
+    {"size": 10, "id": "Mineralisation", "type": "Function", "hmm": "K01077.hmm or K01113.hmm or K07093.hmm or K09474.hmm or K03788.hmm or K01078.hmm or K01093.hmm or K01083.hmm or K02044.hmm or K06163.hmm or TIGR03276.1.hmm or TIGR01422.2.hmm or TIGR02335.1.hmm or TIGR02335.1.hmm or TIGR02318.1.hmm or TIGR02326.1.hmm or K06166.hmm or K06165.hmm or K06164.hmm or K05781.hmm or K05780.hmm"},
     {"size": 10, "id": "Precipitation", "type": "Function", "hmm": ""},
-    {"size": 10, "id": "Dissolution", "type": "Function", "hmm": "K01507.hmm, K01514.hmm, K00937.hmm, K00117.hmm, K06137.hmm"},
+    {"size": 10, "id": "Dissolution", "type": "Function", "hmm": "K01507.hmm or K01514.hmm or K00937.hmm or K00117.hmm or K06137.hmm"},
     {"size": 10, "id": "Weathering", "type": "Function", "hmm": ""},
     {"size": 10, "id": "Geological uplift", "type": "Function", "hmm": ""}
     ],
