@@ -24,11 +24,11 @@ import pyhmmer
 import zipfile
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder
-from bigecyhmm.diagram_cycles import create_input_diagram
+from bigecyhmm.diagram_cycles import create_input_diagram, get_diagram_pathways_hmms
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
+from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
                     CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, \
                     CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK
 
@@ -58,40 +58,20 @@ except:
     logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib')
     sys.exit(1)
 
+def generate_custom_db_from_tsv_one_file(custom_database_input):
+    return custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network
 
-def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE,
-                         hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None,
-                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
-    """Main function to use HMM search on protein sequences and write results with a custom database.
-
-    Args:
-        input_variable (str): path to input file or folder
-        custom_database_json (str): path to json file containing the custom database
-        output_folder (str): path to output folder
-        hmm_compressed_database (str): path to HMM compress database
-        hmm_template_file (str): path to HMM template file
-        core_number (int): number of core to use for the multiprocessing
-        motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
-        motif_pair_json (str): JSON file containing association between two genes to check for predictions
-        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
-        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
-        esmecata_output_folder (str): path to esmecata output folder.
-    """
-    start_time = time.time()
-    input_dicts = file_or_folder(input_variable)
-
-    hmm_output_folder = os.path.join(output_folder, 'hmm_results')
-    is_valid_dir(hmm_output_folder)
-
-    # Extract thresholds from HMM template file.
-    hmm_thresholds = get_hmm_thresholds(hmm_template_file)
-
+def generate_pathway_file_from_json(custom_database_json, output_folder):
     # Get pathway cycle data from custom database.
     logger.info("  -> Parsing cycle json file {0}".format(custom_database_json))
     with open(custom_database_json) as open_custom_database_json:
         json_cycle_database = json.load(open_custom_database_json)
 
-    pathway_template_file = os.path.join(output_folder, 'pathway_template_file.tsv')
+    database_folder = os.path.join(output_folder, 'database')
+    if not os.path.exists(database_folder):
+        os.mkdir(database_folder)
+
+    pathway_template_file = os.path.join(database_folder, 'pathway_template_file.tsv')
     already_search_function = []
     hmms_in_pathway_template = []
     with open(pathway_template_file, 'w') as open_pathway_template_file:
@@ -108,6 +88,96 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                         tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in function_hmms.split(' ')]
                         hmms_in_pathway_template.extend([hmm for hmm in tmp_pathway_hmms if hmm not in ["and", "or", "not"]])
 
+    bipartite_cycle_network = json_graph.node_link_graph(json_cycle_database, edges='edges')
+    input_graph_file = os.path.join(database_folder, 'input_graph.graphml')
+    nx.write_graphml(bipartite_cycle_network, input_graph_file)
+
+    return pathway_template_file, bipartite_cycle_network
+
+
+def get_hmms_in_pathway_template(pathway_template_file=PATHWAY_TEMPLATE_FILE):
+    """From PATHWAY_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
+
+    Args:
+        pathway_template_file (str): path to pathway_template_file.
+
+    Returns:
+        hmms_in_pathway_template (list): list of functions
+    """
+    hmms_in_pathway_template = []
+    with open(pathway_template_file, 'r') as open_r_pathways:
+        csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
+
+        for line in csvreader:
+            tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in line['HMMs'].split(' ')]
+            hmms_in_pathway_template.extend([hmm for hmm in tmp_pathway_hmms if hmm not in ["and", "or", "not", ""]])
+
+    return hmms_in_pathway_template
+
+
+def check_custom_db_input(custom_database_input, output_folder):
+    if custom_database_input.endswith('.json'):
+        # Check the presence of custom HMM compressed database.
+        custom_hmm_compressed_database = custom_database_input.replace('.json', '.zip')
+        if os.path.exists(custom_hmm_compressed_database):
+            logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
+        else:
+            logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
+            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
+        # Check the presence of custom HMM template file.
+        custom_hmm_template_file = custom_database_input.replace('.json', '.tsv')
+        if os.path.exists(custom_hmm_template_file):
+            logger.info("  -> Custom HMM template file {0} exists, it will be used.".format(custom_hmm_template_file))
+        else:
+            logger.info("  -> Custom HMM template file {0} not found, bigecyhmm will use the default one.".format(custom_hmm_template_file))
+            custom_hmm_template_file = HMM_TEMPLATE_FILE
+        # Create the pathway template file from JSON file.
+        custom_pathway_template_file, custom_bipartite_cycle_network = generate_pathway_file_from_json(custom_database_input, output_folder)
+
+    elif custom_database_input.endswith('.tsv'):
+        custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network = generate_custom_db_from_tsv_one_file(custom_database_input, output_folder)
+        # Check the presence of custom HMM compressed database.
+        custom_hmm_compressed_database = custom_database_input.replace('.tsv', '.zip')
+        if os.path.exists(custom_hmm_compressed_database):
+            logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
+        else:
+            logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
+            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
+
+    return custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network, custom_hmm_compressed_database
+
+
+def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE, pathway_template_file=PATHWAY_TEMPLATE_FILE,
+                         hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None,
+                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None,
+                         pathway_graph=None):
+    """Main function to use HMM search on protein sequences and write results with a custom database.
+
+    Args:
+        input_variable (str): path to input file or folder
+        output_folder (str): path to output folder
+        hmm_compressed_database (str): path to HMM compress database
+        pathway_template_file (str): path to pathway tempalte file
+        hmm_template_file (str): path to HMM template file
+        core_number (int): number of core to use for the multiprocessing
+        motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
+        motif_pair_json (str): JSON file containing association between two genes to check for predictions
+        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
+        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
+        esmecata_output_folder (str): path to esmecata output folder
+        pathway_graph (networkx graph): bipartite graph representation of pathways
+    """
+    start_time = time.time()
+    input_dicts = file_or_folder(input_variable)
+
+    hmm_output_folder = os.path.join(output_folder, 'hmm_results')
+    is_valid_dir(hmm_output_folder)
+
+    # Extract thresholds from HMM template file.
+    hmm_thresholds = get_hmm_thresholds(hmm_template_file)
+
+    hmms_in_pathway_template = get_hmms_in_pathway_template(pathway_template_file)
+
     # Check that the same HMM profiles are present in compressed zip
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
         list_of_hmms = set([os.path.basename(hmm_filename) for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename])
@@ -115,7 +185,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     hmms_in_pathway_template = set(hmms_in_pathway_template)
     if not hmms_in_pathway_template.issubset(list_of_hmms):
         not_found_hmms = hmms_in_pathway_template - list_of_hmms
-        logger.critical("  Some HMMs present in {0} are not present in the HMM compressed database {1}: {2}".format(custom_database_json, hmm_compressed_database, not_found_hmms))
+        logger.critical("  Some HMMs present in {0} are not present in the HMM compressed database {1}: {2}".format(pathway_template_file, hmm_compressed_database, not_found_hmms))
         sys.exit(1)
     # Check that the HMMs in the threshold file are present in the compressed database.
     hmm_in_threshold_file = set(hmm_thresholds.keys())
@@ -175,8 +245,6 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
 
-    bipartite_cycle_network = json_graph.node_link_graph(json_cycle_database, edges='edges')
-
     pathway_data = {}
     total_file = os.path.join(output_folder, 'Total.R_input.txt')
     with open(total_file, 'r') as open_total_file:
@@ -188,12 +256,12 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
             pathway_data[pathway] = (nb_pathway, percentage_pathway)
 
     # Initiate a bipartite network when giving abundance or measure files.
-    if abundance_file is not None or metabolite_measure is not None:
+    if pathway_graph is not None and (abundance_file is not None or metabolite_measure is not None):
         abundance_cycle_network = nx.DiGraph()
-        nodes_data = [(node, bipartite_cycle_network.nodes[node]) for node in bipartite_cycle_network.nodes]
+        nodes_data = [(node, pathway_graph.nodes[node]) for node in pathway_graph.nodes]
         abundance_cycle_network.add_nodes_from(nodes_data)
-        for edge in bipartite_cycle_network.edges:
-            abundance_cycle_network.add_edges_from([edge], **bipartite_cycle_network.edges[edge])
+        for edge in pathway_graph.edges:
+            abundance_cycle_network.add_edges_from([edge], **pathway_graph.edges[edge])
 
     # Read abundance data and create a network with nodes associated with the abundance.
     if abundance_file is not None:
@@ -209,8 +277,9 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                 function_name = line['function']
                 if function_name not in pathway_abundance:
                     pathway_abundance[function_name] = {}
-                if function_name not in abundance_cycle_network.nodes:
-                    abundance_cycle_network.add_node(function_name, type='Function')
+                if pathway_graph is not None:
+                    if function_name not in abundance_cycle_network.nodes:
+                        abundance_cycle_network.add_node(function_name, type='Function')
                 for sample in sample_abundance:
                     # If esmecata output are given, translate tax_id into organism names.
                     if esmecata_output_folder is not None:
@@ -219,7 +288,9 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                             pathway_abundance[function_name][sample] += sum([sample_abundance[sample][organism] for organism in tax_id_names_observation_names[tax_id] if float(line[tax_id]) > 0 and organism in sample_abundance[sample]])
                     else:
                         pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
-                    abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
+
+                    if pathway_graph is not None:
+                        abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
 
         # Create a tsv file containing abundance information for cycle function.
         pathway_abundance_data = []
@@ -235,46 +306,48 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
             for data in pathway_abundance_data:
                 csvwriter.writerow(data)
 
-    # Represent network as a bipartie graph with occurrence if functions.
-    bipartite_graph = nx.DiGraph()
+    if pathway_graph is not None:
+        # Represent network as a bipartie graph with occurrence if functions.
+        bipartite_graph = nx.DiGraph()
 
-    mapped_new_node_ids = {}
-    all_pathways = []
-    for node in json_cycle_database['nodes']:
-        if node['type'] == 'Function':
-            function_name = node['id']
-            function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
-            node_data = {node_d: node[node_d] for node_d in node if node_d != 'id'}
-            bipartite_graph.add_node(function_name_weighted, **node_data)
-            mapped_new_node_ids[function_name] = function_name_weighted
-            all_pathways.append(function_name_weighted)
-        else:
-            bipartite_graph.add_node(node['id'], **node)
+        mapped_new_node_ids = {}
+        all_pathways = []
+        for node_id in pathway_graph.nodes:
+            input_graph_node_data = pathway_graph.nodes[node_id]
+            if input_graph_node_data['type'] == 'Function':
+                function_name = node_id
+                function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
+                node_data = {node_d: input_graph_node_data[node_d] for node_d in input_graph_node_data if node_d != 'id'}
+                bipartite_graph.add_node(function_name_weighted, **node_data)
+                mapped_new_node_ids[function_name] = function_name_weighted
+                all_pathways.append(function_name_weighted)
+            else:
+                bipartite_graph.add_node(node_id, **input_graph_node_data)
 
-    for edge in json_cycle_database['edges']:
-        source = edge['source']
-        target = edge['target']
-        if source in mapped_new_node_ids:
-            function_name = source
-            source = mapped_new_node_ids[source]
-        if target in mapped_new_node_ids:
-            function_name = target
-            target = mapped_new_node_ids[target]
-        bipartite_graph.add_edge(source, target, weight=pathway_data[function_name][1])
+        for edge in pathway_graph.edges:
+            source = edge[0]
+            target = edge[1]
+            if source in mapped_new_node_ids:
+                function_name = source
+                source = mapped_new_node_ids[source]
+            if target in mapped_new_node_ids:
+                function_name = target
+                target = mapped_new_node_ids[target]
+            bipartite_graph.add_edge(source, target, weight=pathway_data[function_name][1])
 
-    logger.info("  -> Generate network files.")
+        logger.info("  -> Generate network files.")
 
-    network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.graphml')
-    nx.write_graphml(bipartite_graph, network_graphml_output_file)
+        network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.graphml')
+        nx.write_graphml(bipartite_graph, network_graphml_output_file)
 
-    fig, axes = plt.subplots(figsize=(40,20))
-    pos = nx.spring_layout(bipartite_graph)
-    # Get node names:
-    labels = {node: node for node in bipartite_graph.nodes}
-    nx.draw_networkx_labels(bipartite_graph, pos, labels, font_size=20)
-    nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
-    network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.png')
-    plt.savefig(network_output_file)
+        fig, axes = plt.subplots(figsize=(40,20))
+        pos = nx.spring_layout(bipartite_graph)
+        # Get node names:
+        labels = {node: node for node in bipartite_graph.nodes}
+        nx.draw_networkx_labels(bipartite_graph, pos, labels, font_size=20)
+        nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
+        network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.png')
+        plt.savefig(network_output_file)
 
     if metabolite_measure is not None:
         # Add sample metabolite measurements to node.
@@ -287,8 +360,8 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                         if isinstance(metabolite_measure, float):
                             abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
 
-    if abundance_file is not None or metabolite_measure is not None:
-        abundance_cycle_network.add_edges_from(bipartite_cycle_network.edges)
+    if pathway_graph is not None and (abundance_file is not None or metabolite_measure is not None):
+        abundance_cycle_network.add_edges_from(pathway_graph.edges)
         network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
         nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
 
@@ -306,7 +379,7 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
                                          'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
                                          'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
     metadata_json['input_parameters']['custom_db'] = {'hmm_compressed_database': hmm_compressed_database, 'hmm_template_file': hmm_template_file,
-                                                      'json_database_file_path': custom_database_json}
+                                                      'pathway_template_file': pathway_template_file}
 
     metadata_json['duration'] = duration
 
@@ -315,13 +388,14 @@ def search_hmm_custom_db(input_variable, custom_database_json, output_folder, hm
         json.dump(metadata_json, ouput_file, indent=4)
 
 
-def identify_run_custom_db_search(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
+def identify_run_custom_db_search(input_variable, custom_database_folder, gene_hmm_file, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
                          abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
         input_variable (str): path to input file or folder
         custom_database_folder (str): path to file/folder containing custom database
+        gene_hmm_file (str): path to zip file/folder containing HMMs
         output_folder (str): path to output folder
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
@@ -362,28 +436,19 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     input_dicts = file_or_folder(custom_database_folder, json_extensions)
     for input_filename in input_dicts:
         logger.info("Launch HMM search on custom database {0}.".format(input_filename))
-        custom_database_json = input_dicts[input_filename]
-        # Check the presence of custom HMM compressed database.
-        custom_hmm_compressed_database = custom_database_json.replace('.json', '.zip')
-        if os.path.exists(custom_hmm_compressed_database):
-            logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
-        else:
-            logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
-            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
-        # Check the presence of custom HMM template file.
-        custom_hmm_template_file = custom_database_json.replace('.json', '.tsv')
-        if os.path.exists(custom_hmm_template_file):
-            logger.info("  -> Custom HMM template file {0} exists, it will be used.".format(custom_hmm_template_file))
-        else:
-            logger.info("  -> Custom HMM template file {0} not found, bigecyhmm will use the default one.".format(custom_hmm_template_file))
-            custom_hmm_template_file = HMM_TEMPLATE_FILE
 
         # Create specific output folder for custom database.
         output_folder_custom_db = os.path.join(output_folder, input_filename)
         is_valid_dir(output_folder_custom_db)
-        search_hmm_custom_db(input_variable, custom_database_json, output_folder_custom_db, custom_hmm_compressed_database,
+
+        # Generate custom database files from input file.
+        custom_database_file = input_dicts[input_filename]
+        custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network, custom_hmm_compressed_database = check_custom_db_input(custom_database_file, output_folder)
+
+        search_hmm_custom_db(input_variable, output_folder_custom_db, custom_hmm_compressed_database, custom_pathway_template_file,
                             custom_hmm_template_file, core_number=core_number, motif_json=motif_json, motif_pair_json=motif_pair_json,
-                            abundance_file=abundance_file, metabolite_measure=metabolite_measure, esmecata_output_folder=esmecata_output_folder)
+                            abundance_file=abundance_file, metabolite_measure=metabolite_measure, esmecata_output_folder=esmecata_output_folder,
+                            pathway_graph=custom_bipartite_cycle_network)
 
     duration = time.time() - start_time
     metadata_json = {}
@@ -432,7 +497,7 @@ def main():
         '--database',
         dest='custom_database',
         required=True,
-        help='Path to a json file or folder containing a representation of the custom cycle. It will also search for associated tsv and zip file. If it is a folder, it will do the same but for each json in the folder.',
+        help='Path to a tsv file, json file or folder containing a representation of the custom cycle. It will also search for associated tsv and zip file. If it is a folder, it will do the same but for each json in the folder.',
         metavar='CUSTOM_DATABASE_FILE_OR_FOLDER')
 
     parser.add_argument(
@@ -450,6 +515,14 @@ def main():
         required=False,
         type=int,
         default=1)
+
+    parser.add_argument(
+        "-g",
+        "--gene-hmm",
+        dest='gene_hmm_file',
+        help="ZIP file containing HMM for gene to check for predictions.",
+        required=False,
+        default=None)
 
     parser.add_argument(
         "-m",
@@ -514,7 +587,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    identify_run_custom_db_search(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
+    identify_run_custom_db_search(args.input, args.custom_database, args.gene_hmm_file, args.output, args.core, args.motif_file, args.motif_pair_file,
                          args.abundance_file, args.measure_file, args.esmecata_folder)
 
     duration = time.time() - start_time
