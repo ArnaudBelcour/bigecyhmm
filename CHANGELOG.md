@@ -9,11 +9,14 @@ Due to the changes in the boolean expression to ifner pathways, old pathway temp
 * Add the possibility to give list to motif pair (to check more than one sequence).
 * Add the possibility to check with both motif and motif pair.
 * Add several tests for motif, motif pair, domain searches.
+* Add script `custom_tsv_parser.py` to parse new file format (made with Michael Baumgartner @KeonaExoGaia).
+* Contributors file.
 
 ## Modify
 
 * Refactor boolean expression to infer pathways. Now it uses boolean operators (with `True`, `False`, `and`, `or`, `not`).
 * Refactor `query_fasta_file` in `hmm_search.py` to reduce redundant code (by creating a new function `filtering_hit`).
+* Refactor `custom_db` to take as input a new file containing all the information.
 * Update license year.
 
 ## Fix
