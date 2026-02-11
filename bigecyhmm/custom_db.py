@@ -33,6 +33,7 @@ from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_F
                     CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK
 
 from multiprocessing import Pool
+from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 
 MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
@@ -57,9 +58,6 @@ try:
 except:
     logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib')
     sys.exit(1)
-
-def generate_custom_db_from_tsv_one_file(custom_database_input):
-    return custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network
 
 def generate_pathway_file_from_json(custom_database_json, output_folder):
     # Get pathway cycle data from custom database.
