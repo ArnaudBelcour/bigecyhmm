@@ -31,7 +31,7 @@ from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
                     CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, \
-                    CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK
+                    CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK, CUSTOM_HYDROGEN_TABLE
 
 from multiprocessing import Pool
 
@@ -406,6 +406,8 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     is_valid_dir(output_folder)
 
     # Search for json files in input custom database.
+    if custom_database_folder == 'internal_hydrogen_table':
+        custom_database_folder = CUSTOM_HYDROGEN_TABLE
     if custom_database_folder == 'internal_carbon':
         custom_database_folder = CUSTOM_CARBON_CYCLE_NETWORK
     if custom_database_folder == 'internal_sulfur':

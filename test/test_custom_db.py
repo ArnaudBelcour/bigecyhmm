@@ -351,6 +351,7 @@ def test_search_hmm_custom_db_abundance_measure_esmecata_cli_modified_motif():
 
     shutil.rmtree(output_folder)
 
+
 def test_bigecyhmm_custom_one_file_abundance():
     input_file = os.path.join('input_data', 'org_prot')
     output_folder = 'output_folder'
@@ -366,8 +367,6 @@ def test_bigecyhmm_custom_one_file_abundance():
      'Hydrogen oxidation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Methanogen.': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
      'Methanotrophy': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Organic carbon oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}}
 
-    expected_measure = {'Acetate': {'sample_1': 100.0, 'sample_3': 300.0}, 'H2': {'sample_1': 0.0, 'sample_2': 500.0, 'sample_3': 50.0}}
-
     output_abundance_network_file = os.path.join(output_folder, 'carbon_cycle_od', 'cycle_diagram_bipartite_abundance.graphml')
     abundance_network = nx.read_graphml(output_abundance_network_file)
 
@@ -378,5 +377,3 @@ def test_bigecyhmm_custom_one_file_abundance():
             assert expected_abundance[function][sample] == predicted_abundance[function][sample]
 
     shutil.rmtree(output_folder)
-
-test_bigecyhmm_custom_one_file_abundance()
