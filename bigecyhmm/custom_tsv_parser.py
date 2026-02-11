@@ -173,12 +173,12 @@ def generate_custom_db_from_tsv_one_file(custom_database_input, output_folder):
     custom_db_df = pd.read_csv(custom_database_input, sep='\t')
     custom_db_df['Graph_No'] = custom_db_df['Graph_No'].astype(str)
 
-    function_custom_db_df = custom_db_df[custom_db_df['Type']=='FUNCTION']
+    function_custom_db_df = custom_db_df[custom_db_df['Type']=='FUNCTION'].copy()
 
     function_custom_db_df['Graph_No'] = [graph_nb.split('.')[0] for graph_nb in function_custom_db_df['Graph_No']]
     metabolic_functions = function_custom_db_df.set_index('Graph_No')['ID'].to_dict()
 
-    hmm_custom_db_df = custom_db_df[custom_db_df['Type']=='HMM']
+    hmm_custom_db_df = custom_db_df[custom_db_df['Type']=='HMM'].copy()
 
     hmm_custom_db_df['Function_Nb'] = [graph_nb.split('.')[0] for graph_nb in hmm_custom_db_df['Graph_No']]
     metabolic_pathway_to_hmms = {}
