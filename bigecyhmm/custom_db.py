@@ -27,13 +27,13 @@ from bigecyhmm.utils import is_valid_dir, file_or_folder
 from bigecyhmm.diagram_cycles import create_input_diagram, get_diagram_pathways_hmms
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
+from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
                     CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, \
                     CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK
 
 from multiprocessing import Pool
-from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 
 MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
@@ -386,14 +386,13 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
         json.dump(metadata_json, ouput_file, indent=4)
 
 
-def identify_run_custom_db_search(input_variable, custom_database_folder, gene_hmm_file, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
+def identify_run_custom_db_search(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
                          abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
         input_variable (str): path to input file or folder
         custom_database_folder (str): path to file/folder containing custom database
-        gene_hmm_file (str): path to zip file/folder containing HMMs
         output_folder (str): path to output folder
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
@@ -431,7 +430,9 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, gene_h
         custom_database_folder = internal_all_json_file
 
     json_extensions = ['.json']
-    input_dicts = file_or_folder(custom_database_folder, json_extensions)
+    second_extension_to_checks = ['.tsv']
+    input_dicts = file_or_folder(custom_database_folder, json_extensions, second_extension_to_checks)
+
     for input_filename in input_dicts:
         logger.info("Launch HMM search on custom database {0}.".format(input_filename))
 
@@ -515,14 +516,6 @@ def main():
         default=1)
 
     parser.add_argument(
-        "-g",
-        "--gene-hmm",
-        dest='gene_hmm_file',
-        help="ZIP file containing HMM for gene to check for predictions.",
-        required=False,
-        default=None)
-
-    parser.add_argument(
         "-m",
         "--motif",
         dest='motif_file',
@@ -585,7 +578,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    identify_run_custom_db_search(args.input, args.custom_database, args.gene_hmm_file, args.output, args.core, args.motif_file, args.motif_pair_file,
+    identify_run_custom_db_search(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
                          args.abundance_file, args.measure_file, args.esmecata_folder)
 
     duration = time.time() - start_time

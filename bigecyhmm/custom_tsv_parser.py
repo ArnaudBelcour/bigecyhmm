@@ -1,66 +1,69 @@
-#This script was made to allow a user of the custom version of bigecyhmm to provide a single document (easier for user) with Functions and HMMs
-#and split it into the three files needed for bigecyhmm_custom to run: 
-# cycle_pathways_custom.tsv , Hmm_table_template_custom.tsv and a nx.Bigraph object with nodes for every function and substance, which can be saved as a graphml file. 
+# Copyright (C) 2026 Michael Baumgartner, Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Univ. Grenoble Alpes, Inria, Microcosme
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-import csv
-import sys
-from pathlib import Path
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
+
+import os
+import pandas as pd
 import re
 import networkx as nx
 
-
-def read_input(path: Path):    #expects a TSV file with header 
-    with path.open(newline='') as fh:
-        reader = csv.reader(fh, delimiter='\t')
-        rows = list(reader)
-    return rows[1:] if len(rows) > 1 else []
+from bigecyhmm.utils import is_valid_dir
 
 
-def parse_rows(rows):
-    cycle_rows = []  
-    hmm_rows = []    
-    func_to_path = {}  
-    id_to_hmms = {}    
+def generate_hmm_template(hmm_custom_db_df, metabolic_functions):
+    """ From DataFrame containing HMMs information reconstruct format of dataframe for hmm_template.
 
-    last_path = None
-    for row in rows:  #pad to 9 columns, and assign variables for input columns (input = i, 0-based column numbers. e.g. i0 = input col 0)
-        row = [c.strip() for c in row] + [""] * max(0, 9 - len(row))
-        i0, i1, i2, i3, i4, i5, i8 = row[0], row[1], row[2], row[3], row[4], row[5], row[8]
-        typ = (i2 or "").upper()
+    Args:
+        hmm_custom_db_df (pandas DataFrame): dataframe containing description of metabolic pathways
+        metabolic_functions (dict): dictionary associating metabolic pathways number to their names
 
-        if 'FUNCTION' in typ:
-            func_major = i0.split('.', 1)[0] if i0 else '' #remove dot from ID to get major function ID
-            add_piece = i3  #expression stored in FUNCTION rows
-            func_to_path[func_major] = i1
-            if i1 != last_path:
-                cycle_rows.append([i1, add_piece, func_major])
-                last_path = i1
-            else:
-                if add_piece:
-                    #separate concatenated pieces by a single space 
-                    cycle_rows[-1][1] = (cycle_rows[-1][1] + ' ' + add_piece).strip()
+    Returns:
+        hmm_template_df (pandas DataFrame): dataframe at the format of hmm_template
+    """
+    hmm_custom_db_df['#Entry'] = [graph_nb.split('.')[0] for graph_nb in hmm_custom_db_df['Graph_No']]
+    hmm_custom_db_df['Category'] = [metabolic_functions[graph_nb] for graph_nb in hmm_custom_db_df['#Entry']]
+    hmm_custom_db_df['Function'] = ['' for graph_nb in hmm_custom_db_df['#Entry']]
 
-        elif 'HMM' in typ:
-            func_major = i0.split('.', 1)[0] if i0 else '' #remove dot from ID to get major function ID
-            row11 = [''] * 11
-            row11[0] = func_major
-            row11[1] = func_to_path.get(func_major, '')
-            row11[3] = i1
-            row11[4] = i5
-            row11[5] = i3
-            row11[6] = i8
-            row11[10] = i4
-            hmm_rows.append(row11)
+    hmm_custom_db_df['Gene abbreviation'] = hmm_custom_db_df['ID']
+    hmm_custom_db_df['Gene name'] = hmm_custom_db_df['enzyme_long']
+    hmm_custom_db_df['Hmm file'] = hmm_custom_db_df['Implementation']
+    hmm_custom_db_df['Corresponding KO'] = hmm_custom_db_df['kegg_ortholog']
 
-            if i1:
-                id_to_hmms.setdefault(func_major, {})
-                if i1 not in id_to_hmms[func_major]:
-                    id_to_hmms[func_major][i1] = i3
+    hmm_custom_db_df['Reaction'] = ['' for graph_nb in hmm_custom_db_df['#Entry']]
+    hmm_custom_db_df['Substrate'] = ['' for graph_nb in hmm_custom_db_df['#Entry']]
+    hmm_custom_db_df['Product'] = ['' for graph_nb in hmm_custom_db_df['#Entry']]
+    hmm_custom_db_df['Hmm detecting threshold'] = hmm_custom_db_df['HMM_threshold']
+    hmm_custom_db_df['source'] = hmm_custom_db_df['HMM_source']
 
-    return cycle_rows, hmm_rows, id_to_hmms, func_to_path
+    hmm_template_df = hmm_custom_db_df[['#Entry', 'Category','Function' , 'Gene abbreviation', 'Gene name',
+                                        'Hmm file', 'Corresponding KO', 'Reaction', 'Substrate', 'Product',
+                                        'Hmm detecting threshold', 'source']]
+
+    return hmm_template_df
 
 
 def translate_expression(expr: str, func_major: str, id_to_hmms: dict) -> str:
+    """ Convert string of boolean expression of genes into boolean expression of HMMs as required by bigecyhmm
+
+    Args:
+        expr (str): boolean expression with AND, OR, NOT showing required genes to infer metabolic pathway
+        func_major (str): name of the associated metabolic pathway
+        id_to_hmms (dict): dictionary associating metabolic pathways with subdictionary linking genes to HMMs
+
+    Returns:
+        converted_boolean_expression (str): converted boolean expression into a readable one by bigecyhmm
+    """
     #translate FUNCTION expressions: normalize textual operators to lowercase
     #and replace ID tokens with HMM filenames within the same func_major.
     if not expr:
@@ -96,122 +99,105 @@ def translate_expression(expr: str, func_major: str, id_to_hmms: dict) -> str:
                 newsub.append(hmms_for_func.get(key, s))
         out_parts.append(''.join(newsub))
 
-    return ''.join(out_parts).strip()
+    converted_boolean_expression = ''.join(out_parts).strip()
+    return converted_boolean_expression
 
 
-def write_outputs(cycle_rows, hmm_rows, out_cycle: Path, out_hmm: Path):
-    with out_cycle.open('w', newline='') as fh:
-        w = csv.writer(fh, delimiter='\t')
-        w.writerow(['Pathways', 'Hmms', 'function'])
-        for r in cycle_rows:
-            w.writerow(r)
+def generate_pathway_template(function_custom_db_df, gene_name_to_hmms):
+    """ From DataFrame containing metabolic pathways reconstruct format of dataframe for pathway_template.
 
-    with out_hmm.open('w', newline='') as fh:
-        w = csv.writer(fh, delimiter='\t')
-        headers = [''] * 11
-        headers[0] = 'function'
-        headers[1] = 'Pathways'
-        headers[3] = 'Gene abbreviation'
-        headers[4] = 'Gene name'
-        headers[5] = 'Hmm file'
-        headers[6] = 'Corresponding KO'
-        headers[10] = 'Hmm detecting threshold'
-        w.writerow(headers)
-        for r in hmm_rows:
-            w.writerow(r)
+    Args:
+        function_custom_db_df (pandas DataFrame): dataframe containing description of metabolic pathways
+        gene_name_to_hmms (dict): dictionary associating metabolic pathways with subdictionary linking genes to HMMs
+
+    Returns:
+        pathway_template_df (pandas DataFrame): dataframe at the format of pathway template
+    """
+    function_custom_db_df['Pathways'] = function_custom_db_df['ID']
+    function_custom_db_df['HMMs'] = [translate_expression(row['Implementation'], row['ID'], gene_name_to_hmms) for index, row in function_custom_db_df.iterrows()]
+    function_custom_db_df['reactants'] = function_custom_db_df['function_input']
+    function_custom_db_df['products'] = function_custom_db_df['function_output']
+    function_custom_db_df['formula'] = function_custom_db_df['function_input'] + '->' + function_custom_db_df['function_output']
+
+    pathway_template_df = function_custom_db_df[['Pathways', 'HMMs', 'reactants', 'products', 'formula']]
+
+    return pathway_template_df
 
 
-def build_bipartite_graph_from_rows(rows, func_column=1, type_column=2, inputs_column=6, outputs_column=7):
+def build_bipartite_graph(function_custom_db_df):
+    """ From DataFrame containing metabolic pathways reconstruct bipartite network graph
 
-    G = nx.DiGraph()
+    Args:
+        function_custom_db_df (pandas DataFrame): dataframe containing description of metabolic pathways
 
-    for row in rows:
-        #pad to the required number of columns
-        row = [c.strip() for c in row] + [""] * max(0, max(func_column, type_column, inputs_column, outputs_column) + 1 - len(row))
-        typ = (row[type_column] or "").upper()
-        if 'FUNCTION' not in typ:
-            continue
+    Returns:
+        bipartie_graph (networkx DirectedGraph): biparite directed graph of metabolic pathways
+    """
+    bipartie_graph = nx.DiGraph()
 
-        func_id = (row[func_column] or '').strip()
-        if not func_id:
-            continue
+    for index, row in function_custom_db_df.iterrows():
+        function_id = row['ID']
+        bipartie_graph.add_node(function_id, type='Function')
+        bipartie_graph.nodes[function_id]['label'] = function_id
 
-        #add function node if not already present
-        if not G.has_node(func_id):
-            G.add_node(func_id, type='Function')
+        for substrate in row['function_input'].split(', '):
+            if not bipartie_graph.has_node(substrate):
+                bipartie_graph.add_node(substrate, type='Metabolite')
+                bipartie_graph.nodes[substrate]['label'] = substrate
+            bipartie_graph.add_edge(substrate, function_id)
 
-        #parse function inputs, add nodes and edges which are not already present
-        raw_inputs = row[inputs_column] or ''
-        if raw_inputs:
-            for s in [x.strip() for x in raw_inputs.split(',') if x.strip()]:
-                subst_id = s
-                if not G.has_node(subst_id):
-                    G.add_node(subst_id, type='Substance')
-                if not G.has_edge(subst_id, func_id):
-                    G.add_edge(subst_id, func_id)
+        for product in row['function_output'].split(', '):
+            if not bipartie_graph.has_node(product):
+                bipartie_graph.add_node(product, type='Metabolite')
+                bipartie_graph.nodes[product]['label'] = product
+            bipartie_graph.add_edge(function_id, product)
 
-        #parse function outputs, add nodes and edges which are not already present
-        raw_outputs = row[outputs_column] or ''
-        if raw_outputs:
-            for s in [x.strip() for x in raw_outputs.split(',') if x.strip()]:
-                subst_id = s
-                if not G.has_node(subst_id):
-                    G.add_node(subst_id, type='Substance')
-                if not G.has_edge(func_id, subst_id):
-                    G.add_edge(func_id, subst_id)
-
-    return G
+    return bipartie_graph
 
 
 def generate_custom_db_from_tsv_one_file(custom_database_input, output_folder):
-    inp = Path(custom_database_input)
-    out_folder = Path(output_folder)
-    if not inp.exists():
-        raise FileNotFoundError(f"Input not found: {inp}")
+    """ From a tsv file containing all information, reconstruct the different files required by bigecyhmm
 
-    database_folder = out_folder / 'database'
-    database_folder.mkdir(parents=True, exist_ok=True)
+    Args:
+        custom_database_input (str): filepath to tsv file containing all information
+        output_folder (str): path to output folder
 
-    rows = read_input(inp)
-    cycle_rows, hmm_rows, id_to_hmms, func_to_path = parse_rows(rows)
+    Returns:
+        hmm_template_path (str): path to custom hmm_template file
+        pathway_template_path (str): path to custom pathway_template file
+        bipartie_graph (str): path to custom bipartite graph file
+    """
+    database_folder = os.path.join(output_folder, 'database')
+    is_valid_dir(database_folder)
 
-    #translate expressions in cycle_rows using per-func mappings
-    for cr in cycle_rows:
-        cr[1] = translate_expression(cr[1], cr[2], id_to_hmms)
+    custom_db_df = pd.read_csv(custom_database_input, sep='\t')
 
-    pathway_template_path = database_folder / 'pathway_template_file.tsv'
-    hmm_template_path = database_folder / 'hmm_template_file.tsv'
+    function_custom_db_df = custom_db_df[custom_db_df['Type']=='FUNCTION']
 
-    write_outputs(cycle_rows, hmm_rows, pathway_template_path, hmm_template_path)
+    function_custom_db_df['Graph_No'] = [graph_nb.split('.')[0] for graph_nb in function_custom_db_df['Graph_No']]
+    metabolic_functions = function_custom_db_df.set_index('Graph_No')['ID'].to_dict()
+
+    hmm_custom_db_df = custom_db_df[custom_db_df['Type']=='HMM']
+
+    hmm_custom_db_df['Function_Nb'] = [graph_nb.split('.')[0] for graph_nb in hmm_custom_db_df['Graph_No']]
+    metabolic_pathway_to_hmms = {}
+    for metabolic_nb in metabolic_functions:
+        metabolic_pathway = metabolic_functions[metabolic_nb]
+        tmp_hmm_custom_db_df = hmm_custom_db_df[hmm_custom_db_df['Function_Nb']==metabolic_nb]
+        metabolic_pathway_to_hmms[metabolic_pathway] = tmp_hmm_custom_db_df.set_index('ID')['Implementation'].to_dict()
+
+    hmm_template_df = generate_hmm_template(hmm_custom_db_df, metabolic_functions)
+    hmm_template_path = os.path.join(database_folder, 'hmm_template_file.tsv')
+    hmm_template_df.to_csv(hmm_template_path, sep='\t', index=False)
+
+    pathway_template_df = generate_pathway_template(function_custom_db_df, metabolic_pathway_to_hmms)
+    pathway_template_path = os.path.join(database_folder, 'pathway_template_file.tsv')
+    pathway_template_df.to_csv(pathway_template_path, sep='\t', index=False)
 
     #build bipartite graph and write as GraphML into database folder
-    G = build_bipartite_graph_from_rows(rows)
+    bipartie_graph = build_bipartite_graph(function_custom_db_df)
 
-    #make sure attributes are strings and add type and name label for easier graphml visualization
-    for n, d in G.nodes(data=True):
-        dtype = d.get('type', 'Substance')
-        d['label'] = n
-        for k, v in list(d.items()):
-            if isinstance(v, (list, dict)):
-                d[k] = str(v)
+    graphml_path = os.path.join(database_folder, 'input_graph.graphml')
+    nx.write_graphml(bipartie_graph, str(graphml_path), encoding='utf-8', named_key_ids=True)
 
-    graphml_path = database_folder / 'input_graph.graphml'
-    nx.write_graphml(G, str(graphml_path), encoding='utf-8', named_key_ids=True)
-
-    return str(hmm_template_path), str(pathway_template_path), G
-
-
-if __name__ == '__main__':  #Usage: python custom_tsv_parser.py <input_tsv> [output_folder]
-    if len(sys.argv) < 2:
-        sys.exit(1)
-    inp = Path(sys.argv[1])
-    outp = Path(sys.argv[2]) if len(sys.argv) > 2 else Path('.')
-    if not inp.exists():
-        print(f"Input not found: {inp}")
-        sys.exit(1)
-    try:
-        hmm_t, path_t, G = generate_custom_db_from_tsv_one_file(inp, outp)
-        print(f"Wrote: {path_t} and {hmm_t} and {outp}/database/input_graph.graphml")
-    except Exception as e:
-        print(f"Error: {e}")
-        sys.exit(1)
+    return hmm_template_path, pathway_template_path, bipartie_graph
