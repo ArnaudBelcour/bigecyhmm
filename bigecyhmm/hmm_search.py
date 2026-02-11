@@ -214,6 +214,7 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
     results = []
     with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
         list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
+        list_of_hmms = [hmm_filename for hmm_filename in list_of_hmms if os.path.basename(hmm_filename) in hmm_thresholds]
         check_hmms = {os.path.basename(hmm_filename).replace('.check.hmm', ''): hmm_filename
                       for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
         for hmm_filename in list_of_hmms:

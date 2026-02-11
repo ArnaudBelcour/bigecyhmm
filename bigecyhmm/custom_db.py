@@ -403,6 +403,8 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     """
     start_time = time.time()
 
+    is_valid_dir(output_folder)
+
     # Search for json files in input custom database.
     if custom_database_folder == 'internal_carbon':
         custom_database_folder = CUSTOM_CARBON_CYCLE_NETWORK

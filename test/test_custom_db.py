@@ -8,6 +8,7 @@ from bigecyhmm.custom_db import identify_run_custom_db_search, search_hmm_custom
 from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, HMM_COMPRESSED_FILE
 from bigecyhmm.hmm_search import query_fasta_file, get_hmm_thresholds, extract_hmm_to_function
 from bigecyhmm.diagram_cycles import extract_hmm_to_pathway
+from bigecyhmm.utils import is_valid_dir
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
@@ -23,6 +24,8 @@ def test_search_hmm_custom_db():
     custom_db_json = os.path.join('input_data', 'custom_db', 'carbon_cycle.json')
     custom_motif = os.path.join('input_data', 'motif.json')
     custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+
+    is_valid_dir(output_folder)
 
     pathway_template_file, bipartite_cycle_network = generate_pathway_file_from_json(custom_db_json, output_folder)
 
@@ -348,12 +351,32 @@ def test_search_hmm_custom_db_abundance_measure_esmecata_cli_modified_motif():
 
     shutil.rmtree(output_folder)
 
-def test_bigecyhmm_custom_one_file():
-    input_file = os.path.join('input_data', 'esmecata_output_folder', '1_clustering', 'reference_proteins_consensus_fasta')
+def test_bigecyhmm_custom_one_file_abundance():
+    input_file = os.path.join('input_data', 'org_prot')
     output_folder = 'output_folder'
-    custom_db = os.path.join('input_data', 'custom_db_one_file', 'carbon_cycle_od.tsv')
+    custom_db = os.path.join('input_data', 'custom_db_one_file')
     custom_motif = os.path.join('input_data', 'motif.json')
-    custom_motif_pair = os.path.join('input_data', 'motif_pair_mod.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
     abundance_file = os.path.join('input_data', 'proteome_tax_id_abundance.tsv')
-    measure_file = os.path.join('input_data', 'test_measure.tsv')
-    esmecata_folder = os.path.join('input_data', 'esmecata_output_folder')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair, '--abundance-file', abundance_file])
+    expected_abundance = {'Acetate metabo./dissim.': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Acetogen. WL': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Carbon fixation': {'sample_1': 200.0, 'sample_2': 800.0, 'sample_3': 520.0}, 'Ethanol oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Fermentation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Hydrogen generation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Hydrogen oxidation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Methanogen.': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
+     'Methanotrophy': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Organic carbon oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}}
+
+    expected_measure = {'Acetate': {'sample_1': 100.0, 'sample_3': 300.0}, 'H2': {'sample_1': 0.0, 'sample_2': 500.0, 'sample_3': 50.0}}
+
+    output_abundance_network_file = os.path.join(output_folder, 'carbon_cycle_od', 'cycle_diagram_bipartite_abundance.graphml')
+    abundance_network = nx.read_graphml(output_abundance_network_file)
+
+    predicted_abundance = {node: abundance_network.nodes[node] for node in abundance_network.nodes}
+
+    for function in expected_abundance:
+        for sample in expected_abundance[function]:
+            assert expected_abundance[function][sample] == predicted_abundance[function][sample]
+
+    shutil.rmtree(output_folder)
+
+test_bigecyhmm_custom_one_file_abundance()
