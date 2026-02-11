@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -469,7 +469,47 @@ def create_heatmap_functions(df, output_heatmap_filepath):
     plt.clf()
 
 
-def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None):
+def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_names_tax_ranks, sample_tot_abundance,
+                                              output_folder_abundance):
+    # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples
+    # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample.
+    data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, 
+                                                                                                                            observation_names_tax_ranks, sample_tot_abundance)
+
+    df_abundance_organism_sample = pd.DataFrame(data_abundance_organism_sample, columns=['Sample', 'Organism_name', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
+    output_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_organism_sample.tsv')
+    df_abundance_organism_sample.to_csv(output_organism_abundance_file, sep='\t', index=0)
+    output_missing_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_missing_organism_sample.tsv')
+    df_abundance_organism_sample = df_abundance_organism_sample[df_abundance_organism_sample['Relative abundance']>0]
+    df_abundance_organism_sample[df_abundance_organism_sample['Taxonomic rank selected by EsMeCaTa'] == 'Not found'].to_csv(output_missing_organism_abundance_file, sep='\t', index=0)
+
+    df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
+    # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
+    df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
+    output_taxon_rank_abundance_plot_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
+
+    df_abundance_taxon_sample = df_abundance_taxon_sample.set_index(['Sample', 'Taxonomic rank selected by EsMeCaTa'])['Relative abundance'].unstack().reset_index()
+    df_abundance_taxon_sample.set_index('Sample', inplace=True)
+
+    color_ranks = {'species': '#EF553B', 'genus': '#00CC96', 'family': '#AB63FA', 'order': '#FFA15A', 'class': '#19D3F3',
+                'phylum': '#FF6692', 'Not found': 'grey'}
+    unused_colors = ['#B6E880', '#FF97FF', '#FECB52' '#636EFA']
+    added_color = 0
+    for rank in df_abundance_taxon_sample.columns:
+        if rank not in color_ranks:
+            color_ranks[rank] = unused_colors[added_color]
+            added_color += 1
+    # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
+    sorted_columns = [rank for rank in RANK_SORTED if rank in df_abundance_taxon_sample.columns]
+    df_abundance_taxon_sample = df_abundance_taxon_sample[sorted_columns]
+    df_abundance_taxon_sample.plot(kind='bar', stacked=True, color=color_ranks, figsize=(16,14))
+    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+    plt.style.use('default')
+    plt.savefig(output_taxon_rank_abundance_plot_file, bbox_inches="tight", transparent=False)
+    plt.clf()
+
+
+def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
     Args:
@@ -477,6 +517,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         output_folder (str): path to the output folder where files will be created.
         esmecata_output_folder (str): path to esmecata output folder.
         abundance_file_path (str): path to abundance file.
+        group_file_path (str): path to group file.
     """
     start_time = time.time()
 
@@ -501,6 +542,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         logger.info("Read EsMeCaTa proteome_tax_id file.")
         proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
         observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
+        proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
+
         tax_id_names_observation_names = {}
         for observation_name in observation_names_tax_id_names:
             tax_id_name = observation_names_tax_id_names[observation_name]
@@ -541,29 +584,29 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     cycle_occurrence_community_df.to_csv(os.path.join(output_folder_occurrence, 'cycle_occurrence.tsv'), sep='\t')
     cycle_occurrences = cycle_occurrence_community_df['ratio'].to_dict()
 
-    output_file_name = os.path.join(output_folder_occurrence, 'swarmplot_function_ratio_community.png')
-    create_swarmplot_community(cycle_occurrence_community_df, output_file_name)
-
-    logger.info("  -> Create diagrams.")
     all_cycles = pd.read_csv(bigecyhmm_pathway_presence_file, sep='\t')['function'].tolist()
-    diagram_data = {}
-    for cycle_name in all_cycles:
-        if cycle_name in cycle_occurrences:
-            diagram_data[cycle_name] = (round(sum(cycle_occurrence_organisms[cycle_name].values()), 1), round(cycle_occurrences[cycle_name]*100, 1))
-        else:
-            diagram_data[cycle_name] = (0, 0)
+    all_template_cycles = pd.read_csv(PATHWAY_TEMPLATE_FILE, sep='\t')['Pathways'].tolist()
 
-    carbon_cycle_file = os.path.join(output_folder_occurrence, 'diagram_carbon_cycle.png')
-    create_carbon_cycle(diagram_data, carbon_cycle_file, 'Occurrence', 'Percentage')
+    if set(all_template_cycles).issubset(set(all_cycles)):
+        logger.info("  -> Create diagrams.")
+        diagram_data = {}
+        for cycle_name in all_cycles:
+            if cycle_name in cycle_occurrences:
+                diagram_data[cycle_name] = (round(sum(cycle_occurrence_organisms[cycle_name].values()), 1), round(cycle_occurrences[cycle_name]*100, 1))
+            else:
+                diagram_data[cycle_name] = (0, 0)
 
-    nitrogen_cycle_file = os.path.join(output_folder_occurrence, 'diagram_nitrogen_cycle.png')
-    create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Occurrence', 'Percentage')
+        carbon_cycle_file = os.path.join(output_folder_occurrence, 'diagram_carbon_cycle.png')
+        create_carbon_cycle(diagram_data, carbon_cycle_file, 'Occurrence', 'Percentage')
 
-    sulfur_cycle_file = os.path.join(output_folder_occurrence, 'diagram_sulfur_cycle.png')
-    create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Occurrence', 'Percentage')
+        nitrogen_cycle_file = os.path.join(output_folder_occurrence, 'diagram_nitrogen_cycle.png')
+        create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Occurrence', 'Percentage')
 
-    other_cycle_file = os.path.join(output_folder_occurrence, 'diagram_other_cycle.png')
-    create_other_cycle(diagram_data, other_cycle_file, 'Occurrence', 'Percentage')
+        sulfur_cycle_file = os.path.join(output_folder_occurrence, 'diagram_sulfur_cycle.png')
+        create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Occurrence', 'Percentage')
+
+        other_cycle_file = os.path.join(output_folder_occurrence, 'diagram_other_cycle.png')
+        create_other_cycle(diagram_data, other_cycle_file, 'Occurrence', 'Percentage')
 
     logger.info("  -> Read bigecyhmm functions output files.")
     bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
@@ -597,41 +640,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             os.mkdir(output_folder_abundance)
 
         if observation_names_tax_ranks is not None:
-            # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples.
-            # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample. 
-            data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks, sample_tot_abundance)
-
-            df_abundance_organism_sample = pd.DataFrame(data_abundance_organism_sample, columns=['Sample', 'Organism_name', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
-            output_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_organism_sample.tsv')
-            df_abundance_organism_sample.to_csv(output_organism_abundance_file, sep='\t', index=0)
-            output_missing_organism_abundance_file = os.path.join(output_folder_abundance, 'barplot_esmecata_missing_organism_sample.tsv')
-            df_abundance_organism_sample = df_abundance_organism_sample[df_abundance_organism_sample['Relative abundance']>0]
-            df_abundance_organism_sample[df_abundance_organism_sample['Taxonomic rank selected by EsMeCaTa'] == 'Not found'].to_csv(output_missing_organism_abundance_file, sep='\t', index=0)
-
-            df_abundance_taxon_sample = pd.DataFrame(data_abundance_taxon_sample, columns=['Sample', 'Taxonomic rank selected by EsMeCaTa', 'Relative abundance'])
-            # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
-            df_abundance_taxon_sample.sort_values(by="Taxonomic rank selected by EsMeCaTa", key=lambda column: column.map(lambda e: RANK_SORTED.index(e)), inplace=True)
-            output_taxon_rank_abundance_plot_file = os.path.join(output_folder_abundance, 'barplot_esmecata_found_taxon_sample.png')
-
-            df_abundance_taxon_sample = df_abundance_taxon_sample.set_index(['Sample', 'Taxonomic rank selected by EsMeCaTa'])['Relative abundance'].unstack().reset_index()
-            df_abundance_taxon_sample.set_index('Sample', inplace=True)
-
-            color_ranks = {'species': '#EF553B', 'genus': '#00CC96', 'family': '#AB63FA', 'order': '#FFA15A', 'class': '#19D3F3',
-                        'phylum': '#FF6692', 'Not found': 'grey'}
-            unused_colors = ['#B6E880', '#FF97FF', '#FECB52' '#636EFA']
-            added_color = 0
-            for rank in df_abundance_taxon_sample.columns:
-                if rank not in color_ranks:
-                    color_ranks[rank] = unused_colors[added_color]
-                    added_color += 1
-            # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
-            sorted_columns = [rank for rank in RANK_SORTED if rank in df_abundance_taxon_sample.columns]
-            df_abundance_taxon_sample = df_abundance_taxon_sample[sorted_columns]
-            df_abundance_taxon_sample.plot(kind='bar', stacked=True, color=color_ranks, figsize=(16,14))
-            plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
-            plt.style.use('default')
-            plt.savefig(output_taxon_rank_abundance_plot_file, bbox_inches="tight", transparent=False)
-            plt.clf()
+            generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_names_tax_ranks, sample_tot_abundance, output_folder_abundance)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
@@ -677,28 +686,30 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         if not os.path.exists(output_folder_cycle_diagram):
             os.mkdir(output_folder_cycle_diagram)
 
-        for sample in cycle_relative_abundance_samples:
-            diagram_data = {}
-            for cycle_name in all_cycles:
-                if cycle_name in cycle_relative_abundance_samples[sample]:
-                    diagram_data[cycle_name] = (round(cycle_abundance_samples[sample][cycle_name], 1), round(cycle_relative_abundance_samples[sample][cycle_name]*100, 1))
-                else:
-                    diagram_data[cycle_name] = (0, 0)
+        if set(all_template_cycles).issubset(set(all_cycles)):
+            for sample in cycle_relative_abundance_samples:
+                diagram_data = {}
+                for cycle_name in all_cycles:
+                    if cycle_name in cycle_relative_abundance_samples[sample]:
+                        diagram_data[cycle_name] = (round(cycle_abundance_samples[sample][cycle_name], 1), round(cycle_relative_abundance_samples[sample][cycle_name]*100, 1))
+                    else:
+                        diagram_data[cycle_name] = (0, 0)
 
-            carbon_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_carbon_cycle.png')
-            create_carbon_cycle(diagram_data, carbon_cycle_file, 'Abundance', 'Percentage')
+                carbon_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_carbon_cycle.png')
+                create_carbon_cycle(diagram_data, carbon_cycle_file, 'Abundance', 'Percentage')
 
-            nitrogen_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_nitrogen_cycle.png')
-            create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Abundance', 'Percentage')
+                nitrogen_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_nitrogen_cycle.png')
+                create_nitrogen_cycle(diagram_data, nitrogen_cycle_file, 'Abundance', 'Percentage')
 
-            sulfur_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_sulfur_cycle.png')
-            create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Abundance', 'Percentage')
+                sulfur_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_sulfur_cycle.png')
+                create_sulfur_cycle(diagram_data, sulfur_cycle_file, 'Abundance', 'Percentage')
 
-            other_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_other_cycle.png')
-            create_other_cycle(diagram_data, other_cycle_file, 'Abundance', 'Percentage')
+                other_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_other_cycle.png')
+                create_other_cycle(diagram_data, other_cycle_file, 'Abundance', 'Percentage')
 
-            phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
-            create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
+                phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
+                create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
+
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
@@ -776,7 +787,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         json.dump(metadata_json, ouput_file, indent=4)
 
 
-def create_visualisation_from_ko_file(ko_abundance_file, output_folder):
+def create_visualisation_from_ko_file(ko_abundance_file, output_folder, group_file=None):
     """Create visualisation plots from abundance file with KEGG Orthologs.
 
     Args:
@@ -785,7 +796,7 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder):
     """
     start_time = time.time()
 
-    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
+    pathway_hmms, pathway_expression, sorted_pathways = get_diagram_pathways_hmms(PATHWAY_TEMPLATE_FILE)
     df_ko_abundance = pd.read_csv(ko_abundance_file, sep='\t', index_col=0)
     kegg_ortholog_abundance_samples = df_ko_abundance.to_dict()
 
@@ -946,6 +957,14 @@ def main():
         help='Output directory path.',
         metavar='OUPUT_DIR')
 
+    parent_parser_group_file = argparse.ArgumentParser(add_help=False)
+    parent_parser_group_file.add_argument(
+        '--group-file',
+        dest='group_file',
+        required=False,
+        help='Group file associating samples with group.',
+        metavar='INPUT_FILE')
+
     # subparsers
     subparsers = parser.add_subparsers(
         title='subcommands',
@@ -957,7 +976,7 @@ def main():
         help='Create visualisation from runs of EsMeCaTa and bigecyhmm.',
         parents=[
             parent_parser_esmecata, parent_parser_bigecyhmm, parent_parser_abundance_file,
-            parent_parser_output_folder
+            parent_parser_output_folder, parent_parser_group_file
             ],
         allow_abbrev=False)
     genomes_parser = subparsers.add_parser(
@@ -965,14 +984,14 @@ def main():
         help='Creates visualisation from runs of bigecyhmm on genomes.',
         parents=[
             parent_parser_bigecyhmm, parent_parser_abundance_file,
-            parent_parser_output_folder
+            parent_parser_output_folder, parent_parser_group_file
             ],
         allow_abbrev=False)
     ko_parser = subparsers.add_parser(
         'ko',
         help='Creates visualisation from a table containing the abundances of HMM (especially KO) for different samples.',
         parents=[
-            parent_parser_ko_file, parent_parser_output_folder
+            parent_parser_ko_file, parent_parser_output_folder, parent_parser_group_file
             ],
         allow_abbrev=False)
 
@@ -1006,10 +1025,15 @@ def main():
         else:
             abundance_file = args.abundance_file
 
+        if args.group_file == 'false':
+            group_file = None
+        else:
+            group_file = args.group_file
+
     if args.cmd in ['esmecata']:
-        create_visualisation(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file)
+        create_visualisation(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file, group_file=group_file)
     elif args.cmd in ['genomes']:
-        create_visualisation(args.bigecyhmm, args.output, abundance_file_path=abundance_file)
+        create_visualisation(args.bigecyhmm, args.output, abundance_file_path=abundance_file, group_file=group_file)
     elif args.cmd in ['ko']:
         create_visualisation_from_ko_file(args.ko_file, args.output)
 
