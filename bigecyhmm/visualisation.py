@@ -31,7 +31,7 @@ import sys
 import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE
+from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE
 from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 
@@ -585,9 +585,13 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     cycle_occurrences = cycle_occurrence_community_df['ratio'].to_dict()
 
     all_cycles = pd.read_csv(bigecyhmm_pathway_presence_file, sep='\t')['function'].tolist()
-    all_template_cycles = pd.read_csv(PATHWAY_TEMPLATE_FILE, sep='\t')['Pathways'].tolist()
+    all_bigecyhmm_template_cycles = pd.read_csv(PATHWAY_TEMPLATE_FILE, sep='\t')['Pathways'].tolist()
 
-    if set(all_template_cycles).issubset(set(all_cycles)):
+    custom_central_hydrogen_template_df = pd.read_csv(CUSTOM_HYDROGEN_TABLE, sep='\t')
+    custom_central_hydrogen_template_df = custom_central_hydrogen_template_df[custom_central_hydrogen_template_df['Type']=='FUNCTION']
+    all_custom_central_hydrogen_template_cycles = custom_central_hydrogen_template_df['ID'].tolist()
+
+    if set(all_bigecyhmm_template_cycles).issubset(set(all_cycles)):
         logger.info("  -> Create diagrams.")
         diagram_data = {}
         for cycle_name in all_cycles:
@@ -686,7 +690,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         if not os.path.exists(output_folder_cycle_diagram):
             os.mkdir(output_folder_cycle_diagram)
 
-        if set(all_template_cycles).issubset(set(all_cycles)):
+        if set(all_bigecyhmm_template_cycles).issubset(set(all_cycles)):
             for sample in cycle_relative_abundance_samples:
                 diagram_data = {}
                 for cycle_name in all_cycles:
@@ -710,6 +714,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
                 create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
+        if set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
+            "Function to generate donut's plot"
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
