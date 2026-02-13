@@ -17,6 +17,7 @@ import argparse
 import logging
 import json
 import os
+import shutil
 import csv
 import sys
 import time
@@ -90,7 +91,7 @@ def generate_pathway_file_from_json(custom_database_json, output_folder):
     input_graph_file = os.path.join(database_folder, 'input_graph.graphml')
     nx.write_graphml(bipartite_cycle_network, input_graph_file)
 
-    return pathway_template_file, bipartite_cycle_network
+    return pathway_template_file, input_graph_file
 
 
 def get_hmms_in_pathway_template(pathway_template_file=PATHWAY_TEMPLATE_FILE):
@@ -146,9 +147,7 @@ def check_custom_db_input(custom_database_input, output_folder):
 
 
 def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE, pathway_template_file=PATHWAY_TEMPLATE_FILE,
-                         hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None,
-                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None,
-                         pathway_graph=None):
+                         hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -160,10 +159,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
-        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
-        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples
         esmecata_output_folder (str): path to esmecata output folder
-        pathway_graph (networkx graph): bipartite graph representation of pathways
     """
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
@@ -194,7 +190,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
     # Check that the HMMs in the pathway template file are present in the threshold file.
     if not hmms_in_pathway_template.issubset(hmm_in_threshold_file):
         not_found_hmms = hmms_in_pathway_template - hmm_in_threshold_file
-        logger.critical("  Some HMMs present in {0} are not present in the HMM template file {1}: {2}".format(custom_database_json, hmm_template_file, not_found_hmms))
+        logger.critical("  Some HMMs present in {0} are not present in the HMM template file {1}: {2}".format(pathway_template_file, hmm_template_file, not_found_hmms))
         sys.exit(1)
 
     # Get motif and motif_pair dictionaries.
@@ -243,126 +239,6 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
 
-    pathway_data = {}
-    total_file = os.path.join(output_folder, 'Total.R_input.txt')
-    with open(total_file, 'r') as open_total_file:
-        csvreader = csv.reader(open_total_file, delimiter='\t')
-        for line in csvreader:
-            pathway = line[0]
-            nb_pathway = line[1]
-            percentage_pathway = line[2]
-            pathway_data[pathway] = (nb_pathway, percentage_pathway)
-
-    # Initiate a bipartite network when giving abundance or measure files.
-    if pathway_graph is not None and (abundance_file is not None or metabolite_measure is not None):
-        abundance_cycle_network = nx.DiGraph()
-        nodes_data = [(node, pathway_graph.nodes[node]) for node in pathway_graph.nodes]
-        abundance_cycle_network.add_nodes_from(nodes_data)
-        for edge in pathway_graph.edges:
-            abundance_cycle_network.add_edges_from([edge], **pathway_graph.edges[edge])
-
-    # Read abundance data and create a network with nodes associated with the abundance.
-    if abundance_file is not None:
-        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file)
-
-        pathway_abundance = {}
-        cycle_pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
-        with open(cycle_pathway_presence_file, 'r') as open_cycle_pathway_presence_file:
-            csvreader = csv.DictReader(open_cycle_pathway_presence_file, delimiter='\t')
-            headers = csvreader.fieldnames
-            organisms = headers[1:]
-            for line in csvreader:
-                function_name = line['function']
-                if function_name not in pathway_abundance:
-                    pathway_abundance[function_name] = {}
-                if pathway_graph is not None:
-                    if function_name not in abundance_cycle_network.nodes:
-                        abundance_cycle_network.add_node(function_name, type='Function')
-                for sample in sample_abundance:
-                    # If esmecata output are given, translate tax_id into organism names.
-                    if esmecata_output_folder is not None:
-                        pathway_abundance[function_name][sample] = 0
-                        for tax_id in organisms:
-                            pathway_abundance[function_name][sample] += sum([sample_abundance[sample][organism] for organism in tax_id_names_observation_names[tax_id] if float(line[tax_id]) > 0 and organism in sample_abundance[sample]])
-                    else:
-                        pathway_abundance[function_name][sample] = sum([sample_abundance[sample][organism] for organism in organisms if float(line[organism]) > 0 and organism in sample_abundance[sample]])
-
-                    if pathway_graph is not None:
-                        abundance_cycle_network.nodes[function_name][sample] = pathway_abundance[function_name][sample]
-
-        # Create a tsv file containing abundance information for cycle function.
-        pathway_abundance_data = []
-        all_cycles = list(pathway_abundance.keys())
-        all_samples = list(sample_abundance.keys())
-        for cycle in all_cycles:
-            pathway_abundance_data.append([cycle, *[pathway_abundance[cycle][sample] for sample in all_samples]])
-
-        cycle_pathway_abundance_file = os.path.join(output_folder, 'pathway_abundance.tsv')
-        with open(cycle_pathway_abundance_file, 'w') as open_cycle_pathway_abundance_file:
-            csvwriter = csv.writer(open_cycle_pathway_abundance_file, delimiter='\t')
-            csvwriter.writerow(['function', *all_samples])
-            for data in pathway_abundance_data:
-                csvwriter.writerow(data)
-
-    if pathway_graph is not None:
-        # Represent network as a bipartie graph with occurrence if functions.
-        bipartite_graph = nx.DiGraph()
-
-        mapped_new_node_ids = {}
-        all_pathways = []
-        for node_id in pathway_graph.nodes:
-            input_graph_node_data = pathway_graph.nodes[node_id]
-            if input_graph_node_data['type'] == 'Function':
-                function_name = node_id
-                function_name_weighted = function_name + '\nCoverage: ' + pathway_data[function_name][1]
-                node_data = {node_d: input_graph_node_data[node_d] for node_d in input_graph_node_data if node_d != 'id'}
-                bipartite_graph.add_node(function_name_weighted, **node_data)
-                mapped_new_node_ids[function_name] = function_name_weighted
-                all_pathways.append(function_name_weighted)
-            else:
-                bipartite_graph.add_node(node_id, **input_graph_node_data)
-
-        for edge in pathway_graph.edges:
-            source = edge[0]
-            target = edge[1]
-            if source in mapped_new_node_ids:
-                function_name = source
-                source = mapped_new_node_ids[source]
-            if target in mapped_new_node_ids:
-                function_name = target
-                target = mapped_new_node_ids[target]
-            bipartite_graph.add_edge(source, target, weight=pathway_data[function_name][1])
-
-        logger.info("  -> Generate network files.")
-
-        network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.graphml')
-        nx.write_graphml(bipartite_graph, network_graphml_output_file)
-
-        fig, axes = plt.subplots(figsize=(40,20))
-        pos = nx.spring_layout(bipartite_graph)
-        # Get node names:
-        labels = {node: node for node in bipartite_graph.nodes}
-        nx.draw_networkx_labels(bipartite_graph, pos, labels, font_size=20)
-        nx.draw(bipartite_graph, pos, node_size=1000, arrowsize=20)
-        network_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_occurrence.png')
-        plt.savefig(network_output_file)
-
-    if metabolite_measure is not None:
-        # Add sample metabolite measurements to node.
-        if metabolite_measure is not None:
-            sample_metabolite_measure, sample_tot_abundance = read_measures_file(metabolite_measure)
-            for metabolite in abundance_cycle_network.nodes:
-                for sample in sample_metabolite_measure:
-                    if metabolite in sample_metabolite_measure[sample]:
-                        metabolite_measure = sample_metabolite_measure[sample][metabolite]
-                        if isinstance(metabolite_measure, float):
-                            abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
-
-    if pathway_graph is not None and (abundance_file is not None or metabolite_measure is not None):
-        abundance_cycle_network.add_edges_from(pathway_graph.edges)
-        network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
-        nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
-
     duration = time.time() - start_time
     metadata_json = {}
     metadata_json['tool_dependencies'] = {}
@@ -374,8 +250,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
     metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number,
-                                         'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
-                                         'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
+                                         'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'esmecata_output_folder': esmecata_output_folder}
     metadata_json['input_parameters']['custom_db'] = {'hmm_compressed_database': hmm_compressed_database, 'hmm_template_file': hmm_template_file,
                                                       'pathway_template_file': pathway_template_file}
 
@@ -387,7 +262,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
 
 
 def identify_run_custom_db_search(input_variable, custom_database_folder, output_folder, core_number=1, motif_json=None, motif_pair_json=None,
-                         abundance_file=None, metabolite_measure=None, esmecata_output_folder=None):
+                         esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
     Args:
@@ -397,8 +272,6 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
         core_number (int): number of core to use for the multiprocessing
         motif_json (str): JSON file containing gene associated with protein motifs to check for predictions
         motif_pair_json (str): JSON file containing association between two genes to check for predictions
-        abundance_file_path (str): path to abundance file indicating the abundance of organisms in samples
-        metabolite_measure (str): path to metabolite measure file indicating the abundance of metabolites in samples
         esmecata_output_folder (str): path to esmecata output folder
     """
     start_time = time.time()
@@ -446,12 +319,14 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
 
         # Generate custom database files from input file.
         custom_database_file = input_dicts[input_filename]
-        custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network, custom_hmm_compressed_database = check_custom_db_input(custom_database_file, output_folder)
+        custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_file, custom_hmm_compressed_database = check_custom_db_input(custom_database_file, output_folder)
 
         search_hmm_custom_db(input_variable, output_folder_custom_db, custom_hmm_compressed_database, custom_pathway_template_file,
                             custom_hmm_template_file, core_number=core_number, motif_json=motif_json, motif_pair_json=motif_pair_json,
-                            abundance_file=abundance_file, metabolite_measure=metabolite_measure, esmecata_output_folder=esmecata_output_folder,
-                            pathway_graph=custom_bipartite_cycle_network)
+                            esmecata_output_folder=esmecata_output_folder)
+
+        input_graph_file = os.path.join(output_folder_custom_db, 'input_graph.graphml')
+        shutil.copyfile(custom_bipartite_cycle_file, input_graph_file)
 
     duration = time.time() - start_time
     metadata_json = {}
@@ -464,8 +339,7 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'custom_database_folder': custom_database_folder, 'output_folder': output_folder,
-                                         'core_number': core_number, 'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'abundance_file': abundance_file,
-                                         'metabolite_measure': metabolite_measure, 'esmecata_output_folder': esmecata_output_folder}
+                                         'core_number': core_number, 'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'esmecata_output_folder': esmecata_output_folder}
 
     metadata_json['duration'] = duration
 
@@ -536,22 +410,6 @@ def main():
         default=None)
 
     parser.add_argument(
-        '--abundance-file',
-        dest='abundance_file',
-        required=False,
-        help='Abundance file indicating the abundance for each organisms in different samples.',
-        metavar='INPUT_FILE',
-        default=None)
-
-    parser.add_argument(
-        '--measure-file',
-        dest='measure_file',
-        required=False,
-        help='Measure file indicating the abundance for each metabolties of the graph in different samples.',
-        metavar='INPUT_FILE',
-        default=None)
-
-    parser.add_argument(
         '--esmecata',
         dest='esmecata_folder',
         required=False,
@@ -582,8 +440,7 @@ def main():
     logger.addHandler(console_handler)
 
     logger.info("--- Launch HMM search on custom database ---")
-    identify_run_custom_db_search(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file,
-                         args.abundance_file, args.measure_file, args.esmecata_folder)
+    identify_run_custom_db_search(args.input, args.custom_database, args.output, args.core, args.motif_file, args.motif_pair_file, args.esmecata_folder)
 
     duration = time.time() - start_time
     logger.info("--- Total runtime %.2f seconds ---" % (duration))

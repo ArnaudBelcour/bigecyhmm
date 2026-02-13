@@ -201,4 +201,4 @@ def generate_custom_db_from_tsv_one_file(custom_database_input, output_folder):
     graphml_path = os.path.join(database_folder, 'input_graph.graphml')
     nx.write_graphml(bipartie_graph, str(graphml_path), encoding='utf-8', named_key_ids=True)
 
-    return hmm_template_path, pathway_template_path, bipartie_graph
+    return hmm_template_path, pathway_template_path, graphml_path

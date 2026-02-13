@@ -21,6 +21,7 @@ from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
 from matplotlib import __version__ as matplotlib_version
 
+import networkx as nx
 import argparse
 import logging
 import csv
@@ -241,6 +242,8 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     # Ensure that indexes in sample_abundance_dataframe are the same than the columns in function_dataframe.
     # There can be more indexes in sample_abundance_dataframe if some organisms do not have functional predictions.
     sample_abundance_dataframe = sample_abundance_dataframe.reindex(function_dataframe.columns)
+    # Replace nan by 0.
+    sample_abundance_dataframe = sample_abundance_dataframe.fillna(0)
 
     # Matrix multiplication between function matrix and abundance matrix.
     abundance_function_df = function_dataframe.dot(sample_abundance_dataframe)
@@ -402,7 +405,7 @@ def create_polar_plot(df_seaborn_abundance, output_file):
     min_data = df_seaborn_abundance.groupby('name')['ratio'].min()
     color = 'blue'
     if not df_seaborn_abundance.empty and 'name' in df_seaborn_abundance.columns:
-        theta = [function_name.split(':')[1] for function_name in mean_data.index]
+        theta = [function_name.split(':')[1] if ':' in function_name else function_name for function_name in mean_data.index]
         # Add several angles to the polar plot according to the number of functions.
         funciton_angles = np.linspace(0.05, 2 * np.pi-0.05, len(theta), endpoint=False)
         ax.set_xticks(funciton_angles)
@@ -469,6 +472,42 @@ def create_heatmap_functions(df, output_heatmap_filepath):
     plt.clf()
 
 
+def add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure=None, cycle_relative_abundance_samples_df=None):
+    pathway_graph = nx.read_graphml(graph_file)
+
+    # Initiate a bipartite network when giving abundance or measure files.
+    if cycle_relative_abundance_samples_df is not None or metabolite_measure is not None:
+        abundance_cycle_network = nx.DiGraph()
+        nodes_data = [(node, pathway_graph.nodes[node]) for node in pathway_graph.nodes]
+        abundance_cycle_network.add_nodes_from(nodes_data)
+        for edge in pathway_graph.edges:
+            abundance_cycle_network.add_edges_from([edge], **pathway_graph.edges[edge])
+
+    if cycle_relative_abundance_samples_df is not None:
+        for function in cycle_relative_abundance_samples_df.index.tolist():
+            if function not in abundance_cycle_network.nodes:
+                abundance_cycle_network.add_node(function, type='Function')
+            for sample in cycle_relative_abundance_samples_df.columns:
+                pathway_abundance = cycle_relative_abundance_samples_df[sample].loc[function]
+                abundance_cycle_network.nodes[function][sample] = pathway_abundance
+
+    if metabolite_measure is not None:
+        # Add sample metabolite measurements to node.
+        if metabolite_measure is not None:
+            sample_metabolite_measure, sample_tot_abundance = read_measures_file(metabolite_measure)
+            for metabolite in abundance_cycle_network.nodes:
+                for sample in sample_metabolite_measure:
+                    if metabolite in sample_metabolite_measure[sample]:
+                        metabolite_measure = sample_metabolite_measure[sample][metabolite]
+                        if isinstance(metabolite_measure, float):
+                            abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
+
+    if cycle_relative_abundance_samples_df is not None or metabolite_measure is not None:
+        abundance_cycle_network.add_edges_from(pathway_graph.edges)
+        network_graphml_output_file = os.path.join(output_folder, 'cycle_diagram_bipartite_abundance.graphml')
+        nx.write_graphml(abundance_cycle_network, network_graphml_output_file)
+
+
 def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_names_tax_ranks, sample_tot_abundance,
                                               output_folder_abundance):
     # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples
@@ -509,7 +548,7 @@ def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_name
     plt.clf()
 
 
-def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None):
+def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None, metabolite_measure=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
     Args:
@@ -518,6 +557,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         esmecata_output_folder (str): path to esmecata output folder.
         abundance_file_path (str): path to abundance file.
         group_file_path (str): path to group file.
+        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples.
     """
     start_time = time.time()
 
@@ -774,6 +814,13 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
         create_heatmap_functions(df_heatmap_abundance_samples, output_heatmap_filepath)
     """
+    # If there is a graph in bigecyhmm folder, run graph analyses.
+    graph_file = os.path.join(bigecyhmm_output, 'input_graph.graphml')
+    if os.path.exists(graph_file):
+        if abundance_file_path is None:
+            cycle_relative_abundance_samples_df = None
+        add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure, cycle_relative_abundance_samples_df)
+
     duration = time.time() - start_time
     metadata_json = {}
     metadata_json['tool_dependencies'] = {}
@@ -909,6 +956,38 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder, group_fi
     return sample_data_pathway
 
 
+def visualisation_input_handler(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None,
+                                group_file=None, metabolite_measure=None):
+    """Create visualisation plots from esmecata, bigecyhmm output folders
+
+    Args:
+        bigecyhmm_output (str): path to bigecyhmm output folder.
+        output_folder (str): path to the output folder where files will be created.
+        esmecata_output_folder (str): path to esmecata output folder.
+        abundance_file_path (str): path to abundance file.
+        group_file_path (str): path to group file.
+        metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples.
+    """
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
+
+    bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
+    # Output files are directly in input folder, run bigecyhmm visualisation on it.
+    if os.path.exists(bigecyhmm_pathway_presence_file):
+        logger.info("|bigecyhmm|visualisation| Launch analyses on {0}.".format(bigecyhmm_output))
+        create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder, abundance_file_path, group_file, metabolite_measure)
+    # If there is no such files but if there are subfolders, check if bigecyhmm output fiels are not in subfolders. 
+    else:
+        for bigecyhmm_input_folder in os.listdir(bigecyhmm_output):
+            bigecyhmm_input_folder_path = os.path.join(bigecyhmm_output, bigecyhmm_input_folder)
+            bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_input_folder_path, 'pathway_presence.tsv')
+            if os.path.isdir(bigecyhmm_input_folder_path) and os.path.exists(bigecyhmm_pathway_presence_file):
+                # If yes, then run each time bigecyhmm visualisation on these different subfolders.
+                logger.info("|bigecyhmm|visualisation| Found one subfolder {0} from {1}, launch analysis on it.".format(bigecyhmm_input_folder_path, bigecyhmm_output))
+                subfolder_output_folder = os.path.join(output_folder, bigecyhmm_input_folder)
+                create_visualisation(bigecyhmm_input_folder_path, subfolder_output_folder, esmecata_output_folder, abundance_file_path, group_file, metabolite_measure)
+
+
 def main():
     start_time = time.time()
 
@@ -971,6 +1050,15 @@ def main():
         help='Group file associating samples with group.',
         metavar='INPUT_FILE')
 
+    parent_parser_measure_file = argparse.ArgumentParser(add_help=False)
+    parent_parser_measure_file.add_argument(
+        '--measure-file',
+        dest='measure_file',
+        required=False,
+        help='Measure file indicating the abundance for each metabolties of the graph in different samples.',
+        metavar='INPUT_FILE',
+        default=None)
+
     # subparsers
     subparsers = parser.add_subparsers(
         title='subcommands',
@@ -982,7 +1070,7 @@ def main():
         help='Create visualisation from runs of EsMeCaTa and bigecyhmm.',
         parents=[
             parent_parser_esmecata, parent_parser_bigecyhmm, parent_parser_abundance_file,
-            parent_parser_output_folder, parent_parser_group_file
+            parent_parser_output_folder, parent_parser_group_file, parent_parser_measure_file
             ],
         allow_abbrev=False)
     genomes_parser = subparsers.add_parser(
@@ -990,7 +1078,8 @@ def main():
         help='Creates visualisation from runs of bigecyhmm on genomes.',
         parents=[
             parent_parser_bigecyhmm, parent_parser_abundance_file,
-            parent_parser_output_folder, parent_parser_group_file
+            parent_parser_output_folder, parent_parser_group_file,
+            parent_parser_measure_file
             ],
         allow_abbrev=False)
     ko_parser = subparsers.add_parser(
@@ -1037,9 +1126,9 @@ def main():
             group_file = args.group_file
 
     if args.cmd in ['esmecata']:
-        create_visualisation(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file, group_file=group_file)
+        visualisation_input_handler(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file, group_file=group_file, metabolite_measure=args.measure_file)
     elif args.cmd in ['genomes']:
-        create_visualisation(args.bigecyhmm, args.output, abundance_file_path=abundance_file, group_file=group_file)
+        visualisation_input_handler(args.bigecyhmm, args.output, abundance_file_path=abundance_file, group_file=group_file, metabolite_measure=args.measure_file)
     elif args.cmd in ['ko']:
         create_visualisation_from_ko_file(args.ko_file, args.output)
 
