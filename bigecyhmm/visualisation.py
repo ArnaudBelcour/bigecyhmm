@@ -35,6 +35,7 @@ from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE
 from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
+from bigecyhmm.statnut_runner import statNut_run
 
 from esmecata.utils import get_domain_or_superkingdom_from_ncbi_tax_database
 
@@ -755,7 +756,13 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
         if set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
-            "Function to generate donut's plot"
+            statNut_run() 
+            """Function to: 
+            - resolve sample groups based on an input-tsv 
+            - calculate stats on groups (kruskal-wallis with Benjamini-hochberg correction) 
+            - make a table for the functions/ stats 
+            - make a donut-plot showing a "drawn" network, group medians, max+min of each group for each function
+            - output a combined figure with donut & table"""
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
