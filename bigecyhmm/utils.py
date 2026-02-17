@@ -59,7 +59,7 @@ def file_or_folder(variable_folder_file, extension_checks=['.faa'], second_exten
         if file_extension in extension_checks:
             file_folder_paths[filename] = variable_folder_file
             check_file = True
-        if check_file is False and file_extension in second_extension_to_checks:
+        if check_file is False and second_extension_to_checks is not None and file_extension in second_extension_to_checks:
             file_folder_paths[filename] = variable_folder_file
             check_file = True
 
@@ -71,7 +71,7 @@ def file_or_folder(variable_folder_file, extension_checks=['.faa'], second_exten
             if file_extension in extension_checks:
                 file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
                 check_folder = True
-            if check_folder is False and file_extension in second_extension_to_checks:
+            if check_folder is False and second_extension_to_checks is not None and file_extension in second_extension_to_checks:
                 file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
                 check_folder = True
 
