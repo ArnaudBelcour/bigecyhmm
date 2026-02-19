@@ -700,6 +700,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         cycle_relative_abundance_samples_df.index.name = 'name'
         cycle_relative_abundance_samples_df.sort_index(inplace=True)
         cycle_abundance_sample_filepath = os.path.join(output_folder_abundance, 'cycle_abundance_sample.tsv')
+        if set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
+            cycle_relative_abundance_samples_df = cycle_relative_abundance_samples_df.reindex(all_custom_central_hydrogen_template_cycles)
         cycle_relative_abundance_samples_df.to_csv(cycle_abundance_sample_filepath, sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
