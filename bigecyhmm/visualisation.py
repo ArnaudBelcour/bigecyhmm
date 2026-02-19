@@ -32,10 +32,10 @@ import sys
 import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE
+from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE, TEMPLATE_CUSTOM_CENTRAL_HYDROGEN
 from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
-from bigecyhmm.statnut_runner import statNut_run
+from bigecyhmm.group_analysis import statNut_run
 
 from esmecata.utils import get_domain_or_superkingdom_from_ncbi_tax_database
 
@@ -699,7 +699,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         cycle_relative_abundance_samples_df = pd.DataFrame(cycle_relative_abundance_samples)
         cycle_relative_abundance_samples_df.index.name = 'name'
         cycle_relative_abundance_samples_df.sort_index(inplace=True)
-        cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample.tsv'), sep='\t')
+        cycle_abundance_sample_filepath = os.path.join(output_folder_abundance, 'cycle_abundance_sample.tsv')
+        cycle_relative_abundance_samples_df.to_csv(cycle_abundance_sample_filepath, sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
         output_folder_cycle_participation = os.path.join(output_folder_abundance, 'cycle_participation')
@@ -727,7 +728,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             create_polar_plot(sample_melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
         logger.info("  -> Create diagrams.")
-        output_folder_cycle_diagram= os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
+        output_folder_cycle_diagram = os.path.join(output_folder_abundance, 'cycle_diagrams_abundance')
         if not os.path.exists(output_folder_cycle_diagram):
             os.mkdir(output_folder_cycle_diagram)
 
@@ -756,7 +757,15 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
         if set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
-            statNut_run() 
+            output_folder_plots = os.path.join(output_folder_abundance, 'plots')
+            if not os.path.exists(output_folder_plots):
+                os.mkdir(output_folder_plots)
+            group_stats_file = os.path.join(output_folder_plots, 'group_stats.tsv')
+            cleaned_data_file = os.path.join(output_folder_plots, 'cleaned_data.tsv')
+            group_medians_donut_file = os.path.join(output_folder_plots, 'group_medians_donut.png')
+            group_stats_table_file = os.path.join(output_folder_plots, 'group_stats_table.png')
+            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=TEMPLATE_CUSTOM_CENTRAL_HYDROGEN,
+                        stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
             """Function to: 
             - resolve sample groups based on an input-tsv 
             - calculate stats on groups (kruskal-wallis with Benjamini-hochberg correction) 

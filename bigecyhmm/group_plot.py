@@ -2,8 +2,101 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from data_stats import get_group_col_names
+
 from typing import Dict, List, Tuple
+from typing import Optional
+
+from PIL import Image
+
+
+def get_group_col_names(df: pd.DataFrame, groups_tsv: str) -> Tuple[List[str], List[List[str]], dict]:
+    # create list of column names per "analysis-group" as defined in the groups TSV. Also return group names and dict for later use.
+
+    mapping_df = pd.read_csv(groups_tsv, sep='\t', dtype=str)
+    # trim whitespace to avoid accidental mismatches
+    if 'sample' not in mapping_df.columns or 'group' not in mapping_df.columns:
+        raise ValueError("Group mapping TSV must contain columns 'sample' and 'group'")
+
+    mapping_df['sample'] = mapping_df['sample'].astype(str).str.strip()
+    mapping_df['group'] = mapping_df['group'].astype(str).str.strip()
+
+    groups_dict = mapping_df.groupby('group', sort=False)['sample'].apply(list).to_dict()
+    cols = list(df.columns)
+
+    group_names = list(groups_dict.keys())
+    resolved_groups: List[List[str]] = []
+    for samples in groups_dict.values():
+        samples_clean = [str(s).strip() for s in samples if isinstance(s, str)]
+        if '' in samples_clean:
+            matched = cols.copy()
+        else:
+            matched = [s for s in samples_clean if s in df.columns]
+        # preserve order and remove duplicates
+        uniq = list(dict.fromkeys(matched))
+        resolved_groups.append(uniq)
+
+    return group_names, resolved_groups, groups_dict
+
+
+def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots', 'group_stats_table.png')) -> None:
+
+    data_frame = display_df.copy()
+
+    #Assume data_stats.py provides exact column names. Fail if not.
+    data_frame = data_frame.reset_index(drop=True)
+    data_frame.insert(0, 'ID', range(1, len(data_frame) + 1))
+    # median columns are produced by data_stats and start with 'Median '
+    median_cols = [c for c in data_frame.columns if c.startswith('Median ')]
+    desired = ['ID', 'Metabolic Function', 'significant', 'p_bh'] + median_cols
+    df = data_frame[desired]
+
+    # create table
+    # use the same figure height as the donut plot (20 inches) so combined figures align vertically
+    fig, ax = plt.subplots(figsize=(8, 20))
+    ax.axis('off')
+
+    table = ax.table(
+        cellText=df.values.tolist(),
+        colLabels=df.columns.tolist(),
+        loc='center',
+        cellLoc='center',
+        colLoc='center',
+    )
+
+    table.auto_set_font_size(False)
+    table.set_fontsize(8)
+    try:
+        table.auto_set_column_width(col=list(range(len(df.columns))))
+    except Exception:
+        pass
+
+    #draw horizontal bottom edges for every row, and a thicker one for the top row
+    try:
+        for (row, col), cell in table.get_celld().items():
+            cell.set_edgecolor('gray')
+            cell.set_linewidth(0.5)
+            cell.set_antialiased(False)
+            cell.visible_edges = 'B'
+            if row == 0:
+                cell.set_edgecolor('black')
+                cell.set_linewidth(1.0)
+                cell.get_text().set_fontweight('bold')
+    except Exception:
+        # styling failures are non-fatal; leave table as-is
+        pass
+
+    plt.subplots_adjust(left=0.05, right=0.95, top=0.98, bottom=0.02)
+    
+    # draw to populate the renderer
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    try:
+        renderer = fig.canvas.get_renderer()
+        bbox = table.get_window_extent(renderer)
+        bbox_inches = bbox.transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(output_path, dpi=300, bbox_inches=bbox_inches, pad_inches=0.01)
+    except Exception:
+        fig.savefig(output_path, dpi=300, bbox_inches='tight', pad_inches=0.02)
+    plt.close(fig)
 
 
 def plot_donut(
@@ -197,3 +290,49 @@ def plot_donut(
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close(fig)
+
+
+def combine_images_side_by_side(
+    left_path: str,
+    right_path: str,
+    output_path: str,
+    padding: int = 20,
+    match_height: str = 'left',  # 'left' | 'right' | 'max' | 'min'
+    bg_color: Tuple[int, int, int] = (255, 255, 255),
+) -> str:
+# this script combines the two output images of the table and the donut side-by-side for easier viewing.
+  
+    os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
+
+    left = Image.open(left_path).convert('RGB')
+    right = Image.open(right_path).convert('RGB')
+
+    h_left, w_left = left.size[1], left.size[0]
+    h_right, w_right = right.size[1], right.size[0]
+
+    if match_height == 'left':
+        target_h = h_left
+    elif match_height == 'right':
+        target_h = h_right
+    elif match_height == 'max':
+        target_h = max(h_left, h_right)
+    else:  # 'min' or fallback
+        target_h = min(h_left, h_right)
+
+    def scale_to_height(img: Image.Image, target_h: int) -> Image.Image:
+        w, h = img.size
+        if h == target_h:
+            return img
+        new_w = int(round(w * (target_h / h)))
+        return img.resize((new_w, target_h), Image.LANCZOS)
+
+    left = scale_to_height(left, target_h)
+    right = scale_to_height(right, target_h)
+
+    total_w = left.size[0] + padding + right.size[0]
+    out = Image.new('RGB', (total_w, target_h), color=bg_color)
+    out.paste(left, (0, 0))
+    out.paste(right, (left.size[0] + padding, 0))
+
+    out.save(output_path, dpi=(300, 300))
+    return output_path
