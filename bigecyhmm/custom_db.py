@@ -30,7 +30,7 @@ from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, c
 from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
+from bigecyhmm import HMM_COMPRESSED_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
                     CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, \
                     CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK, CUSTOM_HYDROGEN_TABLE
 
@@ -116,13 +116,13 @@ def get_hmms_in_pathway_template(pathway_template_file=PATHWAY_TEMPLATE_FILE):
 
 def check_custom_db_input(custom_database_input, output_folder):
     if custom_database_input.endswith('.json'):
-        # Check the presence of custom HMM compressed database.
-        custom_hmm_compressed_database = custom_database_input.replace('.json', '.zip')
-        if os.path.exists(custom_hmm_compressed_database):
+        # Check the presence of custom HMM database.
+        custom_hmm_compressed_database = custom_database_input.replace('.json', '')
+        if os.path.exists(custom_hmm_compressed_database) and os.path.isdir(custom_hmm_compressed_database):
             logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
         else:
             logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
-            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
+            custom_hmm_compressed_database = HMM_COMPRESSED_FOLDER
         # Check the presence of custom HMM template file.
         custom_hmm_template_file = custom_database_input.replace('.json', '.tsv')
         if os.path.exists(custom_hmm_template_file):
@@ -136,17 +136,17 @@ def check_custom_db_input(custom_database_input, output_folder):
     elif custom_database_input.endswith('.tsv'):
         custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network = generate_custom_db_from_tsv_one_file(custom_database_input, output_folder)
         # Check the presence of custom HMM compressed database.
-        custom_hmm_compressed_database = custom_database_input.replace('.tsv', '.zip')
-        if os.path.exists(custom_hmm_compressed_database):
+        custom_hmm_compressed_database = custom_database_input.replace('.tsv', '')
+        if os.path.exists(custom_hmm_compressed_database) and os.path.isdir(custom_hmm_compressed_database):
             logger.info("  -> Custom HMM compressed database {0} exists, it will be used.".format(custom_hmm_compressed_database))
         else:
             logger.info("  -> Custom HMM compressed database {0} not found, bigecyhmm will use the default one.".format(custom_hmm_compressed_database))
-            custom_hmm_compressed_database = HMM_COMPRESSED_FILE
+            custom_hmm_compressed_database = HMM_COMPRESSED_FOLDER
 
     return custom_hmm_template_file, custom_pathway_template_file, custom_bipartite_cycle_network, custom_hmm_compressed_database
 
 
-def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE, pathway_template_file=PATHWAY_TEMPLATE_FILE,
+def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FOLDER, pathway_template_file=PATHWAY_TEMPLATE_FILE,
                          hmm_template_file=HMM_TEMPLATE_FILE, core_number=1, motif_json=None, motif_pair_json=None, esmecata_output_folder=None):
     """Main function to use HMM search on protein sequences and write results with a custom database.
 
@@ -173,8 +173,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_compressed_database=
     hmms_in_pathway_template = get_hmms_in_pathway_template(pathway_template_file)
 
     # Check that the same HMM profiles are present in compressed zip
-    with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
-        list_of_hmms = set([os.path.basename(hmm_filename) for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename])
+    list_of_hmms = set([os.path.basename(hmm_filename) for hmm_filename in os.listdir(hmm_compressed_database) if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename])
     # Check that the HMMs in the pathway template file are present in the compressed database.
     hmms_in_pathway_template = set(hmms_in_pathway_template)
     if not hmms_in_pathway_template.issubset(list_of_hmms):
