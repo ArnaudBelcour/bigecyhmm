@@ -284,7 +284,7 @@ def plot_donut(
 
         ax.plot(angles, r_median, color=colors[grp_idx % len(colors)], label=gname)
 
-    ax.grid(True)
+    ax.grid(True, color='lightgrey', linewidth=0.5)
     ax.legend()
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
