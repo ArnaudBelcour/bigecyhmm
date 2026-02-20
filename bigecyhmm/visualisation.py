@@ -836,8 +836,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     graph_file = os.path.join(bigecyhmm_output, 'input_graph.graphml')
     if os.path.exists(graph_file):
         if abundance_file_path is None:
-            cycle_relative_abundance_samples_df = None
-        add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure, cycle_relative_abundance_samples_df)
+            cycle_raw_abundance_samples_df = None
+        add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure, cycle_raw_abundance_samples_df)
 
     duration = time.time() - start_time
     metadata_json = {}

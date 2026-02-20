@@ -44,8 +44,10 @@
 42	Fermentation	Acetogenesis	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625	acetyl-CoA + phosphate = CoA + acetyl phosphate [RN:R00230]	acetyl-CoA; phosphate	CoA; acetyl phosphate	205.40|full	
 	Fermentation	Acetogenesis	acsB	acetyl-CoA synthase 	K14138.hmm	K14138				950.53|full	
 43	Fermentation	Acetate to acetyl-CoA	acs	acetyl-CoA synthetase	TIGR02188.hmm, K01895.hmm	K01895	ATP + acetate + CoA = AMP + diphosphate + acetyl-CoA [RN:R00235]	ATP; acetate; CoA	AMP; diphosphate; acetyl-CoA	684.65|full	
+	Acetate oxidation		cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
 44	Fermentation	Pyruvate <=> acetyl-CoA + formate 	pflD	formate C-acetyltransferase	K00656.hmm	K00656	acetyl-CoA + formate = CoA + pyruvate [RN:R00212]	acetyl-CoA; formate	CoA; pyruvate	336.47|full	
 	Fermentation	Formate <=> CO2 + H2	hycE	Formate lyase	K15830.hmm	K15830		formate	CO2 ; H	321.10|full	
+	Fermentation		pct	Propionate-CoA transferase	K01026.hmm	K01026				23|domain	Kegg-database 
 45	C1 metabolism	Methanol oxidation	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028	a primary alcohol + 2 ferricytochrome cL = an aldehyde + 2 ferrocytochrome cL + 2 H+ [RN:R10713]	primary alcohol; ferricytochrome cL	aldehyde; ferrocytochrome cL; H+	400|full	
 46	C1 metabolism	Methanol oxidation	mdh	methanol dehydrogenase	TIGR04266.hmm	K00093	methanol + NAD+ = formaldehyde + NADH + H+ [RN:R00605]	methanol; NAD+	formaldehyde; NADH; H+	400.00|full	
 47	C1 metabolism	Methyl amine -> formaldehyde	mauA	methylamine dehydrogenase light chain	TIGR02659.hmm	K15228	methylamine + H2O + 2 amicyanin = formaldehyde + NH3 + 2 reduced amicyanin [RN:R00606]	methylamine; H2O; amicyanin	formaldehyde; NH3; reduced amicyanin	85.80|full	
@@ -84,6 +86,10 @@
 	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm, K00402.hmm	K00402				172|full	
 	Methane metabolism	Methane production	mtaB	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K04480.hmm	K04480				572.93|full	
 	Methane metabolism	Methane production	mtbA	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K14082.hmm	K14082				454.43|full	
+	Methylotrophic methanogen		mtaA	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	NF040654.hmm	K14080				400|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF008154/
+	Methylotrophic methanogen		mtbA	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	NF041608.hmm	K14082				600|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041608/
+	Methylotrophic methanogen		cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
+	CO2-dep. Methanogen.		mer	5.10-Methylenetetrahydromethanopterin reductase (Mer)	TIGR03555.1.hmm	K00320				348.7|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/
 70	Carbon fixation	CBB cycle - Rubisco	Form I	Form I RuBisCO large subunit	rubisco_form_I.hmm, K01601.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full	
 71	Carbon fixation	CBB cycle - Rubisco	Form II	Form II RuBisCO large subunit	rubisco_form_II.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full	
 	Carbon fixation	CBB cycle - Rubisco	Form II-III	Form II-III RuBisCO large subunit	rubisco_form_II_III.hmm					500|full	
@@ -125,6 +131,7 @@
 102	Nitrogen cycling	Nitrite reduction to ammonia	nrfD	cytochrome c nitrite reductase, NrfD subunit	TIGR03148.hmm	K04015	NH3 + 2 H2O + 6 ferricytochrome c = nitrite + 6 ferrocytochrome c + 7 H+ [RN:R05712]	NH3; H2O; ferricytochrome c	nitrite; ferrocytochrome c; H+	300.15|full	
 103	Nitrogen cycling	Nitrite reduction to ammonia	nirB	nitrite reductase (NADH) large subunit	TIGR02374.hmm	K00362	NH3 + 3 NAD+ + 2 H2O = nitrite + 3 NADH + 5 H+ [RN:R00787]	NH3; NAD+; H2O	nitrite; NADH; H+	442.75|full	
 104	Nitrogen cycling	Nitrite reduction to ammonia	nirD	nitrite reductase (NADH) small subunit	TIGR02378.hmm	K00363	NH3 + 3 NAD+ + 2 H2O = nitrite + 3 NADH + 5 H+ [RN:R00787]	NH3; NAD+; H2O	nitrite; NADH; H+	69.85|full	
+	Nitrate respiration / denitrification		nas	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NF041323.hmm	K00372				1000|domain	https://doi.org/10.1186/s40168-021-01213-8
 105	Nitrogen cycling	Nitrite reduction	nirK	nitrite reductase (NO-forming)	TIGR02376.hmm	K00368	nitric oxide + H2O + ferricytochrome c = nitrite + ferrocytochrome c + 2 H+ [RN:R00783]	nitric oxide; H2O; ferricytochrome c	nitrite; ferrocytochrome c; H+	169.10|full	
 106	Nitrogen cycling	Nitrite reduction	nirS	nitrite reductase (NO-forming) / hydroxylamine reductase	nitrite_reductase_nirS.hmm	K15864	nitric oxide + H2O + ferricytochrome c = nitrite + ferrocytochrome c + 2 H+ [RN:R00783]	nitric oxide; H2O; ferricytochrome c	nitrite; ferrocytochrome c; H+	200|full	
 107	Nitrogen cycling	Nitrite reduction	octR	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	TIGR04315.hmm	N/A	Nitrite reduction	N/A	N/A	325.00|full	
@@ -178,6 +185,67 @@
 145	Hydrogenases	Ni-Fe Hydrogenase	nife-group-3c	Ni-Fe Hydrogenase, Electron-bifurcation	nife-group-3c.hmm	N/A	Electron-bifurcation	N/A	N/A	620.65|full	
 146	Hydrogenases	Ni-Fe Hydrogenase	nife-group-4a-g	Ni-Fe Hydrogenase, H2-evolving	nife-group-4a-g.hmm	N/A	H2-evolving	N/A	N/A	458|full	
 147	Hydrogenases	Ni-Fe Hydrogenase	nife-group-4hi	Ni-Fe Hydrogenase, H2-uptake	nife-group-4hi.hmm	N/A	H2-uptake	N/A	N/A	447.8|full	
+	Hydrogen generation		hydA1	hydrogenase [FeFe] A1	hydrogenase_FeFeGroupA1.hmm	K00532				188|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hydM	hydrogenase [FeFe] B	hydrogenase_FeFeGroupB.hmm	KEGG TOO UNSPECIFIC				227|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hyiB	hydrogenase [NiFe] 1e	hydrogenase_NiFeGroup1e.hmm	KEGG TOO UNSPECIFIC				969|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hyhL	hydrogenase [NiFe] 3b	hydrogenase_NiFeGroup3b.hmm	KEGG TOO UNSPECIFIC				332|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hoxH	hydrogenase [NiFe] 3d	hydrogenase_NiFeGroup3d.hmm	KEGG TOO UNSPECIFIC				595|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		mbhL	hydrogenase [NiFe] 4b	hydrogenase_NiFeGroup4b.hmm	KEGG TOO UNSPECIFIC				792|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		cooH	hydrogenase [NiFe] 4c	hydrogenase_NiFeGroup4c.hmm	KEGG TOO UNSPECIFIC				416|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		EhaO	hydrogenase [NiFe] 4d	hydrogenase_NiFeGroup4d.hmm	KEGG TOO UNSPECIFIC				465|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		ehfE	hydrogenase [NiFe] 4f	hydrogenase_NiFeGroup4f.hmm	KEGG TOO UNSPECIFIC				534|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen generation		hytA	hydrogenase [FeFe] A4	hydrogenase_FeFeGroupA4.hmm	KEGG TOO UNSPECIFIC				605|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydM	hydrogenase [FeFe] B	hydrogenase_FeFeGroupB.hmm	KEGG TOO UNSPECIFIC				227|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydA2	hydrogenase [FeFe] A2	hydrogenase_FeFeGroupA2.hmm	KEGG TOO UNSPECIFIC				820|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydA3	hydrogenase [FeFe] A3	hydrogenase_FeFeGroupA3.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hytA	hydrogenase [FeFe] A4	hydrogenase_FeFeGroupA4.hmm	KEGG TOO UNSPECIFIC				605|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydS1	hydrogenase [FeFe] C1	hydrogenase_FeFeGroupC1.hmm	KEGG TOO UNSPECIFIC				215|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydS2	hydrogenase [FeFe] C2	hydrogenase_FeFeGroupC2.hmm	KEGG TOO UNSPECIFIC				268|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hydS3	hydrogenase [FeFe] C3	hydrogenase_FeFeGroupC3.hmm	KEGG TOO UNSPECIFIC				326|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		vhoA	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hynB	hydrogenase [NiFe] 1b	hydrogenase_NiFeGroup1b.hmm	KEGG TOO UNSPECIFIC				799|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyaB	hydrogenase [NiFe] 1d	hydrogenase_NiFeGroup1d.hmm	KEGG TOO UNSPECIFIC				902|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyiB	hydrogenase [NiFe] 1e	hydrogenase_NiFeGroup1e.hmm	KEGG TOO UNSPECIFIC				969|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyoL	hydrogenase [NiFe] 1f	hydrogenase_NiFeGroup1f.hmm	KEGG TOO UNSPECIFIC				929|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hcaL	hydrogenase [NiFe] 1g	hydrogenase_NiFeGroup1g.hmm	KEGG TOO UNSPECIFIC				551|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hhyL	hydrogenase [NiFe] 1h	hydrogenase_NiFeGroup1h.hmm	KEGG TOO UNSPECIFIC				853|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyd1i	hydrogenase [NiFe] 1i	hydrogenase_NiFeGroup1i.hmm	KEGG TOO UNSPECIFIC				559|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyd1j	hydrogenase [NiFe] 1j	hydrogenase_NiFeGroup1j.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyd1k	hydrogenase [NiFe] 1k	hydrogenase_NiFeGroup1k.hmm	KEGG TOO UNSPECIFIC				211|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hucS	hydrogenase [NiFe] 2a	hydrogenase_NiFeGroup2a.hmm	KEGG TOO UNSPECIFIC				486|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hupV	hydrogenase [NiFe] 2b	hydrogenase_NiFeGroup2b.hmm	KEGG TOO UNSPECIFIC				492|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hurL	hydrogenase [NiFe] 2c	hydrogenase_NiFeGroup2c.hmm	KEGG TOO UNSPECIFIC				550|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		huaL	hydrogenase [NiFe] 2d	hydrogenase_NiFeGroup2d.hmm	KEGG TOO UNSPECIFIC				322|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyd2e	hydrogenase [NiFe] 2e	hydrogenase_NiFeGroup2e.hmm	KEGG TOO UNSPECIFIC				466|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hyhL	hydrogenase [NiFe] 3b	hydrogenase_NiFeGroup3b.hmm	KEGG TOO UNSPECIFIC				332|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		mvhA	hydrogenase [NiFe] 3c	hydrogenase_NiFeGroup3c.hmm	KEGG TOO UNSPECIFIC				609|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hoxH	hydrogenase [NiFe] 3d	hydrogenase_NiFeGroup3d.hmm	KEGG TOO UNSPECIFIC				595|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen metabolism			hydrogenase [NiFe] 4g	hydrogenase_NiFeGroup4g.hmm	KEGG TOO UNSPECIFIC				479|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen oxidation		ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		hyd1k	hydrogenase [NiFe] 1k	hydrogenase_NiFeGroup1k.hmm	KEGG TOO UNSPECIFIC				211|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		mvhA	hydrogenase [NiFe] 3c	hydrogenase_NiFeGroup3c.hmm	KEGG TOO UNSPECIFIC				609|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		hyd4h	hydrogenase [NiFe] 4h	hydrogenase_NiFeGroup4h.hmm	KEGG TOO UNSPECIFIC				367|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic methanogen.		mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+	Hydrogenotrophic methanogen.		mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+	Methanogenesis		mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+	Methanogenesis		mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+	Hydrogenotrophic acetogen.		hydA3	hydrogenase [FeFe] A3	hydrogenase_FeFeGroupA3.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic acetogen.		echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic acetogen.		hyd4h	hydrogenase [NiFe] 4h	hydrogenase_NiFeGroup4h.hmm	KEGG TOO UNSPECIFIC				367|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic acetogen.		ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogenotrophic acetogen.		fthfs	Formate-tetrahydrofolate ligase	fthfs_NF010030.hmm	K01938				652|domain	https://doi.org/10.1186/s40168-021-01213-8
 148	Oxidative phosphorylation	Complex I (NADH-quinone oxidoreductase)	nuoA	NADH-quinone oxidoreductase subunit A	K00330.hmm	K00330	NADH + ubiquinone + 6 H+[side 1] = NAD+ + ubiquinol + 7 H+[side 2] [RN:R11945]	NADH; ubiquinone; H+	NAD+; ubiquinol; H+	120.27|full	
 149	Oxidative phosphorylation	Complex I (NADH-quinone oxidoreductase)	nuoB	NADH-quinone oxidoreductase subunit B	K00331.hmm	K00331	NADH + ubiquinone + 6 H+[side 1] = NAD+ + ubiquinol + 7 H+[side 2] [RN:R11945]	NADH; ubiquinone; H+	NAD+; ubiquinol; H+	263.03|domain	
 150	Oxidative phosphorylation	Complex I (NADH-quinone oxidoreductase)	nuoC	NADH-quinone oxidoreductase subunit C	K00332.hmm	K00332	NADH + ubiquinone + 6 H+[side 1] = NAD+ + ubiquinol + 7 H+[side 2] [RN:R11945]	NADH; ubiquinone; H+	NAD+; ubiquinol; H+	202.20|domain	
@@ -387,3 +455,7 @@
 	Phosphorous cycling enzymes	P-starvation response regulation	phoU	PhoR/phoB inhibitor protein	K02039.hmm	K02039				128.00|domain	10.1016/j.soilbio.2022.108826
 	Magnesium transport	Magnesium transport	mgtA	P-type Mg2+ transporter	K01531.hmm	K01531				727.20|full	
 	Sporulation	Sporulation regulation	spo0A	two-component system, response regulator, stage 0 sporulation protein A	K07699.hmm	K07699				109.47|domain	
+	Organohal. Respira. 1		vhoA	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+	Organohal. Respira. 1		rdhA	reductive dehalogenase subunit	PF13486.hmm	K21647				24.3|domain	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/
+	Organohal. Respira. 2		rdhA	reductive dehalogenase subunit	PF13486.hmm	K21647				24.3|domain	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/
+	Mn oxidation		MnxG	Multicopper oxidase. manganese(II)-oxidizing protein MnxG	NF041487.hmm	K22349				3100|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041487/

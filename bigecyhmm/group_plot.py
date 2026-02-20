@@ -109,7 +109,6 @@ def plot_donut(
     background_offset: Tuple[float, float] = (0.0, 0.0),
     group_col_names: List[List[str]] | None = None,
 ):
-
     #create figure
     fig = plt.figure(figsize=(20, 20))
 
@@ -119,7 +118,6 @@ def plot_donut(
 
     #optional background image positioned relative to the full figure
     if background_path and os.path.exists(background_path):
-      
         scale = float(background_scale) if background_scale > 0 else 1.0
         width = 1.0 * scale
         height = 1.0 * scale
@@ -285,7 +283,7 @@ def plot_donut(
         ax.plot(angles, r_median, color=colors[grp_idx % len(colors)], label=gname)
 
     ax.grid(True, color='lightgrey', linewidth=0.5)
-    ax.legend()
+    ax.legend(prop={'size': 12})
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')

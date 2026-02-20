@@ -17,10 +17,12 @@ __version__ = '0.2.0'
 
 # Create global constants containing path to package internal database.
 import os
+
 ROOT = os.path.dirname(__file__)
 PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-HMM_COMPRESSED_FOLDER = os.path.join(ROOT, 'hmm_databases', 'hmm_files')
+HMM_FOLDER = os.path.join(ROOT, 'hmm_databases', 'hmm_files')
+
 TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')

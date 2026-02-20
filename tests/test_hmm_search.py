@@ -8,7 +8,7 @@ import zipfile
 
 from bigecyhmm.hmm_search import search_hmm, check_motif_regex, check_motif_pair, extract_hmm_to_function
 from bigecyhmm.diagram_cycles import extract_hmm_to_pathway
-from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_COMPRESSED_FOLDER
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, HMM_FOLDER
 
 EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
                    'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
@@ -42,7 +42,7 @@ def test_check_motif_json_file():
 
 def test_check_motif_pair_pmoA():
     gene_name = 'pmoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -58,7 +58,7 @@ def test_check_motif_pair_pmoA():
 
 def test_check_motif_pair_pmoA_json():
     gene_name = 'pmoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -78,7 +78,7 @@ def test_check_motif_pair_pmoA_json():
 
 def test_check_motif_pair_pmoA_negative_amoA():
     gene_name = 'amoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -98,7 +98,7 @@ def test_check_motif_pair_pmoA_negative_amoA():
 
 def test_check_motif_pair_pmoA_negative_amoA_json():
     gene_name = 'amoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'pmoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -114,7 +114,7 @@ def test_check_motif_pair_pmoA_negative_amoA_json():
 
 def test_check_motif_pair_amoA():
     gene_name = 'amoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -131,8 +131,8 @@ def test_check_motif_pair_amoA():
 def test_check_motif_pair_amoA_list():
     motif_pair = {'amoA': ['pmoA', 'pmoB']}
     gene_name = 'amoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm'),
-                  'pmoB': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoB.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm'),
+                  'pmoB': os.path.join(HMM_FOLDER, 'pmoB.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
@@ -149,7 +149,7 @@ def test_check_motif_pair_amoA_list():
 
 def test_check_motif_pair_amoA_negative_pmoA():
     gene_name = 'pmoA'
-    check_hmms = {'pmoA': os.path.join(HMM_COMPRESSED_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_COMPRESSED_FOLDER, 'amoA.check.hmm')}
+    check_hmms = {'pmoA': os.path.join(HMM_FOLDER, 'pmoA.check.hmm'), 'amoA': os.path.join(HMM_FOLDER, 'amoA.check.hmm')}
 
     input_protein_fasta = os.path.join('input_data', 'motif_test_data', 'amoA.fasta')
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
