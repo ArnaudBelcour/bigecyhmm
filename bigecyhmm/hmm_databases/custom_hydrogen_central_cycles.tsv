@@ -1,6 +1,6 @@
 Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	function_output	HMM_source	enzyme_ref	kegg_ortholog	Comment
 1.0	Hydrogen generation	FUNCTION	hydA1 OR hydM OR hybC OR hyiB OR frhA OR hyhL OR hoxH OR hycE OR mbhL OR cooH OR EhaO OR echE OR ehfE OR hytA OR hmdl OR hydA3 OR hyd4h	NA	NA	e-	H2	NA	NA	6	
-2.0	Hydrogen oxidation	FUNCTION	hydM OR hydA2 OR hydA3 OR hytA OR hydS1 OR hydS2 OR hydS3 OR hmdl OR vhoA OR hynB OR hybC OR hyaB OR hyiB OR hyoL OR hcaL OR hhyL OR hyd1i OR hyd1j OR hyd1k OR hucS OR hupV OR hurL OR huaL OR hyd2e OR frhA OR hyhL OR mvhA OR hoxH OR hycE OR echE OR ehb 	NA	NA	H2	e-	NA	NA	NA	
+2.0	Hydrogen oxidation	FUNCTION	hydM OR hydA2 OR hydA3 OR hytA OR hydS1 OR hydS2 OR hydS3 OR hmdl OR hupL OR hynB OR hybC OR hyaB OR hyiB OR hyoL OR hcaL OR hhyL OR hyd1i OR hyd1j OR hyd1k OR hucS OR hupV OR hurL OR huaL OR hyd2e OR frhA OR hyhL OR mvhA OR hoxH OR hycE OR echE OR ehb 	NA	NA	H2	e-	NA	NA	NA	
 3.0	Hydrogenotrophic methanogen.	FUNCTION	(hmdl OR hyd1k OR frhA OR mvhA OR hyd4h OR ehb) AND (mcrA OR mcrB OR mcrG)	NA	NA	H2	CH4	NA	NA	NA	
 4.0	Methanogenesis	FUNCTION	mcrA OR mcrB OR mcrG	NA	NA	Methyl-CoM. CH4	CH4. Methyl-CoM	NA	NA	NA	
 5.0	Hydrogenotrophic acetogen.	FUNCTION	(hydA3 OR echE OR hyd4h OR ehb) AND (fhs OR fthfs)	NA	NA	e-	Acetate	NA	NA	NA	
@@ -15,11 +15,11 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 14.0	Fermentation	FUNCTION	adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA OR pct	NA	NA	Organic C. Ethanol. Acetate	Ethanol. Acetate	NA	NA	NA	
 15.0	Ethanol oxidation	FUNCTION	adh	NA	NA	Ethanol	CO2	NA	NA	NA	
 16.0	Fermentative H2 generation	FUNCTION	(hydA1 OR hycE) AND (adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA)	NA	NA	Ethanol. Organic C	e-	NA	NA	NA	
-17.0	Organohal. Respira. 1	FUNCTION	vhoA AND rdhA	NA	NA	e-	Halide Ions	NA	NA	NA	
+17.0	Organohal. Respira. 1	FUNCTION	hupL AND rdhA	NA	NA	e-	Halide Ions	NA	NA	NA	
 18.0	Organohal. Respira. 2	FUNCTION	rdhA	NA	NA	Organic Halides	Halide Ions	NA	NA	NA	
 19.0	Selenate reduction	FUNCTION	YgfK OR xdhD OR ygfM	NA	NA	SeO4 2-	Se	NA	NA	NA	
 20.0	Sulfur respiration	FUNCTION	(hyiB OR hcaL) AND (asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD OR sor OR sreA OR sreB OR sreC)	NA	NA	e-	H2S	NA	NA	NA	
-21.0	Sulfate respiration	FUNCTION	(vhoA OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
+21.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
 22.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
 23.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
 24.0	Sulfur reduction	FUNCTION	sor OR sreA OR sreB OR sreC	NA	NA	S	H2S	NA	NA	NA	
@@ -32,7 +32,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 31.0	Sulfate reduction (ASR/DSR)	FUNCTION	aprA OR sat	NA	NA	SO4 2-	SO3 2-	NA	NA	NA	
 32.0	Arsenate reduction	FUNCTION	arrA	NA	NA	As 5+	As 3+	NA	NA	NA	
 33.0	Arsenite oxidation	FUNCTION	aioA OR arxA	NA	NA	As 3+	As 5+	NA	NA	NA	
-34.0	e-input Metal respiration	FUNCTION	(vhoA OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+. Fe 2+	NA	NA	NA	
+34.0	e-input Metal respiration	FUNCTION	(hupL OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+. Fe 2+	NA	NA	NA	
 35.0	Metal Respiration	FUNCTION	CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ	NA	NA	MnO2. Fe 3+	Mn 2+. Fe 2+	NA	NA	NA	
 36.0	Mn oxidation	FUNCTION	MnxG	NA	NA	Mn 2+	MnO2	NA	NA	NA	
 37.0	Iron oxidation	FUNCTION	Cyc1 OR Cyc2_rc1 OR Cyc2_rc2 OR Cyc2_rc3 OR FoxA OR FoxB OR FoxC OR FoxE OR FoxY OR FoxZ OR MtoA OR soxE	NA	NA	Fe 2+	Fe 3+	NA	NA	NA	
@@ -77,7 +77,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 2.6	hydS2	HMM	hydrogenase_FeFeGroupC2.hmm	268|domain	hydrogenase [FeFe] C2	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
 2.7	hydS3	HMM	hydrogenase_FeFeGroupC3.hmm	326|domain	hydrogenase [FeFe] C3	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
 2.8	hmdl	HMM	hydrogenase_FeGroupFe.hmm	583|domain	hydrogenase [Fe] Fe	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.9	vhoA	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.9	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 2.10	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 2.11	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 2.12	hyaB	HMM	hydrogenase_NiFeGroup1d.hmm	902|domain	hydrogenase [NiFe] 1d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
@@ -279,7 +279,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 16.8	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
 16.9	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
 16.10	acdA	HMM	TIGR02717.hmm	463.00|full	acetyl coenzyme A synthetase (ADP forming). alpha domain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01905	
-17.1	vhoA	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+17.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 17.2	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
 18.1	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
 19.1	YgfK	HMM	TIGR03315.hmm	354.45|full	putative selenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12527	
@@ -297,7 +297,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 20.10	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
 20.11	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
 20.12	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
-21.1	vhoA	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+21.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 21.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 21.3	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 21.4	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
@@ -341,7 +341,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 32.1	arrA	HMM	arrA.hmm	175|full	dissimilatory arsenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28466	
 33.1	aioA	HMM	aioA.hmm	800|full	arsenite oxidase large subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356	
 33.2	arxA	HMM	arxA.hmm	600|full	arsenite oxidase (molybdopterin subunit)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356. K08355	
-34.1	vhoA	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+34.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 34.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 34.3	CymA	HMM	CymA.hmm	237|full	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1042/BJ20120197	(napC) K02569 (cymA absent)	CymA transfers electrons from menaquinol to various dedicated systems for the reduction of terminal electron acceptors including fumarate and insoluble minerals of Fe(III). The Kegg ortholog is for the NapC/NirT family. including cymA. but not only cymA specifically. The publication https://www.doi.org/10.1099/mic.0.000285 shows that NapC and cycA do NOT have the same function. 
 34.4	DFE_0450	HMM	DFE_0450.hmm	30|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	kegg identifier (not ortholog): GEO60473_04720. OmcS also functions in direct inter-species electron transfer (https://doi.org/10.1038/s41396-018-0193-y)
