@@ -1,7 +1,6 @@
 import os
 import csv
 import subprocess
-import networkx as nx
 import shutil
 
 from bigecyhmm.custom_db import identify_run_custom_db_search, search_hmm_custom_db, generate_pathway_file_from_json
@@ -74,33 +73,33 @@ def test_query_fasta_file_custom_db_gene_in_both_motif_and_motif_pair():
     # Not working pmoA motif.
     custom_motif = {"pmoA": "AAAAAAAAAAAAAAAAAAAA"}
     hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "pmoA.hmm" not in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
     # No search of motif.
     custom_motif = {}
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
     # No search of custom pair (so both amoA and pmoA).
     custom_motif_pair = {}
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "amoA.hmm" in pmoa_matching_hmms and "pmoA.hmm" in pmoa_matching_hmms
 
     # Issue in 0.1.8 fixed in 0.1.9: as motif is found, motif pair check is not done.
     custom_motif = {"amoA": "XXX"}
     custom_motif_pair = {"amoA": "pmoA"}
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
     # Check that it is working with motif list.
     custom_motif = {"amoA": "XXX"}
     custom_motif_pair = {"amoA": ["pmoA"]}
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
@@ -109,7 +108,7 @@ def test_query_fasta_file_custom_db_gene_in_both_motif_and_motif_pair():
     hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
     custom_motif = {"amoA": "XXX"}
     custom_motif_pair = {"amoA": "pmoA"}
-    results = query_fasta_file(input_file, hmm_thresholds, hmm_compressed_database=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
     pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
     assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
 
