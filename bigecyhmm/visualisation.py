@@ -53,6 +53,25 @@ RANK_SORTED = ['isolate', 'strain', 'serotype', 'serogroup', 'forma', 'subvariet
                'subkingdom', 'kingdom', get_domain_or_superkingdom_from_ncbi_tax_database(),
                'clade', 'environmental samples', 'incertae sedis', 'unclassified', 'no rank', 'Not found']
 
+FUNCTION_GROUP_TEMPLATE = {'Carbon cycle': ['C-S-01:Organic carbon oxidation', 'C-S-02:Carbon fixation', 'C-S-03:Ethanol oxidation', 'C-S-04:Acetate oxidation',
+                                   'C-S-05:Hydrogen generation', 'C-S-06:Fermentation', 'C-S-07:Methanogenesis', 'C-S-08:Methanotrophy', 'C-S-09:Hydrogen oxidation',
+                                   'C-S-10:Acetogenesis WL', 'Hydrogen generation', 'Hydrogen oxidation', 'Hydrogenotrophic methanogen.', 'Methanogenesis', 'Hydrogenotrophic acetogen.',
+                                   'Acetate oxidation', 'Acetoclastic methanogenesis', 'Acetogen. WL', 'Carbon fixation', 'Methylotrophic methanogen.', 'Organic carbon oxidation',
+                                   'CO2-dep. Methanogen.', '(Aerobic) methanotrophy', 'Fermentation', 'Ethanol oxidation', 'Fermentative H2 generation'],
+                    'Sulfur cycle': ['S-S-01:Sulfide oxidation', 'S-S-02:Sulfur reduction', 'S-S-03:Sulfur oxidation', 'S-S-04:Sulfite oxidation', 'S-S-05:Sulfate reduction', 'S-S-06:Sulfite reduction',
+                                    'S-S-07:Thiosulfate oxidation', 'S-S-08:Thiosulfate disproportionation 1', 'S-S-09:Thiosulfate disproportionation 2', 'S-S-10:Polysulfide reduction',
+                                    'Sulfur respiration', 'Sulfate respiration', 'Sulfite oxidation', 'Sulfite reduction', 'Sulfur reduction', 'Polysulfide reduction', 'Sulfide oxidation',
+                                    'Sulfur oxidation', 'Thiosulfate disproportionation 2', 'Thiosulfate oxidation', 'Thiosulfate disproportionation 1', 'Sulfate reduction (ASR/DSR)'],
+                    'Nitrogen cycle': ['N-S-01:Nitrogen fixation', 'N-S-02:Ammonia oxidation', 'N-S-03:Nitrite oxidation', 'N-S-04:Nitrate reduction', 'N-S-05:Nitrite reduction', 'N-S-06:Nitric oxide reduction',
+                                    'N-S-07:Nitrous oxide reduction', 'N-S-08:Nitrite ammonification', 'N-S-09:Anammox', 'N-S-10:Nitric oxide dismutase', 'Nitrate respiration / denitrification',
+                                    'Assimilatory nitrate red.', 'Dissimilatory nitrate red.', 'Ammonia oxidation', 'Nitrite oxidation', 'Nitrite reduction', 'Nitric oxide dismutase',
+                                    'Nitric oxide reduction', 'Nitrous oxide reduction', 'Anammox', 'Nitrite ammonification', 'Nitrogen fixation'],
+                    'Other cycle': ['O-S-01:Iron reduction', 'O-S-02:Iron oxidation', 'O-S-03:Arsenate reduction', 'O-S-04:Arsenite oxidation', 'O-S-05:Selenate reduction', 'O-S-06:Aerobic respiration',
+                                    'Arsenate reduction', 'Arsenite oxidation', 'e-input Metal respiration', 'Metal Respiration', 'Mn oxidation', 'Iron oxidation'],
+                    'Phosphorus cycle' : ['P-S-01:Immobilisation (P-rich)', 'P-S-01:Immobilisation (P-poor)', 'P-S-02:Mineralisation', 'P-S-03:Dissolution',
+                                          'P dissolution', 'Immobilisation (P-rich)', 'Immobilisation (P-poor)', 'P mineralisation']}
+
+
 MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
 '''
@@ -431,6 +450,34 @@ def create_polar_plot(df_seaborn_abundance, output_file):
     plt.savefig(output_file, bbox_inches="tight")
 
 
+def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file):
+    function_in_cycle = {function_name: cycle_name for cycle_name in FUNCTION_GROUP_TEMPLATE for function_name in FUNCTION_GROUP_TEMPLATE[cycle_name]}
+
+    melted_cycle_relative_abundance_samples_df['group'] = [function_in_cycle[function_name] if function_name in function_in_cycle else '' for function_name in melted_cycle_relative_abundance_samples_df['name']]
+    tmp_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['group']!='']
+
+    groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
+    tmp_melted_cycle_relative_abundance_samples_df = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['ratio']>0.05]
+
+    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
+
+    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(15, 12), gridspec_kw={'height_ratios': ratios})
+    print(tmp_melted_cycle_relative_abundance_samples_df)
+    for index, group in enumerate(groups):
+        tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]
+        # Create bubble scatter plot.
+        axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
+        # Show grid.
+        axes[index].grid(True, color='lightgrey', linewidth=0.5)
+        # Remove tick labels except for the last one.
+        if index < len(groups)-1:
+            axes[index].set_xticklabels([])
+
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300)
+
+
 def visualise_barplot_category(category, function_categories, df_seaborn_abundance, output_file_name):
     """Create bar plot for functions of the associated categories from pandas dataframe with function as 'name' column' and associated ratio as a second column
 
@@ -775,6 +822,9 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             - make a donut-plot showing a "drawn" network, group medians, max+min of each group for each function
             - output a combined figure with donut & table"""
 
+        bubble_plot_output_file = os.path.join(output_folder_abundance, 'cycle_pathways_bubble_plot.png')
+        generate_bubble_plot(melted_cycle_relative_abundance_samples_df, bubble_plot_output_file)
+
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
         function_abundance_samples, function_relative_abundance_samples, function_participation_samples = compute_bigecyhmm_functions_abundance(bigecyhmm_function_presence_file, sample_abundance, sample_tot_abundance, tax_id_names_observation_names)
@@ -813,10 +863,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_function_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
 
         # Create plot for hydrogenases.
-        logger.info("  -> Create barplot of hydrogenases.")
-        output_barplot_hydrogenase_filepath = os.path.join(output_folder_abundance, 'barplot_abundance_hydrogenase.png')
-        function_categories = get_function_categories()
-        visualise_barplot_category('Hydrogenases', function_categories, melted_function_relative_abundance_samples_df, output_barplot_hydrogenase_filepath)
+        #logger.info("  -> Create barplot of hydrogenases.")
+        #output_barplot_hydrogenase_filepath = os.path.join(output_folder_abundance, 'barplot_abundance_hydrogenase.png')
+        #function_categories = get_function_categories()
+        #visualise_barplot_category('Hydrogenases', function_categories, melted_function_relative_abundance_samples_df, output_barplot_hydrogenase_filepath)
 
         # Create HMM functional profiles.
         logger.info("  -> Create HMM functional profiles.")
