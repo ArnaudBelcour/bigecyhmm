@@ -462,16 +462,23 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
     ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
 
     fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(15, 12), gridspec_kw={'height_ratios': ratios})
-    print(tmp_melted_cycle_relative_abundance_samples_df)
-    for index, group in enumerate(groups):
-        tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]
+
+    if len(groups) > 1:
+        for index, group in enumerate(groups):
+            tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]
+            # Create bubble scatter plot.
+            axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
+            # Show grid.
+            axes[index].grid(True, color='lightgrey', linewidth=0.5)
+            # Remove tick labels except for the last one.
+            if index < len(groups)-1:
+                axes[index].set_xticklabels([])
+    else:
+        tmp_data = tmp_melted_cycle_relative_abundance_samples_df
         # Create bubble scatter plot.
-        axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
+        axes.scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
         # Show grid.
-        axes[index].grid(True, color='lightgrey', linewidth=0.5)
-        # Remove tick labels except for the last one.
-        if index < len(groups)-1:
-            axes[index].set_xticklabels([])
+        axes.grid(True, color='lightgrey', linewidth=0.5)
 
     plt.xticks(rotation=90)
     plt.tight_layout()
@@ -771,6 +778,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df = pd.melt(cycle_relative_abundance_samples_df, id_vars='name', value_vars=cycle_relative_abundance_samples_df.columns.tolist())
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         melted_cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_melted.tsv'), sep='\t')
+
         for sample in melted_cycle_relative_abundance_samples_df['sample'].unique():
             output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_sample_'+sample+'.png')
             sample_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['sample']==sample]
