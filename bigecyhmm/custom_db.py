@@ -22,7 +22,6 @@ import csv
 import sys
 import time
 import pyhmmer
-import zipfile
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder
 from bigecyhmm.diagram_cycles import create_input_diagram, get_diagram_pathways_hmms

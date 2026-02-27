@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import subprocess
 import shutil
+import pytest
 import networkx as nx
 
 from bigecyhmm.visualisation import compute_relative_abundance_per_tax_id, read_esmecata_proteome_file, compute_bigecyhmm_functions_abundance, \
@@ -62,6 +63,16 @@ def test_tax_rank_relative_abundance_file():
             assert expected_abundance_data[sample][tax_id_name] == abundance_data[sample][tax_id_name]
 
 
+def test_read_measures_file_incorrect_file():
+    proteome_tax_id_file = os.path.join('input_data', 'esmecata_output_folder', '0_proteomes',  'proteome_tax_id.tsv')
+    abundance_file_path = os.path.join('input_data', 'proteome_tax_id_abundance_incorrect.tsv')
+
+    with pytest.raises(SystemExit) as system_exit:
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
+    assert system_exit.type == SystemExit
+    assert system_exit.value.code == 1
+
+
 def test_compute_bigecyhmm_functions_occurrence_functions():
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'function_presence.tsv')
 
@@ -96,7 +107,6 @@ def test_compute_bigecyhmm_functions_occurrence_functions_from_esmecata():
             assert function_occurrence_organisms[function][organism] == expected_function_occurrence_organisms[function][organism]
 
 
-
 def test_compute_bigecyhmm_functions_abundance_functions():
     abundance_file_path = os.path.join('input_data', 'abundance_file_from_genomes.tsv')
     bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'function_presence.tsv')
@@ -121,6 +131,17 @@ def test_compute_bigecyhmm_functions_abundance_functions():
         for organism in expected_function_participation_samples[sample]:
             for function in expected_function_participation_samples[sample][organism]:
                 assert function_participation_samples[sample][organism][function] == expected_function_participation_samples[sample][organism][function]
+
+
+def test_compute_bigecyhmm_functions_abundance_functions_missing_organism():
+    abundance_file_path = os.path.join('input_data', 'missing_proteome_tax_id_abundance.tsv')
+    bigecyhmm_cycle_file = os.path.join('input_data', 'bigecyhmm_output_folder', 'function_presence.tsv')
+
+    with pytest.raises(SystemExit) as system_exit:
+        sample_abundance, sample_tot_abundance = read_measures_file(abundance_file_path)
+        function_abundance_samples, function_relative_abundance_samples, function_participation_samples = compute_bigecyhmm_functions_abundance(bigecyhmm_cycle_file, sample_abundance, sample_tot_abundance)
+    assert system_exit.type == SystemExit
+    assert system_exit.value.code == 1
 
 
 def test_compute_bigecyhmm_functions_occurrence_cycles():

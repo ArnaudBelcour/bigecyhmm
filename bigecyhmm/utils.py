@@ -17,6 +17,7 @@ import logging
 import os
 import csv
 import sys
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -121,24 +122,16 @@ def read_measures_file(measures_file_path):
     elif measures_file_path.endswith('.csv'):
         delimiter = ','
 
+    measures_df = pd.read_csv(measures_file_path, sep=delimiter, index_col=0)
     column_measure = {}
-    with open(measures_file_path, 'r') as open_measures_file:
-        csvreader = csv.DictReader(open_measures_file, delimiter=delimiter)
-        headers = csvreader.fieldnames
-        columns = headers[1:]
-        first_row = headers[0]
-        for row in csvreader:
-            for column in columns:
-                if column not in column_measure:
-                    column_measure[column] = {}
-                try:
-                    column_measure[column][row[first_row]] = float(row[column])
-                except:
-                    column_measure[column][row[first_row]] = 0
-
     total_measure_per_column = {}
-    for col in column_measure:
-        total_measure_per_column[col] = sum([column_measure[col][row] for row in column_measure[col]])
+    for col in measures_df.columns:
+        if measures_df[col].dtype == 'float64' or measures_df[col].dtype ==  'int64':
+            column_measure[col] = measures_df[col].to_dict()
+            total_measure_per_column[col] = measures_df[col].sum()
+        else:
+            logger.critical('ERROR: Column {0} appears to not contain float or int in file {1}.'.format(col, measures_file_path))
+            sys.exit(1)
 
     return column_measure, total_measure_per_column
 

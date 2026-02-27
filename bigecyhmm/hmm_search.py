@@ -180,7 +180,8 @@ def filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, 
             result_score = hit.score
         else:
             result_score = domain.score
-        return [input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, result_score, hit.length]
+
+        return [input_filename, hit.name, hmm_filebasename, hit.evalue, result_score, hit.length]
     else:
         return None
 

@@ -259,6 +259,10 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     # Replace nan by 0.
     function_dataframe = function_dataframe.fillna(0)
 
+    missing_organism_abundance = list(set(function_dataframe.columns) - set(sample_abundance_dataframe.index))
+    if len(missing_organism_abundance) > 0:
+        logger.critical('ERROR: Several organisms ({0}) having predicted functions are not present in abundance file.'.format(','.join(missing_organism_abundance)))
+        sys.exit(1)
     # Ensure that indexes in sample_abundance_dataframe are the same than the columns in function_dataframe.
     # There can be more indexes in sample_abundance_dataframe if some organisms do not have functional predictions.
     sample_abundance_dataframe = sample_abundance_dataframe.reindex(function_dataframe.columns)
@@ -554,7 +558,7 @@ def add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_mea
                 for sample in sample_metabolite_measure:
                     if metabolite in sample_metabolite_measure[sample]:
                         metabolite_measure = sample_metabolite_measure[sample][metabolite]
-                        if isinstance(metabolite_measure, float):
+                        if isinstance(metabolite_measure, float) or isinstance(metabolite_measure, int):
                             abundance_cycle_network.nodes[metabolite][sample] = metabolite_measure
 
     if cycle_relative_abundance_samples_df is not None or metabolite_measure is not None:
