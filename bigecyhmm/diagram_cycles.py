@@ -269,6 +269,7 @@ def create_carbon_cycle(diagram_data, output_file, first_term='Genomes', second_
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_nitrogen_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -308,6 +309,7 @@ def create_nitrogen_cycle(diagram_data, output_file, first_term='Genomes', secon
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_sulfur_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -345,6 +347,7 @@ def create_sulfur_cycle(diagram_data, output_file, first_term='Genomes', second_
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_other_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -376,6 +379,7 @@ def create_other_cycle(diagram_data, output_file, first_term='Genomes', second_t
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_phosphorus_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -403,6 +407,7 @@ def create_phosphorus_cycle(diagram_data, output_file, first_term='Genomes', sec
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_phosphorus_gene_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -458,6 +463,7 @@ def create_phosphorus_gene_cycle(diagram_data, output_file, first_term='Genomes'
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_diagram_figures(input_diagram_file, output_folder):

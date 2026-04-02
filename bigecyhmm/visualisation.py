@@ -283,6 +283,10 @@ def compute_bigecyhmm_functions_abundance(bigecyhmm_output_file, sample_abundanc
     for sample in sample_abundance:
         # Multiply each function by the abundance of the organism.
         function_participation_df = function_dataframe.mul(sample_abundance_dataframe[sample])
+        # Remove row (organism) containing only zero.
+        function_participation_df = function_participation_df.loc[~(function_participation_df == 0).all(axis=1)]
+        # Remove column (function) containing only zero.
+        function_participation_df = function_participation_df[function_participation_df.columns[~(function_participation_df == 0).all(axis=0)]]
         function_participation_samples[sample] = function_participation_df.to_dict()
 
     return function_abundance_samples, function_relative_abundance_samples, function_participation_samples
@@ -452,6 +456,7 @@ def create_polar_plot(df_seaborn_abundance, output_file):
         ax.set_rmin(0)
     plt.tight_layout()
     plt.savefig(output_file, bbox_inches="tight")
+    plt.close(fig)
 
 
 def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file):
@@ -845,6 +850,11 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         function_relative_abundance_samples_df.index.name = 'name'
         function_relative_abundance_samples_df.sort_index(inplace=True)
         function_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample.tsv'), sep='\t')
+
+        function_absolute_abundance_samples_df = pd.DataFrame(function_abundance_samples)
+        function_absolute_abundance_samples_df.index.name = 'name'
+        function_absolute_abundance_samples_df.sort_index(inplace=True)
+        function_absolute_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample_absolute.tsv'), sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
         output_folder_function_participation = os.path.join(output_folder_abundance, 'function_participation')

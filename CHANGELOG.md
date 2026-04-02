@@ -26,6 +26,8 @@ Due to the changes in the boolean expression to infer pathways, old pathway temp
 ## Fix
 
 * Fix several issues in motif search in domain condition.
+* Fix not-closed figures consuming memory.
+* Fix high memory consumption when computing organism participation to function in samples.
 
 # bigecyhmm v0.1.8 (2025-09-30)
 
