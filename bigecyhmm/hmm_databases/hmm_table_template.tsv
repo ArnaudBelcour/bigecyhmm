@@ -229,7 +229,7 @@
 	Hydrogen oxidation		hoxH	hydrogenase [NiFe] 3d	hydrogenase_NiFeGroup3d.hmm	KEGG TOO UNSPECIFIC				595|domain	doi: 10.3389/fbinf.2022.918853
 	Hydrogen oxidation		hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
 	Hydrogen oxidation		echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
-	Hydrogen metabolism			hydrogenase [NiFe] 4g	hydrogenase_NiFeGroup4g.hmm	KEGG TOO UNSPECIFIC				479|domain	doi: 10.3389/fbinf.2022.918853
+	Hydrogen metabolism		hydrogenase [NiFe] 4g	hydrogenase [NiFe] 4g	hydrogenase_NiFeGroup4g.hmm	KEGG TOO UNSPECIFIC				479|domain	doi: 10.3389/fbinf.2022.918853
 	Hydrogen oxidation		ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
 	Hydrogenotrophic methanogen.		hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
 	Hydrogenotrophic methanogen.		hyd1k	hydrogenase [NiFe] 1k	hydrogenase_NiFeGroup1k.hmm	KEGG TOO UNSPECIFIC				211|domain	doi: 10.3389/fbinf.2022.918853
