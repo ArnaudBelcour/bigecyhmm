@@ -26,7 +26,7 @@ import pyhmmer
 from bigecyhmm.utils import is_valid_dir, file_or_folder
 from bigecyhmm.diagram_cycles import create_input_diagram, get_diagram_pathways_hmms
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
-from bigecyhmm.utils import read_measures_file, read_esmecata_proteome_file
+from bigecyhmm.utils import get_link_pathway_function_name, read_esmecata_proteome_file
 from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR, CUSTOM_CARBON_CYCLE_NETWORK, \
@@ -190,6 +190,11 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_folder=HMM_FOLDER, p
         not_found_hmms = hmms_in_pathway_template - hmm_in_threshold_file
         logger.critical("  Some HMMs present in {0} are not present in the HMM template file {1}: {2}".format(pathway_template_file, hmm_template_file, not_found_hmms))
         sys.exit(1)
+
+    # Map pathway to function name.
+    pathway_template_df = get_link_pathway_function_name(pathway_template_file, hmm_template_file)
+    mapping_pathway_function_file = os.path.join(output_folder, 'mapping_pathway_to_function_name.tsv')
+    pathway_template_df.to_csv(mapping_pathway_function_file, sep='\t', index=False)
 
     # Get motif and motif_pair dictionaries.
     if motif_json is not None:

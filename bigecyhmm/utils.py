@@ -156,3 +156,37 @@ def read_esmecata_proteome_file(proteome_tax_id_file):
             observation_names_tax_ranks[row['observation_name']] = row['tax_rank']
 
     return observation_names_tax_id_names, observation_names_tax_ranks
+
+
+def get_link_pathway_function_name(pathway_template_file, hmm_template_file):
+    """ Map pathwya and function name.
+
+    Args:
+        hmm_template_file (str): path of HMM template file
+        pathway_template_file (str): path to pathway template file
+
+    Returns:
+        pathway_template_df (pd.DataFrame): pandas DataFrame ocntaining mapping between pathway and function name
+    """
+    pathway_template_df = pd.read_csv(pathway_template_file, sep='\t')
+
+    hmm_template_df = pd.read_csv(hmm_template_file, sep='\t')
+    pathway_template_df['HMMs'] = pathway_template_df['HMMs'].str.replace('(', '').str.replace(')', '')
+    pathway_template_df['HMMs'] = pathway_template_df['HMMs'].str.replace(' and ', ' or ').str.split(' or ')
+
+    hmm_functions = {hmm: row['Function'] for index, row in hmm_template_df.iterrows() for hmm in row['Hmm file'].split(', ')}
+
+    pathway_function_name_data = []
+    for index, row in pathway_template_df.iterrows():
+        pathway = row['Pathways']
+        pathway_hmms = row['HMMs']
+        if isinstance(pathway_hmms, list):
+            for pathway_hmm in pathway_hmms:
+                if 'not' not in pathway_hmm:
+                    pathway_function_name_data.append([pathway, hmm_functions[pathway_hmm]])
+        else:
+            pathway_function_name_data.append([pathway, ''])
+
+    pathway_template_df = pd.DataFrame(pathway_function_name_data, columns=['Pathway', 'Function_name'])
+
+    return pathway_template_df

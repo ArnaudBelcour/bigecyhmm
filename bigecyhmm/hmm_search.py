@@ -26,10 +26,10 @@ import json
 from multiprocessing import Pool
 from PIL import __version__ as pillow_version
 
-from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
+from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files, get_link_pathway_function_name
 from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 logger = logging.getLogger(__name__)
 
@@ -303,7 +303,8 @@ def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_f
     write_results(hmm_results, output_file)
 
 
-def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_template_file=HMM_TEMPLATE_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, core_number=1):
+def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_template_file=HMM_TEMPLATE_FILE, pathway_template_file=PATHWAY_TEMPLATE_FILE,
+               motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, core_number=1):
     """Main function to use HMM search on protein sequences and write results
 
     Args:
@@ -311,6 +312,7 @@ def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_templat
         output_folder (str): path to output folder
         hmm_folder (str): path to HMM folder
         hmm_template_file (str): path of HMM template file
+        pathway_template_file (str): path to pathway template file
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
         core_number (int): number of core to use for the multiprocessing
@@ -334,6 +336,11 @@ def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_templat
 
     hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
+    # Map pathway to function name.
+    pathway_template_df = get_link_pathway_function_name(pathway_template_file, hmm_template_file)
+    mapping_pathway_function_file = os.path.join(output_folder, 'mapping_pathway_to_function_name.tsv')
+    pathway_template_df.to_csv(mapping_pathway_function_file, sep='\t', index=False)
+
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
@@ -351,7 +358,7 @@ def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_templat
     create_major_functions(hmm_output_folder, function_matrix_file)
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
-    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder)
+    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
 
     input_diagram_file = os.path.join(output_folder, 'Total.R_input.txt')
     create_diagram_figures(input_diagram_file, output_folder)
