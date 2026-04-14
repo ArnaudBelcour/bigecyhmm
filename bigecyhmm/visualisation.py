@@ -467,12 +467,12 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
 
     groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
     tmp_melted_cycle_relative_abundance_samples_df = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['ratio']>0.05]
-    samples = len(tmp_melted_cycle_relative_abundance_samples_df['samples'].unique())
+    nb_samples = len(tmp_melted_cycle_relative_abundance_samples_df['sample'].unique())
 
     ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
 
     fig_width = 15
-    if len(samples) > 60:
+    if nb_samples > 60:
         fig_width = len(samples)/4
     fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 12), gridspec_kw={'height_ratios': ratios})
 
@@ -621,6 +621,45 @@ def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_name
     plt.clf()
 
 
+def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, sample_abundance, output_folder):
+    df_abundance = pd.DataFrame(sample_abundance)
+    for col in df_abundance.columns:
+        df_abundance[col] = df_abundance[col] / df_abundance[col].sum()
+    for cycle_name in df_cycle_occurrence_organisms.columns:
+        tmp_df_cycle_occurrence_organisms = df_cycle_occurrence_organisms[df_cycle_occurrence_organisms[cycle_name]>0].copy()
+
+        cycle_organisms = tmp_df_cycle_occurrence_organisms.index.tolist()
+
+        cycle_organisms = set(cycle_organisms)
+
+        proteome_tax_id_df = pd.read_csv(proteome_tax_id_file, sep='\t')
+        proteome_tax_id_df.set_index('observation_name', inplace=True)
+        asv_to_names = proteome_tax_id_df['name'].to_dict()
+
+        tmp_df_abundance = df_abundance[df_abundance.index.isin(cycle_organisms)].copy()
+        if tmp_df_abundance.empty is False:
+            tmp_df_abundance['taxon'] = [asv_to_names[index] for index in tmp_df_abundance.index]
+            nb_taxa = len(tmp_df_abundance['taxon'].unique())
+            tmp_df_abundance = tmp_df_abundance.groupby('taxon').sum()
+            tmp_df_abundance.reset_index(inplace=True)
+            tmp_df_abundance.set_index(['taxon'], inplace=True)
+            tmp_df_abundance = tmp_df_abundance.loc[~(tmp_df_abundance == 0).all(axis=1)]
+            tmp_df_abundance.loc['Sum ' + cycle_name] = tmp_df_abundance.sum(axis=0)
+            sns.set_theme(font_scale=1.1, style='white')
+            fig_height = 12
+            if nb_taxa > 36:
+                fig_height = nb_taxa / 3
+            fig, axes = plt.subplots(figsize=(19, fig_height))
+            g = sns.heatmap(data=tmp_df_abundance, center=1, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black',  square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
+
+            plt.tight_layout()
+            cycle_name_heatmap_file = os.path.join(output_folder, cycle_name+'.png')
+            plt.savefig(cycle_name_heatmap_file)
+            plt.show()
+            plt.clf()
+            plt.close(fig)
+
+
 def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None, metabolite_measure=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
@@ -758,6 +797,10 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
         if observation_names_tax_ranks is not None:
             generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_names_tax_ranks, sample_tot_abundance, output_folder_abundance)
+            specific_function_folder = os.path.join(output_folder_abundance, 'cycle_taxa_abundance')
+            if not os.path.exists(specific_function_folder):
+                os.mkdir(specific_function_folder)
+            taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, sample_abundance, specific_function_folder)
 
         logger.info("  -> Read bigecyhmm cycle output files.")
         bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_output, 'pathway_presence.tsv')
