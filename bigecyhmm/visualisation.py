@@ -651,15 +651,16 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             if nb_taxa > 36:
                 fig_height = nb_taxa / 3
             fig_width = 19
-
             if nb_samples > 190:
                 fig_width = nb_samples / 10
             fig, axes = plt.subplots(figsize=(fig_width, fig_height))
-            g = sns.heatmap(data=tmp_df_abundance, center=1, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black',  square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
+            g = sns.heatmap(data=tmp_df_abundance, center=1, xticklabels=True, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black', square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
 
             plt.tight_layout()
             cycle_name_heatmap_file = os.path.join(output_folder, cycle_name+'.png')
             plt.savefig(cycle_name_heatmap_file)
+            cycle_name_dataframe_file = os.path.join(output_folder, cycle_name+'.tsv')
+            tmp_df_abundance.to_csv(cycle_name_dataframe_file, sep='\t')
             plt.show()
             plt.clf()
             plt.close(fig)
