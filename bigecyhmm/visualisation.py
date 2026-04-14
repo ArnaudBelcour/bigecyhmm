@@ -625,6 +625,7 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
     df_abundance = pd.DataFrame(sample_abundance)
     for col in df_abundance.columns:
         df_abundance[col] = df_abundance[col] / df_abundance[col].sum()
+    nb_samples = len(df_abundance.columns)
     for cycle_name in df_cycle_occurrence_organisms.columns:
         tmp_df_cycle_occurrence_organisms = df_cycle_occurrence_organisms[df_cycle_occurrence_organisms[cycle_name]>0].copy()
 
@@ -649,7 +650,11 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             fig_height = 12
             if nb_taxa > 36:
                 fig_height = nb_taxa / 3
-            fig, axes = plt.subplots(figsize=(19, fig_height))
+            fig_width = 19
+
+            if nb_samples > 190:
+                fig_width = nb_samples / 10
+            fig, axes = plt.subplots(figsize=(fig_width, fig_height))
             g = sns.heatmap(data=tmp_df_abundance, center=1, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black',  square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
 
             plt.tight_layout()
