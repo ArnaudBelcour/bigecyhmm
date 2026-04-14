@@ -473,7 +473,7 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
 
     fig_width = 15
     if nb_samples > 60:
-        fig_width = len(samples)/4
+        fig_width = nb_samples / 4
     fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 12), gridspec_kw={'height_ratios': ratios})
 
     if len(groups) > 1:
@@ -651,8 +651,8 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             if nb_taxa > 36:
                 fig_height = nb_taxa / 3
             fig_width = 19
-            if nb_samples > 190:
-                fig_width = nb_samples / 10
+            if nb_samples > 133:
+                fig_width = nb_samples / 7
             fig, axes = plt.subplots(figsize=(fig_width, fig_height))
             g = sns.heatmap(data=tmp_df_abundance, center=1, xticklabels=True, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black', square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
 
