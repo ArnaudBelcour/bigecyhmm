@@ -467,10 +467,14 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
 
     groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
     tmp_melted_cycle_relative_abundance_samples_df = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['ratio']>0.05]
+    samples = len(tmp_melted_cycle_relative_abundance_samples_df['samples'].unique())
 
     ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
 
-    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(15, 12), gridspec_kw={'height_ratios': ratios})
+    fig_width = 15
+    if len(samples) > 60:
+        fig_width = len(samples)/4
+    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 12), gridspec_kw={'height_ratios': ratios})
 
     if len(groups) > 1:
         for index, group in enumerate(groups):
@@ -602,10 +606,15 @@ def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_name
         if rank not in color_ranks:
             color_ranks[rank] = unused_colors[added_color]
             added_color += 1
+
+    fig_width = 16
+    nb_samples = len(df_abundance_taxon_sample.index.unique())
+    if nb_samples > 150:
+        fig_width = nb_samples / 10
     # Sort the dataframe using taxonomic rank, from lowest (species, genus) to highest (kingdom).
     sorted_columns = [rank for rank in RANK_SORTED if rank in df_abundance_taxon_sample.columns]
     df_abundance_taxon_sample = df_abundance_taxon_sample[sorted_columns]
-    df_abundance_taxon_sample.plot(kind='bar', stacked=True, color=color_ranks, figsize=(16,14))
+    df_abundance_taxon_sample.plot(kind='bar', stacked=True, color=color_ranks, figsize=(fig_width, 14))
     plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
     plt.style.use('default')
     plt.savefig(output_taxon_rank_abundance_plot_file, bbox_inches="tight", transparent=False)
