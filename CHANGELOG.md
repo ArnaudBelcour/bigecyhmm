@@ -14,6 +14,7 @@ Due to the changes in the boolean expression to infer pathways, old pathway temp
 * `custom_tsv_parser.py` to parse new file format (made with Michael Baumgartner @KeonaExoGaia).
 * `group_analysis.py`, `group_plot.py` to analyse metabolism of several samples, in association with the custom hydrogen central cycle (made with Michael Baumgartner @KeonaExoGaia).
 * Contributors file.
+* Heatmap showing link between general function, taxa name and samples.
 
 ## Modify
 

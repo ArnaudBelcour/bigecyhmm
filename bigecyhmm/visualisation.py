@@ -472,9 +472,9 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
     ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
 
     fig_width = 15
-    if nb_samples > 60:
-        fig_width = round(nb_samples/4)
-    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 12), gridspec_kw={'height_ratios': ratios})
+    if nb_samples > 30:
+        fig_width = nb_samples / 2
+    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
 
     if len(groups) > 1:
         for index, group in enumerate(groups):
@@ -651,15 +651,16 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             if nb_taxa > 36:
                 fig_height = nb_taxa / 3
             fig_width = 19
-
-            if nb_samples > 190:
-                fig_width = nb_samples / 10
+            if nb_samples > 133:
+                fig_width = nb_samples / 7
             fig, axes = plt.subplots(figsize=(fig_width, fig_height))
-            g = sns.heatmap(data=tmp_df_abundance, center=1, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black',  square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
+            g = sns.heatmap(data=tmp_df_abundance, center=1, xticklabels=True, yticklabels=True, cmap='viridis_r', linewidths=1, linecolor='black', square=False, mask=(tmp_df_abundance==0), vmin=0, vmax=1)
 
             plt.tight_layout()
             cycle_name_heatmap_file = os.path.join(output_folder, cycle_name+'.png')
             plt.savefig(cycle_name_heatmap_file)
+            cycle_name_dataframe_file = os.path.join(output_folder, cycle_name+'.tsv')
+            tmp_df_abundance.to_csv(cycle_name_dataframe_file, sep='\t')
             plt.show()
             plt.clf()
             plt.close(fig)
@@ -845,8 +846,11 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         melted_cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_melted.tsv'), sep='\t')
 
+        output_folder_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance')
+        if not os.path.exists(output_folder_polar_plot):
+            os.mkdir(output_folder_polar_plot)
         for sample in melted_cycle_relative_abundance_samples_df['sample'].unique():
-            output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_sample_'+sample+'.png')
+            output_polar_plot = os.path.join(output_folder_polar_plot, 'polar_plot_abundance_sample_'+sample+'.png')
             sample_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['sample']==sample]
             create_polar_plot(sample_melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
