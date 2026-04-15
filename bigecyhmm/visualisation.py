@@ -846,8 +846,11 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         melted_cycle_relative_abundance_samples_df.columns = ['name', 'sample', 'ratio']
         melted_cycle_relative_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'cycle_abundance_sample_melted.tsv'), sep='\t')
 
+        output_folder_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance')
+        if not os.path.exists(output_folder_polar_plot):
+            os.mkdir(output_folder_polar_plot)
         for sample in melted_cycle_relative_abundance_samples_df['sample'].unique():
-            output_polar_plot = os.path.join(output_folder_abundance, 'polar_plot_abundance_sample_'+sample+'.png')
+            output_polar_plot = os.path.join(output_folder_polar_plot, 'polar_plot_abundance_sample_'+sample+'.png')
             sample_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['sample']==sample]
             create_polar_plot(sample_melted_cycle_relative_abundance_samples_df, output_polar_plot)
 
