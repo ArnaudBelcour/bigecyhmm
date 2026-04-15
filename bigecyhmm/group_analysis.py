@@ -17,7 +17,7 @@ DEFAULT_STATS_TSV = os.path.join('plots', 'group_stats.tsv')
 DEFAULT_CLEANED_TSV = os.path.join('plots', 'cleaned_data.tsv')
 DEFAULT_DONUT_PNG = os.path.join('plots', 'group_medians_donut.png')
 DEFAULT_TABLE_PNG = os.path.join('plots', 'group_stats_table.png')
-DEFAULT_BACKGROUND_PATH = os.path.join(os.path.dirname(__file__), 'network_background_v4.png') 
+DEFAULT_BACKGROUND_PATH = os.path.join(os.path.dirname(__file__), 'template_central_hydrogen.png') 
 #Default sample groups: expect sample_groups.tsv to be located in the pipeline input folder (one level up from visualisation outputs)
 DEFAULT_SAMPLE_GROUPS = os.path.join('..', 'sample_groups.tsv')
 DEFAULT_GROUPS = {'All Samples': ['']}

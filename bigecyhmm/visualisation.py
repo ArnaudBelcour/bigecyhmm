@@ -473,7 +473,7 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
 
     fig_width = 15
     if nb_samples > 60:
-        fig_width = len(samples)/4
+        fig_width = round(nb_samples/4)
     fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 12), gridspec_kw={'height_ratios': ratios})
 
     if len(groups) > 1:
