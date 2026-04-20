@@ -4,7 +4,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 3.0	Hydrogenotrophic methanogen.	FUNCTION	(hmdl OR hyd1k OR frhA OR mvhA OR hyd4h OR ehb) AND (mcrA OR mcrB OR mcrG)	NA	NA	H2	CH4	NA	NA	NA	
 4.0	Methanogenesis	FUNCTION	mcrA OR mcrB OR mcrG	NA	NA	Methyl-CoM. CH4	CH4. Methyl-CoM	NA	NA	NA	
 5.0	Hydrogenotrophic acetogen.	FUNCTION	(hydA3 OR echE OR hyd4h OR ehb) AND (fhs OR fthfs)	NA	NA	e-	Acetate	NA	NA	NA	
-6.0	Acetate oxidation	FUNCTION	acs OR (cdhA AND (mcrA OR mcrB OR mcrG))	NA	NA	Acetate	CO2. Methyl-CoM	NA	NA	NA	
+6.0	Acetate oxidation	FUNCTION	acs	NA	NA	Acetate	CO2. Methyl-CoM	NA	NA	NA	
 7.0	Acetoclastic methanogenesis	FUNCTION	(acs OR cdhA OR ack OR pta) AND (mcrA OR mcrB OR mcrG)	NA	NA	Acetate	CH4	NA	NA	NA	
 8.0	Acetogen. WL	FUNCTION	fhs OR fthfs	NA	NA	CO2	Acetate	NA	NA	NA	
 9.0	Carbon fixation	FUNCTION	cdhD OR cdhE OR cooS OR Form_I OR Form_II OR Hbs_1 OR 4hbl OR mcr OR pcs OR aclA OR aclB OR Hbs_2	NA	NA	CO2	Organic C	NA	NA	NA	
