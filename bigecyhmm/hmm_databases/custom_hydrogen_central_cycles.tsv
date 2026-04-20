@@ -20,15 +20,15 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 19.0	Selenate reduction	FUNCTION	YgfK OR xdhD OR ygfM	NA	NA	SeO4 2-	Se	NA	NA	NA	
 20.0	Sulfur respiration	FUNCTION	(hyiB OR hcaL) AND (asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD OR sor OR sreA OR sreB OR sreC)	NA	NA	e-	H2S	NA	NA	NA	
 21.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
-22.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
-23.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
+22.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
+23.0	Polysulfide reduction	FUNCTION	psrB OR psrC OR hydG OR hydB	NA	NA	H2S	S	NA	NA	NA	
 24.0	Sulfur reduction	FUNCTION	sor OR sreA OR sreB OR sreC	NA	NA	S	H2S	NA	NA	NA	
-25.0	Polysulfide reduction	FUNCTION	psrB OR psrC OR hydG OR hydB	NA	NA	H2S	S	NA	NA	NA	
-26.0	Sulfide oxidation	FUNCTION	sqr OR fccB	NA	NA	S	SO3 2-	NA	NA	NA	
-27.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S. SO4 2-	NA	NA	NA	
-28.0	Thiosulfate disproportionation 2	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND NOT soxD AND NOT soxC	NA	NA	S2O3 2-	SO4 2-	NA	NA	NA	
-29.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S. SO3 2-	NA	NA	NA	
-30.0	Thiosulfate disproportionation 1	FUNCTION	phsA	NA	NA	SO3 2-	SO4 2-	NA	NA	NA	
+25.0	Sulfide oxidation	FUNCTION	sqr OR fccB	NA	NA	S	SO3 2-	NA	NA	NA	
+26.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S. SO4 2-	NA	NA	NA	
+27.0	Thiosulfate disproportionation 2	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND NOT soxD AND NOT soxC	NA	NA	S2O3 2-	SO4 2-	NA	NA	NA	
+28.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S. SO3 2-	NA	NA	NA	
+29.0	Thiosulfate disproportionation 1	FUNCTION	phsA	NA	NA	SO3 2-	SO4 2-	NA	NA	NA	
+30.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
 31.0	Sulfate reduction (ASR or DSR)	FUNCTION	aprA OR sat	NA	NA	SO4 2-	SO3 2-	NA	NA	NA	
 32.0	Arsenate reduction	FUNCTION	arrA	NA	NA	As 5+	As 3+	NA	NA	NA	
 33.0	Arsenite oxidation	FUNCTION	aioA OR arxA	NA	NA	As 3+	As 5+	NA	NA	NA	
@@ -303,39 +303,39 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 21.4	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 21.5	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
 21.6	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
-22.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
-22.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
-23.1	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
-23.2	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
-23.3	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
-23.4	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
-23.5	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
-23.6	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+22.1	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
+22.2	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
+22.3	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
+22.4	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
+22.5	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
+22.6	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+23.1	psrB	HMM	K16293.hmm	266.90|full	polysulfide reductase chain B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16293	
+23.2	psrC	HMM	K16294.hmm	305.90|full	polysulfide reductase chain C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16294	
+23.3	hydG	HMM	K17995.hmm	451.47|full	sulfhydrogenase subunit gamma (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17995	
+23.4	hydB	HMM	K17996.hmm	398.57|full	sulfhydrogenase subunit beta (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17996	
 24.1	sor	HMM	K16952.hmm	363.87|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
 24.2	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
 24.3	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
 24.4	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
-25.1	psrB	HMM	K16293.hmm	266.90|full	polysulfide reductase chain B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16293	
-25.2	psrC	HMM	K16294.hmm	305.90|full	polysulfide reductase chain C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16294	
-25.3	hydG	HMM	K17995.hmm	451.47|full	sulfhydrogenase subunit gamma (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17995	
-25.4	hydB	HMM	K17996.hmm	398.57|full	sulfhydrogenase subunit beta (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17996	
-26.1	sqr	HMM	sulfide_quinone_oxidoreductase_sqr.hmm	300|full	sulfide:quinone oxidoreductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17218	
-26.2	fccB	HMM	PF09242.hmm	266|full	flavocytochrome c sulphide dehydrogenase. flavin-binding	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17229	
-27.1	sor	HMM	PF07682.hmm	300|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
-27.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	120|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
+25.1	sqr	HMM	sulfide_quinone_oxidoreductase_sqr.hmm	300|full	sulfide:quinone oxidoreductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17218	
+25.2	fccB	HMM	PF09242.hmm	266|full	flavocytochrome c sulphide dehydrogenase. flavin-binding	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17229	
+26.1	sor	HMM	PF07682.hmm	300|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
+26.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	120|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
+27.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
+27.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
+27.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
+27.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
+27.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
+27.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
 28.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
 28.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
 28.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
 28.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
 28.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
 28.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
-29.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
-29.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
-29.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
-29.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
-29.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
-29.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
-30.1	phsA	HMM	thiosulfate_reductase_phsA.hmm	323|full	thiosulfate reductase / polysulfide reductase chain A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08352	
+29.1	phsA	HMM	thiosulfate_reductase_phsA.hmm	323|full	thiosulfate reductase / polysulfide reductase chain A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08352	
+30.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
+30.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
 31.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
 31.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
 32.1	arrA	HMM	arrA.hmm	175|full	dissimilatory arsenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28466	
