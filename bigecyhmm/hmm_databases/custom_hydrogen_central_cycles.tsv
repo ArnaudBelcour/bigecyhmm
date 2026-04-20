@@ -4,7 +4,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 3.0	Hydrogenotrophic methanogen.	FUNCTION	(hmdl OR hyd1k OR frhA OR mvhA OR hyd4h OR ehb) AND (mcrA OR mcrB OR mcrG)	NA	NA	H2	CH4	NA	NA	NA	
 4.0	Methanogenesis	FUNCTION	mcrA OR mcrB OR mcrG	NA	NA	Methyl-CoM. CH4	CH4. Methyl-CoM	NA	NA	NA	
 5.0	Hydrogenotrophic acetogen.	FUNCTION	(hydA3 OR echE OR hyd4h OR ehb) AND (fhs OR fthfs)	NA	NA	e-	Acetate	NA	NA	NA	
-6.0	Acetate oxidation	FUNCTION	acs OR cdhA	NA	NA	Acetate	CO2. Methyl-CoM	NA	NA	NA	
+6.0	Acetate oxidation	FUNCTION	acs OR (cdhA AND (mcrA OR mcrB OR mcrG))	NA	NA	Acetate	CO2. Methyl-CoM	NA	NA	NA	
 7.0	Acetoclastic methanogenesis	FUNCTION	(acs OR cdhA OR ack OR pta) AND (mcrA OR mcrB OR mcrG)	NA	NA	Acetate	CH4	NA	NA	NA	
 8.0	Acetogen. WL	FUNCTION	fhs OR fthfs	NA	NA	CO2	Acetate	NA	NA	NA	
 9.0	Carbon fixation	FUNCTION	cdhD OR cdhE OR cooS OR Form_I OR Form_II OR Hbs_1 OR 4hbl OR mcr OR pcs OR aclA OR aclB OR Hbs_2	NA	NA	CO2	Organic C	NA	NA	NA	
@@ -322,7 +322,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 26.1	sqr	HMM	sulfide_quinone_oxidoreductase_sqr.hmm	300|full	sulfide:quinone oxidoreductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17218	
 26.2	fccB	HMM	PF09242.hmm	266|full	flavocytochrome c sulphide dehydrogenase. flavin-binding	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17229	
 27.1	sor	HMM	PF07682.hmm	300|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
-27.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	300|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
+27.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	120|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
 28.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
 28.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
 28.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
