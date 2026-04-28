@@ -11,42 +11,42 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 10.0	Methylotrophic methanogen.	FUNCTION	(mtaA OR mtbA OR hyd1k) AND (mcrA OR mcrB OR mcrG)	NA	NA	Organic C	CO2, Methyl-CoM	NA	NA	NA	hyd1k was added since it is usually present in hydrogen-consuming methylotrophs. it was removed from the hydrogenotrophs, even though it consumes hydrogen. 
 11.0	Organic carbon oxidation	FUNCTION	adh OR akr1a1 OR ldh OR mdh OR exaA OR frmA OR fdoG OR fdoH OR fdhB OR ALDH3 OR aldB OR fdhA_non_GSH OR mycoS_dep_FDH OR porA OR ACADM OR ACADL OR mcrA OR pta OR pflD OR aspB OR aspC OR hisC OR rocD OR argD OR puuE OR ilvE OR AGXT OR serC OR tyrB OR astC OR ack OR fghA OR amyA OR SGA1 OR chiC OR bglu OR lacZ OR manB OR uidA OR xynB OR pulA OR nagZ OR abfA OR treX OR gmuG OR bsdC OR racD OR xylS OR acs OR acdA OR pabC OR ubiX OR pabBC OR catA OR coxS OR coxM OR coxL OR lat OR eutG OR adhE OR bcrC OR bcrB OR bcrA OR bcrD OR treS OR bglX OR bglB OR LYSN OR lysJ OR ramA OR fadE OR DCAA OR gabT OR aamy OR aidB OR ACADSB OR fae OR CH4_NH3mon_ox_B OR CH4_NH3mon_ox_C OR yhdR OR acdH OR ebgA OR bgaB OR HEXA_B OR chiA OR ABAT OR yiay OR mxaF OR davT OR HEX OR mauA OR mauB OR xynD OR ACAD9 OR mmoB OR mmoD OR mmgC OR MAN OR cbhA OR adhA OR fdwB OR fdhA OR CH4_NH3mon_ox_A	NA	NA	Organic C	CO2	NA	NA	NA	
 12.0	(Aerobic) methanotrophy	FUNCTION	pmoA OR pmoB OR pmoC OR mmoB OR mmoD	NA	NA	CH4	CO2	NA	NA	NA	was previously removed by me because it is aerobic. but now added again. 
-13.0	Fermentation	FUNCTION	adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA OR pct	NA	NA	Organic C. Ethanol. Acetate	Ethanol. Acetate	NA	NA	NA	
+13.0	Fermentation	FUNCTION	adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA OR pct	NA	NA	Organic C, Ethanol, Acetate	Ethanol, Acetate	NA	NA	NA	
 14.0	Ethanol oxidation	FUNCTION	adh	NA	NA	Ethanol	CO2	NA	NA	NA	
-15.0	Fermentative H2 generation	FUNCTION	(hydA1 OR hycE) AND (adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA)	NA	NA	Ethanol. Organic C	e-	NA	NA	NA	
+15.0	Fermentative H2 generation	FUNCTION	(hydA1 OR hycE) AND (adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA)	NA	NA	Ethanol, Organic C	e-	NA	NA	NA	
 16.0	Organohal. Respira. 1	FUNCTION	hupL AND rdhA	NA	NA	e-	Halide Ions	NA	NA	NA	
 17.0	Organohal. Respira. 2	FUNCTION	rdhA	NA	NA	Organic Halides	Halide Ions	NA	NA	NA	
 18.0	Selenate reduction	FUNCTION	YgfK OR xdhD OR ygfM	NA	NA	SeO4 2-	Se	NA	NA	NA	
 19.0	Sulfur respiration	FUNCTION	(hyiB OR hcaL) AND (asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD OR sor OR sreA OR sreB OR sreC)	NA	NA	e-	H2S	NA	NA	NA	
-20.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
+20.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-, H2S	NA	NA	NA	
 21.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
 22.0	Polysulfide reduction	FUNCTION	psrB OR psrC OR hydG OR hydB	NA	NA	H2S	S	NA	NA	NA	
 23.0	Sulfur reduction	FUNCTION	sor OR sreA OR sreB OR sreC	NA	NA	S	H2S	NA	NA	NA	
 24.0	Sulfide oxidation	FUNCTION	sqr OR fccB	NA	NA	S	SO3 2-	NA	NA	NA	
-25.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S. SO4 2-	NA	NA	NA	
+25.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S, SO4 2-	NA	NA	NA	
 26.0	Thiosulfate disproportionation 2	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND NOT soxD AND NOT soxC	NA	NA	S2O3 2-	SO4 2-	NA	NA	NA	
-27.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S. SO3 2-	NA	NA	NA	
+27.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S, SO3 2-	NA	NA	NA	
 28.0	Thiosulfate disproportionation 1	FUNCTION	phsA	NA	NA	SO3 2-	SO4 2-	NA	NA	NA	
-29.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
+29.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO3 2-	H2S	NA	NA	NA	
 30.0	Sulfate reduction (ASR or DSR)	FUNCTION	aprA OR sat	NA	NA	SO4 2-	SO3 2-	NA	NA	NA	
 31.0	Arsenate reduction	FUNCTION	arrA	NA	NA	As 5+	As 3+	NA	NA	NA	
 32.0	Arsenite oxidation	FUNCTION	aioA OR arxA	NA	NA	As 3+	As 5+	NA	NA	NA	
-33.0	e-input Metal respiration	FUNCTION	(hupL OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+. Fe 2+	NA	NA	NA	
-34.0	Metal Respiration	FUNCTION	CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ	NA	NA	MnO2. Fe 3+	Mn 2+. Fe 2+	NA	NA	NA	
+33.0	e-input Metal respiration	FUNCTION	(hupL OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+, Fe 2+	NA	NA	NA	
+34.0	Metal Respiration	FUNCTION	CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ	NA	NA	MnO2, Fe 3+	Mn 2+, Fe 2+	NA	NA	NA	
 35.0	Mn oxidation	FUNCTION	MnxG	NA	NA	Mn 2+	MnO2	NA	NA	NA	
 36.0	Iron oxidation	FUNCTION	Cyc1 OR Cyc2_rc1 OR Cyc2_rc2 OR Cyc2_rc3 OR FoxA OR FoxB OR FoxC OR FoxE OR FoxY OR FoxZ OR MtoA OR soxE	NA	NA	Fe 2+	Fe 3+	NA	NA	NA	
-37.0	Nitrate respiration or denitrification	FUNCTION	(hynB OR hybC) AND (nirB OR nirD OR nas OR nirK OR nirS OR octR OR norC OR norB OR nosD OR nosZ)	NA	NA	e-	NO2-. NO. N2O. N2	NA	NA	NA	
-38.0	Assimilatory nitrate red.	FUNCTION	nirB OR nirD OR nas	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
-39.0	Dissimilatory nitrate red.	FUNCTION	narG OR narH OR napA OR napB OR nrfD	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
+37.0	Nitrate respiration or denitrification	FUNCTION	(hynB OR hybC) AND (nirB OR nirD OR nas OR nirK OR nirS OR octR OR norC OR norB OR nosD OR nosZ)	NA	NA	e-	NO2-, NO, N2O, N2	NA	NA	NA	
+38.0	Assimilatory nitrate red.	FUNCTION	nirB OR nirD OR nas	NA	NA	NO3-, NO2-	NO2-, NH3	NA	NA	NA	
+39.0	Dissimilatory nitrate red.	FUNCTION	narG OR narH OR napA OR napB OR nrfD	NA	NA	NO3-, NO2-	NO2-, NH3	NA	NA	NA	
 40.0	Ammonia oxidation	FUNCTION	amoA OR amoB OR amoC	NA	NA	NH3	NO2-	NA	NA	NA	
 41.0	Nitrite oxidation	FUNCTION	nxrA OR nxrB	NA	NA	NO2-	NO3-	NA	NA	NA	
 42.0	Nitrite reduction	FUNCTION	TIGR00314.hmm	NA	NA	NO2-	NO	NA	NA	NA	
 43.0	Nitric oxide dismutase	FUNCTION	nod	NA	NA	NO	N2	NA	NA	NA	
 44.0	Nitric oxide reduction	FUNCTION	norC OR norB	NA	NA	NO	N2O	NA	NA	NA	
 45.0	Nitrous oxide reduction	FUNCTION	nosD OR nosZ	NA	NA	N2O	N2	NA	NA	NA	
-46.0	Anammox	FUNCTION	hzsA OR hzoA	NA	NA	NO2-. NH3	N2	NA	NA	NA	
+46.0	Anammox	FUNCTION	hzsA OR hzoA	NA	NA	NO2-, NH3	N2	NA	NA	NA	
 47.0	Nitrite ammonification	FUNCTION	nirB OR nirD OR nrfA OR nrfD OR nrfH	NA	NA	NO3-	NH3	NA	NA	NA	
-48.0	Nitrogen fixation	FUNCTION	gcd OR ppk1 OR ppa OR ppx OR pqqC	NA	NA	N2	NH3. H2	NA	NA	NA	
+48.0	Nitrogen fixation	FUNCTION	gcd OR ppk1 OR ppa OR ppx OR pqqC	NA	NA	N2	NH3, H2	NA	NA	NA	
 49.0	P dissolution	FUNCTION	anfG OR nifD OR nifH OR nifK OR vnfD OR vnfK OR vnfG OR anfD OR anfK	NA	NA	P insol	P inorg	NA	NA	NA	
 50.0	Immobilisation (P-rich)	FUNCTION	PitA	NA	NA	P inorg	P org	NA	NA	NA	
 51.0	Immobilisation (P-poor)	FUNCTION	PstS	NA	NA	P inorg	P org	NA	NA	NA	
