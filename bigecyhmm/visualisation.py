@@ -20,6 +20,7 @@ import seaborn as sns
 from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
 from matplotlib import __version__ as matplotlib_version
+from networkx.drawing.nx_agraph import graphviz_layout
 
 import networkx as nx
 import argparse
@@ -459,33 +460,80 @@ def create_polar_plot(df_seaborn_abundance, output_file):
     plt.close(fig)
 
 
-def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file):
+def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file, group_file=None):
+    """ Generate a bubble plot showing main functions abundance in pathways.
+
+    Args:
+        melted_cycle_relative_abundance_samples_df (pd.DataFrame): abundance of pathways according to samples.
+        output_file_name (str): path to the output file.
+        group_file_path (str): path to group file.
+    """
     function_in_cycle = {function_name: cycle_name for cycle_name in FUNCTION_GROUP_TEMPLATE for function_name in FUNCTION_GROUP_TEMPLATE[cycle_name]}
 
     melted_cycle_relative_abundance_samples_df['group'] = [function_in_cycle[function_name] if function_name in function_in_cycle else '' for function_name in melted_cycle_relative_abundance_samples_df['name']]
     tmp_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['group']!='']
 
-    groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
+    function_groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
     tmp_melted_cycle_relative_abundance_samples_df = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['ratio']>0.05]
     nb_samples = len(tmp_melted_cycle_relative_abundance_samples_df['sample'].unique())
 
-    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]) for group in groups]
+    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]) for function_group in function_groups]
 
     fig_width = 15
     if nb_samples > 30:
         fig_width = nb_samples / 2
-    fig, axes = plt.subplots(nrows=len(groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
+    fig, axes = plt.subplots(nrows=len(function_groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
 
-    if len(groups) > 1:
-        for index, group in enumerate(groups):
-            tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==group]
-            # Create bubble scatter plot.
-            axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
-            # Show grid.
-            axes[index].grid(True, color='lightgrey', linewidth=0.5)
-            # Remove tick labels except for the last one.
-            if index < len(groups)-1:
-                axes[index].set_xticklabels([])
+    # If group file is not None, sort dataframe with sample according to group.
+    if group_file is not None:
+        mapping_df = pd.read_csv(group_file, sep='\t', dtype=str)
+
+        mapping_df = mapping_df.sort_values('group')
+        sample_groups = mapping_df['group'].unique()
+        sorted_samples = mapping_df['sample'].tolist()
+        length_sample_name = int(max([len(sample_name) for sample_name in sorted_samples])/1.5)
+
+        x_group_position = []
+        x_end_group_position = []
+        for group in sample_groups:
+            tmp_group_mapping_df = mapping_df[mapping_df['group']==group]
+            group_samples = tmp_group_mapping_df['sample'].unique().tolist()
+            # Get sample of the group at the middle of the sample position.
+            if len(group_samples) > 1:
+                x_group_position.append(group_samples[math.ceil(len(group_samples)/2)])
+            else:
+                x_group_position.append(group_samples[0])
+            x_end_group_position.append(group_samples[-1])
+        x_end_group_position.append(sorted_samples[-1])
+        tmp_melted_cycle_relative_abundance_samples_df.sort_values(by="sample", key=lambda x: x.map(sorted_samples.index), inplace=True)
+
+    if len(sample_groups) > 1:
+        for index, function_group in enumerate(function_groups):
+            tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]
+            if tmp_data.empty is False:
+                # Create bubble scatter plot.
+                axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
+                # Show grid.
+                axes[index].grid(True, color='lightgrey', linewidth=0.5)
+                # Remove tick labels except for the last one.
+                if index < len(function_groups)-1:
+                    axes[index].set_xticklabels([])
+                else:
+                    if group_file is not None:
+                        # Add group label below sample names.
+                        x_group_position = [sorted_samples.index(sample_name) for sample_name in x_group_position]
+                        sec = axes[index].secondary_xaxis(location=0)
+                        group_labels = ['\n'*length_sample_name+sample_group for sample_group in sample_groups]
+                        sec.set_xticks(x_group_position, labels=group_labels)
+                        sec.tick_params('x', length=0)
+                        # Add lines between groups.
+                        x_end_group_position = [sorted_samples.index(sample_name)+0.5 if sample_name!=sorted_samples[-1] else sorted_samples.index(sample_name)-0.5 for sample_name in x_end_group_position]
+                        sec2 = axes[index].secondary_xaxis(location=0)
+                        sec2.set_xticks([-0.5, *x_end_group_position], labels=[])
+                        sec2.tick_params('x', length=40, width=1.5)
+                        axes[index].set_xlim(-0.6, 8.6)
+            else:
+                axes[index].axis("off")
     else:
         tmp_data = tmp_melted_cycle_relative_abundance_samples_df
         # Create bubble scatter plot.
@@ -666,7 +714,61 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             plt.close(fig)
 
 
-def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None, metabolite_measure=None):
+def generate_graph_figure(bigecyhmm_database_folder, output_folder_graph_plots):
+    graph_file = os.path.join(bigecyhmm_database_folder, 'input_graph.graphml')
+    if not os.path.exists(output_folder_graph_plots):
+        os.mkdir(output_folder_graph_plots)
+    bipartite_networkx_graph = nx.read_graphml(graph_file)
+
+    pathway_template_file = os.path.join(bigecyhmm_database_folder, 'pathway_template_file.tsv')
+    pathway_template_df = pd.read_csv(pathway_template_file, sep='\t')
+
+    pathway_template_df['index'] = pathway_template_df.index+1
+    pathway_index_labels = pathway_template_df.set_index('Pathways')['index'].to_dict()
+
+    metabolite_nodes = []
+
+    metabolite_nodes = [network_node for network_node in bipartite_networkx_graph.nodes if bipartite_networkx_graph.nodes[network_node]['type'] == 'Metabolite']
+    function_nodes = [network_node for network_node in bipartite_networkx_graph.nodes if bipartite_networkx_graph.nodes[network_node]['type'] == 'Function']
+    for metabolite_node in metabolite_nodes:
+        pathway_index_labels[metabolite_node] = metabolite_node
+    nitrate_nodes = ['NO2-', 'NO', 'N2O', 'N2', 'NO3-', 'NH3']
+    sulfur_nodes = ['S', 'H2S', 'SO3 2-', 'S2O3 2-', 'SO4 2-']
+    organic_carbon_nodes = ['CH4', 'Methyl-CoM', 'Acetate',	'CO2', 'Organic C', 'Ethanol']
+
+    node_colors = {}
+    for node in metabolite_nodes:
+        if node in nitrate_nodes:
+            node_colors[node] = 'green'
+        if node in sulfur_nodes:
+            node_colors[node] = 'orange'
+        if node in organic_carbon_nodes:
+            node_colors[node] = 'gray'
+
+    metabolite_node_colors = [node_colors[node] if node in node_colors else 'lightgray' for node in metabolite_nodes]
+
+    fig, axes = plt.subplots(figsize=(16,16))
+
+    layout_prog = 'neato'
+    nx.draw_networkx_nodes(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), nodelist=metabolite_nodes,
+                           node_color=metabolite_node_colors, node_shape='o', alpha=0.6, node_size=2000)
+    nx.draw_networkx_nodes(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), nodelist=function_nodes,
+                           node_shape='d', alpha=0.6, node_size=1000)
+    nx.draw_networkx_labels(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), labels=pathway_index_labels,
+                            font_size=14)
+    nx.draw_networkx_edges(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), arrows=True, width=3,
+                           node_size=1000)
+
+    plt.axis('off')
+    graph_output_file = os.path.join(output_folder_graph_plots, 'graph_reference.png')
+    plt.savefig(graph_output_file, bbox_inches='tight')
+    plt.clf()
+
+    return graph_output_file
+
+
+def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None, metabolite_measure=None,
+                         bigecyhmm_run_database=None, background_path_donut_plot=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
     Args:
@@ -676,6 +778,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         abundance_file_path (str): path to abundance file.
         group_file_path (str): path to group file.
         metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples.
+        bigecyhmm_run_database (sttr): path to bigecyhmm run internal database (only when used with bigecyhmm_custom).
+        background_path_donut_plot (str): path to background figure for donut plot.
     """
     start_time = time.time()
 
@@ -883,7 +987,9 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
                 create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
-        if set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
+        if background_path_donut_plot is None and set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
+            background_path_donut_plot = TEMPLATE_CUSTOM_CENTRAL_HYDROGEN
+        if background_path_donut_plot is not None:
             output_folder_plots = os.path.join(output_folder_abundance, 'plots')
             if not os.path.exists(output_folder_plots):
                 os.mkdir(output_folder_plots)
@@ -891,7 +997,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             cleaned_data_file = os.path.join(output_folder_plots, 'cleaned_data.tsv')
             group_medians_donut_file = os.path.join(output_folder_plots, 'group_medians_donut.png')
             group_stats_table_file = os.path.join(output_folder_plots, 'group_stats_table.png')
-            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=TEMPLATE_CUSTOM_CENTRAL_HYDROGEN,
+            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=background_path_donut_plot,
                         stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
             """Function to: 
             - resolve sample groups based on an input-tsv 
@@ -900,8 +1006,22 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             - make a donut-plot showing a "drawn" network, group medians, max+min of each group for each function
             - output a combined figure with donut & table"""
 
+        # Generate a donut graph visualisation from input graph file from custom_db. 
+        if bigecyhmm_run_database is not None:
+            output_folder_graph_plots = os.path.join(output_folder_abundance, 'graph_plots')
+            if not os.path.exists(output_folder_graph_plots):
+                os.mkdir(output_folder_graph_plots)
+            # Generate background figure from graphml in database folder.
+            graph_output_file = generate_graph_figure(bigecyhmm_run_database, output_folder_graph_plots)
+            group_stats_file = os.path.join(output_folder_graph_plots, 'group_stats.tsv')
+            cleaned_data_file = os.path.join(output_folder_graph_plots, 'cleaned_data.tsv')
+            group_medians_donut_file = os.path.join(output_folder_graph_plots, 'group_medians_donut.png')
+            group_stats_table_file = os.path.join(output_folder_graph_plots, 'group_stats_table.png')
+            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=graph_output_file,
+                        stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
+
         bubble_plot_output_file = os.path.join(output_folder_abundance, 'cycle_pathways_bubble_plot.png')
-        generate_bubble_plot(melted_cycle_relative_abundance_samples_df, bubble_plot_output_file)
+        generate_bubble_plot(melted_cycle_relative_abundance_samples_df, bubble_plot_output_file, group_file)
 
         logger.info("  -> Read bigecyhmm function output files.")
         bigecyhmm_function_presence_file = os.path.join(bigecyhmm_output, 'function_presence.tsv')
@@ -1108,7 +1228,7 @@ def create_visualisation_from_ko_file(ko_abundance_file, output_folder, group_fi
 
 
 def visualisation_input_handler(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None,
-                                group_file=None, metabolite_measure=None):
+                                group_file=None, metabolite_measure=None, background_path_donut_plot=None):
     """Create visualisation plots from esmecata, bigecyhmm output folders
 
     Args:
@@ -1118,6 +1238,7 @@ def visualisation_input_handler(bigecyhmm_output, output_folder, esmecata_output
         abundance_file_path (str): path to abundance file.
         group_file_path (str): path to group file.
         metabolite_measure (str): path to metaboltie measure file indicating the abundance of metabolites in samples.
+        background_path_donut_plot (str): path to background figure for donut plot.
     """
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
@@ -1127,8 +1248,9 @@ def visualisation_input_handler(bigecyhmm_output, output_folder, esmecata_output
     if os.path.exists(bigecyhmm_pathway_presence_file):
         logger.info("|bigecyhmm|visualisation| Launch analyses on {0}.".format(bigecyhmm_output))
         create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder, abundance_file_path, group_file, metabolite_measure)
-    # If there is no such files but if there are subfolders, check if bigecyhmm output fiels are not in subfolders. 
+    # If there is no such files but if there are subfolders, check if bigecyhmm output files are not in subfolders. 
     else:
+        bigecyhmm_run_internal_database_path = os.path.join(bigecyhmm_output, 'database')
         for bigecyhmm_input_folder in os.listdir(bigecyhmm_output):
             bigecyhmm_input_folder_path = os.path.join(bigecyhmm_output, bigecyhmm_input_folder)
             bigecyhmm_pathway_presence_file = os.path.join(bigecyhmm_input_folder_path, 'pathway_presence.tsv')
@@ -1136,7 +1258,10 @@ def visualisation_input_handler(bigecyhmm_output, output_folder, esmecata_output
                 # If yes, then run each time bigecyhmm visualisation on these different subfolders.
                 logger.info("|bigecyhmm|visualisation| Found one subfolder {0} from {1}, launch analysis on it.".format(bigecyhmm_input_folder_path, bigecyhmm_output))
                 subfolder_output_folder = os.path.join(output_folder, bigecyhmm_input_folder)
-                create_visualisation(bigecyhmm_input_folder_path, subfolder_output_folder, esmecata_output_folder, abundance_file_path, group_file, metabolite_measure)
+                if os.path.exists(bigecyhmm_run_internal_database_path) is False:
+                    bigecyhmm_run_internal_database_path = None
+                create_visualisation(bigecyhmm_input_folder_path, subfolder_output_folder, esmecata_output_folder, abundance_file_path, group_file, metabolite_measure,
+                                     bigecyhmm_run_internal_database_path, background_path_donut_plot)
 
 
 def main():
@@ -1210,6 +1335,14 @@ def main():
         metavar='INPUT_FILE',
         default=None)
 
+    parent_parser_background_figure_file = argparse.ArgumentParser(add_help=False)
+    parent_parser_background_figure_file.add_argument(
+        '--background-file',
+        dest='background_file',
+        required=False,
+        help='Background figure file for donut plot with group.',
+        metavar='INPUT_FILE')
+
     # subparsers
     subparsers = parser.add_subparsers(
         title='subcommands',
@@ -1221,7 +1354,8 @@ def main():
         help='Create visualisation from runs of EsMeCaTa and bigecyhmm.',
         parents=[
             parent_parser_esmecata, parent_parser_bigecyhmm, parent_parser_abundance_file,
-            parent_parser_output_folder, parent_parser_group_file, parent_parser_measure_file
+            parent_parser_output_folder, parent_parser_group_file, parent_parser_measure_file,
+            parent_parser_background_figure_file
             ],
         allow_abbrev=False)
     genomes_parser = subparsers.add_parser(
@@ -1277,7 +1411,8 @@ def main():
             group_file = args.group_file
 
     if args.cmd in ['esmecata']:
-        visualisation_input_handler(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file, group_file=group_file, metabolite_measure=args.measure_file)
+        visualisation_input_handler(args.bigecyhmm, args.output, esmecata_output_folder=args.esmecata, abundance_file_path=abundance_file, group_file=group_file, metabolite_measure=args.measure_file,
+                                    background_path_donut_plot=args.background_file)
     elif args.cmd in ['genomes']:
         visualisation_input_handler(args.bigecyhmm, args.output, abundance_file_path=abundance_file, group_file=group_file, metabolite_measure=args.measure_file)
     elif args.cmd in ['ko']:

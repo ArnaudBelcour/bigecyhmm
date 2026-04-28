@@ -47,7 +47,11 @@
 	Acetate oxidation		cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
 44	Fermentation	Pyruvate <=> acetyl-CoA + formate 	pflD	formate C-acetyltransferase	K00656.hmm	K00656	acetyl-CoA + formate = CoA + pyruvate [RN:R00212]	acetyl-CoA; formate	CoA; pyruvate	336.47|full	
 	Fermentation	Formate <=> CO2 + H2	hycE	Formate lyase	K15830.hmm	K15830		formate	CO2 ; H	321.10|full	
-	Fermentation		pct	Propionate-CoA transferase	K01026.hmm	K01026				23|domain	Kegg-database 
+	Fermentation		mmcH	methylmalonyl-CoA decarboxylase subunit alpha	K01604.hmm	K01604				835|domain	https://doi.org/10.1093/femsre/fuab057
+	Fermentation		mmcI	methylmalonyl-CoA decarboxylase subunit epsilon	K23360.hmm	K23360				143.07|full	https://doi.org/10.1093/femsre/fuab057
+	Fermentation		mmcJ	methylmalonyl-CoA decarboxylase subunit gamma	K23351.hmm	K23351				121.97|domain	https://doi.org/10.1093/femsre/fuab057
+	Fermentation		mmcE/F	methylmalonyl-CoA mutase	K01847.hmm	K01847				612.60|full	https://doi.org/10.1093/femsre/fuab057
+	Fermentation		mmcG	methylmalonyl-CoA epimerase	K05606.hmm	K05606				79.47|domain	https://doi.org/10.1093/femsre/fuab057
 45	C1 metabolism	Methanol oxidation	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028	a primary alcohol + 2 ferricytochrome cL = an aldehyde + 2 ferrocytochrome cL + 2 H+ [RN:R10713]	primary alcohol; ferricytochrome cL	aldehyde; ferrocytochrome cL; H+	400|full	
 46	C1 metabolism	Methanol oxidation	mdh	methanol dehydrogenase	TIGR04266.hmm	K00093	methanol + NAD+ = formaldehyde + NADH + H+ [RN:R00605]	methanol; NAD+	formaldehyde; NADH; H+	400.00|full	
 47	C1 metabolism	Methyl amine -> formaldehyde	mauA	methylamine dehydrogenase light chain	TIGR02659.hmm	K15228	methylamine + H2O + 2 amicyanin = formaldehyde + NH3 + 2 reduced amicyanin [RN:R00606]	methylamine; H2O; amicyanin	formaldehyde; NH3; reduced amicyanin	85.80|full	

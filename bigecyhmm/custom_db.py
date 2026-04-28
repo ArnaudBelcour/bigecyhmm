@@ -59,6 +59,7 @@ except:
     logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib')
     sys.exit(1)
 
+
 def generate_pathway_file_from_json(custom_database_json, output_folder):
     # Get pathway cycle data from custom database.
     logger.info("  -> Parsing cycle json file {0}".format(custom_database_json))
