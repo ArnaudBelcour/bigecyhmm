@@ -1,57 +1,57 @@
 Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	function_output	HMM_source	enzyme_ref	kegg_ortholog	Comment
-1.0	Hydrogen generation	FUNCTION	hydA1 OR hydM OR hybC OR hyiB OR frhA OR hyhL OR hoxH OR hycE OR mbhL OR cooH OR EhaO OR echE OR ehfE OR hytA OR hmdl OR hydA3 OR hyd4h	NA	NA	e-	H2	NA	NA	6	
-2.0	Hydrogen oxidation	FUNCTION	hydM OR hydA2 OR hydA3 OR hytA OR hydS1 OR hydS2 OR hydS3 OR hmdl OR hupL OR hynB OR hybC OR hyaB OR hyiB OR hyoL OR hcaL OR hhyL OR hyd1i OR hyd1j OR hyd1k OR hucS OR hupV OR hurL OR huaL OR hyd2e OR frhA OR hyhL OR mvhA OR hoxH OR hycE OR echE OR ehb 	NA	NA	H2	e-	NA	NA	NA	
-3.0	Hydrogenotrophic methanogen.	FUNCTION	(hmdl OR hyd1k OR frhA OR mvhA OR hyd4h OR ehb) AND (mcrA OR mcrB OR mcrG)	NA	NA	H2	CH4	NA	NA	NA	
+1.0	Hydrogen generation	FUNCTION	hydA1 OR hydM OR hybC OR hyiB OR frhA OR hyhL OR hoxH OR hycE OR mbhL OR cooH OR EhaO OR echE OR ehfE OR hytA OR hmdl OR hydA3 OR hyd4h	NA	NA	e-	H2	NA	NA	NA	
+2.0	Hydrogen oxidation	FUNCTION	hydM OR hydA2 OR hydA3 OR hytA OR hmdl OR hupL OR hynB OR hybC OR hyaB OR hyiB OR hyoL OR hcaL OR hhyL OR hyd1i OR hyd1j OR hyd1k OR hucS OR hurL OR huaL OR hyd2e OR frhA OR hyhL OR mvhA OR hoxH OR hycE OR echE OR ehb 	NA	NA	H2	e-	NA	NA	NA	
+3.0	Hydrogenotrophic methanogen.	FUNCTION	(hmdl OR frhA OR mvhA OR hyd4h OR ehb) AND mer AND (mcrA OR mcrB OR mcrG)	NA	NA	H2	CH4	NA	NA	NA	
 4.0	Methanogenesis	FUNCTION	mcrA OR mcrB OR mcrG	NA	NA	Methyl-CoM. CH4	CH4. Methyl-CoM	NA	NA	NA	
 5.0	Hydrogenotrophic acetogen.	FUNCTION	(hydA3 OR echE OR hyd4h OR ehb) AND (fhs OR fthfs)	NA	NA	e-	Acetate	NA	NA	NA	
 6.0	Acetate oxidation	FUNCTION	acs	NA	NA	Acetate	CO2. Methyl-CoM	NA	NA	NA	
-7.0	Acetoclastic methanogenesis	FUNCTION	(acs OR cdhA OR ack OR pta) AND (mcrA OR mcrB OR mcrG)	NA	NA	Acetate	CH4	NA	NA	NA	
+7.0	Acetoclastic methanogenesis	FUNCTION	(ack AND pta) AND (mcrA OR mcrB OR mcrG)	NA	NA	Acetate	CH4	NA	NA	NA	
 8.0	Acetogen. WL	FUNCTION	fhs OR fthfs	NA	NA	CO2	Acetate	NA	NA	NA	
 9.0	Carbon fixation	FUNCTION	cdhD OR cdhE OR cooS OR Form_I OR Form_II OR Hbs_1 OR 4hbl OR mcr OR pcs OR aclA OR aclB OR Hbs_2	NA	NA	CO2	Organic C	NA	NA	NA	
-10.0	Methylotrophic methanogen.	FUNCTION	mtaA OR mtbA OR cdhA AND (mcrA OR mcrB or mcrG)	NA	NA	Organic C	CO2. Methyl-CoM	NA	NA	NA	
+10.0	Methylotrophic methanogen.	FUNCTION	(mtaA OR mtbA OR hyd1k) AND (mcrA OR mcrB OR mcrG)	NA	NA	Organic C	CO2. Methyl-CoM	NA	NA	NA	hyd1k was added since it is usually present in hydrogen-consuming methylotrophs. it was removed from the hydrogenotrophs, even though it consumes hydrogen. 
 11.0	Organic carbon oxidation	FUNCTION	adh OR akr1a1 OR ldh OR mdh OR exaA OR frmA OR fdoG OR fdoH OR fdhB OR ALDH3 OR aldB OR fdhA_non_GSH OR mycoS_dep_FDH OR porA OR ACADM OR ACADL OR mcrA OR pta OR pflD OR aspB OR aspC OR hisC OR rocD OR argD OR puuE OR ilvE OR AGXT OR serC OR tyrB OR astC OR ack OR fghA OR amyA OR SGA1 OR chiC OR bglu OR lacZ OR manB OR uidA OR xynB OR pulA OR nagZ OR abfA OR treX OR gmuG OR bsdC OR racD OR xylS OR acs OR acdA OR pabC OR ubiX OR pabBC OR catA OR coxS OR coxM OR coxL OR lat OR eutG OR adhE OR bcrC OR bcrB OR bcrA OR bcrD OR treS OR bglX OR bglB OR LYSN OR lysJ OR ramA OR fadE OR DCAA OR gabT OR aamy OR aidB OR ACADSB OR fae OR CH4_NH3mon_ox_B OR CH4_NH3mon_ox_C OR yhdR OR acdH OR ebgA OR bgaB OR HEXA_B OR chiA OR ABAT OR yiay OR mxaF OR davT OR HEX OR mauA OR mauB OR xynD OR ACAD9 OR mmoB OR mmoD OR mmgC OR MAN OR cbhA OR adhA OR fdwB OR fdhA OR CH4_NH3mon_ox_A	NA	NA	Organic C	CO2	NA	NA	NA	
-12.0	CO2-dep. Methanogen.	FUNCTION	mer AND (mcrA OR mcrB or mcrG)	NA	NA	CO2	CH4	NA	NA	NA	
-13.0	(Aerobic) methanotrophy	FUNCTION	pmoA OR pmoB OR pmoC OR mmoB OR mmoD	NA	NA	CH4	CO2	NA	NA	NA	was previously removed by me because it is aerobic. but now added again. Not yet added to the « pretty » amaerobic metabolism graph
-14.0	Fermentation	FUNCTION	adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA OR pct	NA	NA	Organic C. Ethanol. Acetate	Ethanol. Acetate	NA	NA	NA	
-15.0	Ethanol oxidation	FUNCTION	adh	NA	NA	Ethanol	CO2	NA	NA	NA	
-16.0	Fermentative H2 generation	FUNCTION	(hydA1 OR hycE) AND (adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA)	NA	NA	Ethanol. Organic C	e-	NA	NA	NA	
-17.0	Organohal. Respira. 1	FUNCTION	hupL AND rdhA	NA	NA	e-	Halide Ions	NA	NA	NA	
-18.0	Organohal. Respira. 2	FUNCTION	rdhA	NA	NA	Organic Halides	Halide Ions	NA	NA	NA	
-19.0	Selenate reduction	FUNCTION	YgfK OR xdhD OR ygfM	NA	NA	SeO4 2-	Se	NA	NA	NA	
-20.0	Sulfur respiration	FUNCTION	(hyiB OR hcaL) AND (asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD OR sor OR sreA OR sreB OR sreC)	NA	NA	e-	H2S	NA	NA	NA	
-21.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
-22.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
-23.0	Polysulfide reduction	FUNCTION	psrB OR psrC OR hydG OR hydB	NA	NA	H2S	S	NA	NA	NA	
-24.0	Sulfur reduction	FUNCTION	sor OR sreA OR sreB OR sreC	NA	NA	S	H2S	NA	NA	NA	
-25.0	Sulfide oxidation	FUNCTION	sqr OR fccB	NA	NA	S	SO3 2-	NA	NA	NA	
-26.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S. SO4 2-	NA	NA	NA	
-27.0	Thiosulfate disproportionation 2	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND NOT soxD AND NOT soxC	NA	NA	S2O3 2-	SO4 2-	NA	NA	NA	
-28.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S. SO3 2-	NA	NA	NA	
-29.0	Thiosulfate disproportionation 1	FUNCTION	phsA	NA	NA	SO3 2-	SO4 2-	NA	NA	NA	
-30.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
-31.0	Sulfate reduction (ASR or DSR)	FUNCTION	aprA OR sat	NA	NA	SO4 2-	SO3 2-	NA	NA	NA	
-32.0	Arsenate reduction	FUNCTION	arrA	NA	NA	As 5+	As 3+	NA	NA	NA	
-33.0	Arsenite oxidation	FUNCTION	aioA OR arxA	NA	NA	As 3+	As 5+	NA	NA	NA	
-34.0	e-input Metal respiration	FUNCTION	(hupL OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+. Fe 2+	NA	NA	NA	
-35.0	Metal Respiration	FUNCTION	CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ	NA	NA	MnO2. Fe 3+	Mn 2+. Fe 2+	NA	NA	NA	
-36.0	Mn oxidation	FUNCTION	MnxG	NA	NA	Mn 2+	MnO2	NA	NA	NA	
-37.0	Iron oxidation	FUNCTION	Cyc1 OR Cyc2_rc1 OR Cyc2_rc2 OR Cyc2_rc3 OR FoxA OR FoxB OR FoxC OR FoxE OR FoxY OR FoxZ OR MtoA OR soxE	NA	NA	Fe 2+	Fe 3+	NA	NA	NA	
-38.0	Nitrate respiration or denitrification	FUNCTION	(hynB OR hybC) AND (nirB OR nirD OR nas OR nirK OR nirS OR octR OR norC OR norB OR nosD OR nosZ)	NA	NA	e-	NO2-. NO. N2O. N2	NA	NA	NA	
-39.0	Assimilatory nitrate red.	FUNCTION	nirB OR nirD OR nas	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
-40.0	Dissimilatory nitrate red.	FUNCTION	narG OR narH OR napA OR napB OR nrfD	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
-41.0	Ammonia oxidation	FUNCTION	amoA OR amoB OR amoC	NA	NA	NH3	NO2-	NA	NA	NA	
-42.0	Nitrite oxidation	FUNCTION	nxrA OR nxrB	NA	NA	NO2-	NO3-	NA	NA	NA	
-43.0	Nitrite reduction	FUNCTION	nirK OR nirS OR octR	NA	NA	NO2-	NO	NA	NA	NA	
-44.0	Nitric oxide dismutase	FUNCTION	nod	NA	NA	NO	N2	NA	NA	NA	
-45.0	Nitric oxide reduction	FUNCTION	norC OR norB	NA	NA	NO	N2O	NA	NA	NA	
-46.0	Nitrous oxide reduction	FUNCTION	nosD OR nosZ	NA	NA	N2O	N2	NA	NA	NA	
-47.0	Anammox	FUNCTION	hzsA OR hzoA	NA	NA	NO2-. NH3	N2	NA	NA	NA	
-48.0	Nitrite ammonification	FUNCTION	nirB OR nirD OR nrfA OR nrfD OR nrfH	NA	NA	NO3-	NH3	NA	NA	NA	
-49.0	Nitrogen fixation	FUNCTION	gcd OR ppk1 OR ppa OR ppx OR pqqC	NA	NA	N2	NH3. H2	NA	NA	NA	
-50.0	P dissolution	FUNCTION	anfG OR nifD OR nifH OR nifK OR vnfD OR vnfK OR vnfG OR anfD OR anfK	NA	NA	P insol	P inorg	NA	NA	NA	
-51.0	Immobilisation (P-rich)	FUNCTION	PitA	NA	NA	P inorg	P org	NA	NA	NA	
-52.0	Immobilisation (P-poor)	FUNCTION	PstS	NA	NA	P inorg	P org	NA	NA	NA	
-53.0	P mineralisation	FUNCTION	phoA OR olpA OR 3-phytase OR appA OR phoD OR PhnD OR aphA OR phnL OR phnK OR PhnM OR PhnJ OR phnI OR phnH OR phnG OR phoX OR phoN OR PhnX OR PhnW OR PhnA OR PhnZ	NA	NA	P org	P inorg	NA	NA	NA	
+12.0	(Aerobic) methanotrophy	FUNCTION	pmoA OR pmoB OR pmoC OR mmoB OR mmoD	NA	NA	CH4	CO2	NA	NA	NA	was previously removed by me because it is aerobic. but now added again. 
+13.0	Fermentation	FUNCTION	adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA OR pct	NA	NA	Organic C. Ethanol. Acetate	Ethanol. Acetate	NA	NA	NA	
+14.0	Ethanol oxidation	FUNCTION	adh	NA	NA	Ethanol	CO2	NA	NA	NA	
+15.0	Fermentative H2 generation	FUNCTION	(hydA1 OR hycE) AND (adh OR ldh OR porA OR pta OR pflD OR ack OR acs OR acdA)	NA	NA	Ethanol. Organic C	e-	NA	NA	NA	
+16.0	Organohal. Respira. 1	FUNCTION	hupL AND rdhA	NA	NA	e-	Halide Ions	NA	NA	NA	
+17.0	Organohal. Respira. 2	FUNCTION	rdhA	NA	NA	Organic Halides	Halide Ions	NA	NA	NA	
+18.0	Selenate reduction	FUNCTION	YgfK OR xdhD OR ygfM	NA	NA	SeO4 2-	Se	NA	NA	NA	
+19.0	Sulfur respiration	FUNCTION	(hyiB OR hcaL) AND (asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD OR sor OR sreA OR sreB OR sreC)	NA	NA	e-	H2S	NA	NA	NA	
+20.0	Sulfate respiration	FUNCTION	(hupL OR hynB OR hybC OR hyd1j) AND (aprA OR sat)	NA	NA	e-	SO3 2-. H2S	NA	NA	NA	
+21.0	Sulfite reduction	FUNCTION	asrC OR dsrA OR dsrB OR asrA OR asrB OR dsrD	NA	NA	S	H2S	NA	NA	NA	
+22.0	Polysulfide reduction	FUNCTION	psrB OR psrC OR hydG OR hydB	NA	NA	H2S	S	NA	NA	NA	
+23.0	Sulfur reduction	FUNCTION	sor OR sreA OR sreB OR sreC	NA	NA	S	H2S	NA	NA	NA	
+24.0	Sulfide oxidation	FUNCTION	sqr OR fccB	NA	NA	S	SO3 2-	NA	NA	NA	
+25.0	Sulfur oxidation	FUNCTION	sor OR sdo	NA	NA	S2O3 2-	S. SO4 2-	NA	NA	NA	
+26.0	Thiosulfate disproportionation 2	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND NOT soxD AND NOT soxC	NA	NA	S2O3 2-	SO4 2-	NA	NA	NA	
+27.0	Thiosulfate oxidation	FUNCTION	(soxA OR soxX OR soxY OR soxZ) AND (soxD OR soxC)	NA	NA	S2O3 2-	H2S. SO3 2-	NA	NA	NA	
+28.0	Thiosulfate disproportionation 1	FUNCTION	phsA	NA	NA	SO3 2-	SO4 2-	NA	NA	NA	
+29.0	Sulfite oxidation	FUNCTION	aprA OR sat	NA	NA	SO32-	H2S	NA	NA	NA	
+30.0	Sulfate reduction (ASR or DSR)	FUNCTION	aprA OR sat	NA	NA	SO4 2-	SO3 2-	NA	NA	NA	
+31.0	Arsenate reduction	FUNCTION	arrA	NA	NA	As 5+	As 3+	NA	NA	NA	
+32.0	Arsenite oxidation	FUNCTION	aioA OR arxA	NA	NA	As 3+	As 5+	NA	NA	NA	
+33.0	e-input Metal respiration	FUNCTION	(hupL OR hynB) AND (CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ)	NA	NA	e-	Mn 2+. Fe 2+	NA	NA	NA	
+34.0	Metal Respiration	FUNCTION	CymA OR DFE_0450 OR DFE_0464 OR MtrA OR MtrB OR MtrC OR Ndh2 OR OmcF OR OmcS OR OmcZ	NA	NA	MnO2. Fe 3+	Mn 2+. Fe 2+	NA	NA	NA	
+35.0	Mn oxidation	FUNCTION	MnxG	NA	NA	Mn 2+	MnO2	NA	NA	NA	
+36.0	Iron oxidation	FUNCTION	Cyc1 OR Cyc2_rc1 OR Cyc2_rc2 OR Cyc2_rc3 OR FoxA OR FoxB OR FoxC OR FoxE OR FoxY OR FoxZ OR MtoA OR soxE	NA	NA	Fe 2+	Fe 3+	NA	NA	NA	
+37.0	Nitrate respiration or denitrification	FUNCTION	(hynB OR hybC) AND (nirB OR nirD OR nas OR nirK OR nirS OR octR OR norC OR norB OR nosD OR nosZ)	NA	NA	e-	NO2-. NO. N2O. N2	NA	NA	NA	
+38.0	Assimilatory nitrate red.	FUNCTION	nirB OR nirD OR nas	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
+39.0	Dissimilatory nitrate red.	FUNCTION	narG OR narH OR napA OR napB OR nrfD	NA	NA	NO3-. NO2-	NO2-. NH3	NA	NA	NA	
+40.0	Ammonia oxidation	FUNCTION	amoA OR amoB OR amoC	NA	NA	NH3	NO2-	NA	NA	NA	
+41.0	Nitrite oxidation	FUNCTION	nxrA OR nxrB	NA	NA	NO2-	NO3-	NA	NA	NA	
+42.0	Nitrite reduction	FUNCTION	TIGR00314.hmm	NA	NA	NO2-	NO	NA	NA	NA	
+43.0	Nitric oxide dismutase	FUNCTION	nod	NA	NA	NO	N2	NA	NA	NA	
+44.0	Nitric oxide reduction	FUNCTION	norC OR norB	NA	NA	NO	N2O	NA	NA	NA	
+45.0	Nitrous oxide reduction	FUNCTION	nosD OR nosZ	NA	NA	N2O	N2	NA	NA	NA	
+46.0	Anammox	FUNCTION	hzsA OR hzoA	NA	NA	NO2-. NH3	N2	NA	NA	NA	
+47.0	Nitrite ammonification	FUNCTION	nirB OR nirD OR nrfA OR nrfD OR nrfH	NA	NA	NO3-	NH3	NA	NA	NA	
+48.0	Nitrogen fixation	FUNCTION	gcd OR ppk1 OR ppa OR ppx OR pqqC	NA	NA	N2	NH3. H2	NA	NA	NA	
+49.0	P dissolution	FUNCTION	anfG OR nifD OR nifH OR nifK OR vnfD OR vnfK OR vnfG OR anfD OR anfK	NA	NA	P insol	P inorg	NA	NA	NA	
+50.0	Immobilisation (P-rich)	FUNCTION	PitA	NA	NA	P inorg	P org	NA	NA	NA	
+51.0	Immobilisation (P-poor)	FUNCTION	PstS	NA	NA	P inorg	P org	NA	NA	NA	
+52.0	P mineralisation	FUNCTION	phoA OR olpA OR 3-phytase OR appA OR phoD OR PhnD OR aphA OR phnL OR phnK OR PhnM OR PhnJ OR phnI OR phnH OR phnG OR phoX OR phoN OR PhnX OR PhnW OR PhnA OR PhnZ	NA	NA	P org	P inorg	NA	NA	NA	
+53.0	Hydrogen sensing	FUNCTION	hydS1 OR hydS2 OR hydS3 OR hupV	NA	NA	H2	e-	NA	NA	NA	added to estimate h2 sensing potential (and to keep these hydrogenases and their thresholds in this doc). h2 sensing as described in hydDB paper. 
 1.1	hydA1	HMM	hydrogenase_FeFeGroupA1.hmm	188|domain	hydrogenase [FeFe] A1	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	K00532	
 1.2	hydM	HMM	hydrogenase_FeFeGroupB.hmm	227|domain	hydrogenase [FeFe] B	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 1.3	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
@@ -73,39 +73,35 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 2.2	hydA2	HMM	hydrogenase_FeFeGroupA2.hmm	820|domain	hydrogenase [FeFe] A2	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	A2 plays mainly a « sensing » role. so it does oxidise some H2 but does not really consume in bulk. 
 2.3	hydA3	HMM	hydrogenase_FeFeGroupA3.hmm	321|domain	hydrogenase [FeFe] A3	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 2.4	hytA	HMM	hydrogenase_FeFeGroupA4.hmm	605|domain	hydrogenase [FeFe] A4	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.5	hydS1	HMM	hydrogenase_FeFeGroupC1.hmm	215|domain	hydrogenase [FeFe] C1	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
-2.6	hydS2	HMM	hydrogenase_FeFeGroupC2.hmm	268|domain	hydrogenase [FeFe] C2	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
-2.7	hydS3	HMM	hydrogenase_FeFeGroupC3.hmm	326|domain	hydrogenase [FeFe] C3	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
-2.8	hmdl	HMM	hydrogenase_FeGroupFe.hmm	583|domain	hydrogenase [Fe] Fe	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.9	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.10	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.11	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.12	hyaB	HMM	hydrogenase_NiFeGroup1d.hmm	902|domain	hydrogenase [NiFe] 1d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.13	hyiB	HMM	hydrogenase_NiFeGroup1e.hmm	969|domain	hydrogenase [NiFe] 1e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.14	hyoL	HMM	hydrogenase_NiFeGroup1f.hmm	929|domain	hydrogenase [NiFe] 1f	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.15	hcaL	HMM	hydrogenase_NiFeGroup1g.hmm	551|domain	hydrogenase [NiFe] 1g	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.16	hhyL	HMM	hydrogenase_NiFeGroup1h.hmm	853|domain	hydrogenase [NiFe] 1h	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.17	hyd1i	HMM	hydrogenase_NiFeGroup1i.hmm	559|domain	hydrogenase [NiFe] 1i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.18	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.19	hyd1k	HMM	hydrogenase_NiFeGroup1k.hmm	211|domain	hydrogenase [NiFe] 1k	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.20	hucS	HMM	hydrogenase_NiFeGroup2a.hmm	486|domain	hydrogenase [NiFe] 2a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.21	hupV	HMM	hydrogenase_NiFeGroup2b.hmm	492|domain	hydrogenase [NiFe] 2b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.22	hurL	HMM	hydrogenase_NiFeGroup2c.hmm	550|domain	hydrogenase [NiFe] 2c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.23	huaL	HMM	hydrogenase_NiFeGroup2d.hmm	322|domain	hydrogenase [NiFe] 2d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.24	hyd2e	HMM	hydrogenase_NiFeGroup2e.hmm	466|domain	hydrogenase [NiFe] 2e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.25	frhA	HMM	hydrogenase_NiFeGroup3a.hmm	246|domain	hydrogenase [NiFe] 3a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.26	hyhL	HMM	hydrogenase_NiFeGroup3b.hmm	332|domain	hydrogenase [NiFe] 3b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.27	mvhA	HMM	hydrogenase_NiFeGroup3c.hmm	609|domain	hydrogenase [NiFe] 3c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.28	hoxH	HMM	hydrogenase_NiFeGroup3d.hmm	595|domain	hydrogenase [NiFe] 3d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.29	hycE	HMM	hydrogenase_NiFeGroup4a.hmm	738|domain	hydrogenase [NiFe] 4a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	recent evidence suggests not only h2 evolution. but also h2 oxidation function for group 4a hydrogenases. https://doi.org/10.1016/j.ijhydene.2020.10.070
-2.30	echE	HMM	hydrogenase_NiFeGroup4e.hmm	448|domain	hydrogenase [NiFe] 4e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-2.31	ehb	HMM	hydrogenase_NiFeGroup4i.hmm	336|domain	hydrogenase [NiFe] 4i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.5	hmdl	HMM	hydrogenase_FeGroupFe.hmm	583|domain	hydrogenase [Fe] Fe	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.6	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.7	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.8	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.9	hyaB	HMM	hydrogenase_NiFeGroup1d.hmm	902|domain	hydrogenase [NiFe] 1d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.10	hyiB	HMM	hydrogenase_NiFeGroup1e.hmm	969|domain	hydrogenase [NiFe] 1e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.11	hyoL	HMM	hydrogenase_NiFeGroup1f.hmm	929|domain	hydrogenase [NiFe] 1f	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.12	hcaL	HMM	hydrogenase_NiFeGroup1g.hmm	551|domain	hydrogenase [NiFe] 1g	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.13	hhyL	HMM	hydrogenase_NiFeGroup1h.hmm	853|domain	hydrogenase [NiFe] 1h	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.14	hyd1i	HMM	hydrogenase_NiFeGroup1i.hmm	559|domain	hydrogenase [NiFe] 1i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.15	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.16	hyd1k	HMM	hydrogenase_NiFeGroup1k.hmm	211|domain	hydrogenase [NiFe] 1k	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.17	hucS	HMM	hydrogenase_NiFeGroup2a.hmm	486|domain	hydrogenase [NiFe] 2a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.18	hurL	HMM	hydrogenase_NiFeGroup2c.hmm	550|domain	hydrogenase [NiFe] 2c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.19	huaL	HMM	hydrogenase_NiFeGroup2d.hmm	322|domain	hydrogenase [NiFe] 2d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.20	hyd2e	HMM	hydrogenase_NiFeGroup2e.hmm	466|domain	hydrogenase [NiFe] 2e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.21	frhA	HMM	hydrogenase_NiFeGroup3a.hmm	246|domain	hydrogenase [NiFe] 3a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.22	hyhL	HMM	hydrogenase_NiFeGroup3b.hmm	332|domain	hydrogenase [NiFe] 3b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.23	mvhA	HMM	hydrogenase_NiFeGroup3c.hmm	609|domain	hydrogenase [NiFe] 3c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.24	hoxH	HMM	hydrogenase_NiFeGroup3d.hmm	595|domain	hydrogenase [NiFe] 3d	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.25	hycE	HMM	hydrogenase_NiFeGroup4a.hmm	738|domain	hydrogenase [NiFe] 4a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	recent evidence suggests not only h2 evolution. but also h2 oxidation function for group 4a hydrogenases. https://doi.org/10.1016/j.ijhydene.2020.10.070
+2.26	echE	HMM	hydrogenase_NiFeGroup4e.hmm	448|domain	hydrogenase [NiFe] 4e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+2.27	ehb	HMM	hydrogenase_NiFeGroup4i.hmm	336|domain	hydrogenase [NiFe] 4i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 3.1	hmdl	HMM	hydrogenase_FeGroupFe.hmm	583|domain	hydrogenase [Fe] Fe	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-3.2	hyd1k	HMM	hydrogenase_NiFeGroup1k.hmm	211|domain	hydrogenase [NiFe] 1k	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-3.3	frhA	HMM	hydrogenase_NiFeGroup3a.hmm	246|domain	hydrogenase [NiFe] 3a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-3.4	mvhA	HMM	hydrogenase_NiFeGroup3c.hmm	609|domain	hydrogenase [NiFe] 3c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-3.5	hyd4h	HMM	hydrogenase_NiFeGroup4h.hmm	367|domain	hydrogenase [NiFe] 4h	NA	NA	doi: 10.3389/fbinf.2022.918853	https://doi.org/10.1371/journal.pone.0215029	KEGG TOO UNSPECIFIC	
-3.6	ehb	HMM	hydrogenase_NiFeGroup4i.hmm	336|domain	hydrogenase [NiFe] 4i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+3.2	frhA	HMM	hydrogenase_NiFeGroup3a.hmm	246|domain	hydrogenase [NiFe] 3a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+3.3	mvhA	HMM	hydrogenase_NiFeGroup3c.hmm	609|domain	hydrogenase [NiFe] 3c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+3.4	hyd4h	HMM	hydrogenase_NiFeGroup4h.hmm	367|domain	hydrogenase [NiFe] 4h	NA	NA	doi: 10.3389/fbinf.2022.918853	https://doi.org/10.1371/journal.pone.0215029	KEGG TOO UNSPECIFIC	
+3.5	ehb	HMM	hydrogenase_NiFeGroup4i.hmm	336|domain	hydrogenase [NiFe] 4i	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+3.6	mer	HMM	TIGR03555.1.hmm	348.7|domain	5.10-Methylenetetrahydromethanopterin reductase (Mer)	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/	https://doi.org/10.1110/ps.041289805	K00320	Specific marker for CO₂-dependent methanogenesis
 3.7	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00399	
 3.8	mcrB	HMM	TIGR03257.hmm	173.35|full	methyl-coenzyme M reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00401	
 3.9	mcrG	HMM	TIGR03259.hmm	172|full	methyl coenzyme M (methyl-CoM) reductase G	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00402	
@@ -122,11 +118,10 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 6.2	cdhA	HMM	TIGR00314.hmm	781.3|domain	Acetyl-CoA decarbonylase/synthase (ACDS)	NA	NA	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/	https://doi.org/10.1021/cr400461p	K00192	
 7.1	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
 7.2	pta	HMM	TIGR00651.hmm	205.40|full	phosphate acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00625	
-7.3	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
-7.4	cdhA	HMM	TIGR00314.hmm	781.3|domain	Acetyl-CoA decarbonylase/synthase (ACDS)	NA	NA	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/	https://doi.org/10.1021/cr400461p	K00192	
-7.5	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00399	
-7.6	mcrB	HMM	TIGR03257.hmm	173.35|full	methyl-coenzyme M reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00401	
-7.7	mcrG	HMM	TIGR03259.hmm	172|full	methyl coenzyme M (methyl-CoM) reductase G	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00402	
+7.3	cdhA	HMM	TIGR00314.hmm	781.3|domain	Acetyl-CoA decarbonylase/synthase (ACDS)	NA	NA	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/	https://doi.org/10.1021/cr400461p	K00192	
+7.4	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00399	
+7.5	mcrB	HMM	TIGR03257.hmm	173.35|full	methyl-coenzyme M reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00401	
+7.6	mcrG	HMM	TIGR03259.hmm	172|full	methyl coenzyme M (methyl-CoM) reductase G	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00402	
 8.1	fhs	HMM	K01938.hmm	900.93|domain	Formate-tetrahydrofolate ligase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01938	central in WL-pathway. often used in reverse in methanogens and for acetate dissimilation
 8.2	fthfs	HMM	fthfs_NF010030.hmm	652|domain	Formate-tetrahydrofolate ligase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01938	
 9.1	cdhD	HMM	K00194.hmm	344.50|full	acetyl-CoA decarbonylase/synthase. CODH/ACS complex subunit delta	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00194	
@@ -143,7 +138,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 9.12	Hbs_2	HMM	K18861.hmm	946.67|full	4-hydroxybutyrate---CoA ligase (ADP-forming)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K18861	
 10.1	mtaA	HMM	NF040654.hmm	400|domain	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF008154/	https://doi.org/10.3389/fmicb.2015.00694	K14080	Marker for methanol-dependent methylotrophic methanogenesis
 10.2	mtbA	HMM	NF041608.hmm	600|domain	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041608/	https://doi.org/10.3389/fmicb.2015.00694	K14082	Marker for dimethylamine-dependent methylotrophic methanogenesis
-10.3	cdhA	HMM	TIGR00314.hmm	781.3|domain	Acetyl-CoA decarbonylase/synthase (ACDS)	NA	NA	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/	https://doi.org/10.1021/cr400461p	K00192	
+10.3	hyd1k	HMM	hydrogenase_NiFeGroup1k.hmm	211|domain	hydrogenase [NiFe] 1k	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 10.4	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00399	
 10.5	mcrB	HMM	TIGR03257.hmm	173.35|full	methyl-coenzyme M reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00401	
 10.6	mcrG	HMM	TIGR03259.hmm	172|full	methyl coenzyme M (methyl-CoM) reductase G	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00402	
@@ -250,206 +245,206 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 11.101	fdwB	HMM	K22515.hmm	555.20|domain	formate dehydrogenase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22515	
 11.102	fdhA	HMM	K22516.hmm	937.40|full	formate dehydrogenase (coenzyme F420) alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22516	
 11.103	CH4_NH3mon_ox_A	HMM	TIGR03080.hmm	318.1|full	methane/ammonia monooxygenase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16157	
-12.1	mer	HMM	TIGR03555.1.hmm	348.7|domain	5.10-Methylenetetrahydromethanopterin reductase (Mer)	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/	https://doi.org/10.1110/ps.041289805	K00320	Specific marker for CO₂-dependent methanogenesis
-12.2	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00399	
-12.3	mcrB	HMM	TIGR03257.hmm	173.35|full	methyl-coenzyme M reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00401	
-12.4	mcrG	HMM	TIGR03259.hmm	172|full	methyl coenzyme M (methyl-CoM) reductase G	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00402	
-13.1	mmoD	HMM	TIGR04550.hmm	28.00|full	methane monooxygenase component D	NA	NA				
-13.2	mmoB	HMM	PF02406.hmm	10|full	methane monooxygenase regulatory protein B	NA	NA				
-13.3	pmoC	HMM	pmoC.hmm	136.27|full	Partculate methane monooxygenase C	NA	NA				
-13.4	pmoB	HMM	pmoB.hmm	156.70|full	Partculate methane monooxygenase B	NA	NA				
-13.5	pmoA	HMM	pmoA.hmm	160.90|full	Partculate methane monooxygenase A	NA	NA				
+12.1	mmoD	HMM	TIGR04550.hmm	28.00|full	methane monooxygenase component D	NA	NA				
+12.2	mmoB	HMM	PF02406.hmm	10|full	methane monooxygenase regulatory protein B	NA	NA				
+12.3	pmoC	HMM	pmoC.hmm	136.27|full	Partculate methane monooxygenase C	NA	NA				
+12.4	pmoB	HMM	pmoB.hmm	156.70|full	Partculate methane monooxygenase B	NA	NA				
+12.5	pmoA	HMM	pmoA.hmm	160.90|full	Partculate methane monooxygenase A	NA	NA				
+13.1	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00001	
+13.2	ldh	HMM	K00016.hmm	317.10|full	L-lactate dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00016	
+13.3	porA	HMM	K00169.hmm	299.20|full	pyruvate ferredoxin oxidoreductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00169	
+13.4	pta	HMM	TIGR00651.hmm	205.40|full	phosphate acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00625	
+13.5	pflD	HMM	K00656.hmm	336.47|full	formate C-acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00656	
+13.6	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
+13.7	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
+13.8	acdA	HMM	TIGR02717.hmm	463.00|full	acetyl coenzyme A synthetase (ADP forming). alpha domain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01905	
+13.9	pct	HMM	K01026.hmm	23|domain	Propionate-CoA transferase	NA	NA	Kegg-database 		K01026	(added since experimentalists added propionate to medium)
 14.1	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00001	
-14.2	ldh	HMM	K00016.hmm	317.10|full	L-lactate dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00016	
-14.3	porA	HMM	K00169.hmm	299.20|full	pyruvate ferredoxin oxidoreductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00169	
-14.4	pta	HMM	TIGR00651.hmm	205.40|full	phosphate acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00625	
-14.5	pflD	HMM	K00656.hmm	336.47|full	formate C-acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00656	
-14.6	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
-14.7	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
-14.8	acdA	HMM	TIGR02717.hmm	463.00|full	acetyl coenzyme A synthetase (ADP forming). alpha domain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01905	
-14.9	pct	HMM	K01026.hmm	23|domain	Propionate-CoA transferase	NA	NA	Kegg-database 		K01026	(added since experimentalists added propionate to medium)
-15.1	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00001	
-16.1	hydA1	HMM	hydrogenase_FeFeGroupA1.hmm	188|domain	hydrogenase [FeFe] A1	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	K00532	
-16.2	hycE	HMM	hydrogenase_NiFeGroup4a.hmm	738|domain	hydrogenase [NiFe] 4a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-16.3	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00001	
-16.4	ldh	HMM	K00016.hmm	317.10|full	L-lactate dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00016	
-16.5	porA	HMM	K00169.hmm	299.20|full	pyruvate ferredoxin oxidoreductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00169	
-16.6	pta	HMM	TIGR00651.hmm	205.40|full	phosphate acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00625	
-16.7	pflD	HMM	K00656.hmm	336.47|full	formate C-acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00656	
-16.8	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
-16.9	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
-16.10	acdA	HMM	TIGR02717.hmm	463.00|full	acetyl coenzyme A synthetase (ADP forming). alpha domain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01905	
-17.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-17.2	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
-18.1	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
-19.1	YgfK	HMM	TIGR03315.hmm	354.45|full	putative selenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12527	
-19.2	xdhD	HMM	TIGR03313.hmm	526.50|full	putative selenate reductase molybdopterin-binding subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12528	
-19.3	ygfM	HMM	TIGR03312.hmm	87.85|full	putative selenate reductase FAD-binding subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12529	
-20.1	hyiB	HMM	hydrogenase_NiFeGroup1e.hmm	969|domain	hydrogenase [NiFe] 1e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-20.2	hcaL	HMM	hydrogenase_NiFeGroup1g.hmm	551|domain	hydrogenase [NiFe] 1g	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-20.3	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
-20.4	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
-20.5	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
-20.6	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
-20.7	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
-20.8	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-20.9	sor	HMM	K16952.hmm	363.87|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
-20.10	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
-20.11	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
-20.12	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
-21.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-21.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-21.3	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-21.4	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-21.5	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
-21.6	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
-22.1	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
-22.2	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
-22.3	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
-22.4	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
-22.5	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
-22.6	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-23.1	psrB	HMM	K16293.hmm	266.90|full	polysulfide reductase chain B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16293	
-23.2	psrC	HMM	K16294.hmm	305.90|full	polysulfide reductase chain C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16294	
-23.3	hydG	HMM	K17995.hmm	451.47|full	sulfhydrogenase subunit gamma (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17995	
-23.4	hydB	HMM	K17996.hmm	398.57|full	sulfhydrogenase subunit beta (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17996	
-24.1	sor	HMM	K16952.hmm	363.87|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
-24.2	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
-24.3	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
-24.4	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
-25.1	sqr	HMM	sulfide_quinone_oxidoreductase_sqr.hmm	300|full	sulfide:quinone oxidoreductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17218	
-25.2	fccB	HMM	PF09242.hmm	266|full	flavocytochrome c sulphide dehydrogenase. flavin-binding	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17229	
-26.1	sor	HMM	PF07682.hmm	300|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
-26.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	120|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
+15.1	hydA1	HMM	hydrogenase_FeFeGroupA1.hmm	188|domain	hydrogenase [FeFe] A1	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	K00532	
+15.2	hycE	HMM	hydrogenase_NiFeGroup4a.hmm	738|domain	hydrogenase [NiFe] 4a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+15.3	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00001	
+15.4	ldh	HMM	K00016.hmm	317.10|full	L-lactate dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00016	
+15.5	porA	HMM	K00169.hmm	299.20|full	pyruvate ferredoxin oxidoreductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00169	
+15.6	pta	HMM	TIGR00651.hmm	205.40|full	phosphate acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00625	
+15.7	pflD	HMM	K00656.hmm	336.47|full	formate C-acetyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00656	
+15.8	ack	HMM	TIGR00016.hmm	146.10|full	acetate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00925	
+15.9	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01895	
+15.1	acdA	HMM	TIGR02717.hmm	463.00|full	acetyl coenzyme A synthetase (ADP forming). alpha domain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01905	
+16.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+16.2	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
+17.1	rdhA	HMM	PF13486.hmm	24.3|domain	reductive dehalogenase subunit	NA	NA	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/	doi: 10.1186/s40168-025-02147-1	K21647	
+18.1	YgfK	HMM	TIGR03315.hmm	354.45|full	putative selenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12527	
+18.2	xdhD	HMM	TIGR03313.hmm	526.50|full	putative selenate reductase molybdopterin-binding subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12528	
+18.3	ygfM	HMM	TIGR03312.hmm	87.85|full	putative selenate reductase FAD-binding subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K12529	
+19.1	hyiB	HMM	hydrogenase_NiFeGroup1e.hmm	969|domain	hydrogenase [NiFe] 1e	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+19.2	hcaL	HMM	hydrogenase_NiFeGroup1g.hmm	551|domain	hydrogenase [NiFe] 1g	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+19.3	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
+19.4	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
+19.5	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
+19.6	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
+19.7	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
+19.8	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+19.9	sor	HMM	K16952.hmm	363.87|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
+19.1	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
+19.11	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
+19.12	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
+20.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+20.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+20.3	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+20.4	hyd1j	HMM	hydrogenase_NiFeGroup1j.hmm	321|domain	hydrogenase [NiFe] 1j	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+20.5	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
+20.6	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
+21.1	asrC	HMM	asrC.hmm	324.10|full	anaerobic sulfite reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00385	
+21.2	dsrA	HMM	dsrA.hmm	200.00|full	dissimilatory sulfite reductase alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11180	
+21.3	dsrB	HMM	dsrB.hmm	204.00|full	dissimilatory sulfite reductase beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K11181	
+21.4	asrA	HMM	asrA.hmm	323.15|full	anaerobic sulfite reductase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16950	
+21.5	asrB	HMM	asrB.hmm	288.60|full	anaerobic sulfite reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16951	
+21.6	dsrD	HMM	dsrD.hmm	32.80|full	dissimilatory sulfite reductase delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+22.1	psrB	HMM	K16293.hmm	266.90|full	polysulfide reductase chain B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16293	
+22.2	psrC	HMM	K16294.hmm	305.90|full	polysulfide reductase chain C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16294	
+22.3	hydG	HMM	K17995.hmm	451.47|full	sulfhydrogenase subunit gamma (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17995	
+22.4	hydB	HMM	K17996.hmm	398.57|full	sulfhydrogenase subunit beta (sulfur reductase)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17996	
+23.1	sor	HMM	K16952.hmm	363.87|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
+23.2	sreA	HMM	K17219.hmm	1889.97|full	sulfur reductase molybdopterin subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17219	
+23.3	sreB	HMM	K17220.hmm	474.53|full	sulfur reductase FeS subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17220	
+23.4	sreC	HMM	K17221.hmm	288.03|full	sulfur reductase membrane anchor	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17221	
+24.1	sqr	HMM	sulfide_quinone_oxidoreductase_sqr.hmm	300|full	sulfide:quinone oxidoreductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17218	
+24.2	fccB	HMM	PF09242.hmm	266|full	flavocytochrome c sulphide dehydrogenase. flavin-binding	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17229	
+25.1	sor	HMM	PF07682.hmm	300|full	sulfur oxygenase/reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16952	
+25.2	sdo	HMM	sulfur_dioxygenase_sdo.hmm	120|full	sulfur dioxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17725	
+26.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
+26.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
+26.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
+26.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
+26.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
+26.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
 27.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
 27.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
 27.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
 27.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
 27.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
 27.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
-28.1	soxA	HMM	soxA.hmm	110.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17222	
-28.2	soxX	HMM	soxX.hmm	61.00|full	L-cysteine S-thiosulfotransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17223	
-28.3	soxY	HMM	soxY.hmm	125.00|full	sulfur-oxidizing protein SoxY	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17226	
-28.4	soxZ	HMM	soxZ.hmm	76.00|full	sulfur-oxidizing protein SoxZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17227	
-28.5	soxD	HMM	soxD.hmm	90.00|full	S-disulfanyl-L-cysteine oxidoreductase SoxD	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22622	
-28.6	soxC	HMM	soxC.hmm	320.00|full	sulfane dehydrogenase subunit SoxC	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K17225	
-29.1	phsA	HMM	thiosulfate_reductase_phsA.hmm	323|full	thiosulfate reductase / polysulfide reductase chain A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08352	
+28.1	phsA	HMM	thiosulfate_reductase_phsA.hmm	323|full	thiosulfate reductase / polysulfide reductase chain A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08352	
+29.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
+29.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
 30.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
 30.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
-31.1	aprA	HMM	aprA.hmm	641.75|full	adenylylsulfate reductase. subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00394	
-31.2	sat	HMM	TIGR00339.hmm	181.80|full	sulfate adenylyltransferase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00958	
-32.1	arrA	HMM	arrA.hmm	175|full	dissimilatory arsenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28466	
-33.1	aioA	HMM	aioA.hmm	800|full	arsenite oxidase large subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356	
-33.2	arxA	HMM	arxA.hmm	600|full	arsenite oxidase (molybdopterin subunit)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356. K08355	
-34.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-34.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-34.3	CymA	HMM	CymA.hmm	237|full	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1042/BJ20120197	(napC) K02569 (cymA absent)	CymA transfers electrons from menaquinol to various dedicated systems for the reduction of terminal electron acceptors including fumarate and insoluble minerals of Fe(III). The Kegg ortholog is for the NapC/NirT family. including cymA. but not only cymA specifically. The publication https://www.doi.org/10.1099/mic.0.000285 shows that NapC and cycA do NOT have the same function. 
-34.4	DFE_0450	HMM	DFE_0450.hmm	30|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	kegg identifier (not ortholog): GEO60473_04720. OmcS also functions in direct inter-species electron transfer (https://doi.org/10.1038/s41396-018-0193-y)
-34.5	DFE_0464	HMM	DFE_0464.hmm	25|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-34.6	MtrA	HMM	MtrA.hmm	140|full	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
-34.7	MtrB	HMM	MtrB_TIGR03509.hmm	240.05|full	Tetrahydromethanopterin S-methyltransferase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28381	
-34.8	MtrC	HMM	MtrC_TIGR03507.hmm	209.3|full	Tetrahydromethanopterin S-methyltransferase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K28382	
-34.9	Ndh2	HMM	Ndh2.hmm	40|full	Type II NADH dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05573	
-34.10	OmcF	HMM	OmcF.hmm	83.7|full	Outer-membrane multiheme c-type cytochrome OmcF	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08906	
-34.11	OmcS	HMM	OmcS.hmm	78.2|full	Outer-membrane multiheme c-type cytochrome OmcS	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-34.12	OmcZ	HMM	OmcZ.hmm	76.9|full	Extracellular multiheme c-type cytochrome OmcZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-35.1	CymA	HMM	CymA.hmm	237|full	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1042/BJ20120197	(napC) K02569 (cymA absent)	CymA transfers electrons from menaquinol to various dedicated systems for the reduction of terminal electron acceptors including fumarate and insoluble minerals of Fe(III). The Kegg ortholog is for the NapC/NirT family. including cymA. but not only cymA specifically. The publication https://www.doi.org/10.1099/mic.0.000285 shows that NapC and cycA do NOT have the same function. 
-35.2	DFE_0450	HMM	DFE_0450.hmm	30|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	kegg identifier (not ortholog): GEO60473_04720. OmcS also functions in direct inter-species electron transfer (https://doi.org/10.1038/s41396-018-0193-y)
-35.3	DFE_0464	HMM	DFE_0464.hmm	25|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-35.4	MtrA	HMM	MtrA.hmm	140|full	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
-35.5	MtrB	HMM	MtrB_TIGR03509.hmm	240.05|full	Tetrahydromethanopterin S-methyltransferase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28381	
-35.6	MtrC	HMM	MtrC_TIGR03507.hmm	209.3|full	Tetrahydromethanopterin S-methyltransferase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K28382	
-35.7	Ndh2	HMM	Ndh2.hmm	40|full	Type II NADH dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05573	
-35.8	OmcF	HMM	OmcF.hmm	83.7|full	Outer-membrane multiheme c-type cytochrome OmcF	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08906	
-35.9	OmcS	HMM	OmcS.hmm	78.2|full	Outer-membrane multiheme c-type cytochrome OmcS	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-35.10	OmcZ	HMM	OmcZ.hmm	76.9|full	Extracellular multiheme c-type cytochrome OmcZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-36.1	MnxG	HMM	NF041487.hmm	3100|domain	Multicopper oxidase. manganese(II)-oxidizing protein MnxG	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041487/	https://doi.org/10.1042/BST20120229	K22349	mn oxidation often needs oxygen. but recent findings suggest that it is also possible in anaerobic environments. 
-37.1	Cyc1	HMM	Cyc1.hmm	98|full	"cytochrome c4 (c552) of Thiobacillus
+31.1	arrA	HMM	arrA.hmm	175|full	dissimilatory arsenate reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28466	
+32.1	aioA	HMM	aioA.hmm	800|full	arsenite oxidase large subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356	
+32.2	arxA	HMM	arxA.hmm	600|full	arsenite oxidase (molybdopterin subunit)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08356. K08355	
+33.1	hupL	HMM	hydrogenase_NiFeGroup1a.hmm	574|domain	hydrogenase [NiFe] 1a	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+33.2	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+33.3	CymA	HMM	CymA.hmm	237|full	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1042/BJ20120197	(napC) K02569 (cymA absent)	CymA transfers electrons from menaquinol to various dedicated systems for the reduction of terminal electron acceptors including fumarate and insoluble minerals of Fe(III). The Kegg ortholog is for the NapC/NirT family. including cymA. but not only cymA specifically. The publication https://www.doi.org/10.1099/mic.0.000285 shows that NapC and cycA do NOT have the same function. 
+33.4	DFE_0450	HMM	DFE_0450.hmm	30|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	kegg identifier (not ortholog): GEO60473_04720. OmcS also functions in direct inter-species electron transfer (https://doi.org/10.1038/s41396-018-0193-y)
+33.5	DFE_0464	HMM	DFE_0464.hmm	25|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+33.6	MtrA	HMM	MtrA.hmm	140|full	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
+33.7	MtrB	HMM	MtrB_TIGR03509.hmm	240.05|full	Tetrahydromethanopterin S-methyltransferase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28381	
+33.8	MtrC	HMM	MtrC_TIGR03507.hmm	209.3|full	Tetrahydromethanopterin S-methyltransferase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K28382	
+33.9	Ndh2	HMM	Ndh2.hmm	40|full	Type II NADH dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05573	
+33.1	OmcF	HMM	OmcF.hmm	83.7|full	Outer-membrane multiheme c-type cytochrome OmcF	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08906	
+33.11	OmcS	HMM	OmcS.hmm	78.2|full	Outer-membrane multiheme c-type cytochrome OmcS	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+33.12	OmcZ	HMM	OmcZ.hmm	76.9|full	Extracellular multiheme c-type cytochrome OmcZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+34.1	CymA	HMM	CymA.hmm	237|full	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1042/BJ20120197	(napC) K02569 (cymA absent)	CymA transfers electrons from menaquinol to various dedicated systems for the reduction of terminal electron acceptors including fumarate and insoluble minerals of Fe(III). The Kegg ortholog is for the NapC/NirT family. including cymA. but not only cymA specifically. The publication https://www.doi.org/10.1099/mic.0.000285 shows that NapC and cycA do NOT have the same function. 
+34.2	DFE_0450	HMM	DFE_0450.hmm	30|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	kegg identifier (not ortholog): GEO60473_04720. OmcS also functions in direct inter-species electron transfer (https://doi.org/10.1038/s41396-018-0193-y)
+34.3	DFE_0464	HMM	DFE_0464.hmm	25|full	cytochrome omcS-like	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+34.4	MtrA	HMM	MtrA.hmm	140|full	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
+34.5	MtrB	HMM	MtrB_TIGR03509.hmm	240.05|full	Tetrahydromethanopterin S-methyltransferase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28381	
+34.6	MtrC	HMM	MtrC_TIGR03507.hmm	209.3|full	Tetrahydromethanopterin S-methyltransferase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K28382	
+34.7	Ndh2	HMM	Ndh2.hmm	40|full	Type II NADH dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05573	
+34.8	OmcF	HMM	OmcF.hmm	83.7|full	Outer-membrane multiheme c-type cytochrome OmcF	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K08906	
+34.9	OmcS	HMM	OmcS.hmm	78.2|full	Outer-membrane multiheme c-type cytochrome OmcS	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+34.1	OmcZ	HMM	OmcZ.hmm	76.9|full	Extracellular multiheme c-type cytochrome OmcZ	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+35.1	MnxG	HMM	NF041487.hmm	3100|domain	Multicopper oxidase. manganese(II)-oxidizing protein MnxG	NA	NA	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041487/	https://doi.org/10.1042/BST20120229	K22349	mn oxidation often needs oxygen. but recent findings suggest that it is also possible in anaerobic environments. 
+36.1	Cyc1	HMM	Cyc1.hmm	98|full	"cytochrome c4 (c552) of Thiobacillus
 Ferrooxidans"	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-37.2	Cyc2_rc1	HMM	Cyc2_repCluster1.hmm	31.5|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
-37.3	Cyc2_rc2	HMM	Cyc2_repCluster2.hmm	27.8|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
-37.4	Cyc2_rc3	HMM	Cyc2_repCluster3.hmm	27.3|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
-37.5	FoxA	HMM	FoxA.hmm	128|full	Outer-membrane iron(II)-oxidizing cytochrome (putative)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
-37.6	FoxB	HMM	FoxB.hmm	66|full	Inner-membrane electron-transfer protein (cytochrome b-like)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	FoxB is annotated in some genome databases as K02275 because of shared motifs with cytochrome c oxidase subunit II. but this KO reflects general oxidase function. not the specialized iron oxidation role of FoxB in the fox cluster.
-37.7	FoxC	HMM	FoxC.hmm	62|full	Iron oxidation accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
-37.8	FoxE	HMM	FoxE.hmm	37|full	Periplasmic diheme c-type cytochrome	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
-37.9	FoxY	HMM	FoxY.hmm	124|full	Quinone-interacting electron-transfer protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
-37.10	FoxZ	HMM	FoxZ.hmm	150|full	Electron-transfer accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
-37.11	MtoA	HMM	MtoA.hmm	140|full	Decaheme c-Type Cytochrome	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
-37.12	soxE	HMM	sulfocyanin.hmm	45.4|full	sulfocyanin	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1016/S0014-5793(00)02343-7	NOT LISTED IN KEGG	
-38.1	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-38.2	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
-38.3	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
-38.4	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
-38.5	nas	HMM	NF041323.hmm	1000|domain	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00372	
-38.6	nirK	HMM	TIGR02376.hmm	169.10|full	nitrite reductase (NO-forming)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00368	
-38.7	nirS	HMM	nitrite_reductase_nirS.hmm	200|full	nitrite reductase (NO-forming) / hydroxylamine reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15864	
-38.8	octR	HMM	TIGR04315.hmm	325.00|full	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-38.9	norC	HMM	nitric_oxide_reductase_norC.hmm	50|full	nitric oxide reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02305	
-38.10	norB	HMM	nitric_oxide_reductase_norB.hmm	79|full	nitric oxide reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04561	
-38.11	nosD	HMM	PF05048.hmm	290|full	nitrous oxidase accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
-38.12	nosZ	HMM	TIGR04246.hmm	550.00|full	nitrous-oxide reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
-39.1	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
-39.2	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
-39.3	nas	HMM	NF041323.hmm	1000|domain	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00372	
-40.1	narG	HMM	TIGR01580.hmm	600.95|full	nitrate reductase / nitrite oxidoreductase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00370	
-40.2	narH	HMM	TIGR01660.hmm	348.00|full	nitrate reductase / nitrite oxidoreductase. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00371	
-40.3	napA	HMM	TIGR01706.hmm	472.50|full	periplasmic nitrate reductase NapA	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02567	
-40.4	napB	HMM	PF03892.hmm	23.9|full	cytochrome c-type protein NapB	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02568	
-40.5	nrfD	HMM	TIGR03148.hmm	300.15|full	cytochrome c nitrite reductase. NrfD subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1016/B978-044452857-5.50008-4	K04015	
-41.1	amoA	HMM	amoA.hmm	160.90|full	methane/ammonia monooxygenase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10944	
-41.2	amoB	HMM	amoB.hmm	156.70|full	methane/ammonia monooxygenase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10945	
-41.3	amoC	HMM	amoC.hmm	136.27|full	methane/ammonia monooxygenase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10946	
-42.1	nxrA	HMM	nitrite_oxidoreductase_nxrA.hmm	370|full	nitrate reductase / nitrite oxidoreductase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00370	
-42.2	nxrB	HMM	nitrite_oxidoreductase_nxrB.hmm	252|full	nitrate reductase / nitrite oxidoreductase. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00371	
-43.1	nirK	HMM	TIGR02376.hmm	169.10|full	nitrite reductase (NO-forming)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00368	
-43.2	nirS	HMM	nitrite_reductase_nirS.hmm	200|full	nitrite reductase (NO-forming) / hydroxylamine reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15864	
-43.3	octR	HMM	TIGR04315.hmm	325.00|full	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
-44.1	nod	HMM	nod.hmm	120|domain	Nitric oxide dismutase 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K27148	
-45.1	norC	HMM	nitric_oxide_reductase_norC.hmm	50|full	nitric oxide reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02305	
-45.2	norB	HMM	nitric_oxide_reductase_norB.hmm	79|full	nitric oxide reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04561	
-46.1	nosD	HMM	PF05048.hmm	290|full	nitrous oxidase accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
-46.2	nosZ	HMM	TIGR04246.hmm	550.00|full	nitrous-oxide reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
-47.1	hzsA	HMM	hydrazine_synthase_hzsA.hmm	466|full	hydrazine synthase subunit. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20932	
-47.2	hzoA	HMM	hydrazine_oxidase_hzoA.hmm	325|full	hydroxylamine dehydrogenase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20935	
-48.1	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
-48.2	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
-48.3	nrfA	HMM	PF02335.hmm	57|full	nitrite reductase (cytochrome c-552)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03385	
-48.4	nrfD	HMM	TIGR03148.hmm	300.15|full	cytochrome c nitrite reductase. NrfD subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04015	
-48.5	nrfH	HMM	TIGR03153.hmm	75.30|full	cytochrome c nitrite reductase small subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15876	
-49.1	gcd	HMM	K00117.hmm	813.63|full	Quinoprotein glucose dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00117	
-49.2	ppk1	HMM	K00937.hmm	254.43|full	Polyphosphate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00937	
-49.3	ppa	HMM	K01507.hmm	19.27|domain	Inorganic pyrophosphatase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01507	
-49.4	ppx	HMM	K01514.hmm	307.80|domain	Exopolyphosphatase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01514	
-49.5	pqqC	HMM	K06137.hmm	99.03|full	Pyrroloquinoline quinone synthase C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06137	
-50.1	anfG	HMM	TIGR02929.hmm	124.50|full	nitrogenase iron-iron protein. delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00531	
-50.2	nifD	HMM	TIGR01282.hmm	503.05|full	nitrogenase molybdenum-iron protein alpha chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02586	
-50.3	nifH	HMM	TIGR01287.hmm	261.05|full	nitrogenase iron protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02588	
-50.4	nifK	HMM	TIGR01286.hmm	414.50|full	nitrogenase molybdenum-iron protein beta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02591	
-50.5	vnfD	HMM	TIGR01860.hmm	822.85|full	nitrogenase vanadium-iron protein. alpha chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22896	
-50.6	vnfK	HMM	TIGR02932.hmm	821.85|full	nitrogenase vanadium-iron protein. beta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22897	
-50.7	vnfG	HMM	TIGR02930.hmm	122.35|full	nitrogenase vanadium-iron protein. delta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22898	
-50.8	anfD	HMM	TIGR01861.hmm	873.55|full	nitrogenase iron-iron protein. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K02586	
-50.9	anfK	HMM	TIGR02931.hmm	853.75|full	nitrogenase iron-iron protein. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		KEGG TOO UNSPECIFIC	
-51.1	PitA	HMM	NF033774.1.hmm	800|full	inorganic phosphate transporter PitA	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16322	
-52.1	PstS	HMM	K02040.hmm	60.73|domain	phosphate transport system substrate-binding protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02040	
-53.1	phoA	HMM	K01077.hmm	71.10|full	Alkaline phosphatase A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01077	
-53.2	olpA	HMM	K01078.hmm	207.00|domain	Acid phosphatase class C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01078	
-53.3	3-phytase	HMM	K01083.hmm	116.87|domain	3-phytase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01083	
-53.4	appA	HMM	K01093.hmm	382.13|full	4-phytase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01093	
-53.5	phoD	HMM	K01113.hmm	103.50|full	Alkaline phosphatase D	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01113	
-53.6	PhnD	HMM	K02044.hmm	122.57|full	phosphonate transport system substrate-binding protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02044	
-53.7	aphA	HMM	K03788.hmm	84.23|full	Acid phosphatase class B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03788	
-53.8	phnL	HMM	K05780.hmm	202.37|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05780	
-53.9	phnK	HMM	K05781.hmm	258.73|domain	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05781	
-53.10	PhnM	HMM	TIGR02318.1.hmm	390.5|full	phosphonate metabolism protein PhnM	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06162	
-53.11	PhnJ	HMM	K06163.hmm	326.57|full	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06163	
-53.12	phnI	HMM	K06164.hmm	192.27|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06164	
-53.13	phnH	HMM	K06165.hmm	120.83|domain	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06165	
-53.14	phnG	HMM	K06166.hmm	57.77|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06166	
-53.15	phoX	HMM	K07093.hmm	102.10|domain	Alkaline phosphatase X	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K07093	
-53.16	phoN	HMM	K09474.hmm	123.93|full	Acid phosphatase class A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K09474	
-53.17	PhnX	HMM	TIGR01422.2.hmm	220|full	phosphonoacetaldehyde hydrolase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05306	
-53.18	PhnW	HMM	TIGR02326.1.hmm	400.8|full	2-aminoethylphosphonate--pyruvate transaminase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03430	
-53.19	PhnA	HMM	TIGR02335.1.hmm	407.5|full	phosphonoacetate hydrolase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K19670	
-53.20	PhnZ	HMM	TIGR03276.1.hmm	214.6|full	phosphonate degradation HD-domain oxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K21196	
+36.2	Cyc2_rc1	HMM	Cyc2_repCluster1.hmm	31.5|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
+36.3	Cyc2_rc2	HMM	Cyc2_repCluster2.hmm	27.8|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
+36.4	Cyc2_rc3	HMM	Cyc2_repCluster3.hmm	27.3|full	cytochrome-porin proteins	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20150	
+36.5	FoxA	HMM	FoxA.hmm	128|full	Outer-membrane iron(II)-oxidizing cytochrome (putative)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
+36.6	FoxB	HMM	FoxB.hmm	66|full	Inner-membrane electron-transfer protein (cytochrome b-like)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	FoxB is annotated in some genome databases as K02275 because of shared motifs with cytochrome c oxidase subunit II. but this KO reflects general oxidase function. not the specialized iron oxidation role of FoxB in the fox cluster.
+36.7	FoxC	HMM	FoxC.hmm	62|full	Iron oxidation accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
+36.8	FoxE	HMM	FoxE.hmm	37|full	Periplasmic diheme c-type cytochrome	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
+36.9	FoxY	HMM	FoxY.hmm	124|full	Quinone-interacting electron-transfer protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
+36.1	FoxZ	HMM	FoxZ.hmm	150|full	Electron-transfer accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1111/1462-2920.15727	NOT LISTED IN KEGG	
+36.11	MtoA	HMM	MtoA.hmm	140|full	Decaheme c-Type Cytochrome	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K28380	
+36.12	soxE	HMM	sulfocyanin.hmm	45.4|full	sulfocyanin	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1016/S0014-5793(00)02343-7	NOT LISTED IN KEGG	
+37.1	hynB	HMM	hydrogenase_NiFeGroup1b.hmm	799|domain	hydrogenase [NiFe] 1b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+37.2	hybC	HMM	hydrogenase_NiFeGroup1c.hmm	785|domain	hydrogenase [NiFe] 1c	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+37.3	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
+37.4	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
+37.5	nas	HMM	NF041323.hmm	1000|domain	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00372	
+37.6	nirK	HMM	TIGR02376.hmm	169.10|full	nitrite reductase (NO-forming)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00368	
+37.7	nirS	HMM	nitrite_reductase_nirS.hmm	200|full	nitrite reductase (NO-forming) / hydroxylamine reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15864	
+37.8	octR	HMM	TIGR04315.hmm	325.00|full	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+37.9	norC	HMM	nitric_oxide_reductase_norC.hmm	50|full	nitric oxide reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02305	
+37.1	norB	HMM	nitric_oxide_reductase_norB.hmm	79|full	nitric oxide reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04561	
+37.11	nosD	HMM	PF05048.hmm	290|full	nitrous oxidase accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
+37.12	nosZ	HMM	TIGR04246.hmm	550.00|full	nitrous-oxide reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
+38.1	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
+38.2	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
+38.3	nas	HMM	NF041323.hmm	1000|domain	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00372	
+39.1	narG	HMM	TIGR01580.hmm	600.95|full	nitrate reductase / nitrite oxidoreductase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00370	
+39.2	narH	HMM	TIGR01660.hmm	348.00|full	nitrate reductase / nitrite oxidoreductase. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00371	
+39.3	napA	HMM	TIGR01706.hmm	472.50|full	periplasmic nitrate reductase NapA	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02567	
+39.4	napB	HMM	PF03892.hmm	23.9|full	cytochrome c-type protein NapB	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02568	
+39.5	nrfD	HMM	TIGR03148.hmm	300.15|full	cytochrome c nitrite reductase. NrfD subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.1016/B978-044452857-5.50008-4	K04015	
+40.1	amoA	HMM	amoA.hmm	160.90|full	methane/ammonia monooxygenase subunit A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10944	
+40.2	amoB	HMM	amoB.hmm	156.70|full	methane/ammonia monooxygenase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10945	
+40.3	amoC	HMM	amoC.hmm	136.27|full	methane/ammonia monooxygenase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K10946	
+41.1	nxrA	HMM	nitrite_oxidoreductase_nxrA.hmm	370|full	nitrate reductase / nitrite oxidoreductase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00370	
+41.2	nxrB	HMM	nitrite_oxidoreductase_nxrB.hmm	252|full	nitrate reductase / nitrite oxidoreductase. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00371	
+42.1	nirK	HMM	TIGR02376.hmm	169.10|full	nitrite reductase (NO-forming)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00368	
+42.2	nirS	HMM	nitrite_reductase_nirS.hmm	200|full	nitrite reductase (NO-forming) / hydroxylamine reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15864	
+42.3	octR	HMM	TIGR04315.hmm	325.00|full	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		NOT LISTED IN KEGG	
+43.1	nod	HMM	nod.hmm	120|domain	Nitric oxide dismutase 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K27148	
+44.1	norC	HMM	nitric_oxide_reductase_norC.hmm	50|full	nitric oxide reductase subunit C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02305	
+44.2	norB	HMM	nitric_oxide_reductase_norB.hmm	79|full	nitric oxide reductase subunit B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04561	
+45.1	nosD	HMM	PF05048.hmm	290|full	nitrous oxidase accessory protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
+45.2	nosZ	HMM	TIGR04246.hmm	550.00|full	nitrous-oxide reductase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00376	
+46.1	hzsA	HMM	hydrazine_synthase_hzsA.hmm	466|full	hydrazine synthase subunit. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20932	
+46.2	hzoA	HMM	hydrazine_oxidase_hzoA.hmm	325|full	hydroxylamine dehydrogenase. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K20935	
+47.1	nirB	HMM	TIGR02374.hmm	442.75|full	Nitrite reductase (NADH). large subunit (NirB)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00362	
+47.2	nirD	HMM	TIGR02378.hmm	69.85|full	Nitrite reductase (NADH). small subunit (NirD)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8	https://doi.org/10.3389/fmolb.2021.667758	K00363	
+47.3	nrfA	HMM	PF02335.hmm	57|full	nitrite reductase (cytochrome c-552)	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03385	
+47.4	nrfD	HMM	TIGR03148.hmm	300.15|full	cytochrome c nitrite reductase. NrfD subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K04015	
+47.5	nrfH	HMM	TIGR03153.hmm	75.30|full	cytochrome c nitrite reductase small subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K15876	
+48.1	gcd	HMM	K00117.hmm	813.63|full	Quinoprotein glucose dehydrogenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00117	
+48.2	ppk1	HMM	K00937.hmm	254.43|full	Polyphosphate kinase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00937	
+48.3	ppa	HMM	K01507.hmm	19.27|domain	Inorganic pyrophosphatase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01507	
+48.4	ppx	HMM	K01514.hmm	307.80|domain	Exopolyphosphatase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01514	
+48.5	pqqC	HMM	K06137.hmm	99.03|full	Pyrroloquinoline quinone synthase C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06137	
+49.1	anfG	HMM	TIGR02929.hmm	124.50|full	nitrogenase iron-iron protein. delta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K00531	
+49.2	nifD	HMM	TIGR01282.hmm	503.05|full	nitrogenase molybdenum-iron protein alpha chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02586	
+49.3	nifH	HMM	TIGR01287.hmm	261.05|full	nitrogenase iron protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02588	
+49.4	nifK	HMM	TIGR01286.hmm	414.50|full	nitrogenase molybdenum-iron protein beta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02591	
+49.5	vnfD	HMM	TIGR01860.hmm	822.85|full	nitrogenase vanadium-iron protein. alpha chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22896	
+49.6	vnfK	HMM	TIGR02932.hmm	821.85|full	nitrogenase vanadium-iron protein. beta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22897	
+49.7	vnfG	HMM	TIGR02930.hmm	122.35|full	nitrogenase vanadium-iron protein. delta chain	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K22898	
+49.8	anfD	HMM	TIGR01861.hmm	873.55|full	nitrogenase iron-iron protein. alpha subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		(?) K02586	
+49.9	anfK	HMM	TIGR02931.hmm	853.75|full	nitrogenase iron-iron protein. beta subunit	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		KEGG TOO UNSPECIFIC	
+50.1	PitA	HMM	NF033774.1.hmm	800|full	inorganic phosphate transporter PitA	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K16322	
+51.1	PstS	HMM	K02040.hmm	60.73|domain	phosphate transport system substrate-binding protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02040	
+52.1	phoA	HMM	K01077.hmm	71.10|full	Alkaline phosphatase A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01077	
+52.2	olpA	HMM	K01078.hmm	207.00|domain	Acid phosphatase class C	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01078	
+52.3	3-phytase	HMM	K01083.hmm	116.87|domain	3-phytase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01083	
+52.4	appA	HMM	K01093.hmm	382.13|full	4-phytase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01093	
+52.5	phoD	HMM	K01113.hmm	103.50|full	Alkaline phosphatase D	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K01113	
+52.6	PhnD	HMM	K02044.hmm	122.57|full	phosphonate transport system substrate-binding protein	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K02044	
+52.7	aphA	HMM	K03788.hmm	84.23|full	Acid phosphatase class B	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03788	
+52.8	phnL	HMM	K05780.hmm	202.37|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05780	
+52.9	phnK	HMM	K05781.hmm	258.73|domain	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05781	
+52.1	PhnM	HMM	TIGR02318.1.hmm	390.5|full	phosphonate metabolism protein PhnM	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06162	
+52.11	PhnJ	HMM	K06163.hmm	326.57|full	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06163	
+52.12	phnI	HMM	K06164.hmm	192.27|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06164	
+52.13	phnH	HMM	K06165.hmm	120.83|domain	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06165	
+52.14	phnG	HMM	K06166.hmm	57.77|full	C–P lyase multienzyme complex	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K06166	
+52.15	phoX	HMM	K07093.hmm	102.10|domain	Alkaline phosphatase X	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K07093	
+52.16	phoN	HMM	K09474.hmm	123.93|full	Acid phosphatase class A	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K09474	
+52.17	PhnX	HMM	TIGR01422.2.hmm	220|full	phosphonoacetaldehyde hydrolase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K05306	
+52.18	PhnW	HMM	TIGR02326.1.hmm	400.8|full	2-aminoethylphosphonate--pyruvate transaminase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K03430	
+52.19	PhnA	HMM	TIGR02335.1.hmm	407.5|full	phosphonoacetate hydrolase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K19670	
+52.2	PhnZ	HMM	TIGR03276.1.hmm	214.6|full	phosphonate degradation HD-domain oxygenase	NA	NA	https://doi.org/10.1186/s40168-021-01213-8		K21196	
+53.1	hydS1	HMM	hydrogenase_FeFeGroupC1.hmm	215|domain	hydrogenase [FeFe] C1	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
+53.2	hydS2	HMM	hydrogenase_FeFeGroupC2.hmm	268|domain	hydrogenase [FeFe] C2	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
+53.3	hydS3	HMM	hydrogenase_FeFeGroupC3.hmm	326|domain	hydrogenase [FeFe] C3	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	probably a regulatory hydrogenase. sensing h2 concentration. Included in oxidation since sensing « consumes » H2
+53.4	hupV	HMM	hydrogenase_NiFeGroup2b.hmm	492|domain	hydrogenase [NiFe] 2b	NA	NA	doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
