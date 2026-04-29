@@ -39,7 +39,7 @@ MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
 '''
 REQUIRES = '''
-Requires pyhmmer, networkx, matplotlib.
+Requires pyhmmer, networkx (with pygraphviz), matplotlib.
 '''
 
 logger = logging.getLogger()
@@ -49,14 +49,14 @@ try:
     import networkx as nx
     from networkx.readwrite import json_graph
 except:
-    logger.critical('networkx not installed, bigecyhmm_custom requires networkx installed: pip install networkx matplotlib')
+    logger.critical('networkx not installed, bigecyhmm_custom requires networkx installed: pip install networkx matplotlib pygraphviz')
     sys.exit(1)
 
 try:
     import matplotlib.pyplot as plt
     from matplotlib import __version__ as matplotlib_version
 except:
-    logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib')
+    logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib pygraphviz')
     sys.exit(1)
 
 

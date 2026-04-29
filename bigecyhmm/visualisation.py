@@ -776,6 +776,10 @@ def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
     nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=function_nodes, node_shape='d', alpha=0.6, node_size=1000)
     nx.draw_networkx_labels(bipartite_networkx_graph, pos, labels=pathway_index_labels, font_size=14)
     nx.draw_networkx_edges(bipartite_networkx_graph, pos, arrows=True, width=3, node_size=1000, connectionstyle="arc3,rad=0.1")
+    # Relabel nodes.
+    bipartite_networkx_graph = nx.relabel_nodes(bipartite_networkx_graph, pathway_index_labels)
+    graphml_output_file = graph_output_file.replace('.png', '.graphml')
+    nx.write_graphml(bipartite_networkx_graph, graphml_output_file)
 
     plt.axis('off')
     plt.savefig(graph_output_file, bbox_inches='tight')
@@ -831,6 +835,20 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
     else:
         tax_id_names_observation_names = None
         observation_names_tax_ranks = None
+
+    # Group file must be used with abundance file argument.
+    if group_file is not None and abundance_file_path is None:
+        logger.info("Option --group-file/group_file must be used with option --abundance-file/abundance_file_path.")
+        sys.exit(1)
+    # Check that all samples from abundance file are in group_file.
+    if group_file is not None:
+        mapping_df = pd.read_csv(group_file, sep='\t', dtype=str)
+        samples_from_group_file = set(mapping_df['sample'].tolist())
+        samples_from_abundance_file = set(sample_abundance.keys())
+        if samples_from_group_file != set(sample_abundance.keys()):
+            missing_samples = samples_from_abundance_file - samples_from_group_file
+            logger.info("Missing samples from abundance file in group file: {0}.".format(' '.join(missing_samples)))
+            sys.exit(1)
 
     logger.info("## Compute function occurrences and create visualisation.")
     logger.info("  -> Read bigecyhmm cycle output files.")
