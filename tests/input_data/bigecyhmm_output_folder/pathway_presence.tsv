@@ -9,6 +9,7 @@ C-S-07:Methanogenesis	1	0
 C-S-08:Methanotrophy	0	0
 C-S-09:Hydrogen oxidation	0	1
 C-S-10:Acetogenesis WL	0	0
+C-S-11:Propionate oxidation	0	0
 N-S-01:Nitrogen fixation	1	1
 N-S-02:Ammonia oxidation	0	0
 N-S-03:Nitrite oxidation	0	0

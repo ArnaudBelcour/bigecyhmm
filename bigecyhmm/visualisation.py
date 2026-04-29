@@ -507,7 +507,7 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
         x_end_group_position.append(sorted_samples[-1])
         tmp_melted_cycle_relative_abundance_samples_df.sort_values(by="sample", key=lambda x: x.map(sorted_samples.index), inplace=True)
 
-    if len(sample_groups) > 1:
+    if len(function_groups) > 1:
         for index, function_group in enumerate(function_groups):
             tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]
             if tmp_data.empty is False:

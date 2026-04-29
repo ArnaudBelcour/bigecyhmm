@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.2.0 (2029-02-19)
+# bigecyhmm v0.2.0 (2029-04-29)
 
 HMM files are no more stored inside a zip archive, they are in a folder to ease their tracking.
 Due to the changes in the boolean expression to infer pathways, old pathway template files from previous version are incompatible with the new version.
@@ -13,6 +13,8 @@ Due to the changes in the boolean expression to infer pathways, old pathway temp
 * Files linked to central hydrogen cycles (`template_central_hydrogen`, `custom_hydrogen_central_cycles.tsv`).
 * `custom_tsv_parser.py` to parse new file format (made with Michael Baumgartner @KeonaExoGaia).
 * `group_analysis.py`, `group_plot.py` to analyse metabolism of several samples, in association with the custom hydrogen central cycle (made with Michael Baumgartner @KeonaExoGaia).
+* Generation of metabolic bipartite graphs from either custom file or json input to render background picture for `group_analysis.py` and `group_plot.py`.
+* Bubble plot showing abundance of functions in samples (samples that can be clustered by groups).
 * Contributors file.
 * Heatmap showing link between general function, taxa name and samples.
 

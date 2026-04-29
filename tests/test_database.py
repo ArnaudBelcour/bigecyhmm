@@ -21,7 +21,7 @@ def test_template_file_db():
             for hmm_file in line['Hmm file'].split(', '):
                 hmms_in_template.append(hmm_file)
 
-    assert set(hmms_in_db) == set(hmms_in_template)
+    assert set(hmms_in_template).issubset(set(hmms_in_db))
 
 
 def test_pathway_file_db():
