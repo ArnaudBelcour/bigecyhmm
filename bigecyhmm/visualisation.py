@@ -509,7 +509,7 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
     nb_unique_functions = len(tmp_melted_cycle_relative_abundance_samples_df['name'].unique())
 
     # Compute height ratios according to number of function groups.
-    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]) for function_group in function_groups]
+    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]['name'].unique()) for function_group in function_groups]
 
     fig_width = 15
     if nb_samples > 30:
@@ -551,6 +551,7 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
         sec2.set_xticks([-0.5, *x_end_group_position], labels=[])
         sec2.tick_params('x', length=40, width=1.5)
 
+    fig.supylabel('Functions above 5% of relative abundance')
     plt.xticks(rotation=90)
     plt.tight_layout()
     plt.savefig(output_file, dpi=300)
@@ -823,7 +824,6 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         logger.info("Read EsMeCaTa proteome_tax_id file.")
         proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
         observation_names_tax_id_names, observation_names_tax_ranks = read_esmecata_proteome_file(proteome_tax_id_file)
-        proteome_tax_id_file = os.path.join(esmecata_output_folder, '0_proteomes', 'proteome_tax_id.tsv')
 
         tax_id_names_observation_names = {}
         for observation_name in observation_names_tax_id_names:
