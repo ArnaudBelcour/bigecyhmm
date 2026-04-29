@@ -357,7 +357,7 @@ def main():
 
     parser = argparse.ArgumentParser(
         'bigecyhmm_custom',
-        description=MESSAGE + ' For specific help on each subcommand use: esmecata {cmd} --help',
+        description=MESSAGE + ' For specific help on each subcommand use: bigecyhmm_custom {cmd} --help',
         epilog=REQUIRES
     )
     parser.add_argument(
@@ -378,7 +378,9 @@ def main():
         '--database',
         dest='custom_database',
         required=True,
-        help='Path to a tsv file, json file or folder containing a representation of the custom cycle. It will also search for associated tsv and zip file. If it is a folder, it will do the same but for each json in the folder.',
+        help='''Path to a tsv file, json file or folder containing a representation of the custom cycle.\
+            It will also search for associated tsv and zip file. If it is a folder, it will do the same but for each json in the folder.\
+            It is aslo possible to give a string for specific internal databases: 'internal_all' (corresponds to default metabolic cycle), 'internal_hydrogen_table' (focus on hydrogen consumption).''',
         metavar='CUSTOM_DATABASE_FILE_OR_FOLDER')
 
     parser.add_argument(

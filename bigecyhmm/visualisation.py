@@ -62,16 +62,16 @@ FUNCTION_GROUP_TEMPLATE = {'Carbon cycle': ['C-S-01:Organic carbon oxidation', '
                     'Sulfur cycle': ['S-S-01:Sulfide oxidation', 'S-S-02:Sulfur reduction', 'S-S-03:Sulfur oxidation', 'S-S-04:Sulfite oxidation', 'S-S-05:Sulfate reduction', 'S-S-06:Sulfite reduction',
                                     'S-S-07:Thiosulfate oxidation', 'S-S-08:Thiosulfate disproportionation 1', 'S-S-09:Thiosulfate disproportionation 2', 'S-S-10:Polysulfide reduction',
                                     'Sulfur respiration', 'Sulfate respiration', 'Sulfite oxidation', 'Sulfite reduction', 'Sulfur reduction', 'Polysulfide reduction', 'Sulfide oxidation',
-                                    'Sulfur oxidation', 'Thiosulfate disproportionation 2', 'Thiosulfate oxidation', 'Thiosulfate disproportionation 1', 'Sulfate reduction (ASR/DSR)'],
+                                    'Sulfur oxidation', 'Thiosulfate disproportionation 2', 'Thiosulfate oxidation', 'Thiosulfate disproportionation 1', 'Sulfate reduction (ASR or DSR)'],
                     'Nitrogen cycle': ['N-S-01:Nitrogen fixation', 'N-S-02:Ammonia oxidation', 'N-S-03:Nitrite oxidation', 'N-S-04:Nitrate reduction', 'N-S-05:Nitrite reduction', 'N-S-06:Nitric oxide reduction',
                                     'N-S-07:Nitrous oxide reduction', 'N-S-08:Nitrite ammonification', 'N-S-09:Anammox', 'N-S-10:Nitric oxide dismutase', 'Nitrate respiration / denitrification',
                                     'Assimilatory nitrate red.', 'Dissimilatory nitrate red.', 'Ammonia oxidation', 'Nitrite oxidation', 'Nitrite reduction', 'Nitric oxide dismutase',
-                                    'Nitric oxide reduction', 'Nitrous oxide reduction', 'Anammox', 'Nitrite ammonification', 'Nitrogen fixation'],
+                                    'Nitric oxide reduction', 'Nitrous oxide reduction', 'Anammox', 'Nitrite ammonification', 'Nitrogen fixation', 'Nitrate respiration or denitrification'],
                     'Other cycle': ['O-S-01:Iron reduction', 'O-S-02:Iron oxidation', 'O-S-03:Arsenate reduction', 'O-S-04:Arsenite oxidation', 'O-S-05:Selenate reduction', 'O-S-06:Aerobic respiration',
-                                    'Arsenate reduction', 'Arsenite oxidation', 'e-input Metal respiration', 'Metal Respiration', 'Mn oxidation', 'Iron oxidation'],
+                                    'Arsenate reduction', 'Arsenite oxidation', 'e-input Metal respiration', 'Metal Respiration', 'Mn oxidation', 'Iron oxidation', 'Selenate reduction', 'Organohal. Respira. 1',
+                                    'Organohal. Respira. 2', 'Hydrogen sensing'],
                     'Phosphorus cycle' : ['P-S-01:Immobilisation (P-rich)', 'P-S-01:Immobilisation (P-poor)', 'P-S-02:Mineralisation', 'P-S-03:Dissolution',
                                           'P dissolution', 'Immobilisation (P-rich)', 'Immobilisation (P-poor)', 'P mineralisation']}
-
 
 MESSAGE = '''
 Create figures from bigecyhmm and EsMeCaTa outputs (and optionally with an abundance file).
@@ -469,22 +469,22 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
         group_file_path (str): path to group file.
     """
     function_in_cycle = {function_name: cycle_name for cycle_name in FUNCTION_GROUP_TEMPLATE for function_name in FUNCTION_GROUP_TEMPLATE[cycle_name]}
+    function_in_cycle_set = set(function_in_cycle.keys())
 
-    melted_cycle_relative_abundance_samples_df['group'] = [function_in_cycle[function_name] if function_name in function_in_cycle else '' for function_name in melted_cycle_relative_abundance_samples_df['name']]
+    if set(melted_cycle_relative_abundance_samples_df['name'].unique()).issubset(function_in_cycle_set):
+        melted_cycle_relative_abundance_samples_df['group'] = [function_in_cycle[function_name] if function_name in function_in_cycle else '' for function_name in melted_cycle_relative_abundance_samples_df['name']]
+    else:
+        melted_cycle_relative_abundance_samples_df['group'] = 'Function'
     tmp_melted_cycle_relative_abundance_samples_df = melted_cycle_relative_abundance_samples_df[melted_cycle_relative_abundance_samples_df['group']!='']
 
     function_groups = tmp_melted_cycle_relative_abundance_samples_df['group'].unique()
     tmp_melted_cycle_relative_abundance_samples_df = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['ratio']>0.05]
-    nb_samples = len(tmp_melted_cycle_relative_abundance_samples_df['sample'].unique())
-
-    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]) for function_group in function_groups]
-
-    fig_width = 15
-    if nb_samples > 30:
-        fig_width = nb_samples / 2
-    fig, axes = plt.subplots(nrows=len(function_groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
+    # Keep only function groups with predictions.
+    function_groups = [function_group for function_group in function_groups
+                       if tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group].empty is False]
 
     # If group file is not None, sort dataframe with sample according to group.
+    # And generate position of group labels and line splitting samples according to group.
     if group_file is not None:
         mapping_df = pd.read_csv(group_file, sep='\t', dtype=str)
 
@@ -507,39 +507,46 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
         x_end_group_position.append(sorted_samples[-1])
         tmp_melted_cycle_relative_abundance_samples_df.sort_values(by="sample", key=lambda x: x.map(sorted_samples.index), inplace=True)
 
+    nb_samples = len(tmp_melted_cycle_relative_abundance_samples_df['sample'].unique())
+
+    ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]) for function_group in function_groups]
+
+    fig_width = 15
+    if nb_samples > 30:
+        fig_width = nb_samples / 2
+    fig, axes = plt.subplots(nrows=len(function_groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
+
     if len(function_groups) > 1:
         for index, function_group in enumerate(function_groups):
             tmp_data = tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]
-            if tmp_data.empty is False:
-                # Create bubble scatter plot.
-                axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
-                # Show grid.
-                axes[index].grid(True, color='lightgrey', linewidth=0.5)
-                # Remove tick labels except for the last one.
-                if index < len(function_groups)-1:
-                    axes[index].set_xticklabels([])
-                else:
-                    if group_file is not None:
-                        # Add group label below sample names.
-                        x_group_position = [sorted_samples.index(sample_name) for sample_name in x_group_position]
-                        sec = axes[index].secondary_xaxis(location=0)
-                        group_labels = ['\n'*length_sample_name+sample_group for sample_group in sample_groups]
-                        sec.set_xticks(x_group_position, labels=group_labels)
-                        sec.tick_params('x', length=0)
-                        # Add lines between groups.
-                        x_end_group_position = [sorted_samples.index(sample_name)+0.5 if sample_name!=sorted_samples[-1] else sorted_samples.index(sample_name)-0.5 for sample_name in x_end_group_position]
-                        sec2 = axes[index].secondary_xaxis(location=0)
-                        sec2.set_xticks([-0.5, *x_end_group_position], labels=[])
-                        sec2.tick_params('x', length=40, width=1.5)
-                        axes[index].set_xlim(-0.6, 8.6)
-            else:
-                axes[index].axis("off")
+            # Create bubble scatter plot.
+            axes[index].scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
+            # Show grid.
+            axes[index].grid(True, color='lightgrey', linewidth=0.5)
+            # Remove tick labels except for the last one.
+            if index < len(function_groups)-1:
+                axes[index].set_xticklabels([])
+            last_axe = axes[index]
     else:
         tmp_data = tmp_melted_cycle_relative_abundance_samples_df
         # Create bubble scatter plot.
         axes.scatter(tmp_data['sample'], tmp_data['name'], s=tmp_data['ratio']*500, c=tmp_data['ratio'], cmap='viridis_r', alpha=0.8)
         # Show grid.
         axes.grid(True, color='lightgrey', linewidth=0.5)
+        last_axe = axes
+
+    if group_file is not None:
+        # Add group label below sample names.
+        x_group_position = [sorted_samples.index(sample_name) for sample_name in x_group_position]
+        sec = last_axe.secondary_xaxis(location=0)
+        group_labels = ['\n'*length_sample_name+sample_group for sample_group in sample_groups]
+        sec.set_xticks(x_group_position, labels=group_labels)
+        sec.tick_params('x', length=0)
+        # Add lines between groups.
+        x_end_group_position = [sorted_samples.index(sample_name)+0.5 if sample_name!=sorted_samples[-1] else len(sorted_samples)-0.5 for sample_name in x_end_group_position]
+        sec2 = last_axe.secondary_xaxis(location=0)
+        sec2.set_xticks([-0.5, *x_end_group_position], labels=[])
+        sec2.tick_params('x', length=40, width=1.5)
 
     plt.xticks(rotation=90)
     plt.tight_layout()
@@ -714,10 +721,15 @@ def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, 
             plt.close(fig)
 
 
-def generate_graph_figure(bigecyhmm_database_folder, output_folder_graph_plots):
+def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
+    """ Generate graph background figure for donut plot.
+
+    Args:
+        bigecyhmm_database_folder (str): path to bigecyhmm database output folder (containing reference graphml file).
+        graph_output_file (str): path to output background image.
+    """
     graph_file = os.path.join(bigecyhmm_database_folder, 'input_graph.graphml')
-    if not os.path.exists(output_folder_graph_plots):
-        os.mkdir(output_folder_graph_plots)
+
     bipartite_networkx_graph = nx.read_graphml(graph_file)
 
     pathway_template_file = os.path.join(bigecyhmm_database_folder, 'pathway_template_file.tsv')
@@ -732,6 +744,7 @@ def generate_graph_figure(bigecyhmm_database_folder, output_folder_graph_plots):
     function_nodes = [network_node for network_node in bipartite_networkx_graph.nodes if bipartite_networkx_graph.nodes[network_node]['type'] == 'Function']
     for metabolite_node in metabolite_nodes:
         pathway_index_labels[metabolite_node] = metabolite_node
+
     nitrate_nodes = ['NO2-', 'NO', 'N2O', 'N2', 'NO3-', 'NH3']
     sulfur_nodes = ['S', 'H2S', 'SO3 2-', 'S2O3 2-', 'SO4 2-']
     organic_carbon_nodes = ['CH4', 'Methyl-CoM', 'Acetate',	'CO2', 'Organic C', 'Ethanol']
@@ -750,21 +763,16 @@ def generate_graph_figure(bigecyhmm_database_folder, output_folder_graph_plots):
     fig, axes = plt.subplots(figsize=(16,16))
 
     layout_prog = 'neato'
-    nx.draw_networkx_nodes(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), nodelist=metabolite_nodes,
+    pos = graphviz_layout(bipartite_networkx_graph, prog=layout_prog)
+    nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=metabolite_nodes,
                            node_color=metabolite_node_colors, node_shape='o', alpha=0.6, node_size=2000)
-    nx.draw_networkx_nodes(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), nodelist=function_nodes,
-                           node_shape='d', alpha=0.6, node_size=1000)
-    nx.draw_networkx_labels(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), labels=pathway_index_labels,
-                            font_size=14)
-    nx.draw_networkx_edges(bipartite_networkx_graph, graphviz_layout(bipartite_networkx_graph, prog=layout_prog), arrows=True, width=3,
-                           node_size=1000)
+    nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=function_nodes, node_shape='d', alpha=0.6, node_size=1000)
+    nx.draw_networkx_labels(bipartite_networkx_graph, pos, labels=pathway_index_labels, font_size=14)
+    nx.draw_networkx_edges(bipartite_networkx_graph, pos, arrows=True, width=3, node_size=1000, connectionstyle="arc3,rad=0.1")
 
     plt.axis('off')
-    graph_output_file = os.path.join(output_folder_graph_plots, 'graph_reference.png')
     plt.savefig(graph_output_file, bbox_inches='tight')
     plt.clf()
-
-    return graph_output_file
 
 
 def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder=None, abundance_file_path=None, group_file=None, metabolite_measure=None,
@@ -1012,12 +1020,15 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             if not os.path.exists(output_folder_graph_plots):
                 os.mkdir(output_folder_graph_plots)
             # Generate background figure from graphml in database folder.
-            graph_output_file = generate_graph_figure(bigecyhmm_run_database, output_folder_graph_plots)
+            background_graph_output_file = os.path.join(output_folder_graph_plots, 'graph_reference.png')
+            generate_graph_figure(bigecyhmm_run_database, background_graph_output_file)
+
+            # Generate donut plot using generated background image from graph.
             group_stats_file = os.path.join(output_folder_graph_plots, 'group_stats.tsv')
             cleaned_data_file = os.path.join(output_folder_graph_plots, 'cleaned_data.tsv')
             group_medians_donut_file = os.path.join(output_folder_graph_plots, 'group_medians_donut.png')
             group_stats_table_file = os.path.join(output_folder_graph_plots, 'group_stats_table.png')
-            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=graph_output_file,
+            statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=background_graph_output_file,
                         stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
 
         bubble_plot_output_file = os.path.join(output_folder_abundance, 'cycle_pathways_bubble_plot.png')
@@ -1269,7 +1280,7 @@ def main():
 
     parser = argparse.ArgumentParser(
         'bigecyhmm_visualisation',
-        description=MESSAGE + ' For specific help on each subcommand use: esmecata {cmd} --help',
+        description=MESSAGE + ' For specific help on each subcommand use: bigecyhmm_visualisation {cmd} --help',
         epilog=REQUIRES
     )
     parser.add_argument(
