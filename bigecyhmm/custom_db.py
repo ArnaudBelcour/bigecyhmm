@@ -115,6 +115,18 @@ def get_hmms_in_pathway_template(pathway_template_file=PATHWAY_TEMPLATE_FILE):
 
 
 def check_custom_db_input(custom_database_input, output_folder):
+    """Check input files of custom_db to generate internal database files for bigecyhmm.
+
+    Args:
+        custom_database_input (str): path to input files describing functions and HMM to search
+        output_folder (str): path to output folder
+
+    Returns:
+        custom_hmm_template_file (str): path to custom HHM template file indicating threhsold for HMMs
+        custom_pathway_template_file (str): path to custom pathway template file linking functions to HMM
+        custom_bipartite_cycle_network (str): path to graphml file showing the functions as a bipartite graph
+        custom_hmm_folder (str): path to HMM folder
+    """
     if custom_database_input.endswith('.json'):
         # Check the presence of custom HMM database.
         custom_hmm_folder = custom_database_input.replace('.json', '')
@@ -300,7 +312,9 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     if custom_database_folder == 'internal_all':
         all_json_network = [CUSTOM_CARBON_CYCLE_NETWORK, CUSTOM_SULFUR_CYCLE_NETWORK, CUSTOM_NITROGEN_CYCLE_NETWORK, CUSTOM_PHOSPHORUS_CYCLE_NETWORK, CUSTOM_OTHER_CYCLE_NETWORK]
         all_json_dict = {'directed': True, 'multigraph': False, 'graph': {'node_default': {}, 'edge_default': {}}, 'nodes': [], 'edges': []}
-        internal_all_json_file = os.path.join(output_folder, 'internal_all.json')
+        internal_database_folder = os.path.join(output_folder, 'database')
+        is_valid_dir(internal_database_folder)
+        internal_all_json_file = os.path.join(internal_database_folder, 'internal_all.json')
         for json_network_file in all_json_network:
             with open(json_network_file) as open_json_network_file:
                 json_cycle_database = json.load(open_json_network_file)
