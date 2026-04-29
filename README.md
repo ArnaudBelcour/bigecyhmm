@@ -43,6 +43,7 @@ For `bigecyhmm_visualisation`, you also needs the following packages:
 For `bigecyhmm_custom`, you also needs the following package:
 
 - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
+- [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
 - [matplotlib](https://github.com/matplotlib/matplotlib): to create automatically (bad) visualisation of the cycle.
 
 ## 2 Installation
@@ -67,7 +68,7 @@ For `bigecyhmm_visualisation`, you also needs to run:
 
 For `bigecyhmm_custom`, you also needs to run:
 
-`pip install networkx matplotlib`
+`pip install networkx matplotlib pygraphviz`
 
 ## 3 bigecyhmm
 

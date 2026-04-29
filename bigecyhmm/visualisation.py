@@ -20,9 +20,7 @@ import seaborn as sns
 from seaborn import __version__ as seaborn_version
 import matplotlib.pyplot as plt
 from matplotlib import __version__ as matplotlib_version
-from networkx.drawing.nx_agraph import graphviz_layout
 
-import networkx as nx
 import argparse
 import logging
 import csv
@@ -508,13 +506,18 @@ def generate_bubble_plot(melted_cycle_relative_abundance_samples_df, output_file
         tmp_melted_cycle_relative_abundance_samples_df.sort_values(by="sample", key=lambda x: x.map(sorted_samples.index), inplace=True)
 
     nb_samples = len(tmp_melted_cycle_relative_abundance_samples_df['sample'].unique())
+    nb_unique_functions = len(tmp_melted_cycle_relative_abundance_samples_df['name'].unique())
 
+    # Compute height ratios according to number of function groups.
     ratios = [len(tmp_melted_cycle_relative_abundance_samples_df[tmp_melted_cycle_relative_abundance_samples_df['group']==function_group]) for function_group in function_groups]
 
     fig_width = 15
     if nb_samples > 30:
         fig_width = nb_samples / 2
-    fig, axes = plt.subplots(nrows=len(function_groups), ncols=1, figsize=(fig_width, 15), gridspec_kw={'height_ratios': ratios})
+    fig_height = 15
+    if nb_unique_functions > 30:
+        fig_height = nb_unique_functions / 2
+    fig, axes = plt.subplots(nrows=len(function_groups), ncols=1, figsize=(fig_width, fig_height), gridspec_kw={'height_ratios': ratios})
 
     if len(function_groups) > 1:
         for index, function_group in enumerate(function_groups):
@@ -596,6 +599,7 @@ def create_heatmap_functions(df, output_heatmap_filepath):
 
 
 def add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure=None, cycle_relative_abundance_samples_df=None):
+    import networkx as nx
     pathway_graph = nx.read_graphml(graph_file)
 
     # Initiate a bipartite network when giving abundance or measure files.
@@ -728,6 +732,9 @@ def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
         bigecyhmm_database_folder (str): path to bigecyhmm database output folder (containing reference graphml file).
         graph_output_file (str): path to output background image.
     """
+    from networkx.drawing.nx_agraph import graphviz_layout
+    import networkx as nx
+
     graph_file = os.path.join(bigecyhmm_database_folder, 'input_graph.graphml')
 
     bipartite_networkx_graph = nx.read_graphml(graph_file)
