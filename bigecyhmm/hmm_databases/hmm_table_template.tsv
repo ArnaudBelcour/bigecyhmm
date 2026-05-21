@@ -90,10 +90,13 @@
 	Methane metabolism	Methane production	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm, K00402.hmm	K00402				172|full	
 	Methane metabolism	Methane production	mtaB	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K04480.hmm	K04480				572.93|full	
 	Methane metabolism	Methane production	mtbA	methylated [methylamine-specific corrinoid protein]:coenzyme M methyltransferase	K14082.hmm	K14082				454.43|full	
-	Methylotrophic methanogen		mtaA	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	NF040654.hmm	K14080				400|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF008154/
-	Methylotrophic methanogen		mtbA	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	NF041608.hmm	K14082				600|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041608/
-	Methylotrophic methanogen		cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
-	CO2-dep. Methanogen.		mer	5.10-Methylenetetrahydromethanopterin reductase (Mer)	TIGR03555.1.hmm	K00320				348.7|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/
+	Methylotrophic methanogen	Methane production	mtaA	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	NF040654.hmm	K14080				400|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF008154/
+	Methylotrophic methanogen	Methane production	mtbA	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	NF041608.hmm	K14082				600|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041608/
+	Methylotrophic methanogen	Methane production	mttB	trimethylamine---corrinoid protein Co-methyltransferase	K14083.hmm	K14083				160.73|full	10.1128/mmbr.00024-22
+	Methylotrophic methanogen	Methane production	mtsA	methylthiol:coenzyme M methyltransferase [EC:2.1.1.251	K16954.hmm	K16954				462.67|full	10.1128/mmbr.00024-22
+	Methylotrophic methanogen	Methane production	mtmB	methylamine---corrinoid protein Co-methyltransferase [EC:2.1.1.248]	K16176.hmm	K16176				261.00|full	10.1128/mmbr.00024-22
+	Methylotrophic methanogen	Methane production	mtgB	glycine betaine---corrinoid protein Co-methyltransferase [EC:2.1.1.376]	K25220.hmm	K25220				536.00|full	10.1128/mmbr.00024-22
+	CO2-dep. Methanogen.	Methane production	mer	5.10-Methylenetetrahydromethanopterin reductase (Mer)	TIGR03555.1.hmm	K00320				348.7|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/
 70	Carbon fixation	CBB cycle - Rubisco	Form I	Form I RuBisCO large subunit	rubisco_form_I.hmm, K01601.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full	
 71	Carbon fixation	CBB cycle - Rubisco	Form II	Form II RuBisCO large subunit	rubisco_form_II.hmm	K01601	2 3-phospho-D-glycerate + 2 H+ = D-ribulose 1,5-bisphosphate + CO2 + H2O [RN:R00024]	3-phospho-D-glycerate; H+	D-ribulose 1,5-bisphosphate; CO2; H2O	500|full	
 	Carbon fixation	CBB cycle - Rubisco	Form II-III	Form II-III RuBisCO large subunit	rubisco_form_II_III.hmm					500|full	
