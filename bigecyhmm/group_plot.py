@@ -47,7 +47,7 @@ def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots'
     data_frame.insert(0, 'ID', range(1, len(data_frame) + 1))
     # median columns are produced by data_stats and start with 'Median '
     median_cols = [c for c in data_frame.columns if c.startswith('Median ')]
-    desired = ['ID', 'Metabolic Function', 'significant', 'p_bh'] + median_cols
+    desired = ['ID', 'Metabolic Function', 'p', 'p_bh', 'significant'] + median_cols
     df = data_frame[desired]
 
     # create table
@@ -114,6 +114,10 @@ def plot_donut(
 
     #prepare angular ticks
     num_segments = len(metabolic_labels)
+    if num_segments != len(df.index):
+        raise ValueError(
+            f"Segment count mismatch: {num_segments} labels but {len(df.index)} rows in df"
+        )
     angle_ticks = np.linspace(0, 2 * np.pi, num_segments + 1)
 
     #optional background image positioned relative to the full figure
@@ -166,8 +170,7 @@ def plot_donut(
     ax.set_rorigin(-5)      #donut hole size
     ax.set_thetamin(0)
     ax.set_thetamax(360)
-    ax.set_rticks([0, 0.25, 0.5, 0.75, 1])  # % markers
-    ax.set_rlabel_position(-22.5)
+    ax.set_rticks([0.25, 0.5, 0.75])  # % markers
     ax.set_yticklabels([''] * len(ax.get_yticks()))
     ax.set_xticks(angle_ticks)
     ax.set_xticklabels([''] * len(angle_ticks))
@@ -176,6 +179,19 @@ def plot_donut(
     ax.set_aspect('equal')
 
     mid_angles = (angle_ticks[:-1] + angle_ticks[1:]) / 2
+    # Place custom % labels on the boundary between the last and first segments.
+    axis_label_angle = angle_ticks[0]
+    for r_val, pct_label in zip([0.25, 0.5, 0.75], ['25%', '50%', '75%']):
+        ax.text(
+            axis_label_angle,
+            r_val,
+            pct_label,
+            ha='center',
+            va='center',
+            fontsize=8,
+            bbox=dict(boxstyle='round,pad=0.25', facecolor='white', alpha=0.8, edgecolor='none'),
+            zorder=5,
+        )
     inner_labels = [str(i) for i in range(1, num_segments + 1)]
     inner_r = ax.get_rmax() * -0.18
     outer_r = ax.get_rmax() * 1.12
@@ -228,10 +244,10 @@ def plot_donut(
     colors = ["#2169A7", 
               "#B5704B",
               "#9C4486",
-              "#2F6B3E", 
+              "#5FA571", 
               "#F0CA20"
               ]
-    n_steps = 30 #steps for min/max shading from median origin
+    n_steps = 30 #steps for IQR shading from median outward
 
     #If caller supplied precomputed column lists use them; otherwise resolve from `groups` dict by exact sample names
     if group_col_names is None:
@@ -251,36 +267,82 @@ def plot_donut(
 
     group_names = list(groups.keys())
     for grp_idx, (gname, cols) in enumerate(zip(group_names, group_col_names)):
+        if not cols:
+            continue
+
         median_series = df[cols].median(axis=1).to_numpy(dtype=float)
-        min_series = df[cols].min(axis=1).to_numpy(dtype=float)
-        max_series = df[cols].max(axis=1).to_numpy(dtype=float)
+        q25_series = df[cols].quantile(0.25, axis=1).to_numpy(dtype=float)
+        q75_series = df[cols].quantile(0.75, axis=1).to_numpy(dtype=float)
 
-        #radial arrays sampled densely across angles
-        r_median = np.zeros_like(angles)
-        r_min_arr = np.zeros_like(angles)
-        r_max_arr = np.zeros_like(angles)
-        for i in range(len(segment_angles) - 1):
-            mask = (angles >= segment_angles[i]) & (angles < segment_angles[i + 1])
-            r_median[mask] = median_series[i]
-            r_min_arr[mask] = min_series[i]
-            r_max_arr[mask] = max_series[i]
-        r_median[angles >= segment_angles[-1]] = median_series[-1]
-        r_min_arr[angles >= segment_angles[-1]] = min_series[-1]
-        r_max_arr[angles >= segment_angles[-1]] = max_series[-1]
+        #Build per-segment arrays and separate segments with NaN to avoid boundary bridging artifacts.
+        nan_pad = np.array([np.nan])
+        seg_a_parts, seg_med_parts, seg_q25_parts, seg_q75_parts = [], [], [], []
+        for i in range(num_segments):
+            sa_start = segment_angles[i]
+            sa_end = segment_angles[i + 1]
+            seg_a = angles[(angles > sa_start) & (angles < sa_end)]
+            seg_a = np.concatenate([[sa_start], seg_a, [sa_end]])
+            seg_med = np.full_like(seg_a, median_series[i])
+            seg_q25 = np.full_like(seg_a, q25_series[i])
+            seg_q75 = np.full_like(seg_a, q75_series[i])
+            seg_a_parts.append(np.concatenate([seg_a, nan_pad]))
+            seg_med_parts.append(np.concatenate([seg_med, nan_pad]))
+            seg_q25_parts.append(np.concatenate([seg_q25, nan_pad]))
+            seg_q75_parts.append(np.concatenate([seg_q75, nan_pad]))
 
-        #upper/lower minmax fill bands
+        r_angles = np.concatenate(seg_a_parts)
+        r_median = np.concatenate(seg_med_parts)
+        r_q25 = np.concatenate(seg_q25_parts)
+        r_q75 = np.concatenate(seg_q75_parts)
+
+        #upper/lower IQR fill bands with exponential alpha decay from the median
         for step in range(n_steps):
             frac = (step + 1) / n_steps
-            alpha = 0.03 * (1 - step / n_steps)
-            r_upper = r_median + (r_max_arr - r_median) * frac
-            ax.fill_between(angles, r_median, r_upper, color=colors[grp_idx % len(colors)], alpha=alpha)
+            alpha = 0.20 * np.exp(-4 * step / n_steps)
+            r_upper = r_median + (r_q75 - r_median) * frac
+            ax.fill_between(r_angles, r_median, r_upper, color=colors[grp_idx % len(colors)], alpha=alpha)
         for step in range(n_steps):
             frac = (step + 1) / n_steps
-            alpha = 0.03 * (1 - step / n_steps)
-            r_lower = r_median - (r_median - r_min_arr) * frac
-            ax.fill_between(angles, r_lower, r_median, color=colors[grp_idx % len(colors)], alpha=alpha)
+            alpha = 0.20 * np.exp(-4 * step / n_steps)
+            r_lower = r_median - (r_median - r_q25) * frac
+            ax.fill_between(r_angles, r_lower, r_median, color=colors[grp_idx % len(colors)], alpha=alpha)
 
-        ax.plot(angles, r_median, color=colors[grp_idx % len(colors)], label=gname)
+        ax.plot(r_angles, r_median, color=colors[grp_idx % len(colors)], label=gname, zorder=3)
+
+    #Per-sample scatter points with group/sample angular separation in each segment.
+    n_groups = len(group_col_names)
+    if n_groups > 0:
+        segment_width = (2 * np.pi) / num_segments
+        inter_group_span = segment_width * 0.70
+        group_band_width = inter_group_span / n_groups
+        intra_sample_span = group_band_width * 0.65
+
+        for seg_idx in range(num_segments):
+            for grp_idx, cols in enumerate(group_col_names):
+                if not cols:
+                    continue
+                vals = pd.to_numeric(df.iloc[seg_idx][cols], errors='coerce').dropna().values.astype(float)
+                n_vals = len(vals)
+                if n_vals == 0:
+                    continue
+
+                group_offset = (grp_idx - (n_groups - 1) / 2.0) * group_band_width
+                group_center = mid_angles[seg_idx] + group_offset
+
+                if n_vals == 1:
+                    thetas = np.array([group_center])
+                else:
+                    thetas = group_center + np.linspace(-intra_sample_span / 2, intra_sample_span / 2, n_vals)
+
+                ax.scatter(
+                    thetas,
+                    vals,
+                    s=10,
+                    color=colors[grp_idx % len(colors)],
+                    alpha=0.75,
+                    edgecolors='none',
+                    zorder=2,
+                )
 
     ax.grid(True, color='lightgrey', linewidth=0.5)
     ax.legend(prop={'size': 12})
