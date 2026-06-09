@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.2.0 (2029-04-29)
+# bigecyhmm v0.2.0 (2026-06-09)
 
 HMM files are no more stored inside a zip archive, they are in a folder to ease their tracking.
 Due to the changes in the boolean expression to infer pathways, old pathway template files from previous version are incompatible with the new version.
@@ -20,7 +20,7 @@ Due to the changes in the boolean expression to infer pathways, old pathway temp
 
 ## Modify
 
-* Use a folder to store HMM files instead of a zipe file.
+* Use a folder to store HMM files instead of a zip file.
 * Refactor boolean expression to infer pathways. Now it uses boolean operators (with `True`, `False`, `and`, `or`, `not`).
 * Refactor `query_fasta_file` in `hmm_search.py` to reduce redundant code (by creating a new function `filtering_hit`).
 * Refactor `custom_db` to take as input a new file containing all the information.
