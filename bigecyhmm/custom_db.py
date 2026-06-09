@@ -61,7 +61,16 @@ except:
 
 
 def generate_pathway_file_from_json(custom_database_json, output_folder):
-    # Get pathway cycle data from custom database.
+    """ Get pathway cycle data from custom json database.
+
+    Args:
+        custom_database_json (str): path to custom json database file.
+        output_folder (str): path to output folder.
+
+    Returns:
+        pathway_template_file (str): path to generated pathway_template_file.
+        input_graph_file (str): path to generated graph file from json database.
+    """
     logger.info("  -> Parsing cycle json file {0}".format(custom_database_json))
     with open(custom_database_json) as open_custom_database_json:
         json_cycle_database = json.load(open_custom_database_json)

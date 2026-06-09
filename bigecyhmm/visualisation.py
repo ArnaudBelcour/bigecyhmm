@@ -1032,7 +1032,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             group_medians_donut_file = os.path.join(output_folder_plots, 'group_medians_donut.png')
             group_stats_table_file = os.path.join(output_folder_plots, 'group_stats_table.png')
             statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=background_path_donut_plot,
-                        stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
+                        output_stats_csv=group_stats_file, output_cleaned_csv=cleaned_data_file, output_donut_png=group_medians_donut_file, output_table_png=group_stats_table_file)
             """Function to: 
             - resolve sample groups based on an input-tsv 
             - calculate stats on groups (kruskal-wallis with Benjamini-hochberg correction) 
@@ -1055,7 +1055,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
             group_medians_donut_file = os.path.join(output_folder_graph_plots, 'group_medians_donut.png')
             group_stats_table_file = os.path.join(output_folder_graph_plots, 'group_stats_table.png')
             statNut_run(input_tsv=cycle_abundance_sample_filepath, sample_groups_tsv=group_file, background_path=background_graph_output_file,
-                        stats_csv=group_stats_file, cleaned_csv=cleaned_data_file, donut_png=group_medians_donut_file, table_png=group_stats_table_file)
+                        output_stats_csv=group_stats_file, output_cleaned_csv=cleaned_data_file, output_donut_png=group_medians_donut_file, output_table_png=group_stats_table_file)
 
         bubble_plot_output_file = os.path.join(output_folder_abundance, 'cycle_pathways_bubble_plot.png')
         generate_bubble_plot(melted_cycle_relative_abundance_samples_df, bubble_plot_output_file, group_file)

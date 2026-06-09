@@ -3,42 +3,18 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from typing import Dict, List, Tuple
-from typing import Optional
+from typing import List, Tuple
 
 from PIL import Image
 
 
-def get_group_col_names(df: pd.DataFrame, groups_tsv: str) -> Tuple[List[str], List[List[str]], dict]:
-    # create list of column names per "analysis-group" as defined in the groups TSV. Also return group names and dict for later use.
-
-    mapping_df = pd.read_csv(groups_tsv, sep='\t', dtype=str)
-    # trim whitespace to avoid accidental mismatches
-    if 'sample' not in mapping_df.columns or 'group' not in mapping_df.columns:
-        raise ValueError("Group mapping TSV must contain columns 'sample' and 'group'")
-
-    mapping_df['sample'] = mapping_df['sample'].astype(str).str.strip()
-    mapping_df['group'] = mapping_df['group'].astype(str).str.strip()
-
-    groups_dict = mapping_df.groupby('group', sort=False)['sample'].apply(list).to_dict()
-    cols = list(df.columns)
-
-    group_names = list(groups_dict.keys())
-    resolved_groups: List[List[str]] = []
-    for samples in groups_dict.values():
-        samples_clean = [str(s).strip() for s in samples if isinstance(s, str)]
-        if '' in samples_clean:
-            matched = cols.copy()
-        else:
-            matched = [s for s in samples_clean if s in df.columns]
-        # preserve order and remove duplicates
-        uniq = list(dict.fromkeys(matched))
-        resolved_groups.append(uniq)
-
-    return group_names, resolved_groups, groups_dict
-
-
 def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots', 'group_stats_table.png')) -> None:
+    """ Plot table showcasing statistical analysis for the different comparison.
+
+    Args:
+        display_df (pd.DataFrame): DataFrame containing statistical results as columns and metabolic pathway as rows, modified to display
+        output_path (str): path to output table png
+    """
 
     data_frame = display_df.copy()
 
@@ -105,10 +81,21 @@ def plot_donut(
     metabolic_labels: List[str],
     output_path: str,
     background_path: str,
-    background_scale: float = 1.0,
     background_offset: Tuple[float, float] = (0.0, 0.0),
-    group_col_names: List[List[str]] | None = None,
-):
+    background_scale: float = 1.0,
+    group_col_names: List[List[str]] | None = None):
+    """ Draw donut plot from DataFrame containing metabolic abundance in sample, groups and background image.
+
+    Args:
+        df (pd.DataFrame): DataFrame containg metabolic function as row, samples as columns and showing abundance of metabolic pathway in sample
+        groups (dict): dictionary linking group (keys) to sample (values)
+        metabolic_labels (list): list of metabolic pathway in input file
+        output_path (str): path to output donut plot png
+        background_path (str): path to background image for donut plot
+        background_offset (tuple): adjust background image position (right, up)
+        background_scale (float): adjust background image scale relative to donut
+        group_col_names (list): list of lists, each list is linked to a group and contains the samples associated with the group
+    """
     #create figure
     fig = plt.figure(figsize=(20, 20))
 
@@ -358,10 +345,20 @@ def combine_images_side_by_side(
     output_path: str,
     padding: int = 20,
     match_height: str = 'left',  # 'left' | 'right' | 'max' | 'min'
-    bg_color: Tuple[int, int, int] = (255, 255, 255),
-) -> str:
-# this script combines the two output images of the table and the donut side-by-side for easier viewing.
-  
+    bg_color: Tuple[int, int, int] = (255, 255, 255)) -> str:
+    """ This script combines the two output images of the table and the donut side-by-side for easier viewing.
+
+    Args:
+        left_path (str): path to donut plot png
+        right_path (str): path to table png file
+        output_path (str): path to output combined png
+        padding (int): padding to compute total weight
+        match_height (str): how to match height
+        bg_color (tuple): colour for background
+
+    Returns:
+        output_path (str): path to output combined png
+    """
     os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
 
     left = Image.open(left_path).convert('RGB')
@@ -395,4 +392,5 @@ def combine_images_side_by_side(
     out.paste(right, (left.size[0] + padding, 0))
 
     out.save(output_path, dpi=(300, 300))
+
     return output_path
