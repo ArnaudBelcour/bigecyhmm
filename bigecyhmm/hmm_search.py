@@ -15,7 +15,6 @@
 
 import csv
 import os
-import zipfile
 import logging
 import pyhmmer
 import time

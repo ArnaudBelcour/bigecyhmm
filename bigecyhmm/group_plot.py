@@ -18,19 +18,19 @@ def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots'
 
     data_frame = display_df.copy()
 
-    #Assume data_stats.py provides exact column names. Fail if not.
+    # Assume display_df from group_analysis.py provides exact column names. Fail if not.
     data_frame = data_frame.reset_index(drop=True)
     data_frame.insert(0, 'ID', range(1, len(data_frame) + 1))
-    # median columns are produced by data_stats and start with 'Median '
+    # Median columns start with 'Median '.
     median_cols = [c for c in data_frame.columns if c.startswith('Median ')]
-    desired = ['ID', 'Metabolic Function', 'p', 'p_bh', 'significant'] + median_cols
-    df = data_frame[desired]
+    desired_cols = ['ID', 'Metabolic Function', 'p', 'p_bh', 'significant'] + median_cols
+    df = data_frame[desired_cols]
 
-    # create table
-    # use the same figure height as the donut plot (20 inches) so combined figures align vertically
+    # Use the same figure height as the donut plot (20 inches) so combined figures align vertically.
     fig, ax = plt.subplots(figsize=(8, 20))
     ax.axis('off')
 
+    # Generate the dataframe as a table on an ax object.
     table = ax.table(
         cellText=df.values.tolist(),
         colLabels=df.columns.tolist(),
@@ -46,7 +46,7 @@ def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots'
     except Exception:
         pass
 
-    #draw horizontal bottom edges for every row, and a thicker one for the top row
+    # Draw horizontal bottom edges for every row, and a thicker one for the top row.
     try:
         for (row, col), cell in table.get_celld().items():
             cell.set_edgecolor('gray')
@@ -296,7 +296,7 @@ def plot_donut(
 
         ax.plot(r_angles, r_median, color=colors[grp_idx % len(colors)], label=gname, zorder=3)
 
-    #Per-sample scatter points with group/sample angular separation in each segment.
+    # Per-sample scatter points with group/sample angular separation in each segment.
     n_groups = len(group_col_names)
     if n_groups > 0:
         segment_width = (2 * np.pi) / num_segments
@@ -321,6 +321,7 @@ def plot_donut(
                 else:
                     thetas = group_center + np.linspace(-intra_sample_span / 2, intra_sample_span / 2, n_vals)
 
+                # This adds for each sample a dot linked to a function showing the abundance of this function.
                 ax.scatter(
                     thetas,
                     vals,

@@ -24,7 +24,7 @@ import time
 import pyhmmer
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder
-from bigecyhmm.diagram_cycles import create_input_diagram, get_diagram_pathways_hmms
+from bigecyhmm.diagram_cycles import create_input_diagram
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import get_link_pathway_function_name, read_esmecata_proteome_file
 from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
