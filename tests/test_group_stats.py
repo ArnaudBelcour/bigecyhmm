@@ -119,7 +119,7 @@ def test_generate_custom_db_from_tsv_one_file():
 
 def test_get_group_col_names():
 
-    from bigecyhmm.group_plot import get_group_col_names
+    from bigecyhmm.group_analysis import get_group_col_names
 
     input_folder = os.path.join('input_data', 'group_stats')
 
@@ -133,9 +133,10 @@ def test_get_group_col_names():
 
     #load cycle_abundance_sample.tsv
     df = pd.read_csv(os.path.join(input_folder, 'cycle_abundance_sample.tsv'), sep='\t', index_col=0)
+    mapping_df = pd.read_csv(os.path.join(input_folder, 'assigned_groups.tsv'), sep='\t', dtype=str)
 
     #test get_group_col_names
-    group_names, resolved_groups, groups_dict = get_group_col_names(df, os.path.join(input_folder, 'assigned_groups.tsv'))
+    group_names, resolved_groups, groups_dict = get_group_col_names(df, mapping_df)
    
     assert group_names == expected_group_names
     assert resolved_groups == expected_resolved_groups
