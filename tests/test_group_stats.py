@@ -180,7 +180,6 @@ def test_run_statistics():
     shutil.rmtree(output_folder)
     
 
-
 def test_donut_plot():
 
     from bigecyhmm.group_plot import plot_donut

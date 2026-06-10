@@ -40,12 +40,12 @@ bigecyhmm is developed to be as minimalist as possible. It requires:
 
 The HMMs used are stored inside the package as a folder ([hmm_files](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 19 Mbwhen compressed) but in this way, you do not have to download other files and can directly use it.
 
-For `bigecyhmm_visualisation`, you also needs the following packages:
+For `bigecyhmm_visualisation` (linking metabolic predictions to organism abundance), you also needs the following packages:
 
 - [pandas](https://pypi.org/project/pandas/): to read the input files.
 - [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
 
-For `bigecyhmm_custom`, you also needs the following package:
+For `bigecyhmm_custom` (use custom database instead of the default one), you also needs the following package:
 
 - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
