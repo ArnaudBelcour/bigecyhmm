@@ -7,6 +7,21 @@ from typing import List, Tuple
 
 from PIL import Image
 
+# Colors for groups.
+GROUP_COLORS = ["#2169A7", "#B5704B", "#9C4486",
+    "#5FA571", "#F0CA20"]
+
+# 26 colours from Alphabet project (minus white):
+# https://en.wikipedia.org/wiki/Help:Distinguishable_colors
+ALPHABET_PROJECT_DISTINCT_HEX_COLORS = ["#F0A3FF",
+    "#0075DC", "#993F00", "#4C005C", "#191919",
+    "#005C31", "#2BCE48", "#FFCC99", "#808080",
+    "#94FFB5", "#8F7C00", "#9DCC00", "#C20088",
+    "#003380", "#FFA405", "#FFA8BB", "#426600",
+    "#FF0010", "#5EF1F2", "#00998F", "#E0FF66",
+    "#740AFF", "#990000", "#FFFF80", "#FFFF00",
+    "#FF5005"]
+
 
 def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots', 'group_stats_table.png')) -> None:
     """ Plot table showcasing statistical analysis for the different comparison.
@@ -228,12 +243,7 @@ def plot_donut(
     #prepare radial series and draw filled bands + median lines
     angles = np.linspace(0, 2 * np.pi, 1000)
     segment_angles = np.linspace(0, 2 * np.pi, num_segments + 1)
-    colors = ["#2169A7", 
-              "#B5704B",
-              "#9C4486",
-              "#5FA571", 
-              "#F0CA20"
-              ]
+
     n_steps = 30 #steps for IQR shading from median outward
 
     #If caller supplied precomputed column lists use them; otherwise resolve from `groups` dict by exact sample names
@@ -253,6 +263,11 @@ def plot_donut(
             group_col_names.append(uniq)
 
     group_names = list(groups.keys())
+    if len(group_names) > len(GROUP_COLORS):
+        colors = ALPHABET_PROJECT_DISTINCT_HEX_COLORS
+    else:
+        colors = GROUP_COLORS
+
     for grp_idx, (gname, cols) in enumerate(zip(group_names, group_col_names)):
         if not cols:
             continue
