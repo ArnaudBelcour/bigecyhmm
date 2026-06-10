@@ -507,7 +507,7 @@ output_folder
 As there are no diagram templates, `diagram_figures` and `diagram_input` are not generated. `bigecyhmm_custom` relies on network representation to generate graph visualisations.
 To do so, it creates network file (`input_graph.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation.
 
-Output folder of `bigecyhmm_custom` can be used as input to `bigecyhmm_visualisation`. This will generate similar output files except for the diagram that can not be generated. But a visualisation will be made for the donut plot either: (1) using itnernal template for custom internal database, (2) automatically generated bipartite graph representing the metabolism or (3) you can use your own background image with option ``--background-file`.
+Output folder of `bigecyhmm_custom` can be used as input to `bigecyhmm_visualisation`. This will generate similar output files except for the diagram that can not be generated. But a visualisation will be made for the donut plot either: (1) using itnernal template for custom internal database, (2) automatically generated bipartite graph representing the metabolism or (3) you can use your own background image with option `--background-file`.
 
 ## 6 Citation
 

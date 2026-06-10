@@ -8,7 +8,7 @@ import logging
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
-from bigecyhmm.group_plot import plot_donut, plot_table, combine_images_side_by_side, combine_images_side_by_side
+from bigecyhmm.group_plot import plot_donut, plot_table, combine_images_side_by_side
 from bigecyhmm import PATHWAY_TEMPLATE_FILE
 
 from scipy.stats import kruskal

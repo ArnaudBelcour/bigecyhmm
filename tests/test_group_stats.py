@@ -189,9 +189,9 @@ def test_donut_plot():
     output_folder = 'output_folder'
 
     groups_dict = {
-        'first_group': ['sample_1', 'sample_2', 'sample_3'],   
-        'second_group': ['sample_4', 'sample_5', 'sample_6'],   
-        'third_group': ['sample_7', 'sample_8', 'sample_9'],    
+        'first_group': ['sample_1', 'sample_2', 'sample_3'],
+        'second_group': ['sample_4', 'sample_5', 'sample_6'],
+        'third_group': ['sample_7', 'sample_8', 'sample_9'],
     }
 
     df = pd.read_csv(os.path.join(input_folder, 'cycle_abundance_sample.tsv'), sep='\t', index_col=0)
@@ -209,9 +209,44 @@ def test_donut_plot():
         group_col_names=None
     )
 
-    assert os.path.exists(os.path.join(output_folder, 'donut_plot.png'))    
+    assert os.path.exists(os.path.join(output_folder, 'donut_plot.png'))
 
     shutil.rmtree(output_folder)
+
+
+def test_donut_plot_background_image():
+
+    from bigecyhmm.group_plot import plot_donut
+    from bigecyhmm import TEMPLATE_BACKGROUND_BIGECYHMM
+
+    input_folder = os.path.join('input_data', 'group_stats')
+    output_folder = 'output_folder'
+
+    groups_dict = {
+        'first_group': ['sample_1', 'sample_2', 'sample_3'],
+        'second_group': ['sample_4', 'sample_5', 'sample_6'],
+        'third_group': ['sample_7', 'sample_8', 'sample_9'],
+    }
+
+    df = pd.read_csv(os.path.join(input_folder, 'cycle_abundance_sample.tsv'), sep='\t', index_col=0)
+
+    metabolic_labels = df.index.astype(str).tolist()
+
+    plot_donut(
+        df,
+        groups_dict,
+        metabolic_labels,
+        output_path=os.path.join(output_folder, 'donut_plot.png'),
+        background_path=TEMPLATE_BACKGROUND_BIGECYHMM,
+        background_scale=1.0,
+        background_offset=(0.0, 0.0),
+        group_col_names=None
+    )
+
+    assert os.path.exists(os.path.join(output_folder, 'donut_plot.png'))
+
+    shutil.rmtree(output_folder)
+
 
 
 def test_plot_table():
