@@ -25,6 +25,7 @@ Bigecyhmm is a Python package to search for genes associated with biogeochemical
         - [5.1.2.1 Inputs: custom tsv file](#5121-inputs-custom-tsv-file)
         - [5.1.2.2 Inputs: custom json file](#5122-inputs-custom-json-file)
         - [5.1.2.3 Inputs: folder](#5123-inputs-folder)
+        - [5.1.2.3 Inputs: internal custom database](#5123-inputs-internal-custom-database)
       - [5.1.3 Usage](#513-usage)
       - [5.1.3 Outputs](#513-outputs)
   - [6 Citation](#6-citation)
@@ -338,10 +339,47 @@ This command requires three packages:
 
 #### 5.1.2 Inputs
 
-This command line expects two arguments:
+This command expects two mandatory arguments:
 
 - `-i`: an input protein sequence fasta file/folder.
 - `-d`: a file containing the custom databases (potentially a folder). This file can be either a `.json` file ([carbon cycle json file](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/custom_db/carbon_cycle.json)) or a `.tsv` file ([carbon_cycle_od file](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/custom_db_one_file/carbon_cycle_od.tsv)). If it finds one, it will search for associated folder/file with the same name containing HMMs. Furthermore, if a `.json` file is found, it will search for a `.tsv` corresponding to the `hmm_template`.
+
+Here are several examples of inputs:
+
+- A tsv file and an HMM folder (associated argument `-d custom_db_cycle.tsv`):
+```
+custom_db_cycle.tsv
+custom_db_cycle
+```
+
+- use internal custom dabatase `-d internal_hydrogen_table`:
+
+- Only a json file, bigecyhmm will use its internal HMM database to search for HMM files from the json file (associated argument `-d custom_db_cycle.json`):
+```
+custom_db_cycle.json
+```
+
+- A folder with one json file and tsv file/folder (associated argument `-d custom_db_cycle`):
+```
+custom_db_cycle
+├── custom_db_cycle.json
+├── custom_db_cycle.tsv
+├── custom_db_cycle
+```
+
+- A folder with several json files (associated argument `-d custom_db_cycle`):
+```
+custom_db_cycle
+├── carbon_cycle.json
+├── carbon_cycle.tsv
+├── carbon_cycle
+├── nitrogen_cycle.json
+├── nitrogen_cycle.tsv
+├── nitrogen_cycle
+├── sulfur_cycle.json
+├── sulfur_cycle.tsv
+├── sulfur_cycle
+```
 
 ##### 5.1.2.1 Inputs: custom tsv file
 
@@ -413,34 +451,18 @@ input_folder
 
 An example with mini database is present in the [test folder](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/test/input_data/mini_custom_db).
 
-Here are several examples of inputs:
+##### 5.1.2.3 Inputs: internal custom database
 
-- Only a json file, bigecyhmm will use its internal HMM database to search for HMM files from the json file (associated argument `-d custom_db_cycle.json`):
-```
-custom_db_cycle.json
-```
+Several custom database (using either json or tsv files) are already present in bigecyhmm and can be called by using a str (such as `-d internal_hydrogen_table`):
 
-- A folder with one json file and tsv file/folder (associated argument `-d custom_db_cycle`):
-```
-custom_db_cycle
-├── custom_db_cycle.json
-├── custom_db_cycle.tsv
-├── custom_db_cycle
-```
-
-- A folder with several json files (associated argument `-d custom_db_cycle`):
-```
-custom_db_cycle
-├── carbon_cycle.json
-├── carbon_cycle.tsv
-├── carbon_cycle
-├── nitrogen_cycle.json
-├── nitrogen_cycle.tsv
-├── nitrogen_cycle
-├── sulfur_cycle.json
-├── sulfur_cycle.tsv
-├── sulfur_cycle
-```
+- `internal_hydrogen_table`: a tsv custom database focus on hydrogen metabolism ((custom_hydrogen_central_cycles.tsv)[https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/custom_hydrogen_central_cycles.tsv]).
+- multiple json files that are similar to the biogeochemical cycles present in bigecyhmm default database:
+  - `internal_carbon`: carbon-centered cycle ((custom_carbon_cycle.json)[https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/custom_carbon_cycle.json]).
+  - `internal_sulfur`: sulfur-centered cycle.
+  - `internal_nitrogen`: nitrogen-centered cycle.
+  - `internal_phosphorus`: phosphorus-centered cycle.
+  - `internal_other`: other cycle (arsenate, selenate).
+  - `internal_all`: combinations of all the previous cycles.
 
 #### 5.1.3 Usage
 
@@ -482,8 +504,10 @@ output_folder
 ├── bigecyhmm_custom_metadata.json
 ```
 
-As there are no diagram template, `diagram_figures` and `diagram_input` are not generated. `bigecyhmm_custom` relies on network representation to generate graph visualisations.
-To do so, it creates network file (`input_graph.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation. Furthermore, they will be used by `bigecyhmm_visualisation` to automatically generate a background figure for the donut plot.
+As there are no diagram templates, `diagram_figures` and `diagram_input` are not generated. `bigecyhmm_custom` relies on network representation to generate graph visualisations.
+To do so, it creates network file (`input_graph.graphml`) as output. These files can be used in network software (such as [Cytoscape](https://cytoscape.org/), or [pyvis](https://github.com/WestHealth/pyvis)) to generate visualisation.
+
+Output folder of `bigecyhmm_custom` can be used as input to `bigecyhmm_visualisation`. This will generate similar output files except for the diagram that can not be generated. But a visualisation will be made for the donut plot either: (1) using itnernal template for custom internal database, (2) automatically generated bipartite graph representing the metabolism or (3) you can use your own background image with option ``--background-file`.
 
 ## 6 Citation
 
