@@ -254,4 +254,3 @@ def test_combine_images_side_by_side():
 
     shutil.rmtree(output_folder)
 
- 
