@@ -30,6 +30,7 @@ TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_tot
 TEMPLATE_PHOSPHORUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_cycle.png')
 TEMPLATE_PHOSPHORUS_GENE_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_genes.png')
 TEMPLATE_CUSTOM_CENTRAL_HYDROGEN = os.path.join(ROOT, 'templates', 'template_central_hydrogen.png')
+TEMPLATE_BACKGROUND_BIGECYHMM = os.path.join(ROOT, 'templates', 'template_background.png')
 
 CUSTOM_CARBON_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_carbon_cycle.json')
 CUSTOM_SULFUR_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_sulfur_cycle.json')

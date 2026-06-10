@@ -1,4 +1,5 @@
 import os
+import csv
 import tempfile
 import pandas as pd
 import numpy as np
@@ -8,6 +9,7 @@ from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
 from bigecyhmm.group_plot import plot_donut, plot_table, combine_images_side_by_side, combine_images_side_by_side
+from bigecyhmm import PATHWAY_TEMPLATE_FILE
 
 from scipy.stats import kruskal
 from statsmodels.stats.multitest import multipletests
@@ -270,21 +272,22 @@ def statNut_run(input_tsv: str = DEFAULT_INPUT_TSV,
         background_offset (tuple): adjust background image position (right, up)
         background_scale (float): adjust background image scale relative to donut
     """
+    # Load input tsv, first column (metabo. funct. name) is index.
+    df = pd.read_csv(input_tsv, sep='\t', index_col=0)
+
     # If the provided sample_groups_tsv does not exist, create a temporary one which assigns all samples to a single group called "all samples". 
     temp_groups_path = None
     created_temp_groups = False
     if not sample_groups_tsv or not os.path.exists(sample_groups_tsv):
         # create a temporary TSV that instructs the pipeline to select all samples
-        tf = tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.tsv')
-        tf.write('sample\tgroup\n')
-        tf.write('\tAll Samples\n')
-        tf.close()
-        temp_groups_path = tf.name
+        with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.tsv') as csvfile:
+            writer = csv.writer(csvfile, delimiter='\t')
+            writer.writerow(['sample', 'group'])
+            for sample in df.columns:
+                writer.writerow([sample, 'All Samples'])
+            temp_groups_path = csvfile.name
         sample_groups_tsv = temp_groups_path
         created_temp_groups = True
-
-    # Load input tsv, first column (metabo. funct. name) is index.
-    df = pd.read_csv(input_tsv, sep='\t', index_col=0)
 
     # Load group tsv file.
     mapping_df = pd.read_csv(sample_groups_tsv, sep='\t', dtype=str)
@@ -300,14 +303,15 @@ def statNut_run(input_tsv: str = DEFAULT_INPUT_TSV,
 
     # Use index labels for plotting.
     metabolic_labels = df.index.tolist()
+    all_bigecyhmm_template_cycles = pd.read_csv(PATHWAY_TEMPLATE_FILE, sep='\t')['Pathways'].tolist()
+    if set(all_bigecyhmm_template_cycles).issubset(set(metabolic_labels)):
+        metabolic_labels = [label.split(':')[1] for label in metabolic_labels]
 
     # Avoid changing original display_df.
     display_df = display_df.copy()
 
     os.makedirs(os.path.dirname(output_donut_png), exist_ok=True)
-    plot_donut(
-        cleaned_df,
-        groups_dict,
+    plot_donut(cleaned_df, groups_dict,
         metabolic_labels=metabolic_labels,
         group_col_names=group_col_names,
         output_path=output_donut_png,

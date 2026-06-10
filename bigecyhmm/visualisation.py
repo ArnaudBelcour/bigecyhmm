@@ -31,7 +31,7 @@ import sys
 import time
 
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE, TEMPLATE_CUSTOM_CENTRAL_HYDROGEN
+from bigecyhmm import PATHWAY_TEMPLATE_FILE, HMM_TEMPLATE_FILE, CUSTOM_HYDROGEN_TABLE, TEMPLATE_CUSTOM_CENTRAL_HYDROGEN, TEMPLATE_BACKGROUND_BIGECYHMM
 from bigecyhmm.utils import is_valid_dir, read_measures_file, read_esmecata_proteome_file
 from bigecyhmm.diagram_cycles import create_carbon_cycle, create_nitrogen_cycle, create_sulfur_cycle, create_other_cycle, create_phosphorus_cycle, get_diagram_pathways_hmms
 from bigecyhmm.group_analysis import statNut_run
@@ -1021,6 +1021,8 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
                 phosphorus_cycle_file = os.path.join(output_folder_cycle_diagram, sample + '_phosphorus_cycle.png')
                 create_phosphorus_cycle(diagram_data, phosphorus_cycle_file, 'Abundance', 'Percentage')
 
+        if background_path_donut_plot is None and set(all_bigecyhmm_template_cycles).issubset(set(all_cycles)):
+            background_path_donut_plot = TEMPLATE_BACKGROUND_BIGECYHMM
         if background_path_donut_plot is None and set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
             background_path_donut_plot = TEMPLATE_CUSTOM_CENTRAL_HYDROGEN
         if background_path_donut_plot is not None:

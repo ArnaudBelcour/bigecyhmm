@@ -90,15 +90,9 @@ def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots'
     plt.close(fig)
 
 
-def plot_donut(
-    df: pd.DataFrame,
-    groups: dict,
-    metabolic_labels: List[str],
-    output_path: str,
-    background_path: str,
-    background_offset: Tuple[float, float] = (0.0, 0.0),
-    background_scale: float = 1.0,
-    group_col_names: List[List[str]] | None = None):
+def plot_donut(df: pd.DataFrame, groups: dict, metabolic_labels: List[str], output_path: str,
+    background_path: str, background_offset: Tuple[float, float] = (0.0, 0.0),
+    background_scale: float = 1.0, group_col_names: List[List[str]] | None = None):
     """ Draw donut plot from DataFrame containing metabolic abundance in sample, groups and background image.
 
     Args:
@@ -355,11 +349,8 @@ def plot_donut(
     plt.close(fig)
 
 
-def combine_images_side_by_side(
-    left_path: str,
-    right_path: str,
-    output_path: str,
-    padding: int = 20,
+def combine_images_side_by_side(left_path: str, right_path: str,
+    output_path: str, padding: int = 20,
     match_height: str = 'left',  # 'left' | 'right' | 'max' | 'min'
     bg_color: Tuple[int, int, int] = (255, 255, 255)) -> str:
     """ This script combines the two output images of the table and the donut side-by-side for easier viewing.
@@ -369,7 +360,7 @@ def combine_images_side_by_side(
         right_path (str): path to table png file
         output_path (str): path to output combined png
         padding (int): padding to compute total weight
-        match_height (str): how to match height
+        match_height (str): how to match height ('left' | 'right' | 'max' | 'min')
         bg_color (tuple): colour for background
 
     Returns:
