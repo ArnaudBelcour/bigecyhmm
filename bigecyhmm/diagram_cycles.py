@@ -195,6 +195,19 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
         for pathway in all_pathways:
             csvwriter.writerow([pathway, all_pathways[pathway], all_pathways[pathway] / len(org_hmms)])
 
+
+def create_pathway_presence_files(input_folder, output_folder, pathway_template_file=PATHWAY_TEMPLATE_FILE):
+    """Create fiels showcasing the occurrence of pathway in organisms.
+
+    Args:
+        input_folder (str): path to HMM search results folder (one tsv file per organism)
+        output_folder (str): path to output folder
+        pathway_template_file (str): path to pathway template file
+    """
+    pathway_hmms, pathway_expression, sorted_pathways = get_diagram_pathways_hmms(pathway_template_file)
+    org_hmms = parse_result_files(input_folder)
+    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, pathway_expression, org_hmms, pathway_hmms)
+
     pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
     all_orgs = list(set([org for org in org_pathways]))
     with open(pathway_presence_file, 'w') as open_pathway_presence_file:
@@ -212,7 +225,7 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
             csvwriter.writerow([pathway, *[org_pathways_hmms[org][pathway] for org in all_orgs]])
 
 
-def parse_diagram_folder(input_diagram_file):
+def parse_diagram_file(input_diagram_file):
     """Parse functions in Total.R_input.txt.
 
     Args:
@@ -478,7 +491,7 @@ def create_diagram_figures(input_diagram_file, output_folder):
     if not os.path.exists(biogeochemical_diagram_folder):
         os.mkdir(biogeochemical_diagram_folder)
 
-    diagram_data = parse_diagram_folder(input_diagram_file)
+    diagram_data = parse_diagram_file(input_diagram_file)
 
     first_term = 'Occurrence'
     second_term = 'Percentage'

@@ -138,7 +138,7 @@ def compute_abundance_per_tax_rank(sample_abundance, observation_names_tax_ranks
 
     Args:
         sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
-        observation_names_tax_id_names (dict): dictionary associating organism name with tax_id_name
+        observation_names_tax_ranks (dict): dictionary associating organism name with tax_id_name
         sample_tot_abundance (dict): for each sample, the total abundance of all organisms in the sample.
 
     Returns:
@@ -359,57 +359,14 @@ def create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_fold
     hmm_abundance_df.to_csv(os.path.join(output_folder_abundance, 'hmm_functional_profile.tsv'), sep='\t')
 
 
-def create_swarmplot_community(df_seaborn, output_file_name):
-    """Create swarmplot from pandas dataframe with function as 'name' column' and associated ratio as a second column
-
-    Args:
-        df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-        output_file_name (path): path to the output file.
-    """
-    fig, axes = plt.subplots(figsize=(40,20))
-    plt.rc('font', size=30)
-    ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', s=10)
-    [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
-    plt.xticks(rotation=90)
-    plt.savefig(output_file_name, bbox_inches="tight")
-    plt.clf()
-
-
-def create_swarmplot_sample(df_seaborn, output_file_name):
-    """Create swarmplot from pandas dataframe with function as 'name' column' and associated ratio as a second column
-
-    Args:
-        df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-        output_file_name (path): path to the output file.
-    """
-    fig, axes = plt.subplots(figsize=(40,20))
-    plt.rc('font', size=30)
-    ax = sns.swarmplot(data=df_seaborn, x='name', y='ratio', hue='sample', s=10)
-    [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
-    plt.xticks(rotation=90)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(output_file_name, bbox_inches="tight")
-    plt.clf()
-
-
-def create_boxplot_sample(df_seaborn, output_file_name):
-    """Create boxplot from pandas dataframe with function as 'name' column' and associated ratio as a second column
-
-    Args:
-        df_seaborn (pd.DataFrame): dataframe pandas containing a column with the name of function, a second column with the ratio of organisms having it in the community and a third column for the sample
-        output_file_name (path): path to the output file.
-    """
-    fig, axes = plt.subplots(figsize=(40,20))
-    plt.rc('font', size=30)
-    ax = sns.boxplot(data=df_seaborn, x='name', y='ratio', hue='sample')
-    [ax.axvline(x+.5,color='k') for x in ax.get_xticks()]
-    plt.xticks(rotation=90)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(output_file_name, bbox_inches="tight")
-    plt.clf()
-
 
 def create_polar_plot(df_seaborn_abundance, output_file):
+    """ Generate polar plot showing function abundance in samples.
+
+    Args:
+        df_seaborn_abundance (pd.DataFrame): DataFrame containing abundance of metabolic functions in samples.
+        output_file (str): path to the output file.
+    """
     fig, ax = plt.subplots(1, 1, figsize=(10, 18), subplot_kw={'projection': 'polar'})
 
     removed_functions = ['N-S-10:Nitric oxide dismutase', 'S-S-10:Polysulfide reduction']
@@ -600,6 +557,14 @@ def create_heatmap_functions(df, output_heatmap_filepath):
 
 
 def add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_measure=None, cycle_relative_abundance_samples_df=None):
+    """Generate biparite graph with function abundance and metabolite measure.
+
+    Args:
+        graph_file (str): path to reference graphml file containing bipartite graph.
+        output_folder (str): path to the output folder.
+        metabolite_measure (str): path to metaboltie measure file.
+        cycle_relative_abundance_samples_df (pd.DataFrame): DataFrame containing relative abundance of metabolic functions.
+    """
     import networkx as nx
     pathway_graph = nx.read_graphml(graph_file)
 
@@ -638,8 +603,15 @@ def add_abundance_and_measure_to_graph(graph_file, output_folder, metabolite_mea
 
 def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_names_tax_ranks, sample_tot_abundance,
                                               output_folder_abundance):
-    # Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples
-    # This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample.
+    """Compute and create a visualisation of the abundance of selected taxonomic rank by esmecata in the different samples
+    This allows to identify the coverage of taxon found by esmecata compared to all the organisms in the sample.
+
+    Args:
+        sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
+        observation_names_tax_ranks (dict): dictionary associating organism name with tax_id_name
+        sample_tot_abundance (dict): for each sample, the total abundance of all organisms in the sample.
+        output_folder_abundance (str): path to output folder containing abundance related results.
+    """
     data_abundance_taxon_sample, sample_abundance_tax_rank, data_abundance_organism_sample = compute_abundance_per_tax_rank(sample_abundance, 
                                                                                                                             observation_names_tax_ranks, sample_tot_abundance)
 
@@ -682,6 +654,14 @@ def generate_barplot_esmecata_taxon_abundance(sample_abundance, observation_name
 
 
 def taxon_function_heatmap(df_cycle_occurrence_organisms, proteome_tax_id_file, sample_abundance, output_folder):
+    """ Generate heatmap showing taxon abundance in samples according to taxon used by EsMeCaTa for each function.
+
+    Args:
+        df_cycle_occurrence_organisms (pd.DataFrame): occurrence of metabolic pathways/cycle in organisms.
+        proteome_tax_id_file (str): path to EsMECaTa proteome_tax_id_file.
+        sample_abundance (dict): for each sample, subdict with the abundance of the different organisms.
+        output_folder (str): path to output folder.
+    """
     df_abundance = pd.DataFrame(sample_abundance)
     for col in df_abundance.columns:
         df_abundance[col] = df_abundance[col] / df_abundance[col].sum()
@@ -1026,7 +1006,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         if background_path_donut_plot is None and set(all_custom_central_hydrogen_template_cycles).issubset(set(all_cycles)):
             background_path_donut_plot = TEMPLATE_CUSTOM_CENTRAL_HYDROGEN
         if background_path_donut_plot is not None:
-            output_folder_plots = os.path.join(output_folder_abundance, 'plots')
+            output_folder_plots = os.path.join(output_folder_abundance, 'plot_donut')
             if not os.path.exists(output_folder_plots):
                 os.mkdir(output_folder_plots)
             group_stats_file = os.path.join(output_folder_plots, 'group_stats.tsv')
@@ -1044,7 +1024,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
 
         # Generate a donut graph visualisation from input graph file from custom_db. 
         if bigecyhmm_run_database is not None:
-            output_folder_graph_plots = os.path.join(output_folder_abundance, 'graph_plots')
+            output_folder_graph_plots = os.path.join(output_folder_abundance, 'plot_donut_graph')
             if not os.path.exists(output_folder_graph_plots):
                 os.mkdir(output_folder_graph_plots)
             # Generate background figure from graphml in database folder.
@@ -1074,7 +1054,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         function_absolute_abundance_samples_df = pd.DataFrame(function_abundance_samples)
         function_absolute_abundance_samples_df.index.name = 'name'
         function_absolute_abundance_samples_df.sort_index(inplace=True)
-        function_absolute_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample_absolute.tsv'), sep='\t')
+        function_absolute_abundance_samples_df.to_csv(os.path.join(output_folder_abundance, 'function_abundance_sample_raw.tsv'), sep='\t')
 
         logger.info("  -> Compute function abundance participation in each sample.")
         output_folder_function_participation = os.path.join(output_folder_abundance, 'function_participation')
@@ -1113,17 +1093,7 @@ def create_visualisation(bigecyhmm_output, output_folder, esmecata_output_folder
         # Create HMM functional profiles.
         logger.info("  -> Create HMM functional profiles.")
         create_ko_functional_profile(bigecyhmm_output, sample_abundance, output_folder_abundance, tax_id_names_observation_names)
-    """
-    if abundance_file_path is not None:
-        output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function.png')
-        visualise_barplot_category('Fermentation', gene_categories, df_seaborn_abundance, output_file_name)
-        output_file_name = os.path.join(output_folder_abundance, 'barplot_gene_function_2.png')
-        kept_names = [name for name in df_seaborn_abundance['name'] if 'Wood' in name]
-        df_seaborn_abundance = df_seaborn_abundance[df_seaborn_abundance['name'].isin(kept_names)]
-        visualise_barplot_category('Carbon fixation', gene_categories, df_seaborn_abundance, output_file_name)
-        output_heatmap_filepath = os.path.join(output_folder_abundance, 'heatmap_abundance_samples.png')
-        create_heatmap_functions(df_heatmap_abundance_samples, output_heatmap_filepath)
-    """
+
     # If there is a graph in bigecyhmm folder, run graph analyses.
     graph_file = os.path.join(bigecyhmm_output, 'input_graph.graphml')
     if os.path.exists(graph_file):

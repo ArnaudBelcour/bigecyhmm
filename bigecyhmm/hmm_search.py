@@ -26,7 +26,7 @@ from multiprocessing import Pool
 from PIL import __version__ as pillow_version
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files, get_link_pathway_function_name
-from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
+from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures, create_pathway_presence_files
 from bigecyhmm import __version__ as bigecyhmm_version
 from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
@@ -358,6 +358,7 @@ def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_templat
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
     create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
+    create_pathway_presence_files(hmm_output_folder, output_folder, pathway_template_file)
 
     input_diagram_file = os.path.join(output_folder, 'Total.R_input.txt')
     create_diagram_figures(input_diagram_file, output_folder)

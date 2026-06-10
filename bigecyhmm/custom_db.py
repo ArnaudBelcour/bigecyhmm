@@ -24,7 +24,7 @@ import time
 import pyhmmer
 
 from bigecyhmm.utils import is_valid_dir, file_or_folder
-from bigecyhmm.diagram_cycles import create_input_diagram
+from bigecyhmm.diagram_cycles import create_pathway_presence_files
 from bigecyhmm.hmm_search import get_hmm_thresholds, hmm_search_write_results, create_major_functions
 from bigecyhmm.utils import get_link_pathway_function_name, read_esmecata_proteome_file
 from bigecyhmm.custom_tsv_parser import generate_custom_db_from_tsv_one_file
@@ -260,9 +260,7 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_folder=HMM_FOLDER, p
     logger.info("  -> Create output files.")
     function_matrix_file = os.path.join(output_folder, 'function_presence.tsv')
     create_major_functions(hmm_output_folder, function_matrix_file, hmm_template_file)
-
-    input_diagram_folder = os.path.join(output_folder, 'diagram_input')
-    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
+    create_pathway_presence_files(hmm_output_folder, output_folder, pathway_template_file)
 
     duration = time.time() - start_time
     metadata_json = {}

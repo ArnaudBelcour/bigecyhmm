@@ -33,7 +33,7 @@ def generate_hmm_template(hmm_custom_db_df, metabolic_functions):
     """
     hmm_custom_db_df['#Entry'] = [graph_nb.split('.')[0] for graph_nb in hmm_custom_db_df['Graph_No']]
     hmm_custom_db_df['Category'] = [metabolic_functions[graph_nb] for graph_nb in hmm_custom_db_df['#Entry']]
-    hmm_custom_db_df['Function'] = ['' for graph_nb in hmm_custom_db_df['#Entry']]
+    hmm_custom_db_df['Function'] = hmm_custom_db_df['enzyme_long']
 
     hmm_custom_db_df['Gene abbreviation'] = hmm_custom_db_df['ID']
     hmm_custom_db_df['Gene name'] = hmm_custom_db_df['enzyme_long']

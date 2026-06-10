@@ -159,7 +159,7 @@ def read_esmecata_proteome_file(proteome_tax_id_file):
 
 
 def get_link_pathway_function_name(pathway_template_file, hmm_template_file):
-    """ Map pathwya and function name.
+    """ Map pathway and function name.
 
     Args:
         hmm_template_file (str): path of HMM template file
