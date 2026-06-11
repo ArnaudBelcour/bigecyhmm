@@ -33,23 +33,27 @@ Bigecyhmm is a Python package to search for genes associated with biogeochemical
 
 ## 1 Dependencies
 
-bigecyhmm is developed to be as minimalist as possible. It requires:
+`bigecyhmm` is developed to be as minimalist as possible. It requires:
 
 - [PyHMMER](https://github.com/althonos/pyhmmer): to perform HMM search.
 - [Pillow](https://github.com/python-pillow/Pillow): to create biogeochemical cycle diagrams.
 
-The HMMs used are stored inside the package as a folder ([hmm_files](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 19 Mbwhen compressed) but in this way, you do not have to download other files and can directly use it.
-
-For `bigecyhmm_visualisation` (linking metabolic predictions to organism abundance), you also needs the following packages:
-
-- [pandas](https://pypi.org/project/pandas/): to read the input files.
-- [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
+The HMMs used are stored inside the package as a folder ([hmm_files](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases)). It makes this python package a little heavy (around 19 Mb when compressed) but in this way, you do not have to download other files and can directly use it.
 
 For `bigecyhmm_custom` (use custom database instead of the default one), you also needs the following package:
 
 - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
 - [matplotlib](https://github.com/matplotlib/matplotlib): to create automatically (bad) visualisation of the cycle.
+
+For `bigecyhmm_visualisation` (linking metabolic predictions to organism abundance), you also needs the following packages:
+
+- [pandas](https://pypi.org/project/pandas/): to read the input files.
+- [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
+- If use with results form `bigecyhmm_custom`:
+   - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
+   - [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
+
 
 ## 2 Installation
 
