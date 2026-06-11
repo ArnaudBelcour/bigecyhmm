@@ -79,7 +79,6 @@ def plot_table(display_df: pd.DataFrame, output_path: str = os.path.join('plots'
     plt.subplots_adjust(left=0.05, right=0.95, top=0.98, bottom=0.02)
     
     # draw to populate the renderer
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     try:
         renderer = fig.canvas.get_renderer()
         bbox = table.get_window_extent(renderer)
@@ -344,9 +343,16 @@ def plot_donut(df: pd.DataFrame, groups: dict, metabolic_labels: List[str], outp
     ax.grid(True, color='lightgrey', linewidth=0.5)
     ax.legend(prop={'size': 12})
 
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close(fig)
+
+    # Resize the figure.
+    out = Image.open(output_path).convert('RGB')
+    out_width, out_height = out.size
+    new_width = round(out_width / 2.5)
+    new_heigth = round(out_height / 2.5)
+    out = out.resize((new_width, new_heigth), Image.LANCZOS)
+    out.save(output_path, dpi=(300, 300))
 
 
 def combine_images_side_by_side(left_path: str, right_path: str,
@@ -366,8 +372,6 @@ def combine_images_side_by_side(left_path: str, right_path: str,
     Returns:
         output_path (str): path to output combined png
     """
-    os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
-
     left = Image.open(left_path).convert('RGB')
     right = Image.open(right_path).convert('RGB')
 
@@ -395,6 +399,7 @@ def combine_images_side_by_side(left_path: str, right_path: str,
 
     total_w = left.size[0] + padding + right.size[0]
     out = Image.new('RGB', (total_w, target_h), color=bg_color)
+
     out.paste(left, (0, 0))
     out.paste(right, (left.size[0] + padding, 0))
 

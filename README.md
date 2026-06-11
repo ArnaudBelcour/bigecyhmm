@@ -154,6 +154,7 @@ To create the associated figures, there are other dependencies:
 - [pandas](https://pypi.org/project/pandas/): to read the input files.
 - [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
 - [networkx](https://github.com/networkx/networkx): to handle biogeochemical cycle as a graph if hanlding results from `bigecyhmm_custom`.
+- [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
 
 Two subcommands are available for `bigecyhmm_visualisation`:
 

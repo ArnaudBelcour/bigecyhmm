@@ -236,14 +236,12 @@ def compute_and_save(input_df: pd.DataFrame, mapping_df: pd.DataFrame, output_cs
     group_names, group_col_names, groups_dict = get_group_col_names(input_df, mapping_df)
 
     cleaned_df = input_df.copy()
-    os.makedirs(os.path.dirname(cleaned_output_csv), exist_ok=True)
     cleaned_df.to_csv(cleaned_output_csv)
     logger.info(f"Saved cleaned data to {cleaned_output_csv}")
 
     results = run_statistics(input_df, group_col_names)
     df_res, display_df = results_to_dataframe(results, groups_dict)
 
-    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
     df_res.to_csv(output_csv, index=False)
     logger.info(f"Saved numeric stats to {output_csv}")
 
@@ -310,7 +308,6 @@ def statNut_run(input_tsv: str = DEFAULT_INPUT_TSV,
     # Avoid changing original display_df.
     display_df = display_df.copy()
 
-    os.makedirs(os.path.dirname(output_donut_png), exist_ok=True)
     plot_donut(cleaned_df, groups_dict,
         metabolic_labels=metabolic_labels,
         group_col_names=group_col_names,
@@ -319,7 +316,6 @@ def statNut_run(input_tsv: str = DEFAULT_INPUT_TSV,
         background_offset=background_offset,
         background_scale=background_scale)
 
-    os.makedirs(os.path.dirname(output_table_png), exist_ok=True)
     plot_table(display_df, output_path=output_table_png)
 
     combined_png = os.path.join(os.path.dirname(output_donut_png), 'combined_donut_table.png')

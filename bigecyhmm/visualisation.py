@@ -748,15 +748,16 @@ def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
 
     metabolite_node_colors = [node_colors[node] if node in node_colors else 'lightgray' for node in metabolite_nodes]
 
-    fig, axes = plt.subplots(figsize=(12,8))
+    fig, axes = plt.subplots(figsize=(12,10))
 
     layout_prog = 'neato'
-    pos = graphviz_layout(bipartite_networkx_graph, prog=layout_prog)
+    # Layout to try to reduce node overlap (see: https://graphviz.org/doc/info/attrs.html)
+    pos = graphviz_layout(bipartite_networkx_graph, prog=layout_prog, args='-Gsplines=curved -Gnodesep=1.5 -Goverlap=false')
     nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=metabolite_nodes,
-                           node_color=metabolite_node_colors, node_shape='o', alpha=0.6, node_size=2000)
-    nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=function_nodes, node_shape='d', alpha=0.6, node_size=1000)
-    nx.draw_networkx_labels(bipartite_networkx_graph, pos, labels=pathway_index_labels, font_size=14)
-    nx.draw_networkx_edges(bipartite_networkx_graph, pos, arrows=True, width=3, node_size=1000, connectionstyle="arc3,rad=0.1")
+                           node_color=metabolite_node_colors, node_shape='o', alpha=0.6, node_size=1200)
+    nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=function_nodes, node_shape='d', alpha=0.6, node_size=600)
+    nx.draw_networkx_labels(bipartite_networkx_graph, pos, labels=pathway_index_labels, font_size=12)
+    nx.draw_networkx_edges(bipartite_networkx_graph, pos, arrows=True, width=3, node_size=600, connectionstyle="arc3,rad=0.1")
 
     # Relabel nodes.
     bipartite_networkx_graph = nx.relabel_nodes(bipartite_networkx_graph, pathway_index_labels)
