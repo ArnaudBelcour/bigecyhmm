@@ -587,7 +587,7 @@ def test_bigecyhmm_custom_one_file_abundance():
     subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair])
     subprocess.call(['bigecyhmm_visualisation', 'genomes', '--bigecyhmm', output_folder, '-o', output_folder, '--abundance-file', abundance_file])
 
-    expected_abundance = {'Acetate metabo./dissim.': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Acetogen. WL': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
+    expected_abundance = {'Acetate metabo.dissim.': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Acetogen. WL': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
      'Carbon fixation': {'sample_1': 200.0, 'sample_2': 800.0, 'sample_3': 520.0}, 'Ethanol oxidation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0},
      'Fermentation': {'sample_1': 100.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Hydrogen generation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},
      'Hydrogen oxidation': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0}, 'Methanogen.': {'sample_1': 0.0, 'sample_2': 0.0, 'sample_3': 0.0},

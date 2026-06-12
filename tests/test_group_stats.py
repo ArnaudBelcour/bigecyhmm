@@ -186,6 +186,8 @@ def test_donut_plot():
 
     input_folder = os.path.join('input_data', 'group_stats')
     output_folder = 'output_folder'
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
 
     groups_dict = {
         'first_group': ['sample_1', 'sample_2', 'sample_3'],
@@ -220,6 +222,8 @@ def test_donut_plot_background_image():
 
     input_folder = os.path.join('input_data', 'group_stats')
     output_folder = 'output_folder'
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
 
     groups_dict = {
         'first_group': ['sample_1', 'sample_2', 'sample_3'],
@@ -254,6 +258,8 @@ def test_plot_table():
 
     input_folder = os.path.join('input_data', 'group_stats')
     output_folder = 'output_folder'
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
 
     df = pd.read_csv(os.path.join(input_folder, 'expected_stat_results_df.tsv'), sep='\t', index_col=0)
 
