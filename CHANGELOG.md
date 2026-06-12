@@ -1,6 +1,6 @@
 # Changelog
 
-# bigecyhmm v0.2.0 (2026-06-09)
+# bigecyhmm v0.2.0 (2026-06-12)
 
 HMM files are no more stored inside a zip archive, they are in a folder to ease their tracking.
 Due to the changes in the boolean expression to infer pathways, old pathway template files from previous version are incompatible with the new version.

@@ -4,7 +4,7 @@ Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	functio
 1.2	frhA	HMM	nife-group-3abd.hmm	246|domain	hydrogenase [NiFe] 3a			doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
 4.0	Methanogen.	FUNCTION	mcrA	NA	NA	Hydrogen, CO2 	Methane	NA	NA	NA	
 4.1	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit			https://doi.org/10.1186/s40168-021-01213-8		K00399	
-6.0	Acetate metabo./dissim.	FUNCTION	acs	NA	NA	Acetate	CO2	NA	NA	NA	
+6.0	Acetate metabo.dissim.	FUNCTION	acs	NA	NA	Acetate	CO2	NA	NA	NA	
 6.1	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase			https://doi.org/10.1186/s40168-021-01213-8		K01895	
 7.0	Acetogen. WL	FUNCTION	fthfs	NA	NA	CO2	Acetate	NA	NA	NA	
 7.2	fthfs	HMM	fthfs_NF010030.hmm	652|domain	Formate-tetrahydrofolate ligase			https://doi.org/10.1186/s40168-021-01213-8		K01938	

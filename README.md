@@ -19,15 +19,15 @@ Bigecyhmm is a Python package to search for genes associated with biogeochemical
     - [5.1 Bigecyhmm internal database](#51-bigecyhmm-internal-database)
       - [5.1.1 Contribution to bigecyhmm internal database](#511-contribution-to-bigecyhmm-internal-database)
       - [5.1.2 Modifying bigecyhmm internal database](#512-modifying-bigecyhmm-internal-database)
-    - [5.1 `bigecyhmm_custom`: using custom database](#51-bigecyhmm_custom-using-custom-database)
-      - [5.1.1 Requirements](#511-requirements)
-      - [5.1.2 Inputs](#512-inputs)
-        - [5.1.2.1 Inputs: custom tsv file](#5121-inputs-custom-tsv-file)
-        - [5.1.2.2 Inputs: custom json file](#5122-inputs-custom-json-file)
-        - [5.1.2.3 Inputs: folder](#5123-inputs-folder)
-        - [5.1.2.3 Inputs: internal custom database](#5123-inputs-internal-custom-database)
-      - [5.1.3 Usage](#513-usage)
-      - [5.1.3 Outputs](#513-outputs)
+    - [5.2 `bigecyhmm_custom`: using custom database](#52-bigecyhmm_custom-using-custom-database)
+      - [5.2.1 Requirements](#521-requirements)
+      - [5.2.2 Inputs](#522-inputs)
+        - [5.2.2.1 Inputs: custom tsv file](#5221-inputs-custom-tsv-file)
+        - [5.2.2.2 Inputs: custom json file](#5222-inputs-custom-json-file)
+        - [5.2.2.3 Inputs: folder](#5223-inputs-folder)
+        - [5.2.2.3 Inputs: internal custom database](#5223-inputs-internal-custom-database)
+      - [5.2.3 Usage](#523-usage)
+      - [5.2.4 Outputs](#524-outputs)
   - [6 Citation](#6-citation)
   - [License](#license)
 
@@ -165,14 +165,25 @@ Two subcommands are available for `bigecyhmm_visualisation`:
 - `bigecyhmm_visualisation esmecata`: to create visualisation from EsMeCaTa and bigecyhmm outputs folder (with optionally an abundance file).
 - `bigecyhmm_visualisation genomes`: to create visualisation from bigecyhmm output folder (with optionally an abundance file).
 
-There are four parameters:
+There are several parameters:
 
 - `--esmecata`: EsMeCaTa output folder associated with the run (as the visualisation works on EsMeCaTa results). Only required for `bigecyhmm_visualisation esmecata`.
 - `--bigecyhmm`: bigecyhmm output folder associated with the run. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `-o`: an output folder. Required for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `--abundance-file`: abundance file indicating the abundance for each organisms selected by EsMeCaTa. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
-- `--abundance-file`: abundance file indicating the abundance for each metabolite in different samples. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
+- `--measure-file`: abundance file indicating the abundance for each metabolites (for bipartite graph). Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
+- `--group-file`: tabulated file indicating the group for each sample. Optional for both `bigecyhmm_visualisation esmecata` and `bigecyhmm_visualisation genomes`.
 - `--background-file`: background image used for the donut plot. If no background images are given, bigecyhmm uses (1) a template one or (2) generate a bipartite graph representation (if results are from `bigecyhmm_custom`). Optional for `bigecyhmm_visualisation esmecata`.
+
+`--group-file` expects a tabulated file like this (you have [an example](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/tests/input_data/group_sample.tsv) in test folder):
+
+| sample   | group |
+|----------|-------|
+| sample_1 | A     |
+| sample_2 | A     |
+| sample_3 | B     |
+
+It will be used to generate donut plot with different colours associated with each group (and then computes statistics).
 
 ### 4.1 Function occurrence and abundance
 
@@ -330,11 +341,11 @@ To do so, you have to change the coordinates of the text in `diagram_cycles.py`.
 
 `(800,80)` corresponds to the coordinates of the text on the figure, by adjusting it you can move the text. First number is associated with x-axis and second number is associated with y-axis. For x-axis, 0 begins at the left of the figure with higher numbers going towards the right. For y-axis, 0 begins at the top of the figure with higher numbers going towards the bottom. `(0,0,0)` corresponds to the color of the text.
 
-### 5.1 `bigecyhmm_custom`: using custom database
+### 5.2 `bigecyhmm_custom`: using custom database
 
 It is possible to create a custom database that is linked to a specific biogeochemical cycles (or metabolic networks) and then run it with `bigecyhmm_custom`.
 
-#### 5.1.1 Requirements
+#### 5.2.1 Requirements
 
 This command requires three packages:
 
@@ -342,7 +353,7 @@ This command requires three packages:
 - [networkx](https://github.com/networkx/networkx): to handle biogeochemical cycle as a graph.
 - [matplotlib](https://github.com/matplotlib/matplotlib): to create automatically (bad) visualisation of the cycle.
 
-#### 5.1.2 Inputs
+#### 5.2.2 Inputs
 
 This command expects two mandatory arguments:
 
@@ -386,7 +397,7 @@ custom_db_cycle
 ├── sulfur_cycle
 ```
 
-##### 5.1.2.1 Inputs: custom tsv file
+##### 5.2.2.1 Inputs: custom tsv file
 
 This format tries to merge both pathway definition and HMM association in one file. It expects a folder (with the same name) containing associated HMMs, such as:
 
@@ -425,7 +436,7 @@ Columns after the eight are optional and used to store comments.
 
 There is a full example in bigecyhmm internal database folder ([custom_hydrogen_central_cycles.tsv](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/bigecyhmm/hmm_databases/custom_hydrogen_central_cycles.tsv)).
 
-##### 5.1.2.2 Inputs: custom json file
+##### 5.2.2.2 Inputs: custom json file
 
 It is also possible to give a json file as input, such as:
 
@@ -441,7 +452,7 @@ The three expected files/folders are:
 
   - a `tsv` file containing the threshold for the different HMMs, similar to hmm_template from bigecyhmm database. If no file is present in the folder, bigecyhmm will use its internal template file for threshold. An example can be found in bigecyhmm internal database ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/hmm_databases/hmm_table_template.tsv)) or in the test folder ([hmm_table_template.tsv](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/mini_custom_db/hmm_table_template.tsv)).
 
-##### 5.1.2.3 Inputs: folder
+##### 5.2.2.3 Inputs: folder
 
 It is also possible to give an input folder containing multiple custom databases:
 
@@ -456,7 +467,7 @@ input_folder
 
 An example with mini database is present in the [test folder](https://github.com/ArnaudBelcour/bigecyhmm/tree/main/test/input_data/mini_custom_db).
 
-##### 5.1.2.3 Inputs: internal custom database
+##### 5.2.2.3 Inputs: internal custom database
 
 Several custom database (using either json or tsv files) are already present in bigecyhmm and can be called by using a str (such as `-d internal_hydrogen_table`):
 
@@ -469,7 +480,7 @@ Several custom database (using either json or tsv files) are already present in 
   - `internal_other`: other cycle (arsenate, selenate).
   - `internal_all`: combinations of all the previous cycles.
 
-#### 5.1.3 Usage
+#### 5.2.3 Usage
 
 Usage example:
 ```
@@ -483,7 +494,7 @@ It can take four optional arguments:
 - `-m`: JSON file containing gene associated with protein motifs to check for predictions. This verification comes from the [METABOLIC article](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01213-8#Sec2) (you can find information about it, in the section `Motif validation`). The protein motif corresponds to a regex associated with amnio-acids or `X` (the latter being any amino-acid). The idea of this verification is to check if an expected amino-acid motif is present in the sequence matching the associated HMM. You can see an example file in the test folder ([motif.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif.json)). The name of the gene corresponds to the name of its HMM. If no file is given, it will be using the default ones from METABOLIC (you can find it [here](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/__init__.py#L39) as a dicitonary).
 - `-p`: JSON file containing association between two genes to check for predictions. This verification comes from the [METABOLIC article](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01213-8#Sec2) (you can find information about it, in the section `Motif validation`). It ensures that a sequence is properly associated with a specific HMM and not to anotehr yet similar HMM. An example file can be found in the test folfer ([motif_pair.json](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/test/input_data/motif_pair.json)). It contains association between two gene names. The HMM search results of the sequence against these two gnee profiles are compared to find the one with a better score. The name of the gene corresponds to the name of its HMM. If no file is given, it will be using the default ones from METABOLIC (you can find it [here](https://github.com/ArnaudBelcour/bigecyhmm/blob/main/bigecyhmm/__init__.py#L50) as a dicitonary).
 
-#### 5.1.3 Outputs
+#### 5.2.4 Outputs
 
 `bigecyhmm_custom` creates inside the output folder one folder per input custom database file. It generates similar files than bigecyhmm default outputs except for the cycle visualisation. Similar to output folder from bigecyhmm, output folder of `bigecyhmm_custom` can be used as input folder for `bigecyhmm_visualisation`.
 
