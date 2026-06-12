@@ -12,12 +12,12 @@
     {"size": 10, "id": "Se(0)", "type": "Metabolite"},
     {"size": 10, "id": "O2", "type": "Metabolite"},
     {"size": 10, "id": "H2O", "type": "Metabolite"},
-    {"size": 10, "id": "Iron reduction", "type": "Function", "hmm": "MtrA.hmm, MtrB_TIGR03509.hmm, MtrC_TIGR03507.hmm, CymA.hmm, OmcF.hmm, OmcS.hmm, OmcZ.hmm, Ndh2.hmm, DFE_0450.hmm, DFE_0464.hmm"},
-    {"size": 10, "id": "Iron oxidation", "type": "Function", "hmm": "Cyc1.hmm, Cyc2_repCluster1.hmm, Cyc2_repCluster2.hmm, Cyc2_repCluster3.hmm, FoxA.hmm, FoxB.hmm, FoxC.hmm, FoxE.hmm, FoxY.hmm, FoxZ.hmm, MtoA.hmm, sulfocyanin.hmm"},
+    {"size": 10, "id": "Iron reduction", "type": "Function", "hmm": "MtrA.hmm or MtrB_TIGR03509.hmm or MtrC_TIGR03507.hmm or CymA.hmm or OmcF.hmm or OmcS.hmm or OmcZ.hmm or Ndh2.hmm or DFE_0450.hmm or DFE_0464.hmm"},
+    {"size": 10, "id": "Iron oxidation", "type": "Function", "hmm": "Cyc1.hmm or Cyc2_repCluster1.hmm or Cyc2_repCluster2.hmm or Cyc2_repCluster3.hmm or FoxA.hmm or FoxB.hmm or FoxC.hmm or FoxE.hmm or FoxY.hmm or FoxZ.hmm or MtoA.hmm or sulfocyanin.hmm"},
     {"size": 10, "id": "Arsenate reduction", "type": "Function", "hmm": "arrA.hmm"},
-    {"size": 10, "id": "Arsenite oxidation", "type": "Function", "hmm": "arxA.hmm, aioA.hmm"},
-    {"size": 10, "id": "Selenate reduction", "type": "Function", "hmm": "TIGR03312.hmm, TIGR03313.hmm, TIGR03315.hmm"},
-    {"size": 10, "id": "Aerobic respiration", "type": "Function", "hmm": "TIGR02882.hmm, TIGR01432.hmm, TIGR00203.hmm, PF01654.hmm, K02299.hmm, K02298.hmm, TIGR02847.hmm, TIGR01433.hmm, TIGR00782.hmm, TIGR00781.hmm, TIGR00780.hmm, TIGR02866.hmm, TIGR02891.hmm"}
+    {"size": 10, "id": "Arsenite oxidation", "type": "Function", "hmm": "arxA.hmm or aioA.hmm"},
+    {"size": 10, "id": "Selenate reduction", "type": "Function", "hmm": "TIGR03312.hmm or TIGR03313.hmm or TIGR03315.hmm"},
+    {"size": 10, "id": "Aerobic respiration", "type": "Function", "hmm": "TIGR02882.hmm or TIGR01432.hmm or TIGR00203.hmm or PF01654.hmm or K02299.hmm or K02298.hmm or TIGR02847.hmm or TIGR01433.hmm or TIGR00782.hmm or TIGR00781.hmm or TIGR00780.hmm or TIGR02866.hmm or TIGR02891.hmm"}
     ],
     "edges": [{"id": "Iron reduction", "width": 1, "source": "Ferric iron (Fe3+)", "target": "Iron reduction"},
     {"id": "Iron reduction", "width": 1, "source": "Iron reduction", "target": "Ferrous iron (Fe2+)"},

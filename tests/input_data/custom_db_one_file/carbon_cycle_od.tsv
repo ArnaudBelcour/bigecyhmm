@@ -1,0 +1,24 @@
+Graph_No	ID	Type	Implementation	HMM_threshold	enzyme_long	function_input	function_output	HMM_source	enzyme_ref	kegg_ortholog	Comment
+1.0	Hydrogen generation	FUNCTION	hydA1 OR frhA	NA	NA	e-	Hydrogen	NA	NA	NA	
+1.1	hydA1	HMM	fe.hmm	188|domain	hydrogenase [FeFe] A1			doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	K00532	
+1.2	frhA	HMM	nife-group-3abd.hmm	246|domain	hydrogenase [NiFe] 3a			doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+4.0	Methanogen.	FUNCTION	mcrA	NA	NA	Hydrogen, CO2 	Methane	NA	NA	NA	
+4.1	mcrA	HMM	TIGR03256.hmm	314.45|full	methyl-coenzyme M reductase alpha subunit			https://doi.org/10.1186/s40168-021-01213-8		K00399	
+6.0	Acetate metabo.dissim.	FUNCTION	acs	NA	NA	Acetate	CO2	NA	NA	NA	
+6.1	acs	HMM	TIGR02188.hmm	684.65|full	acetyl-CoA synthetase			https://doi.org/10.1186/s40168-021-01213-8		K01895	
+7.0	Acetogen. WL	FUNCTION	fthfs	NA	NA	CO2	Acetate	NA	NA	NA	
+7.2	fthfs	HMM	fthfs_NF010030.hmm	652|domain	Formate-tetrahydrofolate ligase			https://doi.org/10.1186/s40168-021-01213-8		K01938	
+8.0	Carbon fixation	FUNCTION	Form_I OR Form_II	NA	NA	CO2	Organic carbon	NA	NA	NA	
+8.4	Form_I	HMM	rubisco_form_I.hmm	500|full	Form I RuBisCO large subunit			https://doi.org/10.1186/s40168-021-01213-8		K01601	
+8.5	Form_II	HMM	rubisco_form_II.hmm	500|full	Form II RuBisCO large subunit			https://doi.org/10.1186/s40168-021-01213-8		K01601	
+10.0	Organic carbon oxidation	FUNCTION	puuE	NA	NA	Organic carbon	CO2	NA	NA	NA	
+10.25	puuE	HMM	K00823.hmm	609.33|domain	4-aminobutyrate aminotransferase and related aminotransferases			https://doi.org/10.1186/s40168-021-01213-8		K00823	
+12.0	Fermentation	FUNCTION	porA	NA	NA	Organic C	CO2	NA	NA	NA	
+12.3	porA	HMM	K00169.hmm	299.20|full	pyruvate ferredoxin oxidoreductase alpha subunit			https://doi.org/10.1186/s40168-021-01213-8		K00169	
+13.0	Ethanol oxidation	FUNCTION	adh	NA	NA	Ethanol	Organic C	NA	NA	NA	
+13.1	adh	HMM	K00001.hmm	336.20|domain	alcohol dehydrogenase			https://doi.org/10.1186/s40168-021-01213-8		K00001	
+14.0	Hydrogen oxidation	FUNCTION	hydA1 OR hycE	NA	NA	Hydrogen	CO2	NA	NA	NA	
+14.1	hydA1	HMM	fe.hmm	188|domain	hydrogenase [FeFe] A1			doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	K00532	
+14.2	hycE	HMM	fefe-group-a4.hmm	738|domain	hydrogenase [NiFe] 4a			doi: 10.3389/fbinf.2022.918853	DOI: 10.1038/srep34212	KEGG TOO UNSPECIFIC	
+15.0	Methanotrophy	FUNCTION	pmoA	NA	NA	Methane	CO2				
+15.1	pmoA	HMM	pmoA.hmm	160.90|full							

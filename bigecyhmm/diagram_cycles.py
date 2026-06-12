@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,11 +15,13 @@
 
 import csv
 import os
-
+import sys
 import logging
+
 from PIL import Image, ImageDraw, ImageFont
 
 from bigecyhmm.utils import parse_result_files
+from collections import Counter
 
 from bigecyhmm import  PATHWAY_TEMPLATE_FILE, TEMPLATE_CARBON_CYCLE, TEMPLATE_NITROGEN_CYCLE, \
     TEMPLATE_SULFUR_CYCLE, TEMPLATE_OTHER_CYCLE, TEMPLATE_PHOSPHORUS_CYCLE, TEMPLATE_PHOSPHORUS_GENE_CYCLE
@@ -27,7 +29,47 @@ from bigecyhmm import  PATHWAY_TEMPLATE_FILE, TEMPLATE_CARBON_CYCLE, TEMPLATE_NI
 logger = logging.getLogger(__name__)
 
 
-def get_diagram_pathways_hmms(pathway_template_file):
+def check_boolean_expression(hmm_boolean_expression, org_hmms, pathway_hmms):
+    """ Check presence of pathway according to boolean expression of hmm combinations.
+
+    Args:
+        hmm_boolean_expression (str): combination of boolean operators and hmm to infer pathway presence
+        org_hmms (list): list of HMMs detected in the associated organism
+        pathway_hmms (list): lsit of HMMs associated with the pathway
+
+    Returns:
+        pathway_presence (bool): True if organism HMMs correspond to a positive solution for the hmm combinations
+    """
+    if hmm_boolean_expression.count('(') - hmm_boolean_expression.count(')'):
+        logger.info('Incorrect number of parenthesis in boolean expression: ' + hmm_boolean_expression)
+        sys.exit()
+    boolean_expression = hmm_boolean_expression
+
+    for hmm in pathway_hmms:
+        if hmm in org_hmms:
+            boolean_expression = boolean_expression.replace(hmm, "True")
+        else:
+            boolean_expression = boolean_expression.replace(hmm, "False")
+
+    str_boolean_expression = boolean_expression
+    # eval a string is dangerous.
+    # First ensure that there are only "(", ")", "True", "False", "and", "or" and "not" in string.
+    str_boolean_expression = str_boolean_expression.replace('(', '').replace(')', '')
+    elements_in_expression = set(Counter(str_boolean_expression.split(' ')).keys())
+
+    if elements_in_expression.issubset(set(["True", "False", "and", "or", "not"])) is True:
+        # If there are only these elements, eval the string.
+        pathway_presence = eval(boolean_expression)
+    else:
+        incorrect_elements = " ".join(list(elements_in_expression - set(["True", "False", "and", "or", "not"])))
+        logger.info('There are several incorrect elements in the boolean expression: ' + incorrect_elements)
+        logger.info('Only possible elements:"True", "False", "and", "or", "not".')
+        sys.exit()
+
+    return pathway_presence
+
+
+def get_diagram_pathways_hmms(pathway_template_file=PATHWAY_TEMPLATE_FILE):
     """From PATHWAY_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
 
     Args:
@@ -35,37 +77,63 @@ def get_diagram_pathways_hmms(pathway_template_file):
 
     Returns:
         pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
+        pathway_expression (dict): for each pathway boolean expression associated with pathway
         sorted_pathways (list): ordered list of functions
     """
     pathway_hmms = {}
+    pathway_expression = {}
     sorted_pathways = []
     with open(pathway_template_file, 'r') as open_r_pathways:
         csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
 
         for line in csvreader:
             sorted_pathways.append(line['Pathways'])
-            if '; ' in line['HMMs']:
-                hmm_combinations = [combination.split(', ') for combination in line['HMMs'].split('; ')]
-                pathway_hmms[line['Pathways']] = hmm_combinations
-            else:
-                pathway_hmms[line['Pathways']] = [line['HMMs'].split(', ')]
+            pathway_expression[line['Pathways']] = line['HMMs']
+            tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in line['HMMs'].split(' ')]
+            pathway_hmms[line['Pathways']] = [hmm for hmm in tmp_pathway_hmms if hmm not in ["and", "or", "not"]]
 
     sorted_pathways = sorted(sorted_pathways)
 
-    return pathway_hmms, sorted_pathways
+    return pathway_hmms, pathway_expression, sorted_pathways
 
 
-def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
+def extract_hmm_to_pathway(pathway_tempalte_file=PATHWAY_TEMPLATE_FILE):
+    """From PATHWAY_TEMPLATE_FILE extract HMMs associated with cycles of the diagrams.
+
+    Args:
+        pathway_template_file (str): path to pathway_template_file.
+
+    Returns:
+        hmm_to_pathways (dict): dictionary with hmm as key and list of pathway as vlaues
+    """
+    hmm_to_pathways = {}
+    with open(pathway_tempalte_file, 'r') as open_r_pathways:
+        csvreader = csv.DictReader(open_r_pathways, delimiter = '\t')
+        for line in csvreader:
+            tmp_pathway_hmms = [hmm.replace('(', '').replace(')', '') for hmm in line['HMMs'].split(' ')]
+            for hmm_id in tmp_pathway_hmms:
+                if hmm_id not in ['and', 'or', 'not']:
+                    if hmm_id not in hmm_to_pathways:
+                        hmm_to_pathways[hmm_id] = [line['Pathways']]
+                    else:
+                        hmm_to_pathways[hmm_id].append(line['Pathways'])
+
+    return hmm_to_pathways
+
+
+def check_diagram_pathways(sorted_pathways, pathway_expression, org_hmms, pathway_hmms):
     """Compute the presence of functions of biogeochemical cycles in the dataset.
 
     Args:
         sorted_pathways (list): ordered list of functions
+        pathway_expression (dict): for each pathway boolean expression associated with pathway
         org_hmms (dict): dictionary with organism as key and list of hit HMMs as value
-        pathway_hmms (dict): dictionary with functions as key and list of list of HMMS as value
+        pathway_hmms (dict): dictionary with functions as key and list of HMMS as value
 
     Returns:
         all_pathways (dict): pathway as key and number of organisms having it as value
         org_pathways (dict): organism as key and subdict with pathway presence as value
+        org_pathways_hmms (dict): organism as key and subdict with pathway and the associated HMMs in the organism
     """
     all_pathways = {pathway: 0 for pathway in sorted_pathways}
     org_pathways = {}
@@ -74,43 +142,9 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
         if org not in org_pathways_hmms:
             org_pathways_hmms[org] = {}
         for pathway in sorted_pathways:
-            pathway_checks = []
-            hmms_in_org = []
-            # For AND group of HMMs in pathway, check if their corresponding HMMs are there.
-            for hmm_combination in pathway_hmms[pathway]:
-                pathway_check = False
-                negative_hmms = [hmm.replace('NO|', '') for hmm in hmm_combination if 'NO' in hmm]
-                # Check if there are negative HMMs in pathway string.
-                if len(negative_hmms) > 0:
-                    hmm_combination = [hmm.replace('NO|', '') for hmm in hmm_combination]
-                intersection_hmms = set(hmm_combination).intersection(org_hmms[org])
-                intersection_negative_hmms = set(negative_hmms).intersection(org_hmms[org])
-
-                # First check if all combination corresponds to negative HMMs.
-                if len(hmm_combination) == len(negative_hmms):
-                    # If all HMMs of the combination are negative ones and are not present in organism, then this combination is checked.
-                    if len(intersection_hmms) == 0:
-                        pathway_check = True
-                else:
-                    # If all HMMs of the combination present in the organism are not negative HMMs, then this combination of HMMs is checked.
-                    if len(intersection_hmms) > 0:
-                        if len(intersection_negative_hmms) == 0:
-                            pathway_check = True
-                        # But if there are at least one negative HMMs, it is not checked.
-                        elif len(intersection_negative_hmms) > 0:
-                            pathway_check = False
-                pathway_checks.append(pathway_check)
-                positive_hmms = list(set(intersection_hmms) - set(intersection_negative_hmms))
-                found_hmms = list(positive_hmms + ['NO|' + hmm for hmm in intersection_negative_hmms])
-                if len(found_hmms) > 0:
-                    hmms_in_org.append(', '.join(found_hmms))
-            if len(hmms_in_org) > 0:
-                org_pathways_hmms[org][pathway] = '; '.join(hmms_in_org)
-            else:
-                org_pathways_hmms[org][pathway] = ''
-
-            # If all combination HMMs have been checked, keep the pathway.
-            if all(pathway_checks) is True:
+            hmm_boolean_expression = pathway_expression[pathway]
+            pathway_presence = check_boolean_expression(hmm_boolean_expression, org_hmms[org], pathway_hmms[pathway])
+            if pathway_presence is True:
                 if org not in org_pathways:
                     org_pathways[org] = {}
                 org_pathways[org][pathway] = 1
@@ -122,6 +156,11 @@ def check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms):
                 if org not in org_pathways:
                     org_pathways[org] = {}
                 org_pathways[org][pathway] = 0
+            hmms_in_org = list(set(org_hmms[org]).intersection(set(pathway_hmms[pathway])))
+            if len(hmms_in_org) > 0:
+                org_pathways_hmms[org][pathway] = '; '.join(hmms_in_org)
+            else:
+                org_pathways_hmms[org][pathway] = ''
 
     return all_pathways, org_pathways, org_pathways_hmms
 
@@ -139,9 +178,9 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
     if not os.path.exists(output_diagram_folder):
         os.mkdir(output_diagram_folder)
 
-    pathway_hmms, sorted_pathways = get_diagram_pathways_hmms(pathway_template_file)
+    pathway_hmms, pathway_expression, sorted_pathways = get_diagram_pathways_hmms(pathway_template_file)
     org_hmms = parse_result_files(input_folder)
-    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, org_hmms, pathway_hmms)
+    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, pathway_expression, org_hmms, pathway_hmms)
 
     for org in org_pathways:
         org_file = os.path.join(output_diagram_folder, org+'.R_input.txt')
@@ -155,6 +194,19 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
         csvwriter = csv.writer(open_total_file, delimiter='\t')
         for pathway in all_pathways:
             csvwriter.writerow([pathway, all_pathways[pathway], all_pathways[pathway] / len(org_hmms)])
+
+
+def create_pathway_presence_files(input_folder, output_folder, pathway_template_file=PATHWAY_TEMPLATE_FILE):
+    """Create fiels showcasing the occurrence of pathway in organisms.
+
+    Args:
+        input_folder (str): path to HMM search results folder (one tsv file per organism)
+        output_folder (str): path to output folder
+        pathway_template_file (str): path to pathway template file
+    """
+    pathway_hmms, pathway_expression, sorted_pathways = get_diagram_pathways_hmms(pathway_template_file)
+    org_hmms = parse_result_files(input_folder)
+    all_pathways, org_pathways, org_pathways_hmms = check_diagram_pathways(sorted_pathways, pathway_expression, org_hmms, pathway_hmms)
 
     pathway_presence_file = os.path.join(output_folder, 'pathway_presence.tsv')
     all_orgs = list(set([org for org in org_pathways]))
@@ -173,7 +225,7 @@ def create_input_diagram(input_folder, output_diagram_folder, output_folder, pat
             csvwriter.writerow([pathway, *[org_pathways_hmms[org][pathway] for org in all_orgs]])
 
 
-def parse_diagram_folder(input_diagram_file):
+def parse_diagram_file(input_diagram_file):
     """Parse functions in Total.R_input.txt.
 
     Args:
@@ -230,6 +282,7 @@ def create_carbon_cycle(diagram_data, output_file, first_term='Genomes', second_
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_nitrogen_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -269,6 +322,7 @@ def create_nitrogen_cycle(diagram_data, output_file, first_term='Genomes', secon
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_sulfur_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -306,6 +360,7 @@ def create_sulfur_cycle(diagram_data, output_file, first_term='Genomes', second_
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_other_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -337,6 +392,7 @@ def create_other_cycle(diagram_data, output_file, first_term='Genomes', second_t
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_phosphorus_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -364,6 +420,7 @@ def create_phosphorus_cycle(diagram_data, output_file, first_term='Genomes', sec
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_phosphorus_gene_cycle(diagram_data, output_file, first_term='Genomes', second_term='Coverage'):
@@ -419,6 +476,7 @@ def create_phosphorus_gene_cycle(diagram_data, output_file, first_term='Genomes'
 
     img = img.resize((2112, 1632), Image.Resampling.LANCZOS)
     img.save(output_file, dpi=(300, 300), quality=100)
+    img.close()
 
 
 def create_diagram_figures(input_diagram_file, output_folder):
@@ -433,7 +491,7 @@ def create_diagram_figures(input_diagram_file, output_folder):
     if not os.path.exists(biogeochemical_diagram_folder):
         os.mkdir(biogeochemical_diagram_folder)
 
-    diagram_data = parse_diagram_folder(input_diagram_file)
+    diagram_data = parse_diagram_file(input_diagram_file)
 
     first_term = 'Occurrence'
     second_term = 'Percentage'

@@ -1,0 +1,3 @@
+#Entry	Category	Function	Gene abbreviation	Gene name	Hmm file	Corresponding KO	Reaction	Substrate	Product	Hmm detecting threshold	source
+62	Methane metabolism	Methane oxidation - Partculate methane monooxygenase	pmoA	methane/ammonia monooxygenase subunit A	pmoA.hmm	K10944	methane + quinol + O2 = methanol + quinone + H2O [RN:R09518]	methane; quinol; O2	methanol; quinone; H2O	160.90|full	
+82	Nitrogen cycling	Ammonia oxidation	amoA	methane/ammonia monooxygenase subunit A	amoA.hmm	K10944	NH3 + a reduced acceptor + O2 = NH2OH + an acceptor + H2O [RN:R09519]	NH3; reduced acceptor; O2	NH2OH; acceptor; H2O	160.90|full	

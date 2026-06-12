@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,14 +22,14 @@ import time
 from bigecyhmm import __version__ as VERSION
 from bigecyhmm.utils import is_valid_dir
 from bigecyhmm.hmm_search import search_hmm
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
 
 MESSAGE = f'''
 Predict biogeochemical cycles from protein fasta file.
 
 Internal database path:
-HMM compressed database: {HMM_COMPRESSED_FILE}, 
-HHM template file: {HMM_TEMPLATE_FILE}, 
+HMM folder: {HMM_FOLDER},
+HHM template file: {HMM_TEMPLATE_FILE},
 Pathway/cycle file: {PATHWAY_TEMPLATE_FILE}.
 '''
 REQUIRES = '''

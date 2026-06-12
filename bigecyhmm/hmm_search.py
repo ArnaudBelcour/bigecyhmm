@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
 
 import csv
 import os
-import zipfile
 import logging
 import pyhmmer
 import time
@@ -26,10 +25,10 @@ import json
 from multiprocessing import Pool
 from PIL import __version__ as pillow_version
 
-from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files
-from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures
+from bigecyhmm.utils import is_valid_dir, file_or_folder, parse_result_files, get_link_pathway_function_name
+from bigecyhmm.diagram_cycles import create_input_diagram, create_diagram_figures, create_pathway_presence_files
 from bigecyhmm import __version__ as bigecyhmm_version
-from bigecyhmm import HMM_COMPRESSED_FILE, HMM_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
+from bigecyhmm import HMM_FOLDER, HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE, MOTIF, MOTIF_PAIR
 
 logger = logging.getLogger(__name__)
 
@@ -54,18 +53,37 @@ def get_hmm_thresholds(hmm_template_file):
     return hmm_thresholds
 
 
-def check_motif_regex(gene_name, sequence, motif_db=MOTIF):
+def extract_hmm_to_function(hmm_template_file=HMM_TEMPLATE_FILE):
+    """Extract link between HMM and function from template file.
+
+    Args:
+        hmm_template_file (str): path of HMM template file
+
+    Returns:
+        hmm_to_function (dict): hmm file as key and function as value
+    """
+    with open(hmm_template_file, 'r') as open_hmm_template:
+        csvreader = csv.DictReader(open_hmm_template, delimiter='\t')
+        hmm_to_function = {}
+        for line in csvreader:
+            for hmm_file in line['Hmm file'].split(', '):
+                function_name = line['Function']
+                hmm_to_function[hmm_file] = function_name
+    return hmm_to_function
+
+
+def check_motif_regex(hmm_name, sequence, motif_db=MOTIF):
     """ Check the presence of a motif in a protein sequence using regex.
 
     Args:
-        gene_name (str): gene name associated with the protein sequence
+        hmm_name (str): name of the gene name linked to HMM search
         sequence (str): string of the protein sequence
         motif_db (dict): dictionary containing gene name as key and motif to search as values
 
     Returns:
         boolean: True if motif found, False if not
     """
-    motif_regex = motif_db[gene_name]
+    motif_regex = motif_db[hmm_name]
     # Replace X by any amino-acid.
     motif_regex_gene = re.sub(r'X', r'[ARNDCQEGHILKMFPSTWYV]', motif_regex)
     motif_found = re.findall(motif_regex_gene, sequence)
@@ -75,37 +93,34 @@ def check_motif_regex(gene_name, sequence, motif_db=MOTIF):
         False
 
 
-def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object):
+def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename):
     """ Check for a protein sequence and a HMM if it is not better associated with another HMM.
 
     Args:
         input_sequence (list): list of input sequences to check
         hmm_filename (str): path to the first HMM file
         pair_hmm_filename (str): path to the second HMM file
-        zip_object (zipfile object): zip object associated with the compress HMM database
 
     Returns:
         boolean: True if first HMM has a better association with the sequence than the second HMM, False if not
     """
-    with zip_object.open(hmm_filename) as open_hmm_zipfile:
-        with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
-            check_scores = [hit.score
-                             for hits in pyhmmer.hmmsearch(hmm_file, input_sequence, cpus=1)
-                             for hit in hits]
-            if len(check_scores) > 0:
-                motif_check_score = max(check_scores)
-            else:
-                motif_check_score = 0
+    with pyhmmer.plan7.HMMFile(hmm_filename) as hmm_file:
+        check_scores = [hit.score
+                            for hits in pyhmmer.hmmsearch(hmm_file, input_sequence, cpus=1)
+                            for hit in hits]
+        if len(check_scores) > 0:
+            motif_check_score = max(check_scores)
+        else:
+            motif_check_score = 0
 
-    with zip_object.open(pair_hmm_filename) as open_hmm_zipfile:
-        with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as pair_hmm_file:
-            anti_check_scores = [second_hit.score
-                                    for second_hits in pyhmmer.hmmsearch(pair_hmm_file, input_sequence, cpus=1)
-                                    for second_hit in second_hits]
-            if len(anti_check_scores) > 0:
-                motif_anti_check_score = max(anti_check_scores)
-            else:
-                motif_anti_check_score = 0
+    with pyhmmer.plan7.HMMFile(pair_hmm_filename) as pair_hmm_file:
+        anti_check_scores = [second_hit.score
+                                for second_hits in pyhmmer.hmmsearch(pair_hmm_file, input_sequence, cpus=1)
+                                for second_hit in second_hits]
+        if len(anti_check_scores) > 0:
+            motif_anti_check_score = max(anti_check_scores)
+        else:
+            motif_anti_check_score = 0
 
     if motif_check_score >= motif_anti_check_score and motif_check_score != 0:
         return True
@@ -113,14 +128,71 @@ def check_motif_pair(input_sequence, hmm_filename, pair_hmm_filename, zip_object
         return False
 
 
-def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
+def filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, domain=None):
+    """ For each hit, filter according to the motif and motif pair check.
+
+    Args:
+        input_filename (str): name of protein fasta file
+        hmm_filebasename (str): basename of HMM file
+        hit (pyhmmer Hit object): pyhmmer Hit object from pyhmmer.hmmsearch
+        sequences (pyhmmer DigitalSequenceBlock): input protein sequences stored in pyhmmer object DigitalSequenceBlock
+        check_hmms (dict): dictionary containing check HMM name associated with their paths
+        motif_db (dict): dictionary containing gene name as key and motif to search as values
+        motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
+        domain (pyhmmer Domain object): pyhmmer Domain object from pyhmmer.hmmsearch
+
+    Returns:
+        result (list or None): list of result for HMM search containing: input file name, hit name, hmm name, evalue, score and length
+    """
+    gene_match = hit.name
+    hmm_name = hmm_filebasename.replace('.hmm', '')
+    keep_hit = [True]
+    # Check the presence of specific motif in gene sequence.
+    if hmm_name in motif_db:
+        gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
+        keep_hit_motif = check_motif_regex(hmm_name, gene_sequence_str, motif_db)
+        keep_hit.append(keep_hit_motif)
+    # Motif validation by checking that the sequence is not better associated with another HMM.
+    if hmm_name in motif_pair_db:
+        if isinstance(motif_pair_db[hmm_name], str):
+            gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+            first_check_hmm = check_hmms[hmm_name]
+            second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
+            keep_hit_motif_pair = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm)
+            keep_hit.append(keep_hit_motif_pair)
+        # If motif pair is associated with a list of HMMs, all second HMMs must have a lower score to keep the prediction of the HMM. 
+        elif isinstance(motif_pair_db[hmm_name], list):
+            tmp_second_hmm_results = []
+            for second_check_hmm_name in motif_pair_db[hmm_name]:
+                gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
+                first_check_hmm = check_hmms[hmm_name]
+                second_check_hmm = check_hmms[second_check_hmm_name]
+                tmp_second_hmm_result = check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm)
+                tmp_second_hmm_results.append(tmp_second_hmm_result)
+            if all(tmp_second_hmm_results) is True:
+                keep_hit.append(True)
+            else:
+                keep_hit.append(False)
+    # If all steps have been checked, return the result, otherwise drop it.
+    if all(keep_hit) is True:
+        if domain is None:
+            result_score = hit.score
+        else:
+            result_score = domain.score
+
+        return [input_filename, hit.name, hmm_filebasename, hit.evalue, result_score, hit.length]
+    else:
+        return None
+
+
+def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_folder=HMM_FOLDER, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
     """Run HMM search with pyhmmer on protein fasta file using HMM files from database.
     Use associated threshold either for full sequence or domain.
 
     Args:
         input_protein_fasta (str): path of protein fasta file
         hmm_thresholds (dict): threshold for each HMM
-        hmm_compressed_database (str): path to HMM compress database
+        hmm_folder (str): path to HMM folder
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
         pyhmmer_core (int): number of core used by pyhmmer
@@ -134,57 +206,36 @@ def query_fasta_file(input_protein_fasta, hmm_thresholds, hmm_compressed_databas
     with pyhmmer.easel.SequenceFile(input_protein_fasta, digital=True) as seq_file:
         sequences = pyhmmer.easel.DigitalSequenceBlock(pyhmmer.easel.Alphabet.amino(), seq_file)
 
-    # Iterate on the HMM to query them. 
+    check_hmms = {hmm_filename.replace('.check.hmm', ''): os.path.join(hmm_folder, hmm_filename)
+                      for hmm_filename in os.listdir(hmm_folder) if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
+    list_of_hmms = [hmm_filename for hmm_filename in os.listdir(hmm_folder) if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename and hmm_filename in hmm_thresholds]
+
+    # Iterate on the HMM of the internal database to query them.
     results = []
-    with zipfile.ZipFile(hmm_compressed_database, 'r') as zip_object:
-        list_of_hmms = [hmm_filename for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename]
-        check_hmms = {os.path.basename(hmm_filename).replace('.check.hmm', ''): hmm_filename
-                      for hmm_filename in zip_object.namelist() if hmm_filename.endswith('.hmm') and 'check' in hmm_filename}
-        for hmm_filename in list_of_hmms:
-            hmm_filebasename = os.path.basename(hmm_filename)
-            hmm_name = hmm_filebasename.replace('.hmm', '')
-            with zip_object.open(hmm_filename) as open_hmm_zipfile:
-                with pyhmmer.plan7.HMMFile(open_hmm_zipfile) as hmm_file:
-                    for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
-                        threshold, threshold_type = threshold_data.split('|')
-                        threshold = float(threshold)
-                        if threshold_type == 'full':
-                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
-                                for hit in hits.included:
-                                    if hit.score >= threshold:
-                                        gene_match = hit.name
-                                        # Check the presence of specific motif in gene sequence.
-                                        if hmm_name in motif_db:
-                                            gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0].textize().sequence
-                                            if check_motif_regex(hmm_name, gene_sequence_str, motif_db):
-                                                results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                        # Motif validation by checking that it is not better associated with another HMM.
-                                        elif hmm_name in motif_pair_db:
-                                            gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                            first_check_hmm = check_hmms[hmm_name]
-                                            second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
-                                            if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                                        else:
-                                            results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, hit.score, hit.length])
-                        if threshold_type == 'domain':
-                            for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
-                                for hit in hits.included:
-                                    for domain in hit.domains.included:
-                                        if domain.score >= threshold:
-                                            gene_match = hit.name
-                                            if hmm_name in motif_db:
-                                                gene_sequence_str = [sequence for sequence in sequences if sequence.name == gene_match][0]
-                                                if check_motif_regex(hmm_name, gene_sequence_str):
-                                                    results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
-                                            elif hmm_name in motif_pair_db:
-                                                gene_sequence = [sequence for sequence in sequences if sequence.name == gene_match]
-                                                first_check_hmm = check_hmms[hmm_name]
-                                                second_check_hmm = check_hmms[motif_pair_db[hmm_name]]
-                                                if check_motif_pair(gene_sequence, first_check_hmm, second_check_hmm, zip_object):
-                                                    results.append([input_filename, gene_match.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
-                                            else:
-                                                results.append([input_filename, hit.name.decode(), hmm_filebasename, hit.evalue, domain.score, hit.length])
+    for hmm_filebasename in list_of_hmms:
+        hmm_filename = os.path.join(hmm_folder, hmm_filebasename)
+        if hmm_filename.endswith('.hmm') and 'check' not in hmm_filename and os.path.basename(hmm_filename) in hmm_thresholds:
+            with pyhmmer.plan7.HMMFile(hmm_filename) as hmm_file:
+                for threshold_data in hmm_thresholds[hmm_filebasename].split(', '):
+                    threshold, threshold_type = threshold_data.split('|')
+                    threshold = float(threshold)
+                    # Perform search of the HMM on all input protein sequences and filter them according to score (either hit or domain).
+                    if threshold_type == 'full':
+                        for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
+                            for hit in hits.included:
+                                if hit.score >= threshold:
+                                    result_hmm = filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, motif_db, motif_pair_db)
+                                    if result_hmm is not None:
+                                        results.append(result_hmm)
+
+                    if threshold_type == 'domain':
+                        for hits in pyhmmer.hmmsearch(hmm_file, sequences, cpus=pyhmmer_core, Z=len(list_of_hmms), parallel="targets"):
+                            for hit in hits.included:
+                                for domain in hit.domains.included:
+                                    if domain.score >= threshold:
+                                        result_hmm = filtering_hit(input_filename, hmm_filebasename, hit, sequences, check_hmms, motif_db, motif_pair_db, domain)
+                                        if result_hmm is not None:
+                                            results.append(result_hmm)
 
     return results
 
@@ -234,31 +285,33 @@ def create_major_functions(hmm_output_folder, output_file, hmm_template_file=HMM
             csvwriter.writerow([function, *present_functions])
 
 
-def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_compressed_database=HMM_COMPRESSED_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
+def hmm_search_write_results(input_file_path, output_file, hmm_thresholds, hmm_folder=HMM_FOLDER, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, pyhmmer_core=1):
     """Little functions for the starmap multiprocessing to launch HMM search and result writing
 
     Args:
         input_file_path (str): path of protein fasta file
         output_file (str): output tsv file containing HMM search hits
         hmm_thresholds (dict): threshold for each HMM
-        hmm_compressed_database (str): path to HMM compress database
+        hmm_folder (str): path to HMM folder
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
         pyhmmer_core (int): number of core used by pyhmmer
     """
     logger.info('Search for HMMs on ' + input_file_path)
-    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db, pyhmmer_core)
+    hmm_results = query_fasta_file(input_file_path, hmm_thresholds, hmm_folder, motif_db, motif_pair_db, pyhmmer_core)
     write_results(hmm_results, output_file)
 
 
-def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRESSED_FILE, hmm_template_file=HMM_TEMPLATE_FILE, motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, core_number=1):
+def search_hmm(input_variable, output_folder, hmm_folder=HMM_FOLDER, hmm_template_file=HMM_TEMPLATE_FILE, pathway_template_file=PATHWAY_TEMPLATE_FILE,
+               motif_db=MOTIF, motif_pair_db=MOTIF_PAIR, core_number=1):
     """Main function to use HMM search on protein sequences and write results
 
     Args:
         input_variable (str): path to input file or folder
         output_folder (str): path to output folder
-        hmm_compressed_database (str): path to HMM compress database
+        hmm_folder (str): path to HMM folder
         hmm_template_file (str): path of HMM template file
+        pathway_template_file (str): path to pathway template file
         motif_db (dict): dictionary containing gene name as key and motif to search as values
         motif_pair_db (dict): dictionary containing gene name as key and a second gene name as values
         core_number (int): number of core to use for the multiprocessing
@@ -266,7 +319,7 @@ def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRE
     start_time = time.time()
     input_dicts = file_or_folder(input_variable)
 
-    logger.info('HMM compressed file: ' + hmm_compressed_database)
+    logger.info('HMM folder: ' + hmm_folder)
     logger.info('HMM template file : ' + hmm_template_file)
 
     # If there is only one input fasta file, use pyhmmer multiprocessing.
@@ -282,13 +335,18 @@ def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRE
 
     hmm_thresholds = get_hmm_thresholds(hmm_template_file)
 
+    # Map pathway to function name.
+    pathway_template_df = get_link_pathway_function_name(pathway_template_file, hmm_template_file)
+    mapping_pathway_function_file = os.path.join(output_folder, 'mapping_pathway_to_function_name.tsv')
+    pathway_template_df.to_csv(mapping_pathway_function_file, sep='\t', index=False)
+
     hmm_search_pool = Pool(processes=core_number)
 
     multiprocess_input_hmm_searches = []
     for input_filename in input_dicts:
         output_file = os.path.join(hmm_output_folder, input_filename + '.tsv')
         input_file_path = input_dicts[input_filename]
-        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_compressed_database, motif_db, motif_pair_db, pyhmmer_core])
+        multiprocess_input_hmm_searches.append([input_file_path, output_file, hmm_thresholds, hmm_folder, motif_db, motif_pair_db, pyhmmer_core])
 
     hmm_search_pool.starmap(hmm_search_write_results, multiprocess_input_hmm_searches)
 
@@ -299,7 +357,8 @@ def search_hmm(input_variable, output_folder, hmm_compressed_database=HMM_COMPRE
     create_major_functions(hmm_output_folder, function_matrix_file)
 
     input_diagram_folder = os.path.join(output_folder, 'diagram_input')
-    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder)
+    create_input_diagram(hmm_output_folder, input_diagram_folder, output_folder, pathway_template_file)
+    create_pathway_presence_files(hmm_output_folder, output_folder, pathway_template_file)
 
     input_diagram_file = os.path.join(output_folder, 'Total.R_input.txt')
     create_diagram_figures(input_diagram_file, output_folder)

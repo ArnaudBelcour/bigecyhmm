@@ -1,0 +1,54 @@
+	Pathways	HMMs	reactants	products	formula
+0	Hydrogen generation	hydrogenase_FeFeGroupA1.hmm or hydrogenase_FeFeGroupB.hmm or hydrogenase_NiFeGroup1c.hmm or hydrogenase_NiFeGroup1e.hmm or hydrogenase_NiFeGroup3a.hmm or hydrogenase_NiFeGroup3b.hmm or hydrogenase_NiFeGroup3d.hmm or hydrogenase_NiFeGroup4a.hmm or hydrogenase_NiFeGroup4b.hmm or hydrogenase_NiFeGroup4c.hmm or hydrogenase_NiFeGroup4d.hmm or hydrogenase_NiFeGroup4e.hmm or hydrogenase_NiFeGroup4f.hmm or hydrogenase_FeFeGroupA4.hmm or hydrogenase_FeGroupFe.hmm or hydrogenase_FeFeGroupA3.hmm or hydrogenase_NiFeGroup4h.hmm	e-	H2	e-->H2
+1	Hydrogen oxidation	hydrogenase_FeFeGroupB.hmm or hydrogenase_FeFeGroupA2.hmm or hydrogenase_FeFeGroupA3.hmm or hydrogenase_FeFeGroupA4.hmm or hydrogenase_FeFeGroupC1.hmm or hydrogenase_FeFeGroupC2.hmm or hydrogenase_FeFeGroupC3.hmm or hydrogenase_FeGroupFe.hmm or hydrogenase_NiFeGroup1a.hmm or hydrogenase_NiFeGroup1b.hmm or hydrogenase_NiFeGroup1c.hmm or hydrogenase_NiFeGroup1d.hmm or hydrogenase_NiFeGroup1e.hmm or hydrogenase_NiFeGroup1f.hmm or hydrogenase_NiFeGroup1g.hmm or hydrogenase_NiFeGroup1h.hmm or hydrogenase_NiFeGroup1i.hmm or hydrogenase_NiFeGroup1j.hmm or hydrogenase_NiFeGroup1k.hmm or hydrogenase_NiFeGroup2a.hmm or hydrogenase_NiFeGroup2b.hmm or hydrogenase_NiFeGroup2c.hmm or hydrogenase_NiFeGroup2d.hmm or hydrogenase_NiFeGroup2e.hmm or hydrogenase_NiFeGroup3a.hmm or hydrogenase_NiFeGroup3b.hmm or hydrogenase_NiFeGroup3c.hmm or hydrogenase_NiFeGroup3d.hmm or hydrogenase_NiFeGroup4a.hmm or hydrogenase_NiFeGroup4e.hmm or hydrogenase_NiFeGroup4i.hmm	H2	e-	H2->e-
+2	Hydrogenotrophic methanogen.	(hydrogenase_FeGroupFe.hmm or hydrogenase_NiFeGroup1k.hmm or hydrogenase_NiFeGroup3a.hmm or hydrogenase_NiFeGroup3c.hmm or hydrogenase_NiFeGroup4h.hmm or hydrogenase_NiFeGroup4i.hmm) and (TIGR03256.hmm or TIGR03257.hmm or TIGR03259.hmm)	H2	CH4	H2->CH4
+3	Methanogenesis	TIGR03256.hmm or TIGR03257.hmm or TIGR03259.hmm	Methyl-CoM. CH4	CH4. Methyl-CoM	Methyl-CoM. CH4->CH4. Methyl-CoM
+4	Hydrogenotrophic acetogen.	(hydrogenase_FeFeGroupA3.hmm or hydrogenase_NiFeGroup4e.hmm or hydrogenase_NiFeGroup4h.hmm or hydrogenase_NiFeGroup4i.hmm) and (K01938.hmm or fthfs_NF010030.hmm)	e-	Acetate	e-->Acetate
+5	Acetate oxidation	TIGR02188.hmm or TIGR00314.hmm	Acetate	CO2. Methyl-CoM	Acetate->CO2. Methyl-CoM
+6	Acetoclastic methanogenesis	(TIGR02188.hmm or TIGR00314.hmm or TIGR00016.hmm or TIGR00651.hmm) and (TIGR03256.hmm or TIGR03257.hmm or TIGR03259.hmm)	Acetate	CH4	Acetate->CH4
+7	Acetogen. WL	K01938.hmm or fthfs_NF010030.hmm	CO2	Acetate	CO2->Acetate
+8	Carbon fixation	K00194.hmm or K00197.hmm or K00198.hmm or rubisco_form_I.hmm or rubisco_form_II.hmm or K14466.hmm or K14467.hmm or K14468.hmm or K14469.hmm or acetate_citrate_lyase_aclA.hmm or acetate_citrate_lyase_aclB.hmm or K18861.hmm	CO2	Organic C	CO2->Organic C
+9	Methylotrophic methanogen.	NF040654.hmm or NF041608.hmm or TIGR00314.hmm and (TIGR03256.hmm or TIGR03257.hmm or TIGR03259.hmm)	Organic C	CO2. Methyl-CoM	Organic C->CO2. Methyl-CoM
+10	Organic carbon oxidation	K00001.hmm or K00002.hmm or K00016.hmm or TIGR04266.hmm or K00114.hmm or TIGR02818.hmm or K00123.hmm or K00124.hmm or K00125.hmm or K00129.hmm or K00138.hmm or TIGR02819.hmm or TIGR03451.hmm or K00169.hmm or K00249.hmm or K00255.hmm or TIGR03256.hmm or TIGR00651.hmm or K00656.hmm or K00812.hmm or K00813.hmm or K00817.hmm or K00819.hmm or K00821.hmm or K00823.hmm or K00826.hmm or K00830.hmm or K00831.hmm or K00832.hmm or K00840.hmm or TIGR00016.hmm or TIGR02821.hmm or K01176.hmm or K01178.hmm or K01183.hmm or K01188.hmm or K01190.hmm or K01192.hmm or K01195.hmm or K01198.hmm or K01200.hmm or K01207.hmm or K01209.hmm or K01214.hmm or K01218.hmm or K01612.hmm or K01779.hmm or K01811.hmm or TIGR02188.hmm or TIGR02717.hmm or K02619.hmm or K03186.hmm or K03342.hmm or K03381.hmm or K03518.hmm or K03519.hmm or K03520.hmm or K03918.hmm or K04022.hmm or K04072.hmm or K04112.hmm or K04113.hmm or K04114.hmm or K04115.hmm or K05343.hmm or K05349.hmm or K05350.hmm or K05825.hmm or K05830.hmm or K05989.hmm or K06445.hmm or K06446.hmm or K07250.hmm or K07405.hmm or K09456.hmm or K09478.hmm or TIGR03126.hmm or TIGR03079.hmm or TIGR03078.hmm or K11358.hmm or K11410.hmm or K12111.hmm or K12308.hmm or K12373.hmm or K13381.hmm or K13524.hmm or K13954.hmm or methanol_dehydrogenase_pqq_xoxF_mxaF.hmm or K14268.hmm or K14459.hmm or TIGR02659.hmm or TIGR02658.hmm or K15921.hmm or K15980.hmm or PF02406.hmm or TIGR04550.hmm or K18244.hmm or K19355.hmm or K19668.hmm or K22473.hmm or K22515.hmm or K22516.hmm or TIGR03080.hmm	Organic C	CO2	Organic C->CO2
+11	CO2-dep. Methanogen.	TIGR03555.1.hmm and (TIGR03256.hmm or TIGR03257.hmm or TIGR03259.hmm)	CO2	CH4	CO2->CH4
+12	(Aerobic) methanotrophy	pmoA.hmm or pmoB.hmm or pmoC.hmm or PF02406.hmm or TIGR04550.hmm	CH4	CO2	CH4->CO2
+13	Fermentation	K00001.hmm or K00016.hmm or K00169.hmm or TIGR00651.hmm or K00656.hmm or TIGR00016.hmm or TIGR02188.hmm or TIGR02717.hmm or K01026.hmm	Organic C. Ethanol. Acetate	Ethanol. Acetate	Organic C. Ethanol. Acetate->Ethanol. Acetate
+14	Ethanol oxidation	K00001.hmm	Ethanol	CO2	Ethanol->CO2
+15	Fermentative H2 generation	(hydrogenase_FeFeGroupA1.hmm or hydrogenase_NiFeGroup4a.hmm) and (K00001.hmm or K00016.hmm or K00169.hmm or TIGR00651.hmm or K00656.hmm or TIGR00016.hmm or TIGR02188.hmm or TIGR02717.hmm)	Ethanol. Organic C	e-	Ethanol. Organic C->e-
+16	Organohal. Respira. 1	hydrogenase_NiFeGroup1a.hmm and PF13486.hmm	e-	Halide Ions	e-->Halide Ions
+17	Organohal. Respira. 2	PF13486.hmm	Organic Halides	Halide Ions	Organic Halides->Halide Ions
+18	Selenate reduction	TIGR03315.hmm or TIGR03313.hmm or TIGR03312.hmm	SeO4 2-	Se	SeO4 2-->Se
+19	Sulfur respiration	(hydrogenase_NiFeGroup1e.hmm or hydrogenase_NiFeGroup1g.hmm) and (asrC.hmm or dsrA.hmm or dsrB.hmm or asrA.hmm or asrB.hmm or dsrD.hmm or K16952.hmm or K17219.hmm or K17220.hmm or K17221.hmm)	e-	H2S	e-->H2S
+20	Sulfate respiration	(hydrogenase_NiFeGroup1a.hmm or hydrogenase_NiFeGroup1b.hmm or hydrogenase_NiFeGroup1c.hmm or hydrogenase_NiFeGroup1j.hmm) and (aprA.hmm or TIGR00339.hmm)	e-	SO3 2-. H2S	e-->SO3 2-. H2S
+21	Sulfite oxidation	aprA.hmm or TIGR00339.hmm	SO32-	H2S	SO32-->H2S
+22	Sulfite reduction	asrC.hmm or dsrA.hmm or dsrB.hmm or asrA.hmm or asrB.hmm or dsrD.hmm	S	H2S	S->H2S
+23	Sulfur reduction	K16952.hmm or K17219.hmm or K17220.hmm or K17221.hmm	S	H2S	S->H2S
+24	Polysulfide reduction	K16293.hmm or K16294.hmm or K17995.hmm or K17996.hmm	H2S	S	H2S->S
+25	Sulfide oxidation	sulfide_quinone_oxidoreductase_sqr.hmm or PF09242.hmm	S	SO3 2-	S->SO3 2-
+26	Sulfur oxidation	PF07682.hmm or sulfur_dioxygenase_sdo.hmm	S2O3 2-	S. SO4 2-	S2O3 2-->S. SO4 2-
+27	Thiosulfate disproportionation 2	(soxA.hmm or soxX.hmm or soxY.hmm or soxZ.hmm) and not soxD.hmm and not soxC.hmm	S2O3 2-	SO4 2-	S2O3 2-->SO4 2-
+28	Thiosulfate oxidation	(soxA.hmm or soxX.hmm or soxY.hmm or soxZ.hmm) and (soxD.hmm or soxC.hmm)	S2O3 2-	H2S. SO3 2-	S2O3 2-->H2S. SO3 2-
+29	Thiosulfate disproportionation 1	thiosulfate_reductase_phsA.hmm	SO3 2-	SO4 2-	SO3 2-->SO4 2-
+30	Sulfate reduction (ASR/DSR)	aprA.hmm or TIGR00339.hmm	SO4 2-	SO3 2-	SO4 2-->SO3 2-
+31	Arsenate reduction	arrA.hmm	As 5+	As 3+	As 5+->As 3+
+32	Arsenite oxidation	aioA.hmm or arxA.hmm	As 3+	As 5+	As 3+->As 5+
+33	e-input Metal respiration	(hydrogenase_NiFeGroup1a.hmm or hydrogenase_NiFeGroup1b.hmm) and (CymA.hmm or DFE_0450.hmm or DFE_0464.hmm or MtrA.hmm or MtrB_TIGR03509.hmm or MtrC_TIGR03507.hmm or Ndh2.hmm or OmcF.hmm or OmcS.hmm or OmcZ.hmm)	e-	Mn 2+. Fe 2+	e-->Mn 2+. Fe 2+
+34	Metal Respiration	CymA.hmm or DFE_0450.hmm or DFE_0464.hmm or MtrA.hmm or MtrB_TIGR03509.hmm or MtrC_TIGR03507.hmm or Ndh2.hmm or OmcF.hmm or OmcS.hmm or OmcZ.hmm	MnO2. Fe 3+	Mn 2+. Fe 2+	MnO2. Fe 3+->Mn 2+. Fe 2+
+35	Mn oxidation	NF041487.hmm	Mn 2+	MnO2	Mn 2+->MnO2
+36	Iron oxidation	Cyc1.hmm or Cyc2_repCluster1.hmm or Cyc2_repCluster2.hmm or Cyc2_repCluster3.hmm or FoxA.hmm or FoxB.hmm or FoxC.hmm or FoxE.hmm or FoxY.hmm or FoxZ.hmm or MtoA.hmm or sulfocyanin.hmm	Fe 2+	Fe 3+	Fe 2+->Fe 3+
+37	Nitrate respiration / denitrification	(hydrogenase_NiFeGroup1b.hmm or hydrogenase_NiFeGroup1c.hmm) and (TIGR02374.hmm or TIGR02378.hmm or NF041323.hmm or TIGR02376.hmm or nitrite_reductase_nirS.hmm or TIGR04315.hmm or nitric_oxide_reductase_norC.hmm or nitric_oxide_reductase_norB.hmm or PF05048.hmm or TIGR04246.hmm)	e-	NO2-. NO. N2O. N2	e-->NO2-. NO. N2O. N2
+38	Assimilatory nitrate red.	TIGR02374.hmm or TIGR02378.hmm or NF041323.hmm	NO3-. NO2-	NO2-. NH3	NO3-. NO2-->NO2-. NH3
+39	Dissimilatory nitrate red.	TIGR01580.hmm or TIGR01660.hmm or TIGR01706.hmm or PF03892.hmm or TIGR03148.hmm	NO3-. NO2-	NO2-. NH3	NO3-. NO2-->NO2-. NH3
+40	Ammonia oxidation	amoA.hmm or amoB.hmm or amoC.hmm	NH3	NO2-	NH3->NO2-
+41	Nitrite oxidation	nitrite_oxidoreductase_nxrA.hmm or nitrite_oxidoreductase_nxrB.hmm	NO2-	NO3-	NO2-->NO3-
+42	Nitrite reduction	TIGR02376.hmm or nitrite_reductase_nirS.hmm or TIGR04315.hmm	NO2-	NO	NO2-->NO
+43	Nitric oxide dismutase	nod.hmm	NO	N2	NO->N2
+44	Nitric oxide reduction	nitric_oxide_reductase_norC.hmm or nitric_oxide_reductase_norB.hmm	NO	N2O	NO->N2O
+45	Nitrous oxide reduction	PF05048.hmm or TIGR04246.hmm	N2O	N2	N2O->N2
+46	Anammox	hydrazine_synthase_hzsA.hmm or hydrazine_oxidase_hzoA.hmm	NO2-. NH3	N2	NO2-. NH3->N2
+47	Nitrite ammonification	TIGR02374.hmm or TIGR02378.hmm or PF02335.hmm or TIGR03148.hmm or TIGR03153.hmm	NO3-	NH3	NO3-->NH3
+48	Nitrogen fixation	K00117.hmm or K00937.hmm or K01507.hmm or K01514.hmm or K06137.hmm	N2	NH3. H2	N2->NH3. H2
+49	P dissolution	TIGR02929.hmm or TIGR01282.hmm or TIGR01287.hmm or TIGR01286.hmm or TIGR01860.hmm or TIGR02932.hmm or TIGR02930.hmm or TIGR01861.hmm or TIGR02931.hmm	P insol	P inorg	P insol->P inorg
+50	Immobilisation (P-rich)	NF033774.1.hmm	P inorg	P org	P inorg->P org
+51	Immobilisation (P-poor)	K02040.hmm	P inorg	P org	P inorg->P org
+52	P mineralisation	K01077.hmm or K01078.hmm or K01083.hmm or K01093.hmm or K01113.hmm or K02044.hmm or K03788.hmm or K05780.hmm or K05781.hmm or TIGR02318.1.hmm or K06163.hmm or K06164.hmm or K06165.hmm or K06166.hmm or K07093.hmm or K09474.hmm or TIGR01422.2.hmm or TIGR02326.1.hmm or TIGR02335.1.hmm or TIGR03276.1.hmm	P org	P inorg	P org->P inorg

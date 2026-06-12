@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@ import logging
 import os
 import csv
 import sys
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -40,12 +41,13 @@ def is_valid_dir(dirpath):
         return True
 
 
-def file_or_folder(variable_folder_file, extension_checks=['.faa']):
+def file_or_folder(variable_folder_file, extension_checks=['.faa'], second_extension_to_checks=None):
     """Check if the variable is file or a folder
 
     Args:
         variable_folder_file (str): path to a file or a folder
         extension_checks (list): list of extension to keep
+        second_extension_to_check(list): list of second extension to keep
 
     Returns:
         dict: {name of input file: path to input file}
@@ -58,6 +60,9 @@ def file_or_folder(variable_folder_file, extension_checks=['.faa']):
         if file_extension in extension_checks:
             file_folder_paths[filename] = variable_folder_file
             check_file = True
+        if check_file is False and second_extension_to_checks is not None and file_extension in second_extension_to_checks:
+            file_folder_paths[filename] = variable_folder_file
+            check_file = True
 
     check_folder = False
     # For folder, iterate through all files inside the folder.
@@ -65,6 +70,9 @@ def file_or_folder(variable_folder_file, extension_checks=['.faa']):
         for file_from_folder in os.listdir(variable_folder_file):
             filename, file_extension = os.path.splitext(os.path.basename(file_from_folder))
             if file_extension in extension_checks:
+                file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
+                check_folder = True
+            if check_folder is False and second_extension_to_checks is not None and file_extension in second_extension_to_checks:
                 file_folder_paths[filename] = os.path.join(variable_folder_file, file_from_folder)
                 check_folder = True
 
@@ -114,24 +122,16 @@ def read_measures_file(measures_file_path):
     elif measures_file_path.endswith('.csv'):
         delimiter = ','
 
+    measures_df = pd.read_csv(measures_file_path, sep=delimiter, index_col=0)
     column_measure = {}
-    with open(measures_file_path, 'r') as open_measures_file:
-        csvreader = csv.DictReader(open_measures_file, delimiter=delimiter)
-        headers = csvreader.fieldnames
-        columns = headers[1:]
-        first_row = headers[0]
-        for row in csvreader:
-            for column in columns:
-                if column not in column_measure:
-                    column_measure[column] = {}
-                try:
-                    column_measure[column][row[first_row]] = float(row[column])
-                except:
-                    column_measure[column][row[first_row]] = 0
-
     total_measure_per_column = {}
-    for col in column_measure:
-        total_measure_per_column[col] = sum([column_measure[col][row] for row in column_measure[col]])
+    for col in measures_df.columns:
+        if measures_df[col].dtype == 'float64' or measures_df[col].dtype ==  'int64':
+            column_measure[col] = measures_df[col].to_dict()
+            total_measure_per_column[col] = measures_df[col].sum()
+        else:
+            logger.critical('ERROR: Column {0} appears to not contain float or int in file {1}.'.format(col, measures_file_path))
+            sys.exit(1)
 
     return column_measure, total_measure_per_column
 
@@ -156,3 +156,37 @@ def read_esmecata_proteome_file(proteome_tax_id_file):
             observation_names_tax_ranks[row['observation_name']] = row['tax_rank']
 
     return observation_names_tax_id_names, observation_names_tax_ranks
+
+
+def get_link_pathway_function_name(pathway_template_file, hmm_template_file):
+    """ Map pathway and function name.
+
+    Args:
+        hmm_template_file (str): path of HMM template file
+        pathway_template_file (str): path to pathway template file
+
+    Returns:
+        pathway_template_df (pd.DataFrame): pandas DataFrame ocntaining mapping between pathway and function name
+    """
+    pathway_template_df = pd.read_csv(pathway_template_file, sep='\t')
+
+    hmm_template_df = pd.read_csv(hmm_template_file, sep='\t')
+    pathway_template_df['HMMs'] = pathway_template_df['HMMs'].str.replace('(', '').str.replace(')', '')
+    pathway_template_df['HMMs'] = pathway_template_df['HMMs'].str.replace(' and ', ' or ').str.split(' or ')
+
+    hmm_functions = {hmm: row['Function'] for index, row in hmm_template_df.iterrows() for hmm in row['Hmm file'].split(', ')}
+
+    pathway_function_name_data = []
+    for index, row in pathway_template_df.iterrows():
+        pathway = row['Pathways']
+        pathway_hmms = row['HMMs']
+        if isinstance(pathway_hmms, list):
+            for pathway_hmm in pathway_hmms:
+                if 'not' not in pathway_hmm:
+                    pathway_function_name_data.append([pathway, hmm_functions[pathway_hmm]])
+        else:
+            pathway_function_name_data.append([pathway, ''])
+
+    pathway_template_df = pd.DataFrame(pathway_function_name_data, columns=['Pathway', 'Function_name'])
+
+    return pathway_template_df

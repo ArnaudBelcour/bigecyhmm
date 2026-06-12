@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2025 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
+# Copyright (C) 2024-2026 Arnaud Belcour - Univ. Grenoble Alpes, Inria, Grenoble, France Microcosme
 # Univ. Grenoble Alpes, Inria, Microcosme
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,20 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-__version__ = '0.1.8'
+__version__ = '0.2.0'
 
 # Create global constants containing path to package internal database.
 import os
+
 ROOT = os.path.dirname(__file__)
 PATHWAY_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'cycle_pathways.tsv')
 HMM_TEMPLATE_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_table_template.tsv')
-HMM_COMPRESSED_FILE = os.path.join(ROOT, 'hmm_databases', 'hmm_files.zip')
+HMM_FOLDER = os.path.join(ROOT, 'hmm_databases', 'hmm_files')
+
 TEMPLATE_CARBON_CYCLE = os.path.join(ROOT, 'templates', 'template_carbon_cycle_total.png')
 TEMPLATE_NITROGEN_CYCLE = os.path.join(ROOT, 'templates', 'template_nitrogen_cycle_total.png')
 TEMPLATE_SULFUR_CYCLE = os.path.join(ROOT, 'templates', 'template_sulfur_cycle_total.png')
 TEMPLATE_OTHER_CYCLE = os.path.join(ROOT, 'templates', 'template_other_cycle_total.png')
 TEMPLATE_PHOSPHORUS_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_cycle.png')
 TEMPLATE_PHOSPHORUS_GENE_CYCLE = os.path.join(ROOT, 'templates', 'template_phosphorus_genes.png')
+TEMPLATE_CUSTOM_CENTRAL_HYDROGEN = os.path.join(ROOT, 'templates', 'template_central_hydrogen.png')
+TEMPLATE_BACKGROUND_BIGECYHMM = os.path.join(ROOT, 'templates', 'template_background.png')
 
 CUSTOM_CARBON_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_carbon_cycle.json')
 CUSTOM_SULFUR_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_sulfur_cycle.json')
@@ -34,6 +38,7 @@ CUSTOM_NITROGEN_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_nitr
 CUSTOM_PHOSPHORUS_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_phosphorus_cycle.json')
 CUSTOM_OTHER_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'custom_other_cycle.json')
 CUSTOM_HYDROGENOTROPHIC_CYCLE_NETWORK = os.path.join(ROOT, 'hmm_databases', 'hydrogenotrophic_salt_caverns.json')
+CUSTOM_HYDROGEN_TABLE = os.path.join(ROOT, 'hmm_databases', 'custom_hydrogen_central_cycles.tsv')
 
 # Motif validation using regex search in sequence.
 MOTIF = {'dsrC': r'GPXKXXCXXXGXPXPXXCX',
@@ -58,5 +63,13 @@ MOTIF_PAIR = {'dsrE': 'tusD',
     'amoC': 'pmoC',
     'pmoA': 'amoA',
     'pmoB': 'amoB',
-    'pmoC': 'amoC'
-}
+    'pmoC': 'amoC',
+    'hydrogenase_NiFeGroup1d': ['hydrogenase_NiFeGroup1e'],
+    'hydrogenase_NiFeGroup1e': ['hydrogenase_NiFeGroup1d'],
+    'hydrogenase_NiFeGroup1b': ['hydrogenase_NiFeGroup1f'], 
+    'hydrogenase_NiFeGroup1f': ['hydrogenase_NiFeGroup1b'],
+    'hydrogenase_FeFeGroupA1': ['hydrogenase_FeFeGroupA2', 'hydrogenase_FeFeGroupA4','hydrogenase_FeFeGroupA3'],
+    'hydrogenase_FeFeGroupA3': ['hydrogenase_FeFeGroupA1','hydrogenase_FeFeGroupA2', 'hydrogenase_FeFeGroupA4'],
+    'hydrogenase_FeFeGroupB': ['hydrogenase_FeFeGroupC3'],
+    'hydrogenase_FeFeGroupC3': ['hydrogenase_FeFeGroupB'],
+    }

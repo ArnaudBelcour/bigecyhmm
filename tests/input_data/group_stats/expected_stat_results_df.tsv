@@ -1,0 +1,11 @@
+	Metabolic Function	H	eps2	p	p_bh	significant	Median first_group	n first_group	iq_range first_group	%0 first_group	Median second_group	n second_group	iq_range second_group	%0 second_group	Median third_group	n third_group	iq_range third_group	%0 third_group
+0	Metabolic function 1				n/a	No	0.0000	3	0.0	100.0	0.0000	3	0.0	100.0	0.0000	3	0.0	100.0
+1	Metabolic function 2				n/a	No	0.5000	3	0.0	0.0	0.5000	3	0.0	0.0	0.5000	3	0.0	0.0
+2	Metabolic function 3	2.000	0.0000	0.3679	0.4204	No	1.0000	3	0.5	33.333	1.0000	3	0.0	0.0	1.0000	3	0.0	0.0
+3	Metabolic function 4	8.000	1.0000	0.01832	0.04372	Yes	0.9000	3	0.0	0.0	0.0000	3	0.0	100.0	0.0000	3	0.0	100.0
+4	Metabolic function 5	5.000	1.0000	0.02535	0.04372	Yes	0.0000	3	0.0	100.0	0.9000	3	0.0	0.0		0		0.0
+5	Metabolic function 6	8.000	1.0000	0.01832	0.04372	Yes	0.0000	3	0.0	100.0	0.0000	3	0.0	100.0	0.9000	3	0.0	0.0
+6	Metabolic function 7	7.200	0.8667	0.02732	0.04372	Yes	0.1000	3	0.1	33.333	0.5000	3	0.1	0.0	0.9000	3	0.1	0.0
+7	Metabolic function 8	7.200	0.8667	0.02732	0.04372	Yes	0.2000	3	0.1	0.0	0.5000	3	0.1	0.0	0.8000	3	0.1	0.0
+8	Metabolic function 9	5.538	0.5897	0.06271	0.08361	No	0.0200	3	0.01	0.0	0.1100	3	0.01	0.0	0.1100	3	0.01	0.0
+9	Metabolic function 10	0.022	0.0000	0.9889	0.9889	No	0.6000	3	0.4	0.0	0.6000	3	0.25	0.0	0.5000	3	0.25	0.0

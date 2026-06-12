@@ -1,0 +1,154 @@
+import os
+import csv
+import subprocess
+import shutil
+
+from bigecyhmm.custom_db import identify_run_custom_db_search, search_hmm_custom_db, generate_pathway_file_from_json
+from bigecyhmm import HMM_TEMPLATE_FILE, PATHWAY_TEMPLATE_FILE
+from bigecyhmm.hmm_search import query_fasta_file, get_hmm_thresholds, extract_hmm_to_function
+from bigecyhmm.diagram_cycles import extract_hmm_to_pathway
+from bigecyhmm.utils import is_valid_dir
+
+EXPECTED_RESULTS = {'Q08582': ('Thermophilic specific', None, 'TIGR01054.hmm'), 'P50457': ('4-aminobutyrate aminotransferase and related aminotransferases', 'C-S-01:Organic carbon oxidation', 'K00823.hmm'),
+                   'P06292': ('CBB cycle - Rubisco', 'C-S-02:Carbon fixation', 'rubisco_form_I.hmm'), 'P11766': ('Alcohol utilization', 'C-S-03:Ethanol oxidation', 'K00001.hmm'),
+                   'Q9NR19': ('Acetate to acetyl-CoA', 'C-S-04:Acetate oxidation', 'TIGR02188.hmm'), 'P29166': ('FeFe hydrogenase', 'C-S-05:Hydrogen generation', 'K00532.hmm'),
+                   'P80900': ('Pyruvate oxidation', 'C-S-06:Fermentation', 'K00169.hmm'), 'P11562': ('Methane production', 'C-S-07:Methanogenesis', 'TIGR03259.hmm'),
+                   'Q607G3': ('Methane oxidation - Partculate methane monooxygenase', 'C-S-08:Methanotrophy', 'pmoA.hmm'), 'P0ACD8': ('Ni-Fe Hydrogenase', 'C-S-09:Hydrogen oxidation', 'nife-group-1.hmm'),
+                   'P13419': ('Wood Ljungdahl pathway (methyl branch)', 'C-S-10:Acetogenesis WL', 'K01938.hmm')}
+
+
+def test_search_hmm_custom_db():
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
+    output_folder = 'output_folder'
+    custom_db_json = os.path.join('input_data', 'custom_db', 'carbon_cycle.json')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+
+    is_valid_dir(output_folder)
+
+    pathway_template_file, bipartite_cycle_network = generate_pathway_file_from_json(custom_db_json, output_folder)
+
+    search_hmm_custom_db(input_file, output_folder, pathway_template_file=pathway_template_file, motif_json=custom_motif, motif_pair_json=custom_motif_pair)
+
+    hmm_to_function = extract_hmm_to_function()
+    hmm_to_pathways = extract_hmm_to_pathway()
+    predicted_hmm_file = os.path.join(output_folder, 'hmm_results', 'meta_organism_test.tsv')
+    predicted_hmms = {}
+    with open(predicted_hmm_file, 'r') as open_predicted_hmm_file:
+        csvreader = csv.DictReader(open_predicted_hmm_file, delimiter='\t')
+        for line in csvreader:
+            protein_id = line['protein'].split('|')[1]
+            hmm_id = line['HMM']
+            if hmm_id in hmm_to_pathways:
+                pathways = hmm_to_pathways[hmm_id]
+            else:
+                pathways = None
+            if pathways is not None:
+                for pathway in pathways:
+                    if protein_id not in predicted_hmms:
+                        predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathway, hmm_id)]
+                    else:
+                        predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathway, hmm_id))
+            else:
+                if protein_id not in predicted_hmms:
+                    predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathways, hmm_id)]
+                else:
+                    predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
+
+    # Check that expected proteins are matching HMMs.
+    for protein_id in EXPECTED_RESULTS:
+        assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
+
+    shutil.rmtree(output_folder)
+
+
+def test_query_fasta_file_custom_db_gene_in_both_motif_and_motif_pair():
+    # Test when using both motif and motif pair.
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
+    output_folder = 'output_folder'
+    custom_hmm_folder = os.path.join('input_data', 'amoA_custom_db', 'amoA_custom_db')
+    custom_hmm_template = os.path.join('input_data', 'amoA_custom_db', 'amoA_db.tsv')
+    custom_motif_pair = {"pmoA": "amoA", "amoA": "pmoA"}
+
+    # Not working pmoA motif.
+    custom_motif = {"pmoA": "AAAAAAAAAAAAAAAAAAAA"}
+    hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" not in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # No search of motif.
+    custom_motif = {}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # No search of custom pair (so both amoA and pmoA).
+    custom_motif_pair = {}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "amoA.hmm" in pmoa_matching_hmms and "pmoA.hmm" in pmoa_matching_hmms
+
+    # Issue in 0.1.8 fixed in 0.1.9: as motif is found, motif pair check is not done.
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": "pmoA"}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # Check that it is working with motif list.
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": ["pmoA"]}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+    # Check that when using domain, issue is also fixed.
+    custom_hmm_template = os.path.join('input_data', 'amoA_custom_db', 'amoA_db_domain.tsv')
+    hmm_thresholds = get_hmm_thresholds(custom_hmm_template)
+    custom_motif = {"amoA": "XXX"}
+    custom_motif_pair = {"amoA": "pmoA"}
+    results = query_fasta_file(input_file, hmm_thresholds, hmm_folder=custom_hmm_folder, motif_db=custom_motif, motif_pair_db=custom_motif_pair, pyhmmer_core=1)
+    pmoa_matching_hmms = [result[2] for result in results if result[1] == 'sp|Q607G3|PMOA_METCA']
+    assert "pmoA.hmm" in pmoa_matching_hmms and "amoA.hmm" not in pmoa_matching_hmms
+
+
+def test_search_hmm_custom_db_cli():
+    input_file = os.path.join('input_data', 'meta_organism_test.faa')
+    output_folder = 'output_folder'
+    custom_db_json = os.path.join('input_data', 'custom_db', 'carbon_cycle.json')
+    custom_motif = os.path.join('input_data', 'motif.json')
+    custom_motif_pair = os.path.join('input_data', 'motif_pair.json')
+
+    subprocess.call(['bigecyhmm_custom', '-i', input_file, '-d', custom_db_json, '-o', output_folder, '-m', custom_motif, '-p', custom_motif_pair])
+
+    hmm_to_function = extract_hmm_to_function()
+    hmm_to_pathways = extract_hmm_to_pathway()
+    predicted_hmm_file = os.path.join(output_folder, 'carbon_cycle', 'hmm_results', 'meta_organism_test.tsv')
+    predicted_hmms = {}
+    with open(predicted_hmm_file, 'r') as open_predicted_hmm_file:
+        csvreader = csv.DictReader(open_predicted_hmm_file, delimiter='\t')
+        for line in csvreader:
+            protein_id = line['protein'].split('|')[1]
+            hmm_id = line['HMM']
+            if hmm_id in hmm_to_pathways:
+                pathways = hmm_to_pathways[hmm_id]
+            else:
+                pathways = None
+            if pathways is not None:
+                for pathway in pathways:
+                    if protein_id not in predicted_hmms:
+                        predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathway, hmm_id)]
+                    else:
+                        predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathway, hmm_id))
+            else:
+                if protein_id not in predicted_hmms:
+                    predicted_hmms[protein_id] = [(hmm_to_function[hmm_id], pathways, hmm_id)]
+                else:
+                    predicted_hmms[protein_id].append((hmm_to_function[hmm_id], pathways, hmm_id))
+
+    # Check that expected proteins are matching HMMs.
+    for protein_id in EXPECTED_RESULTS:
+        assert EXPECTED_RESULTS[protein_id] in predicted_hmms[protein_id]
+
+    shutil.rmtree(output_folder)

@@ -1,0 +1,403 @@
+	#Entry	Category	Function	Gene abbreviation	Gene name	Hmm file	Corresponding KO	Reaction	Substrate	Product	Hmm detecting threshold	source
+53	1	Hydrogen generation	hydrogenase [FeFe] A1	hydA1	hydrogenase [FeFe] A1	hydrogenase_FeFeGroupA1.hmm	K00532				188|domain	doi: 10.3389/fbinf.2022.918853
+54	1	Hydrogen generation	hydrogenase [FeFe] B	hydM	hydrogenase [FeFe] B	hydrogenase_FeFeGroupB.hmm	KEGG TOO UNSPECIFIC				227|domain	doi: 10.3389/fbinf.2022.918853
+55	1	Hydrogen generation	hydrogenase [NiFe] 1c	hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+56	1	Hydrogen generation	hydrogenase [NiFe] 1e	hyiB	hydrogenase [NiFe] 1e	hydrogenase_NiFeGroup1e.hmm	KEGG TOO UNSPECIFIC				969|domain	doi: 10.3389/fbinf.2022.918853
+57	1	Hydrogen generation	hydrogenase [NiFe] 3a	frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+58	1	Hydrogen generation	hydrogenase [NiFe] 3b	hyhL	hydrogenase [NiFe] 3b	hydrogenase_NiFeGroup3b.hmm	KEGG TOO UNSPECIFIC				332|domain	doi: 10.3389/fbinf.2022.918853
+59	1	Hydrogen generation	hydrogenase [NiFe] 3d	hoxH	hydrogenase [NiFe] 3d	hydrogenase_NiFeGroup3d.hmm	KEGG TOO UNSPECIFIC				595|domain	doi: 10.3389/fbinf.2022.918853
+60	1	Hydrogen generation	hydrogenase [NiFe] 4a	hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
+61	1	Hydrogen generation	hydrogenase [NiFe] 4b	mbhL	hydrogenase [NiFe] 4b	hydrogenase_NiFeGroup4b.hmm	KEGG TOO UNSPECIFIC				792|domain	doi: 10.3389/fbinf.2022.918853
+62	1	Hydrogen generation	hydrogenase [NiFe] 4c	cooH	hydrogenase [NiFe] 4c	hydrogenase_NiFeGroup4c.hmm	KEGG TOO UNSPECIFIC				416|domain	doi: 10.3389/fbinf.2022.918853
+63	1	Hydrogen generation	hydrogenase [NiFe] 4d	EhaO	hydrogenase [NiFe] 4d	hydrogenase_NiFeGroup4d.hmm	KEGG TOO UNSPECIFIC				465|domain	doi: 10.3389/fbinf.2022.918853
+64	1	Hydrogen generation	hydrogenase [NiFe] 4e	echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+65	1	Hydrogen generation	hydrogenase [NiFe] 4f	ehfE	hydrogenase [NiFe] 4f	hydrogenase_NiFeGroup4f.hmm	KEGG TOO UNSPECIFIC				534|domain	doi: 10.3389/fbinf.2022.918853
+66	1	Hydrogen generation	hydrogenase [FeFe] A4	hytA	hydrogenase [FeFe] A4	hydrogenase_FeFeGroupA4.hmm	KEGG TOO UNSPECIFIC				605|domain	doi: 10.3389/fbinf.2022.918853
+67	1	Hydrogen generation	hydrogenase [Fe] Fe	hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
+68	1	Hydrogen generation	hydrogenase [FeFe] A3	hydA3	hydrogenase [FeFe] A3	hydrogenase_FeFeGroupA3.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+69	1	Hydrogen generation	hydrogenase [NiFe] 4h	hyd4h	hydrogenase [NiFe] 4h	hydrogenase_NiFeGroup4h.hmm	KEGG TOO UNSPECIFIC				367|domain	doi: 10.3389/fbinf.2022.918853
+70	2	Hydrogen oxidation	hydrogenase [FeFe] B	hydM	hydrogenase [FeFe] B	hydrogenase_FeFeGroupB.hmm	KEGG TOO UNSPECIFIC				227|domain	doi: 10.3389/fbinf.2022.918853
+71	2	Hydrogen oxidation	hydrogenase [FeFe] A2	hydA2	hydrogenase [FeFe] A2	hydrogenase_FeFeGroupA2.hmm	KEGG TOO UNSPECIFIC				820|domain	doi: 10.3389/fbinf.2022.918853
+72	2	Hydrogen oxidation	hydrogenase [FeFe] A3	hydA3	hydrogenase [FeFe] A3	hydrogenase_FeFeGroupA3.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+73	2	Hydrogen oxidation	hydrogenase [FeFe] A4	hytA	hydrogenase [FeFe] A4	hydrogenase_FeFeGroupA4.hmm	KEGG TOO UNSPECIFIC				605|domain	doi: 10.3389/fbinf.2022.918853
+74	2	Hydrogen oxidation	hydrogenase [FeFe] C1	hydS1	hydrogenase [FeFe] C1	hydrogenase_FeFeGroupC1.hmm	KEGG TOO UNSPECIFIC				215|domain	doi: 10.3389/fbinf.2022.918853
+75	2	Hydrogen oxidation	hydrogenase [FeFe] C2	hydS2	hydrogenase [FeFe] C2	hydrogenase_FeFeGroupC2.hmm	KEGG TOO UNSPECIFIC				268|domain	doi: 10.3389/fbinf.2022.918853
+76	2	Hydrogen oxidation	hydrogenase [FeFe] C3	hydS3	hydrogenase [FeFe] C3	hydrogenase_FeFeGroupC3.hmm	KEGG TOO UNSPECIFIC				326|domain	doi: 10.3389/fbinf.2022.918853
+77	2	Hydrogen oxidation	hydrogenase [Fe] Fe	hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
+78	2	Hydrogen oxidation	hydrogenase [NiFe] 1a	hupL	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+79	2	Hydrogen oxidation	hydrogenase [NiFe] 1b	hynB	hydrogenase [NiFe] 1b	hydrogenase_NiFeGroup1b.hmm	KEGG TOO UNSPECIFIC				799|domain	doi: 10.3389/fbinf.2022.918853
+80	2	Hydrogen oxidation	hydrogenase [NiFe] 1c	hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+81	2	Hydrogen oxidation	hydrogenase [NiFe] 1d	hyaB	hydrogenase [NiFe] 1d	hydrogenase_NiFeGroup1d.hmm	KEGG TOO UNSPECIFIC				902|domain	doi: 10.3389/fbinf.2022.918853
+82	2	Hydrogen oxidation	hydrogenase [NiFe] 1e	hyiB	hydrogenase [NiFe] 1e	hydrogenase_NiFeGroup1e.hmm	KEGG TOO UNSPECIFIC				969|domain	doi: 10.3389/fbinf.2022.918853
+83	2	Hydrogen oxidation	hydrogenase [NiFe] 1f	hyoL	hydrogenase [NiFe] 1f	hydrogenase_NiFeGroup1f.hmm	KEGG TOO UNSPECIFIC				929|domain	doi: 10.3389/fbinf.2022.918853
+84	2	Hydrogen oxidation	hydrogenase [NiFe] 1g	hcaL	hydrogenase [NiFe] 1g	hydrogenase_NiFeGroup1g.hmm	KEGG TOO UNSPECIFIC				551|domain	doi: 10.3389/fbinf.2022.918853
+85	2	Hydrogen oxidation	hydrogenase [NiFe] 1h	hhyL	hydrogenase [NiFe] 1h	hydrogenase_NiFeGroup1h.hmm	KEGG TOO UNSPECIFIC				853|domain	doi: 10.3389/fbinf.2022.918853
+86	2	Hydrogen oxidation	hydrogenase [NiFe] 1i	hyd1i	hydrogenase [NiFe] 1i	hydrogenase_NiFeGroup1i.hmm	KEGG TOO UNSPECIFIC				559|domain	doi: 10.3389/fbinf.2022.918853
+87	2	Hydrogen oxidation	hydrogenase [NiFe] 1j	hyd1j	hydrogenase [NiFe] 1j	hydrogenase_NiFeGroup1j.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+88	2	Hydrogen oxidation	hydrogenase [NiFe] 1k	hyd1k	hydrogenase [NiFe] 1k	hydrogenase_NiFeGroup1k.hmm	KEGG TOO UNSPECIFIC				211|domain	doi: 10.3389/fbinf.2022.918853
+89	2	Hydrogen oxidation	hydrogenase [NiFe] 2a	hucS	hydrogenase [NiFe] 2a	hydrogenase_NiFeGroup2a.hmm	KEGG TOO UNSPECIFIC				486|domain	doi: 10.3389/fbinf.2022.918853
+90	2	Hydrogen oxidation	hydrogenase [NiFe] 2b	hupV	hydrogenase [NiFe] 2b	hydrogenase_NiFeGroup2b.hmm	KEGG TOO UNSPECIFIC				492|domain	doi: 10.3389/fbinf.2022.918853
+91	2	Hydrogen oxidation	hydrogenase [NiFe] 2c	hurL	hydrogenase [NiFe] 2c	hydrogenase_NiFeGroup2c.hmm	KEGG TOO UNSPECIFIC				550|domain	doi: 10.3389/fbinf.2022.918853
+92	2	Hydrogen oxidation	hydrogenase [NiFe] 2d	huaL	hydrogenase [NiFe] 2d	hydrogenase_NiFeGroup2d.hmm	KEGG TOO UNSPECIFIC				322|domain	doi: 10.3389/fbinf.2022.918853
+93	2	Hydrogen oxidation	hydrogenase [NiFe] 2e	hyd2e	hydrogenase [NiFe] 2e	hydrogenase_NiFeGroup2e.hmm	KEGG TOO UNSPECIFIC				466|domain	doi: 10.3389/fbinf.2022.918853
+94	2	Hydrogen oxidation	hydrogenase [NiFe] 3a	frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+95	2	Hydrogen oxidation	hydrogenase [NiFe] 3b	hyhL	hydrogenase [NiFe] 3b	hydrogenase_NiFeGroup3b.hmm	KEGG TOO UNSPECIFIC				332|domain	doi: 10.3389/fbinf.2022.918853
+96	2	Hydrogen oxidation	hydrogenase [NiFe] 3c	mvhA	hydrogenase [NiFe] 3c	hydrogenase_NiFeGroup3c.hmm	KEGG TOO UNSPECIFIC				609|domain	doi: 10.3389/fbinf.2022.918853
+97	2	Hydrogen oxidation	hydrogenase [NiFe] 3d	hoxH	hydrogenase [NiFe] 3d	hydrogenase_NiFeGroup3d.hmm	KEGG TOO UNSPECIFIC				595|domain	doi: 10.3389/fbinf.2022.918853
+98	2	Hydrogen oxidation	hydrogenase [NiFe] 4a	hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
+99	2	Hydrogen oxidation	hydrogenase [NiFe] 4e	echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+100	2	Hydrogen oxidation	hydrogenase [NiFe] 4i	ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+101	3	Hydrogenotrophic methanogen.	hydrogenase [Fe] Fe	hmdl	hydrogenase [Fe] Fe	hydrogenase_FeGroupFe.hmm	KEGG TOO UNSPECIFIC				583|domain	doi: 10.3389/fbinf.2022.918853
+102	3	Hydrogenotrophic methanogen.	hydrogenase [NiFe] 1k	hyd1k	hydrogenase [NiFe] 1k	hydrogenase_NiFeGroup1k.hmm	KEGG TOO UNSPECIFIC				211|domain	doi: 10.3389/fbinf.2022.918853
+103	3	Hydrogenotrophic methanogen.	hydrogenase [NiFe] 3a	frhA	hydrogenase [NiFe] 3a	hydrogenase_NiFeGroup3a.hmm	KEGG TOO UNSPECIFIC				246|domain	doi: 10.3389/fbinf.2022.918853
+104	3	Hydrogenotrophic methanogen.	hydrogenase [NiFe] 3c	mvhA	hydrogenase [NiFe] 3c	hydrogenase_NiFeGroup3c.hmm	KEGG TOO UNSPECIFIC				609|domain	doi: 10.3389/fbinf.2022.918853
+105	3	Hydrogenotrophic methanogen.	hydrogenase [NiFe] 4h	hyd4h	hydrogenase [NiFe] 4h	hydrogenase_NiFeGroup4h.hmm	KEGG TOO UNSPECIFIC				367|domain	doi: 10.3389/fbinf.2022.918853
+106	3	Hydrogenotrophic methanogen.	hydrogenase [NiFe] 4i	ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+107	3	Hydrogenotrophic methanogen.	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+108	3	Hydrogenotrophic methanogen.	methyl-coenzyme M reductase beta subunit	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+109	3	Hydrogenotrophic methanogen.	methyl coenzyme M (methyl-CoM) reductase G	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full	https://doi.org/10.1186/s40168-021-01213-8
+110	4	Methanogenesis	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+111	4	Methanogenesis	methyl-coenzyme M reductase beta subunit	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+112	4	Methanogenesis	methyl coenzyme M (methyl-CoM) reductase G	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full	https://doi.org/10.1186/s40168-021-01213-8
+113	5	Hydrogenotrophic acetogen.	hydrogenase [FeFe] A3	hydA3	hydrogenase [FeFe] A3	hydrogenase_FeFeGroupA3.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+114	5	Hydrogenotrophic acetogen.	hydrogenase [NiFe] 4e	echE	hydrogenase [NiFe] 4e	hydrogenase_NiFeGroup4e.hmm	KEGG TOO UNSPECIFIC				448|domain	doi: 10.3389/fbinf.2022.918853
+115	5	Hydrogenotrophic acetogen.	hydrogenase [NiFe] 4h	hyd4h	hydrogenase [NiFe] 4h	hydrogenase_NiFeGroup4h.hmm	KEGG TOO UNSPECIFIC				367|domain	doi: 10.3389/fbinf.2022.918853
+116	5	Hydrogenotrophic acetogen.	hydrogenase [NiFe] 4i	ehb	hydrogenase [NiFe] 4i	hydrogenase_NiFeGroup4i.hmm	KEGG TOO UNSPECIFIC				336|domain	doi: 10.3389/fbinf.2022.918853
+117	5	Hydrogenotrophic acetogen.	Formate-tetrahydrofolate ligase	fhs	Formate-tetrahydrofolate ligase	K01938.hmm	K01938				900.93|domain	https://doi.org/10.1186/s40168-021-01213-8
+118	5	Hydrogenotrophic acetogen.	Formate-tetrahydrofolate ligase	fthfs	Formate-tetrahydrofolate ligase	fthfs_NF010030.hmm	K01938				652|domain	https://doi.org/10.1186/s40168-021-01213-8
+119	6	Acetate oxidation	acetyl-CoA synthetase	acs	acetyl-CoA synthetase	TIGR02188.hmm	K01895				684.65|full	https://doi.org/10.1186/s40168-021-01213-8
+120	6	Acetate oxidation	Acetyl-CoA decarbonylase/synthase (ACDS)	cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
+121	7	Acetoclastic methanogenesis	acetate kinase	ack	acetate kinase	TIGR00016.hmm	K00925				146.10|full	https://doi.org/10.1186/s40168-021-01213-8
+122	7	Acetoclastic methanogenesis	phosphate acetyltransferase	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625				205.40|full	https://doi.org/10.1186/s40168-021-01213-8
+123	7	Acetoclastic methanogenesis	acetyl-CoA synthetase	acs	acetyl-CoA synthetase	TIGR02188.hmm	K01895				684.65|full	https://doi.org/10.1186/s40168-021-01213-8
+124	7	Acetoclastic methanogenesis	Acetyl-CoA decarbonylase/synthase (ACDS)	cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
+125	7	Acetoclastic methanogenesis	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+126	7	Acetoclastic methanogenesis	methyl-coenzyme M reductase beta subunit	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+127	7	Acetoclastic methanogenesis	methyl coenzyme M (methyl-CoM) reductase G	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full	https://doi.org/10.1186/s40168-021-01213-8
+128	8	Acetogen. WL	Formate-tetrahydrofolate ligase	fhs	Formate-tetrahydrofolate ligase	K01938.hmm	K01938				900.93|domain	https://doi.org/10.1186/s40168-021-01213-8
+129	8	Acetogen. WL	Formate-tetrahydrofolate ligase	fthfs	Formate-tetrahydrofolate ligase	fthfs_NF010030.hmm	K01938				652|domain	https://doi.org/10.1186/s40168-021-01213-8
+130	9	Carbon fixation	acetyl-CoA decarbonylase/synthase. CODH/ACS complex subunit delta	cdhD	acetyl-CoA decarbonylase/synthase. CODH/ACS complex subunit delta	K00194.hmm	K00194				344.50|full	https://doi.org/10.1186/s40168-021-01213-8
+131	9	Carbon fixation	acetyl-CoA decarbonylase/synthase. CODH/ACS complex subunit gamma	cdhE	acetyl-CoA decarbonylase/synthase. CODH/ACS complex subunit gamma	K00197.hmm	K00197				361.33|full	https://doi.org/10.1186/s40168-021-01213-8
+132	9	Carbon fixation	anaerobic carbon-monoxide dehydrogenase catalytic subunit	cooS	anaerobic carbon-monoxide dehydrogenase catalytic subunit	K00198.hmm	K00198				544.77|full	https://doi.org/10.1186/s40168-021-01213-8
+133	9	Carbon fixation	Form I RuBisCO large subunit	Form_I	Form I RuBisCO large subunit	rubisco_form_I.hmm	K01601				500|full	https://doi.org/10.1186/s40168-021-01213-8
+134	9	Carbon fixation	Form II RuBisCO large subunit	Form_II	Form II RuBisCO large subunit	rubisco_form_II.hmm	K01601				500|full	https://doi.org/10.1186/s40168-021-01213-8
+135	9	Carbon fixation	4-hydroxybutyrate---CoA ligase (ADP-forming)	Hbs_1	4-hydroxybutyrate---CoA ligase (ADP-forming)	K14466.hmm	K14466				914.07|full	https://doi.org/10.1186/s40168-021-01213-8
+136	9	Carbon fixation	4-hydroxybutyrate---CoA ligase (ADP-forming)	4hbl	4-hydroxybutyrate---CoA ligase (ADP-forming)	K14467.hmm	K14467				1019.33|domain	https://doi.org/10.1186/s40168-021-01213-8
+137	9	Carbon fixation	malonyl-CoA reductase / 3-hydroxypropionate dehydrogenase (NADP+) 	mcr	malonyl-CoA reductase / 3-hydroxypropionate dehydrogenase (NADP+) 	K14468.hmm	K14468				1652.50|full	https://doi.org/10.1186/s40168-021-01213-8
+138	9	Carbon fixation	propionyl-CoA synthase	pcs	propionyl-CoA synthase	K14469.hmm	K14469				2774.67|full	https://doi.org/10.1186/s40168-021-01213-8
+139	9	Carbon fixation	ATP-citrate lyase alpha-subunit	aclA	ATP-citrate lyase alpha-subunit	acetate_citrate_lyase_aclA.hmm	K15230				215|full	https://doi.org/10.1186/s40168-021-01213-8
+140	9	Carbon fixation	ATP-citrate lyase beta-subunit	aclB	ATP-citrate lyase beta-subunit	acetate_citrate_lyase_aclB.hmm	K15231				177|full	https://doi.org/10.1186/s40168-021-01213-8
+141	9	Carbon fixation	4-hydroxybutyrate---CoA ligase (ADP-forming)	Hbs_2	4-hydroxybutyrate---CoA ligase (ADP-forming)	K18861.hmm	K18861				946.67|full	https://doi.org/10.1186/s40168-021-01213-8
+142	10	Methylotrophic methanogen.	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	mtaA	Methanol:corrinoid methyltransferase. catalytic subunit (MtaA)	NF040654.hmm	K14080				400|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF008154/
+143	10	Methylotrophic methanogen.	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	mtbA	Dimethylamine:corrinoid methyltransferase catalytic subunit (MtbA)	NF041608.hmm	K14082				600|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041608/
+144	10	Methylotrophic methanogen.	Acetyl-CoA decarbonylase/synthase (ACDS)	cdhA	Acetyl-CoA decarbonylase/synthase (ACDS)	TIGR00314.hmm	K00192				781.3|domain	https://www.ebi.ac.uk/interpro/entry/ncbifam/TIGR00314/logo/
+145	10	Methylotrophic methanogen.	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+146	10	Methylotrophic methanogen.	methyl-coenzyme M reductase beta subunit	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+147	10	Methylotrophic methanogen.	methyl coenzyme M (methyl-CoM) reductase G	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full	https://doi.org/10.1186/s40168-021-01213-8
+148	11	Organic carbon oxidation	alcohol dehydrogenase	adh	alcohol dehydrogenase	K00001.hmm	K00001				336.20|domain	https://doi.org/10.1186/s40168-021-01213-8
+149	11	Organic carbon oxidation	alcohol dehydrogenase (NADP+)	akr1a1	alcohol dehydrogenase (NADP+)	K00002.hmm	K00002				406.57|full	https://doi.org/10.1186/s40168-021-01213-8
+150	11	Organic carbon oxidation	L-lactate dehydrogenase	ldh	L-lactate dehydrogenase	K00016.hmm	K00016				317.10|full	https://doi.org/10.1186/s40168-021-01213-8
+151	11	Organic carbon oxidation	methanol dehydrogenase	mdh	methanol dehydrogenase	TIGR04266.hmm	K00093				400.00|full	https://doi.org/10.1186/s40168-021-01213-8
+152	11	Organic carbon oxidation	alcohol dehydrogenase (cytochrome c)	exaA	alcohol dehydrogenase (cytochrome c)	K00114.hmm	K00114				652.23|domain	https://doi.org/10.1186/s40168-021-01213-8
+153	11	Organic carbon oxidation	S-(hydroxymethyl)glutathione dehydrogenase / alcohol dehydrogenase	frmA	S-(hydroxymethyl)glutathione dehydrogenase / alcohol dehydrogenase	TIGR02818.hmm	K00121				509.55|full	https://doi.org/10.1186/s40168-021-01213-8
+154	11	Organic carbon oxidation	formate dehydrogenase major subunit	fdoG	formate dehydrogenase major subunit	K00123.hmm	K00123				841.13|full	https://doi.org/10.1186/s40168-021-01213-8
+155	11	Organic carbon oxidation	formate dehydrogenase iron-sulfur subunit	fdoH	formate dehydrogenase iron-sulfur subunit	K00124.hmm	K00124				169.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+156	11	Organic carbon oxidation	formate dehydrogenase (coenzyme F420) beta subunit	fdhB	formate dehydrogenase (coenzyme F420) beta subunit	K00125.hmm	K00125				209.97|full	https://doi.org/10.1186/s40168-021-01213-8
+157	11	Organic carbon oxidation	aldehyde dehydrogenase	ALDH3	aldehyde dehydrogenase	K00129.hmm	K00129				764.63|full	https://doi.org/10.1186/s40168-021-01213-8
+158	11	Organic carbon oxidation	aldehyde dehydrogenase	aldB	aldehyde dehydrogenase	K00138.hmm	K00138				807.77|domain	https://doi.org/10.1186/s40168-021-01213-8
+159	11	Organic carbon oxidation	glutathione-independent formaldehyde dehydrogenase	fdhA_non_GSH	glutathione-independent formaldehyde dehydrogenase	TIGR02819.hmm	K00148				425.15|full	https://doi.org/10.1186/s40168-021-01213-8
+160	11	Organic carbon oxidation	S-(hydroxymethyl)mycothiol dehydrogenase	mycoS_dep_FDH	S-(hydroxymethyl)mycothiol dehydrogenase	TIGR03451.hmm	K00153				512.15|full	https://doi.org/10.1186/s40168-021-01213-8
+161	11	Organic carbon oxidation	pyruvate ferredoxin oxidoreductase alpha subunit	porA	pyruvate ferredoxin oxidoreductase alpha subunit	K00169.hmm	K00169				299.20|full	https://doi.org/10.1186/s40168-021-01213-8
+162	11	Organic carbon oxidation	acyl-CoA dehydrogenase	ACADM	acyl-CoA dehydrogenase	K00249.hmm	K00249				318.80|domain	https://doi.org/10.1186/s40168-021-01213-8
+163	11	Organic carbon oxidation	long-chain-acyl-CoA dehydrogenase	ACADL	long-chain-acyl-CoA dehydrogenase	K00255.hmm	K00255				575.20|full	https://doi.org/10.1186/s40168-021-01213-8
+164	11	Organic carbon oxidation	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+165	11	Organic carbon oxidation	phosphate acetyltransferase	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625				205.40|full	https://doi.org/10.1186/s40168-021-01213-8
+166	11	Organic carbon oxidation	formate C-acetyltransferase	pflD	formate C-acetyltransferase	K00656.hmm	K00656				336.47|full	https://doi.org/10.1186/s40168-021-01213-8
+167	11	Organic carbon oxidation	aspartate/tyrosine/aromatic aminotransferase	aspB	aspartate/tyrosine/aromatic aminotransferase	K00812.hmm	K00812				464.33|full	https://doi.org/10.1186/s40168-021-01213-8
+168	11	Organic carbon oxidation	aspartate/tyrosine/aromatic aminotransferase	aspC	aspartate/tyrosine/aromatic aminotransferase	K00813.hmm	K00813				530.40|full	https://doi.org/10.1186/s40168-021-01213-8
+169	11	Organic carbon oxidation	histidinol-phosphate/aromatic aminotransferase	hisC	histidinol-phosphate/aromatic aminotransferase	K00817.hmm	K00817				289.63|full	https://doi.org/10.1186/s40168-021-01213-8
+170	11	Organic carbon oxidation	ornithine/acetylornithine aminotransferase	rocD	ornithine/acetylornithine aminotransferase	K00819.hmm	K00819				490.03|full	https://doi.org/10.1186/s40168-021-01213-8
+171	11	Organic carbon oxidation	ornithine/acetylornithine aminotransferase	argD	ornithine/acetylornithine aminotransferase	K00821.hmm	K00821				483.83|domain	https://doi.org/10.1186/s40168-021-01213-8
+172	11	Organic carbon oxidation	4-aminobutyrate aminotransferase and related aminotransferases	puuE	4-aminobutyrate aminotransferase and related aminotransferases	K00823.hmm	K00823				609.33|domain	https://doi.org/10.1186/s40168-021-01213-8
+173	11	Organic carbon oxidation	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	ilvE	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	K00826.hmm	K00826				188.77|full	https://doi.org/10.1186/s40168-021-01213-8
+174	11	Organic carbon oxidation	serine-pyruvate aminotransferase/archaeal aspartate aminotransferase	AGXT	serine-pyruvate aminotransferase/archaeal aspartate aminotransferase	K00830.hmm	K00830				418.23|domain	https://doi.org/10.1186/s40168-021-01213-8
+175	11	Organic carbon oxidation	phosphoserine aminotransferase	serC	phosphoserine aminotransferase	K00831.hmm	K00831				137.97|full	https://doi.org/10.1186/s40168-021-01213-8
+176	11	Organic carbon oxidation	aspartate/tyrosine/aromatic aminotransferase	tyrB	aspartate/tyrosine/aromatic aminotransferase	K00832.hmm	K00832				553.10|full	https://doi.org/10.1186/s40168-021-01213-8
+177	11	Organic carbon oxidation	ornithine/acetylornithine aminotransferase	astC	ornithine/acetylornithine aminotransferase	K00840.hmm	K00840				704.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+178	11	Organic carbon oxidation	acetate kinase	ack	acetate kinase	TIGR00016.hmm	K00925				146.10|full	https://doi.org/10.1186/s40168-021-01213-8
+179	11	Organic carbon oxidation	S-formylglutathione hydrolase 	fghA	S-formylglutathione hydrolase 	TIGR02821.hmm	K01070				131.95|full	https://doi.org/10.1186/s40168-021-01213-8
+180	11	Organic carbon oxidation	alpha-amylase	amyA	alpha-amylase	K01176.hmm	K01176				252.60|domain	https://doi.org/10.1186/s40168-021-01213-8
+181	11	Organic carbon oxidation	glucoamylase	SGA1	glucoamylase	K01178.hmm	K01178				152.77|full	https://doi.org/10.1186/s40168-021-01213-8
+182	11	Organic carbon oxidation	chitiniase	chiC	chitiniase	K01183.hmm	K01183				121.47|full	https://doi.org/10.1186/s40168-021-01213-8
+183	11	Organic carbon oxidation	beta-glucosidase	bglu	beta-glucosidase	K01188.hmm	K01188				695.13|domain	https://doi.org/10.1186/s40168-021-01213-8
+184	11	Organic carbon oxidation	beta-galactosidase	lacZ	beta-galactosidase	K01190.hmm	K01190				382.13|full	https://doi.org/10.1186/s40168-021-01213-8
+185	11	Organic carbon oxidation	beta-mannosidase	manB	beta-mannosidase	K01192.hmm	K01192				406.10|full	https://doi.org/10.1186/s40168-021-01213-8
+186	11	Organic carbon oxidation	beta-glucuronidase	uidA	beta-glucuronidase	K01195.hmm	K01195				403.53|full	https://doi.org/10.1186/s40168-021-01213-8
+187	11	Organic carbon oxidation	beta-xylosidase	xynB	beta-xylosidase	K01198.hmm	K01198				184.60|domain	https://doi.org/10.1186/s40168-021-01213-8
+188	11	Organic carbon oxidation	pullulanase	pulA	pullulanase	K01200.hmm	K01200				390.57|domain	https://doi.org/10.1186/s40168-021-01213-8
+189	11	Organic carbon oxidation	hexosaminidase	nagZ	hexosaminidase	K01207.hmm	K01207				253.67|domain	https://doi.org/10.1186/s40168-021-01213-8
+190	11	Organic carbon oxidation	arabinosidase	abfA	arabinosidase	K01209.hmm	K01209				96.47|full	https://doi.org/10.1186/s40168-021-01213-8
+191	11	Organic carbon oxidation	isoamylase	treX	isoamylase	K01214.hmm	K01214				962.67|full	https://doi.org/10.1186/s40168-021-01213-8
+192	11	Organic carbon oxidation	mannan endo-1.4-beta-mannosidase	gmuG	mannan endo-1.4-beta-mannosidase	K01218.hmm	K01218				78.93|domain	https://doi.org/10.1186/s40168-021-01213-8
+193	11	Organic carbon oxidation	vanillate/4-hydroxybenzoate decarboxylase subunit C	bsdC	vanillate/4-hydroxybenzoate decarboxylase subunit C	K01612.hmm	K01612				574.80|full	https://doi.org/10.1186/s40168-021-01213-8
+194	11	Organic carbon oxidation	cellulase	racD	cellulase	K01779.hmm	K01779				27.30|domain	https://doi.org/10.1186/s40168-021-01213-8
+195	11	Organic carbon oxidation	alpha-D-xyloside xylohydrolase	xylS	alpha-D-xyloside xylohydrolase	K01811.hmm	K01811				621.53|domain	https://doi.org/10.1186/s40168-021-01213-8
+196	11	Organic carbon oxidation	acetyl-CoA synthetase	acs	acetyl-CoA synthetase	TIGR02188.hmm	K01895				684.65|full	https://doi.org/10.1186/s40168-021-01213-8
+197	11	Organic carbon oxidation	acetyl coenzyme A synthetase (ADP forming). alpha domain	acdA	acetyl coenzyme A synthetase (ADP forming). alpha domain	TIGR02717.hmm	K01905				463.00|full	https://doi.org/10.1186/s40168-021-01213-8
+198	11	Organic carbon oxidation	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	pabC	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	K02619.hmm	K02619				187.00|full	https://doi.org/10.1186/s40168-021-01213-8
+199	11	Organic carbon oxidation	flavin prenyltransferase	ubiX	flavin prenyltransferase	K03186.hmm	K03186				125.70|full	https://doi.org/10.1186/s40168-021-01213-8
+200	11	Organic carbon oxidation	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	pabBC	branched-chain amino acid aminotransferase/4-amino-4-deoxychorismate lyase	K03342.hmm	K03342				522.93|full	https://doi.org/10.1186/s40168-021-01213-8
+201	11	Organic carbon oxidation	catechol 1.2-dioxygenase	catA	catechol 1.2-dioxygenase	K03381.hmm	K03381				343.50|domain	https://doi.org/10.1186/s40168-021-01213-8
+202	11	Organic carbon oxidation	aerobic carbon-monoxide dehydrogenase small subunit	coxS	aerobic carbon-monoxide dehydrogenase small subunit	K03518.hmm	K03518				242.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+203	11	Organic carbon oxidation	aerobic carbon-monoxide dehydrogenase medium subunit	coxM	aerobic carbon-monoxide dehydrogenase medium subunit	K03519.hmm	K03519				272.50|domain	https://doi.org/10.1186/s40168-021-01213-8
+204	11	Organic carbon oxidation	aerobic carbon-monoxide dehydrogenase large subunit	coxL	aerobic carbon-monoxide dehydrogenase large subunit	K03520.hmm	K03520				846.90|full	https://doi.org/10.1186/s40168-021-01213-8
+205	11	Organic carbon oxidation	L-lysine 6-transaminase	lat	L-lysine 6-transaminase	K03918.hmm	K03918				369.10|full	https://doi.org/10.1186/s40168-021-01213-8
+206	11	Organic carbon oxidation	alcohol dehydrogenase	eutG	alcohol dehydrogenase	K04022.hmm	K04022				471.53|full	https://doi.org/10.1186/s40168-021-01213-8
+207	11	Organic carbon oxidation	acetaldehyde dehydrogenase / alcohol dehydrogenase	adhE	acetaldehyde dehydrogenase / alcohol dehydrogenase	K04072.hmm	K04072				644.33|full	https://doi.org/10.1186/s40168-021-01213-8
+208	11	Organic carbon oxidation	benzoyl-CoA reductase subunit C	bcrC	benzoyl-CoA reductase subunit C	K04112.hmm	K04112				370.00|full	https://doi.org/10.1186/s40168-021-01213-8
+209	11	Organic carbon oxidation	benzoyl-CoA reductase subunit B	bcrB	benzoyl-CoA reductase subunit B	K04113.hmm	K04113				317.33|full	https://doi.org/10.1186/s40168-021-01213-8
+210	11	Organic carbon oxidation	benzoyl-CoA reductase subunit A	bcrA	benzoyl-CoA reductase subunit A	K04114.hmm	K04114				396.30|full	https://doi.org/10.1186/s40168-021-01213-8
+211	11	Organic carbon oxidation	benzoyl-CoA reductase subunit D	bcrD	benzoyl-CoA reductase subunit D	K04115.hmm	K04115				296.30|full	https://doi.org/10.1186/s40168-021-01213-8
+212	11	Organic carbon oxidation	alpha-amylase	treS	alpha-amylase	K05343.hmm	K05343				495.17|domain	https://doi.org/10.1186/s40168-021-01213-8
+213	11	Organic carbon oxidation	beta-glucosidase	bglX	beta-glucosidase	K05349.hmm	K05349				314.90|full	https://doi.org/10.1186/s40168-021-01213-8
+214	11	Organic carbon oxidation	beta-glucosidase	bglB	beta-glucosidase	K05350.hmm	K05350				584.90|domain	https://doi.org/10.1186/s40168-021-01213-8
+215	11	Organic carbon oxidation	aminotransferase class I and II	LYSN	aminotransferase class I and II	K05825.hmm	K05825				392.87|domain	https://doi.org/10.1186/s40168-021-01213-8
+216	11	Organic carbon oxidation	ornithine/acetylornithine aminotransferase	lysJ	ornithine/acetylornithine aminotransferase	K05830.hmm	K05830				505.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+217	11	Organic carbon oxidation	alpha-L-rhamnosidase	ramA	alpha-L-rhamnosidase	K05989.hmm	K05989				173.10|domain	https://doi.org/10.1186/s40168-021-01213-8
+218	11	Organic carbon oxidation	acyl-CoA dehydrogenase	fadE	acyl-CoA dehydrogenase	K06445.hmm	K06445				427.00|full	https://doi.org/10.1186/s40168-021-01213-8
+219	11	Organic carbon oxidation	acyl-CoA dehydrogenase	DCAA	acyl-CoA dehydrogenase	K06446.hmm	K06446				490.30|domain	https://doi.org/10.1186/s40168-021-01213-8
+220	11	Organic carbon oxidation	4-aminobutyrate aminotransferase and related aminotransferases	gabT	4-aminobutyrate aminotransferase and related aminotransferases	K07250.hmm	K07250				639.10|domain	https://doi.org/10.1186/s40168-021-01213-8
+221	11	Organic carbon oxidation	alpha-amylase	aamy	alpha-amylase	K07405.hmm	K07405				344.03|full	https://doi.org/10.1186/s40168-021-01213-8
+222	11	Organic carbon oxidation	acyl-CoA dehydrogenase	aidB	acyl-CoA dehydrogenase	K09456.hmm	K09456				461.93|full	https://doi.org/10.1186/s40168-021-01213-8
+223	11	Organic carbon oxidation	acyl-CoA dehydrogenase	ACADSB	acyl-CoA dehydrogenase	K09478.hmm	K09478				500.07|full	https://doi.org/10.1186/s40168-021-01213-8
+224	11	Organic carbon oxidation	5.6.7.8-tetrahydromethanopterin hydro-lyase	fae	5.6.7.8-tetrahydromethanopterin hydro-lyase	TIGR03126.hmm	K10713				31.15|full	https://doi.org/10.1186/s40168-021-01213-8
+225	11	Organic carbon oxidation	methane/ammonia monooxygenase subunit B	CH4_NH3mon_ox_B	methane/ammonia monooxygenase subunit B	TIGR03079.hmm	K10945				156.70|full	https://doi.org/10.1186/s40168-021-01213-8
+226	11	Organic carbon oxidation	methane/ammonia monooxygenase subunit C	CH4_NH3mon_ox_C	methane/ammonia monooxygenase subunit C	TIGR03078.hmm	K10946				280.6|full	https://doi.org/10.1186/s40168-021-01213-8
+227	11	Organic carbon oxidation	aspartate/tyrosine/aromatic aminotransferase	yhdR	aspartate/tyrosine/aromatic aminotransferase	K11358.hmm	K11358				342.60|full	https://doi.org/10.1186/s40168-021-01213-8
+228	11	Organic carbon oxidation	acyl-CoA dehydrogenase	acdH	acyl-CoA dehydrogenase	K11410.hmm	K11410				510.67|domain	https://doi.org/10.1186/s40168-021-01213-8
+229	11	Organic carbon oxidation	beta-galactosidase	ebgA	beta-galactosidase	K12111.hmm	K12111				1274.03|domain	https://doi.org/10.1186/s40168-021-01213-8
+230	11	Organic carbon oxidation	beta-galactosidase	bgaB	beta-galactosidase	K12308.hmm	K12308				225.67|domain	https://doi.org/10.1186/s40168-021-01213-8
+231	11	Organic carbon oxidation	hexosaminidase	HEXA_B	hexosaminidase	K12373.hmm	K12373				86.50|full	https://doi.org/10.1186/s40168-021-01213-8
+232	11	Organic carbon oxidation	Bifunctonal chitiniase	chiA	Bifunctonal chitiniase	K13381.hmm	K13381				339.03|domain	https://doi.org/10.1186/s40168-021-01213-8
+233	11	Organic carbon oxidation	4-aminobutyrate aminotransferase and related aminotransferases	ABAT	4-aminobutyrate aminotransferase and related aminotransferases	K13524.hmm	K13524				436.80|full	https://doi.org/10.1186/s40168-021-01213-8
+234	11	Organic carbon oxidation	alcohol dehydrogenase	yiay	alcohol dehydrogenase	K13954.hmm	K13954				504.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+235	11	Organic carbon oxidation	methanol dehydrogenase (cytochrome c) subunit 1	mxaF	methanol dehydrogenase (cytochrome c) subunit 1	methanol_dehydrogenase_pqq_xoxF_mxaF.hmm	K14028				400|full	https://doi.org/10.1186/s40168-021-01213-8
+236	11	Organic carbon oxidation	5-aminovalerate/4-aminobutyrate aminotransferase	davT	5-aminovalerate/4-aminobutyrate aminotransferase	K14268.hmm	K14268				825.23|full	https://doi.org/10.1186/s40168-021-01213-8
+237	11	Organic carbon oxidation	hexosaminidase	HEX	hexosaminidase	K14459.hmm	K14459				200.80|full	https://doi.org/10.1186/s40168-021-01213-8
+238	11	Organic carbon oxidation	methylamine dehydrogenase light chain	mauA	methylamine dehydrogenase light chain	TIGR02659.hmm	K15228				85.80|full	https://doi.org/10.1186/s40168-021-01213-8
+239	11	Organic carbon oxidation	methylamine dehydrogenase heavy chain	mauB	methylamine dehydrogenase heavy chain	TIGR02658.hmm	K15229				90.50|full	https://doi.org/10.1186/s40168-021-01213-8
+240	11	Organic carbon oxidation	arabinosidase	xynD	arabinosidase	K15921.hmm	K15921				225.70|domain	https://doi.org/10.1186/s40168-021-01213-8
+241	11	Organic carbon oxidation	acyl-CoA dehydrogenase	ACAD9	acyl-CoA dehydrogenase	K15980.hmm	K15980				782.47|full	https://doi.org/10.1186/s40168-021-01213-8
+242	11	Organic carbon oxidation	methane monooxygenase regulatory protein B	mmoB	methane monooxygenase regulatory protein B	PF02406.hmm	K16160				10|full	https://doi.org/10.1186/s40168-021-01213-8
+243	11	Organic carbon oxidation	methane monooxygenase component D	mmoD	methane monooxygenase component D	TIGR04550.hmm	K16162				28.00|full	https://doi.org/10.1186/s40168-021-01213-8
+244	11	Organic carbon oxidation	acyl-CoA dehydrogenase	mmgC	acyl-CoA dehydrogenase	K18244.hmm	K18244				576.53|domain	https://doi.org/10.1186/s40168-021-01213-8
+245	11	Organic carbon oxidation	mannan endo-1.4-beta-mannosidase	MAN	mannan endo-1.4-beta-mannosidase	K19355.hmm	K19355				100.53|full	https://doi.org/10.1186/s40168-021-01213-8
+246	11	Organic carbon oxidation	cellobiosidase	cbhA	cellobiosidase	K19668.hmm	K19668				225.47|domain	https://doi.org/10.1186/s40168-021-01213-8
+247	11	Organic carbon oxidation	alcohol dehydrogenase	adhA	alcohol dehydrogenase	K22473.hmm	K22473				1290.63|full	https://doi.org/10.1186/s40168-021-01213-8
+248	11	Organic carbon oxidation	formate dehydrogenase beta subunit	fdwB	formate dehydrogenase beta subunit	K22515.hmm	K22515				555.20|domain	https://doi.org/10.1186/s40168-021-01213-8
+249	11	Organic carbon oxidation	formate dehydrogenase (coenzyme F420) alpha subunit	fdhA	formate dehydrogenase (coenzyme F420) alpha subunit	K22516.hmm	K22516				937.40|full	https://doi.org/10.1186/s40168-021-01213-8
+250	11	Organic carbon oxidation	methane/ammonia monooxygenase subunit A	CH4_NH3mon_ox_A	methane/ammonia monooxygenase subunit A	TIGR03080.hmm	K16157				318.1|full	https://doi.org/10.1186/s40168-021-01213-8
+251	12	CO2-dep. Methanogen.	5.10-Methylenetetrahydromethanopterin reductase (Mer)	mer	5.10-Methylenetetrahydromethanopterin reductase (Mer)	TIGR03555.1.hmm	K00320				348.7|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/TIGR03355/
+252	12	CO2-dep. Methanogen.	methyl-coenzyme M reductase alpha subunit	mcrA	methyl-coenzyme M reductase alpha subunit	TIGR03256.hmm	K00399				314.45|full	https://doi.org/10.1186/s40168-021-01213-8
+253	12	CO2-dep. Methanogen.	methyl-coenzyme M reductase beta subunit	mcrB	methyl-coenzyme M reductase beta subunit	TIGR03257.hmm	K00401				173.35|full	https://doi.org/10.1186/s40168-021-01213-8
+254	12	CO2-dep. Methanogen.	methyl coenzyme M (methyl-CoM) reductase G	mcrG	methyl coenzyme M (methyl-CoM) reductase G	TIGR03259.hmm	K00402				172|full	https://doi.org/10.1186/s40168-021-01213-8
+255	13	(Aerobic) methanotrophy	methane monooxygenase component D	mmoD	methane monooxygenase component D	TIGR04550.hmm					28.00|full	
+256	13	(Aerobic) methanotrophy	methane monooxygenase regulatory protein B	mmoB	methane monooxygenase regulatory protein B	PF02406.hmm					10|full	
+257	13	(Aerobic) methanotrophy	Partculate methane monooxygenase C	pmoC	Partculate methane monooxygenase C	pmoC.hmm					136.27|full	
+258	13	(Aerobic) methanotrophy	Partculate methane monooxygenase B	pmoB	Partculate methane monooxygenase B	pmoB.hmm					156.70|full	
+259	13	(Aerobic) methanotrophy	Partculate methane monooxygenase A	pmoA	Partculate methane monooxygenase A	pmoA.hmm					160.90|full	
+260	14	Fermentation	alcohol dehydrogenase	adh	alcohol dehydrogenase	K00001.hmm	K00001				336.20|domain	https://doi.org/10.1186/s40168-021-01213-8
+261	14	Fermentation	L-lactate dehydrogenase	ldh	L-lactate dehydrogenase	K00016.hmm	K00016				317.10|full	https://doi.org/10.1186/s40168-021-01213-8
+262	14	Fermentation	pyruvate ferredoxin oxidoreductase alpha subunit	porA	pyruvate ferredoxin oxidoreductase alpha subunit	K00169.hmm	K00169				299.20|full	https://doi.org/10.1186/s40168-021-01213-8
+263	14	Fermentation	phosphate acetyltransferase	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625				205.40|full	https://doi.org/10.1186/s40168-021-01213-8
+264	14	Fermentation	formate C-acetyltransferase	pflD	formate C-acetyltransferase	K00656.hmm	K00656				336.47|full	https://doi.org/10.1186/s40168-021-01213-8
+265	14	Fermentation	acetate kinase	ack	acetate kinase	TIGR00016.hmm	K00925				146.10|full	https://doi.org/10.1186/s40168-021-01213-8
+266	14	Fermentation	acetyl-CoA synthetase	acs	acetyl-CoA synthetase	TIGR02188.hmm	K01895				684.65|full	https://doi.org/10.1186/s40168-021-01213-8
+267	14	Fermentation	acetyl coenzyme A synthetase (ADP forming). alpha domain	acdA	acetyl coenzyme A synthetase (ADP forming). alpha domain	TIGR02717.hmm	K01905				463.00|full	https://doi.org/10.1186/s40168-021-01213-8
+268	14	Fermentation	Propionate-CoA transferase	pct	Propionate-CoA transferase	K01026.hmm	K01026				23|domain	Kegg-database 
+269	15	Ethanol oxidation	alcohol dehydrogenase	adh	alcohol dehydrogenase	K00001.hmm	K00001				336.20|domain	https://doi.org/10.1186/s40168-021-01213-8
+270	16	Fermentative H2 generation	hydrogenase [FeFe] A1	hydA1	hydrogenase [FeFe] A1	hydrogenase_FeFeGroupA1.hmm	K00532				188|domain	doi: 10.3389/fbinf.2022.918853
+271	16	Fermentative H2 generation	hydrogenase [NiFe] 4a	hycE	hydrogenase [NiFe] 4a	hydrogenase_NiFeGroup4a.hmm	KEGG TOO UNSPECIFIC				738|domain	doi: 10.3389/fbinf.2022.918853
+272	16	Fermentative H2 generation	alcohol dehydrogenase	adh	alcohol dehydrogenase	K00001.hmm	K00001				336.20|domain	https://doi.org/10.1186/s40168-021-01213-8
+273	16	Fermentative H2 generation	L-lactate dehydrogenase	ldh	L-lactate dehydrogenase	K00016.hmm	K00016				317.10|full	https://doi.org/10.1186/s40168-021-01213-8
+274	16	Fermentative H2 generation	pyruvate ferredoxin oxidoreductase alpha subunit	porA	pyruvate ferredoxin oxidoreductase alpha subunit	K00169.hmm	K00169				299.20|full	https://doi.org/10.1186/s40168-021-01213-8
+275	16	Fermentative H2 generation	phosphate acetyltransferase	pta	phosphate acetyltransferase	TIGR00651.hmm	K00625				205.40|full	https://doi.org/10.1186/s40168-021-01213-8
+276	16	Fermentative H2 generation	formate C-acetyltransferase	pflD	formate C-acetyltransferase	K00656.hmm	K00656				336.47|full	https://doi.org/10.1186/s40168-021-01213-8
+277	16	Fermentative H2 generation	acetate kinase	ack	acetate kinase	TIGR00016.hmm	K00925				146.10|full	https://doi.org/10.1186/s40168-021-01213-8
+278	16	Fermentative H2 generation	acetyl-CoA synthetase	acs	acetyl-CoA synthetase	TIGR02188.hmm	K01895				684.65|full	https://doi.org/10.1186/s40168-021-01213-8
+279	16	Fermentative H2 generation	acetyl coenzyme A synthetase (ADP forming). alpha domain	acdA	acetyl coenzyme A synthetase (ADP forming). alpha domain	TIGR02717.hmm	K01905				463.00|full	https://doi.org/10.1186/s40168-021-01213-8
+280	17	Organohal. Respira. 1	hydrogenase [NiFe] 1a	hupL	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+281	17	Organohal. Respira. 1	reductive dehalogenase subunit	rdhA	reductive dehalogenase subunit	PF13486.hmm	K21647				24.3|domain	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/
+282	18	Organohal. Respira. 2	reductive dehalogenase subunit	rdhA	reductive dehalogenase subunit	PF13486.hmm	K21647				24.3|domain	https://www.ebi.ac.uk/interpro/entry/pfam/PF13486/logo/
+283	19	Selenate reduction	putative selenate reductase	YgfK	putative selenate reductase	TIGR03315.hmm	K12527				354.45|full	https://doi.org/10.1186/s40168-021-01213-8
+284	19	Selenate reduction	putative selenate reductase molybdopterin-binding subunit	xdhD	putative selenate reductase molybdopterin-binding subunit	TIGR03313.hmm	K12528				526.50|full	https://doi.org/10.1186/s40168-021-01213-8
+285	19	Selenate reduction	putative selenate reductase FAD-binding subunit	ygfM	putative selenate reductase FAD-binding subunit	TIGR03312.hmm	K12529				87.85|full	https://doi.org/10.1186/s40168-021-01213-8
+286	20	Sulfur respiration	hydrogenase [NiFe] 1e	hyiB	hydrogenase [NiFe] 1e	hydrogenase_NiFeGroup1e.hmm	KEGG TOO UNSPECIFIC				969|domain	doi: 10.3389/fbinf.2022.918853
+287	20	Sulfur respiration	hydrogenase [NiFe] 1g	hcaL	hydrogenase [NiFe] 1g	hydrogenase_NiFeGroup1g.hmm	KEGG TOO UNSPECIFIC				551|domain	doi: 10.3389/fbinf.2022.918853
+288	20	Sulfur respiration	anaerobic sulfite reductase subunit C	asrC	anaerobic sulfite reductase subunit C	asrC.hmm	K00385				324.10|full	https://doi.org/10.1186/s40168-021-01213-8
+289	20	Sulfur respiration	dissimilatory sulfite reductase alpha subunit	dsrA	dissimilatory sulfite reductase alpha subunit	dsrA.hmm	K11180				200.00|full	https://doi.org/10.1186/s40168-021-01213-8
+290	20	Sulfur respiration	dissimilatory sulfite reductase beta subunit	dsrB	dissimilatory sulfite reductase beta subunit	dsrB.hmm	K11181				204.00|full	https://doi.org/10.1186/s40168-021-01213-8
+291	20	Sulfur respiration	anaerobic sulfite reductase subunit A	asrA	anaerobic sulfite reductase subunit A	asrA.hmm	K16950				323.15|full	https://doi.org/10.1186/s40168-021-01213-8
+292	20	Sulfur respiration	anaerobic sulfite reductase subunit B	asrB	anaerobic sulfite reductase subunit B	asrB.hmm	K16951				288.60|full	https://doi.org/10.1186/s40168-021-01213-8
+293	20	Sulfur respiration	dissimilatory sulfite reductase delta subunit	dsrD	dissimilatory sulfite reductase delta subunit	dsrD.hmm	NOT LISTED IN KEGG				32.80|full	https://doi.org/10.1186/s40168-021-01213-8
+294	20	Sulfur respiration	sulfur oxygenase/reductase	sor	sulfur oxygenase/reductase	K16952.hmm	K16952				363.87|full	https://doi.org/10.1186/s40168-021-01213-8
+295	20	Sulfur respiration	sulfur reductase molybdopterin subunit	sreA	sulfur reductase molybdopterin subunit	K17219.hmm	K17219				1889.97|full	https://doi.org/10.1186/s40168-021-01213-8
+296	20	Sulfur respiration	sulfur reductase FeS subunit	sreB	sulfur reductase FeS subunit	K17220.hmm	K17220				474.53|full	https://doi.org/10.1186/s40168-021-01213-8
+297	20	Sulfur respiration	sulfur reductase membrane anchor	sreC	sulfur reductase membrane anchor	K17221.hmm	K17221				288.03|full	https://doi.org/10.1186/s40168-021-01213-8
+298	21	Sulfate respiration	hydrogenase [NiFe] 1a	hupL	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+299	21	Sulfate respiration	hydrogenase [NiFe] 1b	hynB	hydrogenase [NiFe] 1b	hydrogenase_NiFeGroup1b.hmm	KEGG TOO UNSPECIFIC				799|domain	doi: 10.3389/fbinf.2022.918853
+300	21	Sulfate respiration	hydrogenase [NiFe] 1c	hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+301	21	Sulfate respiration	hydrogenase [NiFe] 1j	hyd1j	hydrogenase [NiFe] 1j	hydrogenase_NiFeGroup1j.hmm	KEGG TOO UNSPECIFIC				321|domain	doi: 10.3389/fbinf.2022.918853
+302	21	Sulfate respiration	adenylylsulfate reductase. subunit A	aprA	adenylylsulfate reductase. subunit A	aprA.hmm	K00394				641.75|full	https://doi.org/10.1186/s40168-021-01213-8
+303	21	Sulfate respiration	sulfate adenylyltransferase	sat	sulfate adenylyltransferase	TIGR00339.hmm	K00958				181.80|full	https://doi.org/10.1186/s40168-021-01213-8
+304	22	Sulfite oxidation	adenylylsulfate reductase. subunit A	aprA	adenylylsulfate reductase. subunit A	aprA.hmm	K00394				641.75|full	https://doi.org/10.1186/s40168-021-01213-8
+305	22	Sulfite oxidation	sulfate adenylyltransferase	sat	sulfate adenylyltransferase	TIGR00339.hmm	K00958				181.80|full	https://doi.org/10.1186/s40168-021-01213-8
+306	23	Sulfite reduction	anaerobic sulfite reductase subunit C	asrC	anaerobic sulfite reductase subunit C	asrC.hmm	K00385				324.10|full	https://doi.org/10.1186/s40168-021-01213-8
+307	23	Sulfite reduction	dissimilatory sulfite reductase alpha subunit	dsrA	dissimilatory sulfite reductase alpha subunit	dsrA.hmm	K11180				200.00|full	https://doi.org/10.1186/s40168-021-01213-8
+308	23	Sulfite reduction	dissimilatory sulfite reductase beta subunit	dsrB	dissimilatory sulfite reductase beta subunit	dsrB.hmm	K11181				204.00|full	https://doi.org/10.1186/s40168-021-01213-8
+309	23	Sulfite reduction	anaerobic sulfite reductase subunit A	asrA	anaerobic sulfite reductase subunit A	asrA.hmm	K16950				323.15|full	https://doi.org/10.1186/s40168-021-01213-8
+310	23	Sulfite reduction	anaerobic sulfite reductase subunit B	asrB	anaerobic sulfite reductase subunit B	asrB.hmm	K16951				288.60|full	https://doi.org/10.1186/s40168-021-01213-8
+311	23	Sulfite reduction	dissimilatory sulfite reductase delta subunit	dsrD	dissimilatory sulfite reductase delta subunit	dsrD.hmm	NOT LISTED IN KEGG				32.80|full	https://doi.org/10.1186/s40168-021-01213-8
+312	24	Sulfur reduction	sulfur oxygenase/reductase	sor	sulfur oxygenase/reductase	K16952.hmm	K16952				363.87|full	https://doi.org/10.1186/s40168-021-01213-8
+313	24	Sulfur reduction	sulfur reductase molybdopterin subunit	sreA	sulfur reductase molybdopterin subunit	K17219.hmm	K17219				1889.97|full	https://doi.org/10.1186/s40168-021-01213-8
+314	24	Sulfur reduction	sulfur reductase FeS subunit	sreB	sulfur reductase FeS subunit	K17220.hmm	K17220				474.53|full	https://doi.org/10.1186/s40168-021-01213-8
+315	24	Sulfur reduction	sulfur reductase membrane anchor	sreC	sulfur reductase membrane anchor	K17221.hmm	K17221				288.03|full	https://doi.org/10.1186/s40168-021-01213-8
+316	25	Polysulfide reduction	polysulfide reductase chain B	psrB	polysulfide reductase chain B	K16293.hmm	K16293				266.90|full	https://doi.org/10.1186/s40168-021-01213-8
+317	25	Polysulfide reduction	polysulfide reductase chain C	psrC	polysulfide reductase chain C	K16294.hmm	K16294				305.90|full	https://doi.org/10.1186/s40168-021-01213-8
+318	25	Polysulfide reduction	sulfhydrogenase subunit gamma (sulfur reductase)	hydG	sulfhydrogenase subunit gamma (sulfur reductase)	K17995.hmm	K17995				451.47|full	https://doi.org/10.1186/s40168-021-01213-8
+319	25	Polysulfide reduction	sulfhydrogenase subunit beta (sulfur reductase)	hydB	sulfhydrogenase subunit beta (sulfur reductase)	K17996.hmm	K17996				398.57|full	https://doi.org/10.1186/s40168-021-01213-8
+320	26	Sulfide oxidation	sulfide:quinone oxidoreductase	sqr	sulfide:quinone oxidoreductase	sulfide_quinone_oxidoreductase_sqr.hmm	K17218				300|full	https://doi.org/10.1186/s40168-021-01213-8
+321	26	Sulfide oxidation	flavocytochrome c sulphide dehydrogenase. flavin-binding	fccB	flavocytochrome c sulphide dehydrogenase. flavin-binding	PF09242.hmm	K17229				266|full	https://doi.org/10.1186/s40168-021-01213-8
+322	27	Sulfur oxidation	sulfur oxygenase/reductase	sor	sulfur oxygenase/reductase	PF07682.hmm	K16952				300|full	https://doi.org/10.1186/s40168-021-01213-8
+323	27	Sulfur oxidation	sulfur dioxygenase	sdo	sulfur dioxygenase	sulfur_dioxygenase_sdo.hmm	K17725				300|full	https://doi.org/10.1186/s40168-021-01213-8
+324	28	Thiosulfate disproportionation 2	L-cysteine S-thiosulfotransferase	soxA	L-cysteine S-thiosulfotransferase	soxA.hmm	K17222				110.00|full	https://doi.org/10.1186/s40168-021-01213-8
+325	28	Thiosulfate disproportionation 2	L-cysteine S-thiosulfotransferase	soxX	L-cysteine S-thiosulfotransferase	soxX.hmm	K17223				61.00|full	https://doi.org/10.1186/s40168-021-01213-8
+326	28	Thiosulfate disproportionation 2	sulfur-oxidizing protein SoxY	soxY	sulfur-oxidizing protein SoxY	soxY.hmm	K17226				125.00|full	https://doi.org/10.1186/s40168-021-01213-8
+327	28	Thiosulfate disproportionation 2	sulfur-oxidizing protein SoxZ	soxZ	sulfur-oxidizing protein SoxZ	soxZ.hmm	K17227				76.00|full	https://doi.org/10.1186/s40168-021-01213-8
+328	28	Thiosulfate disproportionation 2	S-disulfanyl-L-cysteine oxidoreductase SoxD	soxD	S-disulfanyl-L-cysteine oxidoreductase SoxD	soxD.hmm	K22622				90.00|full	https://doi.org/10.1186/s40168-021-01213-8
+329	28	Thiosulfate disproportionation 2	sulfane dehydrogenase subunit SoxC	soxC	sulfane dehydrogenase subunit SoxC	soxC.hmm	K17225				320.00|full	https://doi.org/10.1186/s40168-021-01213-8
+330	29	Thiosulfate oxidation	L-cysteine S-thiosulfotransferase	soxA	L-cysteine S-thiosulfotransferase	soxA.hmm	K17222				110.00|full	https://doi.org/10.1186/s40168-021-01213-8
+331	29	Thiosulfate oxidation	L-cysteine S-thiosulfotransferase	soxX	L-cysteine S-thiosulfotransferase	soxX.hmm	K17223				61.00|full	https://doi.org/10.1186/s40168-021-01213-8
+332	29	Thiosulfate oxidation	sulfur-oxidizing protein SoxY	soxY	sulfur-oxidizing protein SoxY	soxY.hmm	K17226				125.00|full	https://doi.org/10.1186/s40168-021-01213-8
+333	29	Thiosulfate oxidation	sulfur-oxidizing protein SoxZ	soxZ	sulfur-oxidizing protein SoxZ	soxZ.hmm	K17227				76.00|full	https://doi.org/10.1186/s40168-021-01213-8
+334	29	Thiosulfate oxidation	S-disulfanyl-L-cysteine oxidoreductase SoxD	soxD	S-disulfanyl-L-cysteine oxidoreductase SoxD	soxD.hmm	K22622				90.00|full	https://doi.org/10.1186/s40168-021-01213-8
+335	29	Thiosulfate oxidation	sulfane dehydrogenase subunit SoxC	soxC	sulfane dehydrogenase subunit SoxC	soxC.hmm	K17225				320.00|full	https://doi.org/10.1186/s40168-021-01213-8
+336	30	Thiosulfate disproportionation 1	thiosulfate reductase / polysulfide reductase chain A	phsA	thiosulfate reductase / polysulfide reductase chain A	thiosulfate_reductase_phsA.hmm	K08352				323|full	https://doi.org/10.1186/s40168-021-01213-8
+337	31	Sulfate reduction (ASR/DSR)	adenylylsulfate reductase. subunit A	aprA	adenylylsulfate reductase. subunit A	aprA.hmm	K00394				641.75|full	https://doi.org/10.1186/s40168-021-01213-8
+338	31	Sulfate reduction (ASR/DSR)	sulfate adenylyltransferase	sat	sulfate adenylyltransferase	TIGR00339.hmm	K00958				181.80|full	https://doi.org/10.1186/s40168-021-01213-8
+339	32	Arsenate reduction	dissimilatory arsenate reductase	arrA	dissimilatory arsenate reductase	arrA.hmm	K28466				175|full	https://doi.org/10.1186/s40168-021-01213-8
+340	33	Arsenite oxidation	arsenite oxidase large subunit	aioA	arsenite oxidase large subunit	aioA.hmm	K08356				800|full	https://doi.org/10.1186/s40168-021-01213-8
+341	33	Arsenite oxidation	arsenite oxidase (molybdopterin subunit)	arxA	arsenite oxidase (molybdopterin subunit)	arxA.hmm	K08356. K08355				600|full	https://doi.org/10.1186/s40168-021-01213-8
+342	34	e-input Metal respiration	hydrogenase [NiFe] 1a	hupL	hydrogenase [NiFe] 1a	hydrogenase_NiFeGroup1a.hmm	KEGG TOO UNSPECIFIC				574|domain	doi: 10.3389/fbinf.2022.918853
+343	34	e-input Metal respiration	hydrogenase [NiFe] 1b	hynB	hydrogenase [NiFe] 1b	hydrogenase_NiFeGroup1b.hmm	KEGG TOO UNSPECIFIC				799|domain	doi: 10.3389/fbinf.2022.918853
+344	34	e-input Metal respiration	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	CymA	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	CymA.hmm	(napC) K02569 (cymA absent)				237|full	https://doi.org/10.1186/s40168-021-01213-8
+345	34	e-input Metal respiration	cytochrome omcS-like	DFE_0450	cytochrome omcS-like	DFE_0450.hmm	NOT LISTED IN KEGG				30|full	https://doi.org/10.1186/s40168-021-01213-8
+346	34	e-input Metal respiration	cytochrome omcS-like	DFE_0464	cytochrome omcS-like	DFE_0464.hmm	NOT LISTED IN KEGG				25|full	https://doi.org/10.1186/s40168-021-01213-8
+347	34	e-input Metal respiration	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	MtrA	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	MtrA.hmm	K28380				140|full	https://doi.org/10.1186/s40168-021-01213-8
+348	34	e-input Metal respiration	Tetrahydromethanopterin S-methyltransferase subunit B	MtrB	Tetrahydromethanopterin S-methyltransferase subunit B	MtrB_TIGR03509.hmm	K28381				240.05|full	https://doi.org/10.1186/s40168-021-01213-8
+349	34	e-input Metal respiration	Tetrahydromethanopterin S-methyltransferase subunit C	MtrC	Tetrahydromethanopterin S-methyltransferase subunit C	MtrC_TIGR03507.hmm	(?) K28382				209.3|full	https://doi.org/10.1186/s40168-021-01213-8
+350	34	e-input Metal respiration	Type II NADH dehydrogenase	Ndh2	Type II NADH dehydrogenase	Ndh2.hmm	K05573				40|full	https://doi.org/10.1186/s40168-021-01213-8
+351	34	e-input Metal respiration	Outer-membrane multiheme c-type cytochrome OmcF	OmcF	Outer-membrane multiheme c-type cytochrome OmcF	OmcF.hmm	K08906				83.7|full	https://doi.org/10.1186/s40168-021-01213-8
+352	34	e-input Metal respiration	Outer-membrane multiheme c-type cytochrome OmcS	OmcS	Outer-membrane multiheme c-type cytochrome OmcS	OmcS.hmm	NOT LISTED IN KEGG				78.2|full	https://doi.org/10.1186/s40168-021-01213-8
+353	34	e-input Metal respiration	Extracellular multiheme c-type cytochrome OmcZ	OmcZ	Extracellular multiheme c-type cytochrome OmcZ	OmcZ.hmm	NOT LISTED IN KEGG				76.9|full	https://doi.org/10.1186/s40168-021-01213-8
+354	35	Metal Respiration	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	CymA	CymA (tetrahaem cytochrome c) is a member of the NapC/NirT family	CymA.hmm	(napC) K02569 (cymA absent)				237|full	https://doi.org/10.1186/s40168-021-01213-8
+355	35	Metal Respiration	cytochrome omcS-like	DFE_0450	cytochrome omcS-like	DFE_0450.hmm	NOT LISTED IN KEGG				30|full	https://doi.org/10.1186/s40168-021-01213-8
+356	35	Metal Respiration	cytochrome omcS-like	DFE_0464	cytochrome omcS-like	DFE_0464.hmm	NOT LISTED IN KEGG				25|full	https://doi.org/10.1186/s40168-021-01213-8
+357	35	Metal Respiration	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	MtrA	Extracelllular iron oxide respiratory system periplasmic decaheme cytochrome c component 	MtrA.hmm	K28380				140|full	https://doi.org/10.1186/s40168-021-01213-8
+358	35	Metal Respiration	Tetrahydromethanopterin S-methyltransferase subunit B	MtrB	Tetrahydromethanopterin S-methyltransferase subunit B	MtrB_TIGR03509.hmm	K28381				240.05|full	https://doi.org/10.1186/s40168-021-01213-8
+359	35	Metal Respiration	Tetrahydromethanopterin S-methyltransferase subunit C	MtrC	Tetrahydromethanopterin S-methyltransferase subunit C	MtrC_TIGR03507.hmm	(?) K28382				209.3|full	https://doi.org/10.1186/s40168-021-01213-8
+360	35	Metal Respiration	Type II NADH dehydrogenase	Ndh2	Type II NADH dehydrogenase	Ndh2.hmm	K05573				40|full	https://doi.org/10.1186/s40168-021-01213-8
+361	35	Metal Respiration	Outer-membrane multiheme c-type cytochrome OmcF	OmcF	Outer-membrane multiheme c-type cytochrome OmcF	OmcF.hmm	K08906				83.7|full	https://doi.org/10.1186/s40168-021-01213-8
+362	35	Metal Respiration	Outer-membrane multiheme c-type cytochrome OmcS	OmcS	Outer-membrane multiheme c-type cytochrome OmcS	OmcS.hmm	NOT LISTED IN KEGG				78.2|full	https://doi.org/10.1186/s40168-021-01213-8
+363	35	Metal Respiration	Extracellular multiheme c-type cytochrome OmcZ	OmcZ	Extracellular multiheme c-type cytochrome OmcZ	OmcZ.hmm	NOT LISTED IN KEGG				76.9|full	https://doi.org/10.1186/s40168-021-01213-8
+364	36	Mn oxidation	Multicopper oxidase. manganese(II)-oxidizing protein MnxG	MnxG	Multicopper oxidase. manganese(II)-oxidizing protein MnxG	NF041487.hmm	K22349				3100|domain	https://www.ncbi.nlm.nih.gov/genome/annotation_prok/evidence/NF041487/
+365	37	Iron oxidation	"cytochrome c4 (c552) of Thiobacillus
+Ferrooxidans"	Cyc1	"cytochrome c4 (c552) of Thiobacillus
+Ferrooxidans"	Cyc1.hmm	NOT LISTED IN KEGG				98|full	https://doi.org/10.1186/s40168-021-01213-8
+366	37	Iron oxidation	cytochrome-porin proteins	Cyc2_rc1	cytochrome-porin proteins	Cyc2_repCluster1.hmm	K20150				31.5|full	https://doi.org/10.1186/s40168-021-01213-8
+367	37	Iron oxidation	cytochrome-porin proteins	Cyc2_rc2	cytochrome-porin proteins	Cyc2_repCluster2.hmm	K20150				27.8|full	https://doi.org/10.1186/s40168-021-01213-8
+368	37	Iron oxidation	cytochrome-porin proteins	Cyc2_rc3	cytochrome-porin proteins	Cyc2_repCluster3.hmm	K20150				27.3|full	https://doi.org/10.1186/s40168-021-01213-8
+369	37	Iron oxidation	Outer-membrane iron(II)-oxidizing cytochrome (putative)	FoxA	Outer-membrane iron(II)-oxidizing cytochrome (putative)	FoxA.hmm	NOT LISTED IN KEGG				128|full	https://doi.org/10.1186/s40168-021-01213-8
+370	37	Iron oxidation	Inner-membrane electron-transfer protein (cytochrome b-like)	FoxB	Inner-membrane electron-transfer protein (cytochrome b-like)	FoxB.hmm	NOT LISTED IN KEGG				66|full	https://doi.org/10.1186/s40168-021-01213-8
+371	37	Iron oxidation	Iron oxidation accessory protein	FoxC	Iron oxidation accessory protein	FoxC.hmm	NOT LISTED IN KEGG				62|full	https://doi.org/10.1186/s40168-021-01213-8
+372	37	Iron oxidation	Periplasmic diheme c-type cytochrome	FoxE	Periplasmic diheme c-type cytochrome	FoxE.hmm	NOT LISTED IN KEGG				37|full	https://doi.org/10.1186/s40168-021-01213-8
+373	37	Iron oxidation	Quinone-interacting electron-transfer protein	FoxY	Quinone-interacting electron-transfer protein	FoxY.hmm	NOT LISTED IN KEGG				124|full	https://doi.org/10.1186/s40168-021-01213-8
+374	37	Iron oxidation	Electron-transfer accessory protein	FoxZ	Electron-transfer accessory protein	FoxZ.hmm	NOT LISTED IN KEGG				150|full	https://doi.org/10.1186/s40168-021-01213-8
+375	37	Iron oxidation	Decaheme c-Type Cytochrome	MtoA	Decaheme c-Type Cytochrome	MtoA.hmm	K28380				140|full	https://doi.org/10.1186/s40168-021-01213-8
+376	37	Iron oxidation	sulfocyanin	soxE	sulfocyanin	sulfocyanin.hmm	NOT LISTED IN KEGG				45.4|full	https://doi.org/10.1186/s40168-021-01213-8
+377	38	Nitrate respiration / denitrification	hydrogenase [NiFe] 1b	hynB	hydrogenase [NiFe] 1b	hydrogenase_NiFeGroup1b.hmm	KEGG TOO UNSPECIFIC				799|domain	doi: 10.3389/fbinf.2022.918853
+378	38	Nitrate respiration / denitrification	hydrogenase [NiFe] 1c	hybC	hydrogenase [NiFe] 1c	hydrogenase_NiFeGroup1c.hmm	KEGG TOO UNSPECIFIC				785|domain	doi: 10.3389/fbinf.2022.918853
+379	38	Nitrate respiration / denitrification	Nitrite reductase (NADH). large subunit (NirB)	nirB	Nitrite reductase (NADH). large subunit (NirB)	TIGR02374.hmm	K00362				442.75|full	https://doi.org/10.1186/s40168-021-01213-8
+380	38	Nitrate respiration / denitrification	Nitrite reductase (NADH). small subunit (NirD)	nirD	Nitrite reductase (NADH). small subunit (NirD)	TIGR02378.hmm	K00363				69.85|full	https://doi.org/10.1186/s40168-021-01213-8
+381	38	Nitrate respiration / denitrification	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	nas	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NF041323.hmm	K00372				1000|domain	https://doi.org/10.1186/s40168-021-01213-8
+382	38	Nitrate respiration / denitrification	nitrite reductase (NO-forming)	nirK	nitrite reductase (NO-forming)	TIGR02376.hmm	K00368				169.10|full	https://doi.org/10.1186/s40168-021-01213-8
+383	38	Nitrate respiration / denitrification	nitrite reductase (NO-forming) / hydroxylamine reductase	nirS	nitrite reductase (NO-forming) / hydroxylamine reductase	nitrite_reductase_nirS.hmm	K15864				200|full	https://doi.org/10.1186/s40168-021-01213-8
+384	38	Nitrate respiration / denitrification	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	octR	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	TIGR04315.hmm	NOT LISTED IN KEGG				325.00|full	https://doi.org/10.1186/s40168-021-01213-8
+385	38	Nitrate respiration / denitrification	nitric oxide reductase subunit C	norC	nitric oxide reductase subunit C	nitric_oxide_reductase_norC.hmm	K02305				50|full	https://doi.org/10.1186/s40168-021-01213-8
+386	38	Nitrate respiration / denitrification	nitric oxide reductase subunit B	norB	nitric oxide reductase subunit B	nitric_oxide_reductase_norB.hmm	K04561				79|full	https://doi.org/10.1186/s40168-021-01213-8
+387	38	Nitrate respiration / denitrification	nitrous oxidase accessory protein	nosD	nitrous oxidase accessory protein	PF05048.hmm	K00376				290|full	https://doi.org/10.1186/s40168-021-01213-8
+388	38	Nitrate respiration / denitrification	nitrous-oxide reductase	nosZ	nitrous-oxide reductase	TIGR04246.hmm	K00376				550.00|full	https://doi.org/10.1186/s40168-021-01213-8
+389	39	Assimilatory nitrate red.	Nitrite reductase (NADH). large subunit (NirB)	nirB	Nitrite reductase (NADH). large subunit (NirB)	TIGR02374.hmm	K00362				442.75|full	https://doi.org/10.1186/s40168-021-01213-8
+390	39	Assimilatory nitrate red.	Nitrite reductase (NADH). small subunit (NirD)	nirD	Nitrite reductase (NADH). small subunit (NirD)	TIGR02378.hmm	K00363				69.85|full	https://doi.org/10.1186/s40168-021-01213-8
+391	39	Assimilatory nitrate red.	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	nas	Assimilatory nitrate reductase (NAD(P)H-dependent). large subunit (Nas)	NF041323.hmm	K00372				1000|domain	https://doi.org/10.1186/s40168-021-01213-8
+392	40	Dissimilatory nitrate red.	nitrate reductase / nitrite oxidoreductase. alpha subunit	narG	nitrate reductase / nitrite oxidoreductase. alpha subunit	TIGR01580.hmm	K00370				600.95|full	https://doi.org/10.1186/s40168-021-01213-8
+393	40	Dissimilatory nitrate red.	nitrate reductase / nitrite oxidoreductase. beta subunit	narH	nitrate reductase / nitrite oxidoreductase. beta subunit	TIGR01660.hmm	K00371				348.00|full	https://doi.org/10.1186/s40168-021-01213-8
+394	40	Dissimilatory nitrate red.	periplasmic nitrate reductase NapA	napA	periplasmic nitrate reductase NapA	TIGR01706.hmm	K02567				472.50|full	https://doi.org/10.1186/s40168-021-01213-8
+395	40	Dissimilatory nitrate red.	cytochrome c-type protein NapB	napB	cytochrome c-type protein NapB	PF03892.hmm	K02568				23.9|full	https://doi.org/10.1186/s40168-021-01213-8
+396	40	Dissimilatory nitrate red.	cytochrome c nitrite reductase. NrfD subunit	nrfD	cytochrome c nitrite reductase. NrfD subunit	TIGR03148.hmm	K04015				300.15|full	https://doi.org/10.1186/s40168-021-01213-8
+397	41	Ammonia oxidation	methane/ammonia monooxygenase subunit A	amoA	methane/ammonia monooxygenase subunit A	amoA.hmm	K10944				160.90|full	https://doi.org/10.1186/s40168-021-01213-8
+398	41	Ammonia oxidation	methane/ammonia monooxygenase subunit B	amoB	methane/ammonia monooxygenase subunit B	amoB.hmm	K10945				156.70|full	https://doi.org/10.1186/s40168-021-01213-8
+399	41	Ammonia oxidation	methane/ammonia monooxygenase subunit C	amoC	methane/ammonia monooxygenase subunit C	amoC.hmm	K10946				136.27|full	https://doi.org/10.1186/s40168-021-01213-8
+400	42	Nitrite oxidation	nitrate reductase / nitrite oxidoreductase. alpha subunit	nxrA	nitrate reductase / nitrite oxidoreductase. alpha subunit	nitrite_oxidoreductase_nxrA.hmm	K00370				370|full	https://doi.org/10.1186/s40168-021-01213-8
+401	42	Nitrite oxidation	nitrate reductase / nitrite oxidoreductase. beta subunit	nxrB	nitrate reductase / nitrite oxidoreductase. beta subunit	nitrite_oxidoreductase_nxrB.hmm	K00371				252|full	https://doi.org/10.1186/s40168-021-01213-8
+402	43	Nitrite reduction	nitrite reductase (NO-forming)	nirK	nitrite reductase (NO-forming)	TIGR02376.hmm	K00368				169.10|full	https://doi.org/10.1186/s40168-021-01213-8
+403	43	Nitrite reduction	nitrite reductase (NO-forming) / hydroxylamine reductase	nirS	nitrite reductase (NO-forming) / hydroxylamine reductase	nitrite_reductase_nirS.hmm	K15864				200|full	https://doi.org/10.1186/s40168-021-01213-8
+404	43	Nitrite reduction	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	octR	nitrite reductase (Octaheme c-type cytochrome Shewanella-type)	TIGR04315.hmm	NOT LISTED IN KEGG				325.00|full	https://doi.org/10.1186/s40168-021-01213-8
+405	44	Nitric oxide dismutase	Nitric oxide dismutase 	nod	Nitric oxide dismutase 	nod.hmm	K27148				120|domain	https://doi.org/10.1186/s40168-021-01213-8
+406	45	Nitric oxide reduction	nitric oxide reductase subunit C	norC	nitric oxide reductase subunit C	nitric_oxide_reductase_norC.hmm	K02305				50|full	https://doi.org/10.1186/s40168-021-01213-8
+407	45	Nitric oxide reduction	nitric oxide reductase subunit B	norB	nitric oxide reductase subunit B	nitric_oxide_reductase_norB.hmm	K04561				79|full	https://doi.org/10.1186/s40168-021-01213-8
+408	46	Nitrous oxide reduction	nitrous oxidase accessory protein	nosD	nitrous oxidase accessory protein	PF05048.hmm	K00376				290|full	https://doi.org/10.1186/s40168-021-01213-8
+409	46	Nitrous oxide reduction	nitrous-oxide reductase	nosZ	nitrous-oxide reductase	TIGR04246.hmm	K00376				550.00|full	https://doi.org/10.1186/s40168-021-01213-8
+410	47	Anammox	hydrazine synthase subunit. alpha subunit	hzsA	hydrazine synthase subunit. alpha subunit	hydrazine_synthase_hzsA.hmm	K20932				466|full	https://doi.org/10.1186/s40168-021-01213-8
+411	47	Anammox	hydroxylamine dehydrogenase. alpha subunit	hzoA	hydroxylamine dehydrogenase. alpha subunit	hydrazine_oxidase_hzoA.hmm	K20935				325|full	https://doi.org/10.1186/s40168-021-01213-8
+412	48	Nitrite ammonification	Nitrite reductase (NADH). large subunit (NirB)	nirB	Nitrite reductase (NADH). large subunit (NirB)	TIGR02374.hmm	K00362				442.75|full	https://doi.org/10.1186/s40168-021-01213-8
+413	48	Nitrite ammonification	Nitrite reductase (NADH). small subunit (NirD)	nirD	Nitrite reductase (NADH). small subunit (NirD)	TIGR02378.hmm	K00363				69.85|full	https://doi.org/10.1186/s40168-021-01213-8
+414	48	Nitrite ammonification	nitrite reductase (cytochrome c-552)	nrfA	nitrite reductase (cytochrome c-552)	PF02335.hmm	K03385				57|full	https://doi.org/10.1186/s40168-021-01213-8
+415	48	Nitrite ammonification	cytochrome c nitrite reductase. NrfD subunit	nrfD	cytochrome c nitrite reductase. NrfD subunit	TIGR03148.hmm	K04015				300.15|full	https://doi.org/10.1186/s40168-021-01213-8
+416	48	Nitrite ammonification	cytochrome c nitrite reductase small subunit	nrfH	cytochrome c nitrite reductase small subunit	TIGR03153.hmm	K15876				75.30|full	https://doi.org/10.1186/s40168-021-01213-8
+417	49	Nitrogen fixation	Quinoprotein glucose dehydrogenase	gcd	Quinoprotein glucose dehydrogenase	K00117.hmm	K00117				813.63|full	https://doi.org/10.1186/s40168-021-01213-8
+418	49	Nitrogen fixation	Polyphosphate kinase	ppk1	Polyphosphate kinase	K00937.hmm	K00937				254.43|full	https://doi.org/10.1186/s40168-021-01213-8
+419	49	Nitrogen fixation	Inorganic pyrophosphatase	ppa	Inorganic pyrophosphatase	K01507.hmm	K01507				19.27|domain	https://doi.org/10.1186/s40168-021-01213-8
+420	49	Nitrogen fixation	Exopolyphosphatase	ppx	Exopolyphosphatase	K01514.hmm	K01514				307.80|domain	https://doi.org/10.1186/s40168-021-01213-8
+421	49	Nitrogen fixation	Pyrroloquinoline quinone synthase C	pqqC	Pyrroloquinoline quinone synthase C	K06137.hmm	K06137				99.03|full	https://doi.org/10.1186/s40168-021-01213-8
+422	50	P dissolution	nitrogenase iron-iron protein. delta subunit	anfG	nitrogenase iron-iron protein. delta subunit	TIGR02929.hmm	K00531				124.50|full	https://doi.org/10.1186/s40168-021-01213-8
+423	50	P dissolution	nitrogenase molybdenum-iron protein alpha chain	nifD	nitrogenase molybdenum-iron protein alpha chain	TIGR01282.hmm	K02586				503.05|full	https://doi.org/10.1186/s40168-021-01213-8
+424	50	P dissolution	nitrogenase iron protein	nifH	nitrogenase iron protein	TIGR01287.hmm	K02588				261.05|full	https://doi.org/10.1186/s40168-021-01213-8
+425	50	P dissolution	nitrogenase molybdenum-iron protein beta chain	nifK	nitrogenase molybdenum-iron protein beta chain	TIGR01286.hmm	K02591				414.50|full	https://doi.org/10.1186/s40168-021-01213-8
+426	50	P dissolution	nitrogenase vanadium-iron protein. alpha chain	vnfD	nitrogenase vanadium-iron protein. alpha chain	TIGR01860.hmm	K22896				822.85|full	https://doi.org/10.1186/s40168-021-01213-8
+427	50	P dissolution	nitrogenase vanadium-iron protein. beta chain	vnfK	nitrogenase vanadium-iron protein. beta chain	TIGR02932.hmm	K22897				821.85|full	https://doi.org/10.1186/s40168-021-01213-8
+428	50	P dissolution	nitrogenase vanadium-iron protein. delta chain	vnfG	nitrogenase vanadium-iron protein. delta chain	TIGR02930.hmm	K22898				122.35|full	https://doi.org/10.1186/s40168-021-01213-8
+429	50	P dissolution	nitrogenase iron-iron protein. alpha subunit	anfD	nitrogenase iron-iron protein. alpha subunit	TIGR01861.hmm	(?) K02586				873.55|full	https://doi.org/10.1186/s40168-021-01213-8
+430	50	P dissolution	nitrogenase iron-iron protein. beta subunit	anfK	nitrogenase iron-iron protein. beta subunit	TIGR02931.hmm	KEGG TOO UNSPECIFIC				853.75|full	https://doi.org/10.1186/s40168-021-01213-8
+431	51	Immobilisation (P-rich)	inorganic phosphate transporter PitA	PitA	inorganic phosphate transporter PitA	NF033774.1.hmm	K16322				800|full	https://doi.org/10.1186/s40168-021-01213-8
+432	52	Immobilisation (P-poor)	phosphate transport system substrate-binding protein	PstS	phosphate transport system substrate-binding protein	K02040.hmm	K02040				60.73|domain	https://doi.org/10.1186/s40168-021-01213-8
+433	53	P mineralisation	Alkaline phosphatase A	phoA	Alkaline phosphatase A	K01077.hmm	K01077				71.10|full	https://doi.org/10.1186/s40168-021-01213-8
+434	53	P mineralisation	Acid phosphatase class C	olpA	Acid phosphatase class C	K01078.hmm	K01078				207.00|domain	https://doi.org/10.1186/s40168-021-01213-8
+435	53	P mineralisation	3-phytase	3-phytase	3-phytase	K01083.hmm	K01083				116.87|domain	https://doi.org/10.1186/s40168-021-01213-8
+436	53	P mineralisation	4-phytase	appA	4-phytase	K01093.hmm	K01093				382.13|full	https://doi.org/10.1186/s40168-021-01213-8
+437	53	P mineralisation	Alkaline phosphatase D	phoD	Alkaline phosphatase D	K01113.hmm	K01113				103.50|full	https://doi.org/10.1186/s40168-021-01213-8
+438	53	P mineralisation	phosphonate transport system substrate-binding protein	PhnD	phosphonate transport system substrate-binding protein	K02044.hmm	K02044				122.57|full	https://doi.org/10.1186/s40168-021-01213-8
+439	53	P mineralisation	Acid phosphatase class B	aphA	Acid phosphatase class B	K03788.hmm	K03788				84.23|full	https://doi.org/10.1186/s40168-021-01213-8
+440	53	P mineralisation	C–P lyase multienzyme complex	phnL	C–P lyase multienzyme complex	K05780.hmm	K05780				202.37|full	https://doi.org/10.1186/s40168-021-01213-8
+441	53	P mineralisation	C–P lyase multienzyme complex	phnK	C–P lyase multienzyme complex	K05781.hmm	K05781				258.73|domain	https://doi.org/10.1186/s40168-021-01213-8
+442	53	P mineralisation	phosphonate metabolism protein PhnM	PhnM	phosphonate metabolism protein PhnM	TIGR02318.1.hmm	K06162				390.5|full	https://doi.org/10.1186/s40168-021-01213-8
+443	53	P mineralisation	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	PhnJ	alpha-D-ribose 1-methylphosphonate 5-phosphate C-P lyase 	K06163.hmm	K06163				326.57|full	https://doi.org/10.1186/s40168-021-01213-8
+444	53	P mineralisation	C–P lyase multienzyme complex	phnI	C–P lyase multienzyme complex	K06164.hmm	K06164				192.27|full	https://doi.org/10.1186/s40168-021-01213-8
+445	53	P mineralisation	C–P lyase multienzyme complex	phnH	C–P lyase multienzyme complex	K06165.hmm	K06165				120.83|domain	https://doi.org/10.1186/s40168-021-01213-8
+446	53	P mineralisation	C–P lyase multienzyme complex	phnG	C–P lyase multienzyme complex	K06166.hmm	K06166				57.77|full	https://doi.org/10.1186/s40168-021-01213-8
+447	53	P mineralisation	Alkaline phosphatase X	phoX	Alkaline phosphatase X	K07093.hmm	K07093				102.10|domain	https://doi.org/10.1186/s40168-021-01213-8
+448	53	P mineralisation	Acid phosphatase class A	phoN	Acid phosphatase class A	K09474.hmm	K09474				123.93|full	https://doi.org/10.1186/s40168-021-01213-8
+449	53	P mineralisation	phosphonoacetaldehyde hydrolase	PhnX	phosphonoacetaldehyde hydrolase	TIGR01422.2.hmm	K05306				220|full	https://doi.org/10.1186/s40168-021-01213-8
+450	53	P mineralisation	2-aminoethylphosphonate--pyruvate transaminase	PhnW	2-aminoethylphosphonate--pyruvate transaminase	TIGR02326.1.hmm	K03430				400.8|full	https://doi.org/10.1186/s40168-021-01213-8
+451	53	P mineralisation	phosphonoacetate hydrolase	PhnA	phosphonoacetate hydrolase	TIGR02335.1.hmm	K19670				407.5|full	https://doi.org/10.1186/s40168-021-01213-8
+452	53	P mineralisation	phosphonate degradation HD-domain oxygenase	PhnZ	phosphonate degradation HD-domain oxygenase	TIGR03276.1.hmm	K21196				214.6|full	https://doi.org/10.1186/s40168-021-01213-8
