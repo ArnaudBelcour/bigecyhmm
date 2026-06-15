@@ -26,6 +26,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        # Install graphviz
+        apt-get install graphviz graphviz-dev
         python -m pip install --upgrade pip
         pip install pyhmmer Pillow pandas seaborn networkx pygraphviz scipy statsmodels
     - name: Prepare environment
