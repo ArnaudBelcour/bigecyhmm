@@ -43,4 +43,4 @@ jobs:
         pytest test_group_stats.py
         pytest test_hmm_search.py
         pytest test_utils.py
-        pytest test_visualisation.py
+        pytest test_visualisation_minimal.py

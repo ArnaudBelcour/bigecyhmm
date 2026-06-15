@@ -50,6 +50,8 @@ For `bigecyhmm_visualisation` (linking metabolic predictions to organism abundan
 
 - [pandas](https://pypi.org/project/pandas/): to read the input files.
 - [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
+- [scipy](https://github.com/scipy/scipy) and [statsmodels](https://github.com/statsmodels/statsmodels/) for statistical tests when giving a group file.
+- [esmecata](github.com/AuReMe/esmecata) to handle esmecata results.
 - If use with results form `bigecyhmm_custom`:
    - [networkx](https://github.com/networkx/networkx): to handle custom biogeochemical cycle as a graph.
    - [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
@@ -73,7 +75,7 @@ pip install -e .
 
 For `bigecyhmm_visualisation`, you also needs to run:
 
-`pip install pandas seaborn`
+`pip install pandas seaborn esmecata scipy statsmodels esmecata`
 
 For `bigecyhmm_custom`, you also needs to run:
 
@@ -159,6 +161,7 @@ To create the associated figures, there are other dependencies:
 - [seaborn](https://github.com/mwaskom/seaborn) and [matplotlib](https://github.com/matplotlib/matplotlib): to create most of the figures.
 - [networkx](https://github.com/networkx/networkx): to handle biogeochemical cycle as a graph if hanlding results from `bigecyhmm_custom`.
 - [pygraphviz](https://github.com/pygraphviz/pygraphviz): to render layout of bipartite graph.
+- [scipy](https://github.com/scipy/scipy) and [statsmodels](https://github.com/statsmodels/statsmodels/) for statistical tests when giving a group file.
 
 Two subcommands are available for `bigecyhmm_visualisation`:
 

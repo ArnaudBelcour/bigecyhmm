@@ -26,7 +26,10 @@ Changelog = "https://github.com/ArnaudBelcour/bigecyhmm/blob/main/CHANGELOG.md"
 [project.optional-dependencies]
 visualisation = ['pandas',
   'matplotlib',
-  'seaborn'
+  'seaborn',
+  'networkx',
+  'scipy',
+  'statsmodels'
 ]
 custom = ['networkx',
   'matplotlib'
