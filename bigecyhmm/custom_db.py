@@ -49,14 +49,7 @@ try:
     import networkx as nx
     from networkx.readwrite import json_graph
 except:
-    logger.critical('networkx not installed, bigecyhmm_custom requires networkx installed: pip install networkx matplotlib pygraphviz')
-    sys.exit(1)
-
-try:
-    import matplotlib.pyplot as plt
-    from matplotlib import __version__ as matplotlib_version
-except:
-    logger.critical('matplotlib not installed, bigecyhmm_custom requires matplotlib installed: pip install networkx matplotlib pygraphviz')
+    logger.critical('networkx not installed, bigecyhmm_custom requires networkx installed: pip install networkx')
     sys.exit(1)
 
 
@@ -270,7 +263,6 @@ def search_hmm_custom_db(input_variable, output_folder, hmm_folder=HMM_FOLDER, p
     metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
     metadata_json['tool_dependencies']['python_package']['networkx'] = nx.__version__
-    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'output_folder': output_folder, 'core_number': core_number,
                                          'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'esmecata_output_folder': esmecata_output_folder}

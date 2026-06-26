@@ -36,7 +36,7 @@ REQUIRES = '''
 Requires: pyhmmer and Pillow.
 '''
 
-logger = logging.getLogger()
+logger = logging.getLogger('bigecyhmm')
 logger.setLevel(logging.DEBUG)
 
 def main():

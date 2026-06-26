@@ -1,5 +1,12 @@
 # Changelog
 
+# bigecyhmm v0.2.1 (2026-06-26)
+
+## Fix
+
+* Fix several issues with dependencies.
+* Fix issues with logger.
+
 # bigecyhmm v0.2.0 (2026-06-12)
 
 HMM files are no more stored inside a zip archive, they are in a folder to ease their tracking.

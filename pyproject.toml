@@ -29,7 +29,8 @@ visualisation = ['pandas',
   'seaborn',
   'networkx',
   'scipy',
-  'statsmodels'
+  'statsmodels',
+  'esmecata'
 ]
 custom = ['networkx',
   'matplotlib'

@@ -713,7 +713,11 @@ def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
         bigecyhmm_database_folder (str): path to bigecyhmm database output folder (containing reference graphml file).
         graph_output_file (str): path to output background image.
     """
-    from networkx.drawing.nx_agraph import graphviz_layout
+    try:
+        from networkx.drawing.nx_agraph import graphviz_layout
+        graph_layout = "graphviz"
+    except:
+        graph_layout = 'default'
     import networkx as nx
 
     graph_file = os.path.join(bigecyhmm_database_folder, 'input_graph.graphml')
@@ -752,7 +756,11 @@ def generate_graph_figure(bigecyhmm_database_folder, graph_output_file):
 
     layout_prog = 'neato'
     # Layout to try to reduce node overlap (see: https://graphviz.org/doc/info/attrs.html)
-    pos = graphviz_layout(bipartite_networkx_graph, prog=layout_prog, args='-Gsplines=curved -Gnodesep=1.5 -Goverlap=false')
+    if graph_layout == "graphviz":
+        pos = graphviz_layout(bipartite_networkx_graph, prog=layout_prog, args='-Gsplines=curved -Gnodesep=1.5 -Goverlap=false')
+    else:
+        pos = nx.spring_layout(bipartite_networkx_graph)
+
     nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=metabolite_nodes,
                            node_color=metabolite_node_colors, node_shape='o', alpha=0.6, node_size=1200)
     nx.draw_networkx_nodes(bipartite_networkx_graph, pos, nodelist=function_nodes, node_shape='d', alpha=0.6, node_size=600)
