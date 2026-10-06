@@ -353,7 +353,6 @@ def identify_run_custom_db_search(input_variable, custom_database_folder, output
     metadata_json['tool_dependencies']['python_package']['bigecyhmm'] = bigecyhmm_version
     metadata_json['tool_dependencies']['python_package']['pyhmmer'] = pyhmmer.__version__
     metadata_json['tool_dependencies']['python_package']['networkx'] = nx.__version__
-    metadata_json['tool_dependencies']['python_package']['matplotlib'] = matplotlib_version
 
     metadata_json['input_parameters'] = {'input_variable': input_variable, 'custom_database_folder': custom_database_folder, 'output_folder': output_folder,
                                          'core_number': core_number, 'motif_json': motif_json, 'motif_pair_json': motif_pair_json, 'esmecata_output_folder': esmecata_output_folder}
