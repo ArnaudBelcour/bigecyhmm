@@ -39,7 +39,7 @@ MESSAGE = '''
 Run bigecyhmm using a custom database (custom biogeochemical cycles with HMMs).
 '''
 REQUIRES = '''
-Requires pyhmmer, networkx (with pygraphviz), matplotlib.
+Requires pyhmmer, networkx (with pygraphviz).
 '''
 
 logger = logging.getLogger()
